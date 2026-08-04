@@ -962,26 +962,35 @@
 <p><strong>Step1:</strong> Try to start the database.</p>
 <p><strong><img alt="image-20230907-101316" src="../images/oracle-ora-01012-not-logged-on-error/image-20230907-101316.png" /></strong></p>
 <p>Error Log while starting database.</p>
-<p><strong>ORA-01012: not logged on</strong></p>
-<p><strong>Process ID: 0</strong></p>
-<p><strong>Session ID: Serial number: 0</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">ORA</span><span class="o">-</span><span class="mi">01012</span><span class="p">:</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">logged</span><span class="w"> </span><span class="k">on</span>
+<span class="n">Process</span><span class="w"> </span><span class="n">ID</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="k">Session</span><span class="w"> </span><span class="n">ID</span><span class="p">:</span><span class="w"> </span><span class="nb">Serial</span><span class="w"> </span><span class="nb">number</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+</code></pre></div>
 <p><strong>Step2:</strong> Disconnect from sqlplus and run the command <strong>sysresv</strong> on Linux terminal:</p>
 <p><strong><img alt="image-20230907-101839" src="../images/oracle-ora-01012-not-logged-on-error/image-20230907-101839.png" /></strong></p>
 <p><strong>Step 3:</strong> Identify the list of shared memory processes.</p>
 <p><strong><img alt="image-20230911-080848" src="../images/oracle-ora-01012-not-logged-on-error/image-20230911-080848.png" /></strong></p>
 <p><strong>Step4:</strong> Kill all Shared Memory processes</p>
-<p>To kill these sessions run <strong>ipcrm -m "ID"</strong> command<strong><img alt="image-20230907-102844" src="../images/oracle-ora-01012-not-logged-on-error/image-20230907-102844.png" /></strong></p>
+<p>To kill these sessions run the following command:
+<div class="highlight"><pre><span></span><code>ipcrm<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;ID&quot;</span>
+</code></pre></div>
+<strong><img alt="image-20230907-102844" src="../images/oracle-ora-01012-not-logged-on-error/image-20230907-102844.png" /></strong></p>
 <p><strong>Step5:</strong> Connect to sqlplus and startup the database again</p>
 <p><strong><img alt="image-20230907-103026" src="../images/oracle-ora-01012-not-logged-on-error/image-20230907-103026.png" /></strong></p>
 <p><strong><em>Note:</em></strong></p>
 <ul>
-<li><strong>The instance will start but database would not go to mount stage.</strong></li>
-<li><strong>error: ORA-01102: cannot mount database in EXCLUSIVE mode.</strong></li>
+<li><strong>The instance will start but database would not go to mount stage.</strong>
+<div class="highlight"><pre><span></span><code><span class="n">error</span><span class="p">:</span><span class="w"> </span><span class="n">ORA</span><span class="o">-</span><span class="mi">01102</span><span class="p">:</span><span class="w"> </span><span class="n">cannot</span><span class="w"> </span><span class="n">mount</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">EXCLUSIVE</span><span class="w"> </span><span class="k">mode</span><span class="p">.</span>
+</code></pre></div></li>
 <li><strong>ORA-01102 occurs when you are mounting (opening) a database and another instance is already opened in parallel (exclusive) mode.</strong></li>
 </ul>
-<p><strong>Step6:</strong> Disconnect from sqlplus and run command <strong>ps -ef | grep smon</strong> to identify already running oracle process.</p>
+<p><strong>Step6:</strong> Disconnect from sqlplus and run the following command to identify already running oracle process:
+<div class="highlight"><pre><span></span><code>ps<span class="w"> </span>-ef<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>smon
+</code></pre></div></p>
 <p><strong><img alt="image-20230907-103656" src="../images/oracle-ora-01012-not-logged-on-error/image-20230907-103656.png" /></strong></p>
-<p><strong>Step7:</strong> Kill ora_smon_GINESYS process using command <strong>kill -9</strong></p>
+<p><strong>Step7:</strong> Kill ora_smon_GINESYS process using the following command:
+<div class="highlight"><pre><span></span><code><span class="nb">kill</span><span class="w"> </span>-9<span class="w"> </span>&lt;PID&gt;
+</code></pre></div></p>
 <p><strong><img alt="image-20230907-103803" src="../images/oracle-ora-01012-not-logged-on-error/image-20230907-103803.png" /></strong></p>
 <p><strong>Step8:</strong> Startup the database again</p>
 <p><strong><img alt="image-20230907-103934" src="../images/oracle-ora-01012-not-logged-on-error/image-20230907-103934.png" /></strong></p>

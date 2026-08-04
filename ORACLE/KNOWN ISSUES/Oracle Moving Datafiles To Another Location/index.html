@@ -941,21 +941,24 @@
 <p><strong>Step 2:</strong> Make a proper directory structure at another location as per your requirement.</p>
 <p><strong>Step 3:</strong> Using the operating system's file management tools, copy the datafiles from the current storage directory to the new disk array. This process involves careful verification of each file to ensure data integrity during the copy operation.</p>
 <p><strong>Step 4:</strong> Startup Oracle database in the mount stage.</p>
-<p><strong>SQL&gt;</strong>startup mount;</p>
-<p>ORA-32004: obsolete or deprecated parameter(s) specified for RDBMS instance</p>
-<p>ORACLE instance started.</p>
-<p>Total System Global Area 5.3687E+10 bytes</p>
-<p>Fixed Size 2939560 bytes</p>
-<p>Variable Size 6039799128 bytes</p>
-<p>Database Buffers 4.7513E+10 bytes</p>
-<p>Redo Buffers 131276800 bytes</p>
-<p>Database mounted.</p>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">startup</span><span class="w"> </span><span class="n">mount</span><span class="p">;</span>
+<span class="n">ORA</span><span class="o">-</span><span class="mi">32004</span><span class="p">:</span><span class="w"> </span><span class="n">obsolete</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">deprecated</span><span class="w"> </span><span class="k">parameter</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="n">specified</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">RDBMS</span><span class="w"> </span><span class="n">instance</span>
+<span class="n">ORACLE</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="n">started</span><span class="p">.</span>
+<span class="n">Total</span><span class="w"> </span><span class="k">System</span><span class="w"> </span><span class="k">Global</span><span class="w"> </span><span class="n">Area</span><span class="w"> </span><span class="mi">5</span><span class="p">.</span><span class="mi">3687</span><span class="n">E</span><span class="o">+</span><span class="mi">10</span><span class="w"> </span><span class="n">bytes</span>
+<span class="n">Fixed</span><span class="w"> </span><span class="k">Size</span><span class="w"> </span><span class="mi">2939560</span><span class="w"> </span><span class="n">bytes</span>
+<span class="k">Variable</span><span class="w"> </span><span class="k">Size</span><span class="w"> </span><span class="mi">6039799128</span><span class="w"> </span><span class="n">bytes</span>
+<span class="k">Database</span><span class="w"> </span><span class="n">Buffers</span><span class="w"> </span><span class="mi">4</span><span class="p">.</span><span class="mi">7513</span><span class="n">E</span><span class="o">+</span><span class="mi">10</span><span class="w"> </span><span class="n">bytes</span>
+<span class="n">Redo</span><span class="w"> </span><span class="n">Buffers</span><span class="w"> </span><span class="mi">131276800</span><span class="w"> </span><span class="n">bytes</span>
+<span class="k">Database</span><span class="w"> </span><span class="n">mounted</span><span class="p">.</span>
+</code></pre></div>
 <p><strong>Step 5:</strong> Issue the following command to update Oracle metadata.</p>
-<p><strong>alter database rename file 'D:\Oracle\Database\oradata\GINESYS\USERS05.DBF' to 'E:\Oracle\Database\oradata\GINESYS\USERS05.DBF';</strong></p>
-<p><strong>alter database rename file 'D:\Oracle\Database\oradata\GINESYS\USERS06.DBF' to 'E:\Oracle\Database\oradata\GINESYS\USERS06.DBF';</strong></p>
-<p><strong>alter database rename file 'D:\Oracle\Database\oradata\GINESYS\USERS07.DBF' to 'E:\Oracle\Database\oradata\GINESYS\USERS07.DBF';</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">rename</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="s1">&#39;D:\Oracle\Database\oradata\GINESYS\USERS05.DBF&#39;</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="s1">&#39;E:\Oracle\Database\oradata\GINESYS\USERS05.DBF&#39;</span><span class="p">;</span>
+<span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">rename</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="s1">&#39;D:\Oracle\Database\oradata\GINESYS\USERS06.DBF&#39;</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="s1">&#39;E:\Oracle\Database\oradata\GINESYS\USERS06.DBF&#39;</span><span class="p">;</span>
+<span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">rename</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="s1">&#39;D:\Oracle\Database\oradata\GINESYS\USERS07.DBF&#39;</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="s1">&#39;E:\Oracle\Database\oradata\GINESYS\USERS07.DBF&#39;</span><span class="p">;</span>
+</code></pre></div>
 <p><strong>Step 6:</strong> Open the database in read/write mode.</p>
-<p>SQL&gt; alter database open;</p>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">open</span><span class="p">;</span>
+</code></pre></div>
 <p><strong>Step7:</strong> Verify if all datafiles have been moved properly and are accessible via Oracle Dynamic View v\$datafile</p>
 <p><strong><em>Note:</em></strong> <em>Once all steps have been successfully completed start Ginesys application services.</em></p>
 

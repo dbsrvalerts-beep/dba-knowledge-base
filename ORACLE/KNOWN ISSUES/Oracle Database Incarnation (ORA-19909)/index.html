@@ -933,20 +933,23 @@
 
 <p><strong>Oracle Database Incarnation (ORA-19909)</strong></p>
 <p><strong>Scenario:</strong> received ORA-19909 error when recovering a database on the backup server.</p>
-<p>SQL&gt; recover database using backup controlfile until cancel;</p>
-<p>ORA-00283: recovery session canceled due to errors</p>
-<p>ORA-19909: datafile 1 belongs to an orphan incarnation</p>
-<p>ORA-01110: data file 1: '/u01/Oracle/oradata/GINESYS/system01.dbf'</p>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">recover</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">backup</span><span class="w"> </span><span class="n">controlfile</span><span class="w"> </span><span class="k">until</span><span class="w"> </span><span class="n">cancel</span><span class="p">;</span>
+<span class="n">ORA</span><span class="o">-</span><span class="mi">00283</span><span class="p">:</span><span class="w"> </span><span class="n">recovery</span><span class="w"> </span><span class="k">session</span><span class="w"> </span><span class="n">canceled</span><span class="w"> </span><span class="n">due</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">errors</span>
+<span class="n">ORA</span><span class="o">-</span><span class="mi">19909</span><span class="p">:</span><span class="w"> </span><span class="n">datafile</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">belongs</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">orphan</span><span class="w"> </span><span class="n">incarnation</span>
+<span class="n">ORA</span><span class="o">-</span><span class="mi">01110</span><span class="p">:</span><span class="w"> </span><span class="k">data</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/system01.dbf&#39;</span>
+</code></pre></div>
 <p><strong><img alt="image-20230819-054215" src="../images/oracle-database-incarnation-ora-19909/image-20230819-054215.png" /></strong></p>
 <p><strong>Cause of ORA-19909 error</strong></p>
 <p>Oracle cannot identify which database incarnation the file belongs to. The alert log contains more information.</p>
 <p>This backup file was taken from the production server and restoration was performed on the backup server.</p>
 <p>Check the Database Incarnation of the system on which restoration is performed.</p>
 <p>Connect to RMAN and query list incarnation of the database;</p>
-<p>RMAN&gt; list incarnation of database;</p>
+<div class="highlight"><pre><span></span><code><span class="n">RMAN</span><span class="o">&gt;</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="n">incarnation</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">database</span><span class="p">;</span>
+</code></pre></div>
 <p><strong><img alt="image-20230819-054448" src="../images/oracle-database-incarnation-ora-19909/image-20230819-054448.png" /></strong></p>
 <p>Check Database Incarnation of the production database.</p>
-<p>RMAN&gt; list incarnation of database;</p>
+<div class="highlight"><pre><span></span><code><span class="n">RMAN</span><span class="o">&gt;</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="n">incarnation</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">database</span><span class="p">;</span>
+</code></pre></div>
 <p><strong><img alt="image-20230819-054652" src="../images/oracle-database-incarnation-ora-19909/image-20230819-054652.png" /></strong></p>
 <p><strong>Note:</strong></p>
 <p>(a) Current incarnation on backup system and production system are different.</p>
@@ -956,85 +959,92 @@
 <p>Restore a backup file that belongs to either the current or a prior incarnation of the database. If you are using RMAN to restore, RMAN will automatically select the correct backup.</p>
 <p>Production database has incarnation 2 at the time of backup, make incarnation of backup database to 2.</p>
 <p>Connect to RMAN on the backup database and reset incarnation to 2.</p>
-<p>RMAN&gt; reset database to incarnation 2;</p>
+<div class="highlight"><pre><span></span><code><span class="n">RMAN</span><span class="o">&gt;</span><span class="w"> </span><span class="k">reset</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">incarnation</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+</code></pre></div>
 <p><strong><img alt="image-20230819-055417" src="../images/oracle-database-incarnation-ora-19909/image-20230819-055417.png" /></strong></p>
 <p>Once incarnation has been reset, start database recovery.</p>
-<p>SQL&gt;recover database using backup controlfile until cancel;</p>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">recover</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">backup</span><span class="w"> </span><span class="n">controlfile</span><span class="w"> </span><span class="k">until</span><span class="w"> </span><span class="n">cancel</span><span class="p">;</span>
+</code></pre></div>
 <p><strong><img alt="image-20230911-080040" src="../images/oracle-database-incarnation-ora-19909/image-20230911-080040.png" /></strong></p>
 <p><strong>Removing orphan Entries from Incarnation (Optional)</strong></p>
 <p>Once the restoration system is set to Incarnation 2 we do not require Incarnation 3 anymore.</p>
 <p>Steps to remove entry from Incarnation List:</p>
 <p><strong>Step1:</strong> First, make a backup of your current control file (both binary and trace):</p>
-<p>SQL&gt; alter database backup controlfile to trace as '/u01/control.txt';</p>
-<p><sub>Database altered</sub></p>
-<p>SQL&gt; alter database backup controlfile to '/u01/control.ctl';</p>
-<p><sub>Database altered</sub></p>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">backup</span><span class="w"> </span><span class="n">controlfile</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">trace</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="s1">&#39;/u01/control.txt&#39;</span><span class="p">;</span>
+<span class="k">Database</span><span class="w"> </span><span class="n">altered</span>
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">backup</span><span class="w"> </span><span class="n">controlfile</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="s1">&#39;/u01/control.ctl&#39;</span><span class="p">;</span>
+<span class="k">Database</span><span class="w"> </span><span class="n">altered</span>
+</code></pre></div>
 <p><strong>Step2:</strong> shutdown and put your database in nomount mode:</p>
-<p>SQL&gt; shutdown immediate;</p>
-<p><sub>Database closed.</sub></p>
-<p><sub>Database dismounted.</sub></p>
-<p><sub>ORACLE instance shut down.</sub></p>
-<p>SQL&gt; startup nomount;</p>
-<p><sub>ORACLE instance started.</sub></p>
-<p><sub>Total System Global Area 627732480 bytes</sub></p>
-<p><sub>Fixed Size 1346756 bytes</sub></p>
-<p><sub>Variable Size 373293884 bytes</sub></p>
-<p><sub>Database Buffers 247463936 bytes</sub></p>
-<p><sub>Redo Buffers 5627904 bytes</sub></p>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">shutdown</span><span class="w"> </span><span class="k">immediate</span><span class="p">;</span>
+<span class="k">Database</span><span class="w"> </span><span class="n">closed</span><span class="p">.</span>
+<span class="k">Database</span><span class="w"> </span><span class="n">dismounted</span><span class="p">.</span>
+<span class="n">ORACLE</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="n">shut</span><span class="w"> </span><span class="n">down</span><span class="p">.</span>
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">startup</span><span class="w"> </span><span class="n">nomount</span><span class="p">;</span>
+<span class="n">ORACLE</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="n">started</span><span class="p">.</span>
+<span class="n">Total</span><span class="w"> </span><span class="k">System</span><span class="w"> </span><span class="k">Global</span><span class="w"> </span><span class="n">Area</span><span class="w"> </span><span class="mi">627732480</span><span class="w"> </span><span class="n">bytes</span>
+<span class="n">Fixed</span><span class="w"> </span><span class="k">Size</span><span class="w"> </span><span class="mi">1346756</span><span class="w"> </span><span class="n">bytes</span>
+<span class="k">Variable</span><span class="w"> </span><span class="k">Size</span><span class="w"> </span><span class="mi">373293884</span><span class="w"> </span><span class="n">bytes</span>
+<span class="k">Database</span><span class="w"> </span><span class="n">Buffers</span><span class="w"> </span><span class="mi">247463936</span><span class="w"> </span><span class="n">bytes</span>
+<span class="n">Redo</span><span class="w"> </span><span class="n">Buffers</span><span class="w"> </span><span class="mi">5627904</span><span class="w"> </span><span class="n">bytes</span>
+</code></pre></div>
 <p><strong>Step3:</strong> Using contents of trace control file text, recreate the control file using the NORESETLOGS case:</p>
-<p>CREATE CONTROLFILE REUSE DATABASE "GINESYS" NORESETLOGS ARCHIVELOG</p>
-<p>MAXLOGFILES 16</p>
-<p>MAXLOGMEMBERS 3</p>
-<p>MAXDATAFILES 100</p>
-<p>MAXINSTANCES 8</p>
-<p>MAXLOGHISTORY 13080</p>
-<p>LOGFILE</p>
-<p>GROUP 1 '/u01/Oracle/oradata/GINESYS/redo01.log' SIZE 100M BLOCKSIZE 512,</p>
-<p>GROUP 2 '/u01/Oracle/oradata/GINESYS/redo02.log' SIZE 100M BLOCKSIZE 512,</p>
-<p>GROUP 3 '/u01/Oracle/oradata/GINESYS/redo03.log' SIZE 100M BLOCKSIZE 512,</p>
-<p>GROUP 4 '/u01/Oracle/oradata/GINESYS/redo04.log' SIZE 100M BLOCKSIZE 512,</p>
-<p>GROUP 5 '/u01/Oracle/oradata/GINESYS/redo05.log' SIZE 100M BLOCKSIZE 512,</p>
-<p>GROUP 6 '/u01/Oracle/oradata/GINESYS/redo06.log' SIZE 100M BLOCKSIZE 512,</p>
-<p>GROUP 7 '/u01/Oracle/oradata/GINESYS/redo07.log' SIZE 100M BLOCKSIZE 512,</p>
-<p>GROUP 8 '/u01/Oracle/oradata/GINESYS/redo08.log' SIZE 100M BLOCKSIZE 512,</p>
-<p>GROUP 9 '/u01/Oracle/oradata/GINESYS/redo09.log' SIZE 100M BLOCKSIZE 512,</p>
-<p>GROUP 10 '/u01/Oracle/oradata/GINESYS/redo10.log' SIZE 100M BLOCKSIZE 512</p>
-<p>-- STANDBY LOGFILE</p>
-<p>DATAFILE</p>
-<p>'/u01/Oracle/oradata/GINESYS/system01.dbf',</p>
-<p>'/u01/Oracle/oradata/GINESYS/GIN_TS_SUMMARY_01',</p>
-<p>'/u01/Oracle/oradata/GINESYS/sysaux01.dbf',</p>
-<p>'/u01/Oracle/oradata/GINESYS/undotbs01.dbf',</p>
-<p>'/u01/Oracle/oradata/GINESYS/GIN_TS_TX_DATA_01',</p>
-<p>'/u01/Oracle/oradata/GINESYS/users01.dbf',</p>
-<p>'/u01/Oracle/oradata/GINESYS/GIN_TS_NOLOGGING_01',</p>
-<p>'/u01/Oracle/oradata/GINESYS/GINOLAP01',</p>
-<p>'/u01/Oracle/oradata/GINESYS/INDX01',</p>
-<p>'/u01/Oracle/oradata/GINESYS/undotbs03.dbf',</p>
-<p>'/u01/Oracle/oradata/GINESYS/undotbs02.dbf',</p>
-<p>'/u01/Oracle/oradata/GINESYS/users10.dbf',</p>
-<p>'/u01/Oracle/oradata/GINESYS/users09.dbf',</p>
-<p>'/u01/Oracle/oradata/GINESYS/users08.dbf',</p>
-<p>'/u01/Oracle/oradata/GINESYS/users07.dbf',</p>
-<p>'/u01/Oracle/oradata/GINESYS/users06.dbf',</p>
-<p>'/u01/Oracle/oradata/GINESYS/users05.dbf',</p>
-<p>'/u01/Oracle/oradata/GINESYS/users04.dbf',</p>
-<p>'/u01/Oracle/oradata/GINESYS/users03.dbf',</p>
-<p>'/u01/Oracle/oradata/GINESYS/users02.dbf',</p>
-<p>'/u01/Oracle/oradata/GINESYS/INDX07',</p>
-<p>'/u01/Oracle/oradata/GINESYS/INDX06',</p>
-<p>'/u01/Oracle/oradata/GINESYS/INDX05',</p>
-<p>'/u01/Oracle/oradata/GINESYS/INDX04',</p>
-<p>'/u01/Oracle/oradata/GINESYS/INDX03',</p>
-<p>'/u01/Oracle/oradata/GINESYS/INDX02'</p>
-<p>CHARACTER SET WE8MSWIN1252;</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="n">CONTROLFILE</span><span class="w"> </span><span class="n">REUSE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="ss">&quot;GINESYS&quot;</span><span class="w"> </span><span class="n">NORESETLOGS</span><span class="w"> </span><span class="n">ARCHIVELOG</span>
+<span class="n">MAXLOGFILES</span><span class="w"> </span><span class="mi">16</span>
+<span class="n">MAXLOGMEMBERS</span><span class="w"> </span><span class="mi">3</span>
+<span class="n">MAXDATAFILES</span><span class="w"> </span><span class="mi">100</span>
+<span class="n">MAXINSTANCES</span><span class="w"> </span><span class="mi">8</span>
+<span class="n">MAXLOGHISTORY</span><span class="w"> </span><span class="mi">13080</span>
+<span class="n">LOGFILE</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/redo01.log&#39;</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="w"> </span><span class="n">BLOCKSIZE</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/redo02.log&#39;</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="w"> </span><span class="n">BLOCKSIZE</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/redo03.log&#39;</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="w"> </span><span class="n">BLOCKSIZE</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/redo04.log&#39;</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="w"> </span><span class="n">BLOCKSIZE</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/redo05.log&#39;</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="w"> </span><span class="n">BLOCKSIZE</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/redo06.log&#39;</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="w"> </span><span class="n">BLOCKSIZE</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/redo07.log&#39;</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="w"> </span><span class="n">BLOCKSIZE</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/redo08.log&#39;</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="w"> </span><span class="n">BLOCKSIZE</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">9</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/redo09.log&#39;</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="w"> </span><span class="n">BLOCKSIZE</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/redo10.log&#39;</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="w"> </span><span class="n">BLOCKSIZE</span><span class="w"> </span><span class="mi">512</span>
+<span class="err">\</span><span class="c1">-- STANDBY LOGFILE</span>
+<span class="n">DATAFILE</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/system01.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/GIN_TS_SUMMARY_01&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/sysaux01.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/undotbs01.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/GIN_TS_TX_DATA_01&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/users01.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/GIN_TS_NOLOGGING_01&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/GINOLAP01&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/INDX01&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/undotbs03.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/undotbs02.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/users10.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/users09.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/users08.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/users07.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/users06.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/users05.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/users04.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/users03.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/users02.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/INDX07&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/INDX06&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/INDX05&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/INDX04&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/INDX03&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/INDX02&#39;</span>
+<span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">WE8MSWIN1252</span><span class="p">;</span>
+</code></pre></div>
 <p><strong>Step4:</strong> No recovery is needed as DB is shutdown gracefully:</p>
-<p>SQL&gt; RECOVER DATABASE;</p>
-<p><sub>ORA-00283: recovery session canceled due to errors</sub></p>
-<p><sub>ORA-00264: no recovery required</sub></p>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">RECOVER</span><span class="w"> </span><span class="k">DATABASE</span><span class="p">;</span>
+<span class="n">ORA</span><span class="o">-</span><span class="mi">00283</span><span class="p">:</span><span class="w"> </span><span class="n">recovery</span><span class="w"> </span><span class="k">session</span><span class="w"> </span><span class="n">canceled</span><span class="w"> </span><span class="n">due</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">errors</span>
+<span class="n">ORA</span><span class="o">-</span><span class="mi">00264</span><span class="p">:</span><span class="w"> </span><span class="k">no</span><span class="w"> </span><span class="n">recovery</span><span class="w"> </span><span class="n">required</span>
+</code></pre></div>
 <p><strong>Step5:</strong> Open Database</p>
-<p>SQL&gt; alter database open;</p>
-<p><sub>Database altered.</sub></p>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">open</span><span class="p">;</span>
+<span class="k">Database</span><span class="w"> </span><span class="n">altered</span><span class="p">.</span>
+</code></pre></div>
 <p><strong>Note:</strong> Don't forget to also recreate any temporary tablespace datafile from control file trace text, set up the default RMAN configurations or to re-catalog any other information that is kept in control file.</p>
 <p><strong>Step 6:</strong> Recheck database incarnation.</p>
 <p><strong>Conclusion:</strong> By systematically addressing the causes and actions related to the ORA-19909 error, you can ensure a successful recovery process and maintain the integrity of your database environment. Proactive measures such as aligning database incarnations and meticulous recovery procedures contribute to a robust and dependable database management approach.</p>
