@@ -1,0 +1,1283 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Central repository for Oracle/PostgreSQL DBA documentation">
+      
+      
+      
+      
+        <link rel="prev" href="../../LINUX/LVM%20PARTITION/">
+      
+      
+        <link rel="next" href="../2.%20Cloud%20Database%20Objective/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Cloud Database Management Tasks - DBA Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cloud-database-management-tasks" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="DBA Knowledge Base" class="md-header__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DBA Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Cloud Database Management Tasks
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="DBA Knowledge Base" class="md-nav__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    DBA Knowledge Base
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DBA Knowledge Base
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LINUX
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../LINUX/LINUX%20FIREWALL%20PERMISSIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Firewall Permissions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../LINUX/LVM%20PARTITION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVM Partition Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORACLE
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ORACLE
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Cloud Database Management Tasks
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    1. Cloud Database Management Tasks
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Database Management Tasks
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Database Management Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rman-configuration-for-newly-added-cloud-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RMAN Configuration for Newly Added Cloud Database
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gdba-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GDBA Database
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gathering-information-of-all-cloud-databases-into-gdba" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gathering Information of All Cloud Databases into GDBA
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monitoring-information-for-all-cloud-databases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Monitoring Information for All Cloud Databases
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#database-cleanup-activities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Cleanup Activities
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performing-point-in-time-pitr-and-restore-activity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performing Point-in-Time (PITR) and Restore Activity
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#crash-recovery-activity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Crash Recovery Activity
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#share-database-monthly-report-to-cloud-team" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Share Database Monthly Report to Cloud Team
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#share-other-info-to-cloud-team" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Share Other Info to Cloud Team
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-miscellaneous-cloud-database-activities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Miscellaneous Cloud Database Activities
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#on-demand" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On-Demand
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Cloud Database Objective
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    2. Cloud Database Objective
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.%20Cloud%20Database%20Objective/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    POSTGRESQL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    POSTGRESQL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG SELFHOSTED DEPLOYMENT RUNBOOK
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PG SELFHOSTED DEPLOYMENT RUNBOOK
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Management%20Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL Selfhosted Deployment Management Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Technical%20Deployment%20Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL Selfhosted Technical Deployment Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rman-configuration-for-newly-added-cloud-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RMAN Configuration for Newly Added Cloud Database
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gdba-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GDBA Database
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gathering-information-of-all-cloud-databases-into-gdba" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gathering Information of All Cloud Databases into GDBA
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monitoring-information-for-all-cloud-databases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Monitoring Information for All Cloud Databases
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#database-cleanup-activities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Cleanup Activities
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performing-point-in-time-pitr-and-restore-activity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performing Point-in-Time (PITR) and Restore Activity
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#crash-recovery-activity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Crash Recovery Activity
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#share-database-monthly-report-to-cloud-team" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Share Database Monthly Report to Cloud Team
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#share-other-info-to-cloud-team" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Share Other Info to Cloud Team
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-miscellaneous-cloud-database-activities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Miscellaneous Cloud Database Activities
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#on-demand" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On-Demand
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="cloud-database-management-tasks">Cloud Database Management Tasks<a class="headerlink" href="#cloud-database-management-tasks" title="Permanent link">&para;</a></h1>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<p>This document provides a detailed explanation of the tasks performed for managing Cloud databases. The DBA team plays a crucial role in ensuring the smooth operation of these databases.</p>
+<p>The tasks listed below cover various aspects of database management, configuration, monitoring, optimization and on-demand.</p>
+<hr />
+<h2 id="rman-configuration-for-newly-added-cloud-database">RMAN Configuration for Newly Added Cloud Database<a class="headerlink" href="#rman-configuration-for-newly-added-cloud-database" title="Permanent link">&para;</a></h2>
+<p>For any newly added Cloud database, the Database team performs RMAN configuration to set up and manage the backup and recovery process. This includes defining RMAN backup policies and setting up the database in archive mode to obtain minimum data loss.</p>
+<hr />
+<h2 id="gdba-database">GDBA Database<a class="headerlink" href="#gdba-database" title="Permanent link">&para;</a></h2>
+<p>GDBA is a centralized and resilient database, functioning as a grid that proficiently manages to link with all cloud databases.</p>
+<ul>
+<li>Within GDBA, comprehensive data from all databases is meticulously stored, promoting optimal efficiency, scalability, and a unified approach to data management.</li>
+<li>The DBA team creates procedures and views in the GDBA database to facilitate data gathering and reporting for all Cloud databases efficiently.</li>
+<li>Information of all cloud databases is recorded in the GDBA database on a daily basis.</li>
+</ul>
+<p>These records are gathered using various PROCEDURES that execute on their scheduled time using a database link.</p>
+<hr />
+<h2 id="gathering-information-of-all-cloud-databases-into-gdba">Gathering Information of All Cloud Databases into GDBA<a class="headerlink" href="#gathering-information-of-all-cloud-databases-into-gdba" title="Permanent link">&para;</a></h2>
+<p>This task involves collecting information about:</p>
+<ul>
+<li>FULL DATABASE BACKUP</li>
+<li>TABLESPACE</li>
+<li>SEGMENTS INFORMATION</li>
+<li>MATERIALIZED VIEW</li>
+<li>ARCHIVE GENERATION</li>
+<li>HIGHWATER_MARK</li>
+<li>SPECIFIC SEGMENT SIZE INFO</li>
+<li>GATHER INFORMATION OF TABLE COUNT RECORDS for the BA Team (1st Date of every month)</li>
+<li>GATHER INFORMATION OF RESTORE_DRILL ACTIVITIES</li>
+<li>STATISTICS GATHER INFORMATION</li>
+<li>LONG RUNNING SESSIONS INFORMATION</li>
+<li>INSTANCE PARAMETER INFORMATION</li>
+<li>REDO LOG STATUS INFORMATION</li>
+<li>SOFTWARE VERSION INFORMATION</li>
+<li>DISK UTILIZATION INFORMATION</li>
+</ul>
+<hr />
+<h2 id="monitoring-information-for-all-cloud-databases">Monitoring Information for All Cloud Databases<a class="headerlink" href="#monitoring-information-for-all-cloud-databases" title="Permanent link">&para;</a></h2>
+<p>The DBA team monitors full database backup information daily for all Cloud databases to ensure that backups are completed successfully and on schedule. In case of any backup failure or delay, the corrective measure steps include investigating backup failures and informing the Cloud Team about the status and resolution.</p>
+<ul>
+<li>
+<p>The DBA team monitors the tablespace usage daily across all Cloud databases. The cloud team is notified in case any tablespace is approaching its storage limits or requires resizing to accommodate data growth. To manage data growth, the DBA team periodically adds data files to tablespaces that are running out of space. A proper retention period is set up to avoid any performance issues.</p>
+</li>
+<li>
+<p>The DBA team monitors the overall size growth of each Cloud database to plan for capacity upgrades or optimizations as needed.</p>
+</li>
+<li>
+<p>The DBA team monitors the size and growth of segments in all Cloud databases. It alerts the team of any abnormal growth or space-related issues.</p>
+</li>
+<li>
+<p>The DBA team monitors materialized views of all Cloud databases, including their refresh schedules and last refresh times. If any materialized views have outdated refresh times or fail to refresh, corrective measures and steps have been taken.</p>
+</li>
+<li>
+<p>The DBA team monitors the hourly/daily archive generation of all cloud databases to identify any spikes or abnormal patterns. If high archive generation is observed, they investigate the root cause and take necessary actions to resolve the issue.</p>
+</li>
+<li>
+<p>The DBA team monitors the HIGHWATERMARK information for each Cloud database. The HIGHWATERMARK represents the highest extent used within a tablespace, and it is critical for managing space allocation and growth. High watermark info is generated twice a month.</p>
+</li>
+<li>
+<p>Collecting the record counts for specific tables (<code>INVITEM</code>, <code>INVSTOCK</code>, <code>PSITE_POSBILLITEM</code>, <code>PSITE_POSBILL</code>, <code>AUD_EVENTS</code>, <code>SALCSMAIN</code>, <code>EX_REPORT_MASTER</code>) from each Cloud database and storing them in the GDBA database. The table count is generated once a month. The report is then provided to the BA team for analysis.</p>
+</li>
+<li>
+<p>The DBA team monitors specific segments that require clearing (deletion, truncation, etc.) from each Cloud database. The data is stored in the GDBA database for further action.</p>
+</li>
+<li>
+<p>The DBA team stores and monitors information of the restore drill activities of all cloud databases on the GDBA database to simulate database recovery scenarios. All cloud databases are restored twice a month. In case any issues are encountered during the restore drill activities, the DBA team takes appropriate measures to resolve them promptly and informs the Cloud team of the outcomes.</p>
+</li>
+<li>
+<p>The DBA team monitors (as per required) long-running queries of cloud databases that may impact performance. They identify problematic queries and work with the respective teams to optimize them.</p>
+</li>
+<li>
+<p>The DBA team monitors (as per required) database locking in Cloud databases to identify any blocking or contention issues and take corrective actions to resolve such issues and optimize database concurrency.</p>
+</li>
+</ul>
+<p>The DBA team gathers full database statistics for all cloud databases, once every month.</p>
+<p>The DBA team gathers statistics for highly modified tables on regular basis. (as soon as stats for highly modified tables are outdated).</p>
+<hr />
+<h2 id="database-cleanup-activities">Database Cleanup Activities<a class="headerlink" href="#database-cleanup-activities" title="Permanent link">&para;</a></h2>
+<p>To manage database space efficiently, the DBA team identifies and performs data deletion activities on various segments, unused or obsolete data is removed to free up storage space both at the database level and the operating system level.</p>
+<p>Removing events of extinct sites from all cloud databases to optimize performance at the Application level.</p>
+<p>Performing cleanup activity for GINARCHIVE schema's junk/obsolete tables.</p>
+<hr />
+<h2 id="performing-point-in-time-pitr-and-restore-activity">Performing Point-in-Time (PITR) and Restore Activity<a class="headerlink" href="#performing-point-in-time-pitr-and-restore-activity" title="Permanent link">&para;</a></h2>
+<p>As per requirement the DBA team performs point-in-time recovery and restore activities for various clients to validate the recoverability of their databases.</p>
+<hr />
+<h2 id="crash-recovery-activity">Crash Recovery Activity<a class="headerlink" href="#crash-recovery-activity" title="Permanent link">&para;</a></h2>
+<p>In case of database crashes, the DBA team performs crash recovery activities to restore databases to the last consistent state.</p>
+<hr />
+<h2 id="share-database-monthly-report-to-cloud-team">Share Database Monthly Report to Cloud Team<a class="headerlink" href="#share-database-monthly-report-to-cloud-team" title="Permanent link">&para;</a></h2>
+<p>The DBA team prepares and shares report on database size growth and object growth, Backup Time taken and Backup Size Info with the Cloud Team to assist with capacity planning and resource allocation.</p>
+<hr />
+<h2 id="share-other-info-to-cloud-team">Share Other Info to Cloud Team<a class="headerlink" href="#share-other-info-to-cloud-team" title="Permanent link">&para;</a></h2>
+<p>As part of regular updates and communication, the DBA team shares relevant information, insights, and recommendations with the Cloud Team to ensure transparency and collaboration.</p>
+<hr />
+<h2 id="other-miscellaneous-cloud-database-activities">Other Miscellaneous Cloud Database Activities<a class="headerlink" href="#other-miscellaneous-cloud-database-activities" title="Permanent link">&para;</a></h2>
+<p>Apart from the regular tasks, the DBA team performs other activities as needed, such as setting the NOARCHIVE database mode, handling tenant code changes and addressing any specific database-related requests from the Cloud Team. These activities ensure Cloud databases' smooth operation and alignment with changing business needs.</p>
+<hr />
+<h2 id="on-demand">On-Demand<a class="headerlink" href="#on-demand" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>The DBA team promptly addresses any reported slowness issues, recognizing the imperative of a responsive database system to restore optimal performance.</p>
+</li>
+<li>
+<p>The DBA team also oversees the migration activities of on-premises databases to the cloud environment.</p>
+</li>
+<li>
+<p>Tuning Oracle parameters to match performance with the application.</p>
+</li>
+<li>
+<p>The DBA team actively addresses reported slowness issues for Applications. The team meticulously examines the application's performance to identify underlying issues that might be contributing to the reported slowdown by the cloud team or R&amp;D team. This approach ensures that any performance concerns are promptly addressed, maintaining the application's optimal functionality and meeting the high standards expected by both the Cloud and R&amp;D teams.</p>
+</li>
+</ul>
+<hr />
+<h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">&para;</a></h2>
+<p>This document outlines the various tasks performed by the DBA team to manage, configure, monitor, and optimize Cloud databases. By implementing these tasks, the team ensures the reliability, availability, and performance of Cloud databases while proactively resolving any issues that may arise. The centralization of information in the GDBA database facilitates efficient management and reporting, supporting the Cloud Team in delivering a reliable and robust cloud database service.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
