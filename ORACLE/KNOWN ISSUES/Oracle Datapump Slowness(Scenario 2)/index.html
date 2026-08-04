@@ -11,10 +11,10 @@
       
       
       
-        <link rel="prev" href="../Oracle%20Database%20Incarnation%20%28ORA-19909%29/">
+        <link rel="prev" href="../Oracle%20Datapump%20Slowness%28Scenario%201%29/">
       
       
-        <link rel="next" href="../Oracle%20Datafile%20Corruption%20Issue%20%28ORA-00600%29/">
+        <link rel="next" href="../Oracle%20Moving%20Datafiles%20To%20Another%20Location/">
       
       
         
@@ -25,7 +25,7 @@
     
     
       
-        <title>Oracle Database Lost Write Recovery (ORA 00742,ORA 00312) - DBA Knowledge Base</title>
+        <title>Oracle Datapump Slowness(Scenario 2) - DBA Knowledge Base</title>
       
     
     
@@ -105,7 +105,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Oracle Database Lost Write Recovery (ORA 00742,ORA 00312)
+              Oracle Datapump Slowness(Scenario 2)
             
           </span>
         </div>
@@ -573,17 +573,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../Oracle%20Database%20Lost%20Write%20Recovery%20%28ORA-00742%2CORA-00312%29/" class="md-nav__link">
         
   
   
@@ -599,7 +592,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -665,10 +657,17 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../Oracle%20Datapump%20Slowness%28Scenario%202%29/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -684,6 +683,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -1041,47 +1041,160 @@
 
 
 
-  <h1>Oracle Database Lost Write Recovery (ORA 00742,ORA 00312)</h1>
+  <h1>Oracle Datapump Slowness(Scenario 2)</h1>
 
-<p><strong>Oracle Database Lost Write Recovery (ORA-00742,ORA-00312)</strong></p>
+<p><strong>Oracle Datapump Slowness (Scenario 2)</strong></p>
 <ul>
-<li><strong>Scenario:</strong> While opening the database in READ/WRITE mode following error messages were received:</li>
+<li><strong>Scenario:</strong> The Data pump export job now takes more than one hour, whereas it used to be completed within 15 to 20 minutes previously.</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="n">ORA</span><span class="o">-</span><span class="mi">32004</span><span class="p">:</span><span class="w"> </span><span class="n">obsolete</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">deprecated</span><span class="w"> </span><span class="k">parameter</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="n">specified</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">RDBMS</span><span class="w"> </span><span class="n">instance</span>
-
-<span class="n">ORA</span><span class="o">-</span><span class="mi">00742</span><span class="p">:</span><span class="w"> </span><span class="n">Log</span><span class="w"> </span><span class="k">read</span><span class="w"> </span><span class="n">detects</span><span class="w"> </span><span class="n">lost</span><span class="w"> </span><span class="k">write</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">thread</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">sequence</span><span class="w"> </span><span class="mi">134</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="mi">18521</span>
-
-<span class="n">ORA</span><span class="o">-</span><span class="mi">00312</span><span class="p">:</span><span class="w"> </span><span class="n">online</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">thread</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\TEST\\REDO02.LOG&#39;</span>
-</code></pre></div>
-<ul>
-<li><strong>Solution:</strong></li>
-</ul>
-<p>Step 1: Open the database in the mount stage.</p>
-<p><img alt="image-20230809-101205" src="../images/oracle-database-lost-write-recovery-ora-00742-ora-00312/image-20230809-101205.png" /></p>
-<p>Step 2: Check the status of the redo log files.</p>
-<p><img alt="image-20230809-101742" src="../images/oracle-database-lost-write-recovery-ora-00742-ora-00312/image-20230809-101742.png" /></p>
-<p>Step 3: Start database recovery using the following command:</p>
-<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">recover</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">backup</span><span class="w"> </span><span class="n">controlfile</span><span class="w"> </span><span class="k">until</span><span class="w"> </span><span class="n">cancel</span><span class="p">;</span>
-</code></pre></div>
-<p><strong>Note:</strong> By default, database recovery uses archived redo logs for recovery operations. However, we have mentioned recovering with redo logs instead.</p>
-<p>Step 4: Mention the path for REDO02.LOG file when specifying recovery. Sequence 134 requires recovery and REDO02.LOG file contains that sequence. (reference v\$log view for sequence# column)</p>
-<p><img alt="image-20230809-103052" src="../images/oracle-database-lost-write-recovery-ora-00742-ora-00312/image-20230809-103052.png" /></p>
-<p>Step 5: Once the recovery is complete, open the database with the "RESETLOGS" option.</p>
-<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">open</span><span class="w"> </span><span class="n">resetlogs</span><span class="p">;</span>
-</code></pre></div>
-<p><img alt="image-20230809-103431" src="../images/oracle-database-lost-write-recovery-ora-00742-ora-00312/image-20230809-103431.png" /></p>
-<p>· <strong>Understanding Lost Write</strong></p>
-<p>A Lost Write is exactly what the name says it is - when a write to disk from the buffer cache is lost. It can happen on any read-write database. When a database block is loaded to the buffer cache and is changed, the database needs to write it back to disk at some point (flushing dirty blocks). The way it's usually done is that this block is handed to the I/O subsystem and the I/O subsystem acknowledges the handover, but the write to disk itself is not done at this point. The database is OK with this acknowledgement and goes on.</p>
-<p>After the acknowledgement and before the write happens, an error can occur - and the result is that the write will not happen on the I/O subsystem (it will get lost) and we still have the old block on the disk. But the Database still considers that the write happened.</p>
-<p><img alt="image-20230911-083313" src="../images/oracle-database-lost-write-recovery-ora-00742-ora-00312/image-20230911-083313.png" /></p>
+<p>Upon Inspection, all the specifications of the system and database parameters were as follows:</p>
 <ol>
-<li>Block is read from disk to buffer cache</li>
-<li>Block gets changed from value=1 to value=2 (SCN of the block after change = 11)</li>
-<li>IO confirms the change to the database (but the write doesn't happen at this point)</li>
-<li>Write gets lost along the way and the change is never written to disk. Block A stays on the disk with old value 1 - <strong>it's consistent and not corrupted</strong></li>
-<li>Together with the change of the block in the buffer cache, the change is also written in the redo log file - only the vector of the change is stored (not the actual values) and read SCN of the block.</li>
+<li>RAM: 120 GB (40 Gb assigned to database server and rest to application server via virtualization)</li>
+<li>SGA_MAX_SIZE: 20 GB</li>
+<li>SGA_TARGET_SIZE: 20 GB</li>
+<li>PGA_AGGREGATE_LIMIT: 12 GB</li>
+<li>PGA_AGGREGATE_TARGET: 11 GB</li>
+<li>Tablespace Information</li>
 </ol>
-<p>The change is recorded in redo log files and later can be applied to the database to initiate recovery and update any metadata</p>
+<table>
+<thead>
+<tr>
+<th><strong>TABLESPACE NAME</strong></th>
+<th><strong>FILE NAME</strong></th>
+<th><strong>TOTAL MB</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GINOLAP</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/GINOLAP01.DBF</td>
+<td>32720</td>
+</tr>
+<tr>
+<td>GINOLAP</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/GINOLAP02.DBF</td>
+<td>32720</td>
+</tr>
+<tr>
+<td>GINOLAP</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/GINOLAP03.DBF</td>
+<td>32767.98438</td>
+</tr>
+<tr>
+<td>GINOLAP</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/GINOLAP04.DBF</td>
+<td>9216</td>
+</tr>
+<tr>
+<td>GIN_TS_NOLOGGING</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/GIN_TS_NOLOGGING_01</td>
+<td>2048</td>
+</tr>
+<tr>
+<td>GIN_TS_SUMMARY</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/GIN_TS_SUMMARY_01</td>
+<td>1024</td>
+</tr>
+<tr>
+<td>GIN_TS_TX_DATA</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/GIN_TS_TX_DATA_01</td>
+<td>2048</td>
+</tr>
+<tr>
+<td>INDX</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/INDX01</td>
+<td>32720</td>
+</tr>
+<tr>
+<td>INDX</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/INDX02</td>
+<td>32720</td>
+</tr>
+<tr>
+<td>INDX</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/INDX03</td>
+<td>32720</td>
+</tr>
+<tr>
+<td>INDX</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/INDX04</td>
+<td>29180</td>
+</tr>
+<tr>
+<td>INDX</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/INDX05</td>
+<td>8192</td>
+</tr>
+<tr>
+<td>SYSAUX</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/sysaux01.dbf</td>
+<td>10380</td>
+</tr>
+<tr>
+<td>SYSTEM</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/system01.dbf</td>
+<td>12020</td>
+</tr>
+<tr>
+<td>TEMP</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/temp01.dbf</td>
+<td>32767.98438</td>
+</tr>
+<tr>
+<td>TEMP</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/temp02.dbf</td>
+<td>30720</td>
+</tr>
+<tr>
+<td>UNDOTBS1</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/undotbs01.dbf</td>
+<td>25600</td>
+</tr>
+<tr>
+<td>USERS</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/users01.dbf</td>
+<td>32767.98438</td>
+</tr>
+<tr>
+<td>USERS</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/users02.dbf</td>
+<td>32720</td>
+</tr>
+<tr>
+<td>USERS</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/users03.dbf</td>
+<td>32720</td>
+</tr>
+<tr>
+<td>USERS</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/users04.dbf</td>
+<td>32767.98438</td>
+</tr>
+<tr>
+<td>USERS</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/users05.dbf</td>
+<td>32740</td>
+</tr>
+<tr>
+<td>USERS</td>
+<td>/oracle/ora12cdb/oradata/GINESYS/users06.dbf</td>
+<td>19456</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p><strong>Solution:</strong> While checking all aspects for database performance improvements, we subsequently discovered that the kernel parameter configuration of the Linux server had a SHMAX size defined at only 31 GB, despite the allocated RAM being 40 GB. Consequently, we increased the SHMAX size( from 31 Gb to 70 Gb) and also fine-tuned the SGA and PGA parameters as follows:</p>
+</li>
+<li>
+<p>SGA_MAX_SIZE: 28 GB</p>
+</li>
+<li>SGA_TARGET_SIZE: 28 GB</li>
+<li>PGA_AGGREGATE_LIMIT: 12 GB</li>
+<li>PGA_AGGREGATE_TARGET: 8 GB</li>
+</ul>
+<p><strong>Conclusion:</strong></p>
+<p>Through a comprehensive analysis of the system configuration, tablespaces, and memory parameters, along with essential adjustments, the issue of slowness in the Datapump Export job for the Client was effectively resolved. The pivotal changes encompassed increasing the SHMAX size and optimizing SGA and PGA memory allocations, resulting in a remarkable improvement in job completion time. Currently, the Datapump export job is completed within 15 to 20 minutes.</p>
 
 
 

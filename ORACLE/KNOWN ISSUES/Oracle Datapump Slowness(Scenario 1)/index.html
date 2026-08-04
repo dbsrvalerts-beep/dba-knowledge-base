@@ -11,10 +11,10 @@
       
       
       
-        <link rel="prev" href="../Oracle%20Database%20Incarnation%20%28ORA-19909%29/">
+        <link rel="prev" href="../Oracle%20Datafile%20Corruption%20Issue%20%28ORA-00600%29/">
       
       
-        <link rel="next" href="../Oracle%20Datafile%20Corruption%20Issue%20%28ORA-00600%29/">
+        <link rel="next" href="../Oracle%20Datapump%20Slowness%28Scenario%202%29/">
       
       
         
@@ -25,7 +25,7 @@
     
     
       
-        <title>Oracle Database Lost Write Recovery (ORA 00742,ORA 00312) - DBA Knowledge Base</title>
+        <title>Oracle Datapump Slowness(Scenario 1) - DBA Knowledge Base</title>
       
     
     
@@ -105,7 +105,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Oracle Database Lost Write Recovery (ORA 00742,ORA 00312)
+              Oracle Datapump Slowness(Scenario 1)
             
           </span>
         </div>
@@ -573,17 +573,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../Oracle%20Database%20Lost%20Write%20Recovery%20%28ORA-00742%2CORA-00312%29/" class="md-nav__link">
         
   
   
@@ -599,7 +592,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -637,10 +629,17 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../Oracle%20Datapump%20Slowness%28Scenario%201%29/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -656,6 +655,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -1041,47 +1041,160 @@
 
 
 
-  <h1>Oracle Database Lost Write Recovery (ORA 00742,ORA 00312)</h1>
+  <h1>Oracle Datapump Slowness(Scenario 1)</h1>
 
-<p><strong>Oracle Database Lost Write Recovery (ORA-00742,ORA-00312)</strong></p>
-<ul>
-<li><strong>Scenario:</strong> While opening the database in READ/WRITE mode following error messages were received:</li>
-</ul>
-<div class="highlight"><pre><span></span><code><span class="n">ORA</span><span class="o">-</span><span class="mi">32004</span><span class="p">:</span><span class="w"> </span><span class="n">obsolete</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">deprecated</span><span class="w"> </span><span class="k">parameter</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="n">specified</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">RDBMS</span><span class="w"> </span><span class="n">instance</span>
-
-<span class="n">ORA</span><span class="o">-</span><span class="mi">00742</span><span class="p">:</span><span class="w"> </span><span class="n">Log</span><span class="w"> </span><span class="k">read</span><span class="w"> </span><span class="n">detects</span><span class="w"> </span><span class="n">lost</span><span class="w"> </span><span class="k">write</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">thread</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">sequence</span><span class="w"> </span><span class="mi">134</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="mi">18521</span>
-
-<span class="n">ORA</span><span class="o">-</span><span class="mi">00312</span><span class="p">:</span><span class="w"> </span><span class="n">online</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">thread</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\TEST\\REDO02.LOG&#39;</span>
-</code></pre></div>
-<ul>
-<li><strong>Solution:</strong></li>
-</ul>
-<p>Step 1: Open the database in the mount stage.</p>
-<p><img alt="image-20230809-101205" src="../images/oracle-database-lost-write-recovery-ora-00742-ora-00312/image-20230809-101205.png" /></p>
-<p>Step 2: Check the status of the redo log files.</p>
-<p><img alt="image-20230809-101742" src="../images/oracle-database-lost-write-recovery-ora-00742-ora-00312/image-20230809-101742.png" /></p>
-<p>Step 3: Start database recovery using the following command:</p>
-<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">recover</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">backup</span><span class="w"> </span><span class="n">controlfile</span><span class="w"> </span><span class="k">until</span><span class="w"> </span><span class="n">cancel</span><span class="p">;</span>
-</code></pre></div>
-<p><strong>Note:</strong> By default, database recovery uses archived redo logs for recovery operations. However, we have mentioned recovering with redo logs instead.</p>
-<p>Step 4: Mention the path for REDO02.LOG file when specifying recovery. Sequence 134 requires recovery and REDO02.LOG file contains that sequence. (reference v\$log view for sequence# column)</p>
-<p><img alt="image-20230809-103052" src="../images/oracle-database-lost-write-recovery-ora-00742-ora-00312/image-20230809-103052.png" /></p>
-<p>Step 5: Once the recovery is complete, open the database with the "RESETLOGS" option.</p>
-<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">open</span><span class="w"> </span><span class="n">resetlogs</span><span class="p">;</span>
-</code></pre></div>
-<p><img alt="image-20230809-103431" src="../images/oracle-database-lost-write-recovery-ora-00742-ora-00312/image-20230809-103431.png" /></p>
-<p>· <strong>Understanding Lost Write</strong></p>
-<p>A Lost Write is exactly what the name says it is - when a write to disk from the buffer cache is lost. It can happen on any read-write database. When a database block is loaded to the buffer cache and is changed, the database needs to write it back to disk at some point (flushing dirty blocks). The way it's usually done is that this block is handed to the I/O subsystem and the I/O subsystem acknowledges the handover, but the write to disk itself is not done at this point. The database is OK with this acknowledgement and goes on.</p>
-<p>After the acknowledgement and before the write happens, an error can occur - and the result is that the write will not happen on the I/O subsystem (it will get lost) and we still have the old block on the disk. But the Database still considers that the write happened.</p>
-<p><img alt="image-20230911-083313" src="../images/oracle-database-lost-write-recovery-ora-00742-ora-00312/image-20230911-083313.png" /></p>
+<p><strong>Oracle Datapump Slowness(Scenario 1)</strong></p>
 <ol>
-<li>Block is read from disk to buffer cache</li>
-<li>Block gets changed from value=1 to value=2 (SCN of the block after change = 11)</li>
-<li>IO confirms the change to the database (but the write doesn't happen at this point)</li>
-<li>Write gets lost along the way and the change is never written to disk. Block A stays on the disk with old value 1 - <strong>it's consistent and not corrupted</strong></li>
-<li>Together with the change of the block in the buffer cache, the change is also written in the redo log file - only the vector of the change is stored (not the actual values) and read SCN of the block.</li>
+<li><strong>Scenario:</strong> The Data Pump export job, which used to be completed within 1 hour and 30 minutes, is now taking more than 5 to 6 hours. The root cause of this extended duration appears to be related to Data Pump jobs consuming excessive free space in the USERS tablespace</li>
 </ol>
-<p>The change is recorded in redo log files and later can be applied to the database to initiate recovery and update any metadata</p>
+<p><strong>Issue:</strong> <em>The issue at hand revolves around Data Pump jobs leading to an unexpected free space consumption within the USERS tablespace.</em></p>
+<ol>
+<li><strong>Solution:</strong></li>
+</ol>
+<p><strong>Step1:</strong> Identify Existing Data Pump Jobs</p>
+<p>To begin addressing the issue, it's crucial to identify the Data Pump jobs currently active within the system.</p>
+<p>Run the following SQL query:</p>
+<p><em>SELECT owner_name, job_name, operation, job_mode, state, attached_sessions</em></p>
+<p><em>FROM dba_datapump_jobs</em></p>
+<p><em>WHERE job_name NOT LIKE 'BIN\$%'</em></p>
+<p><em>ORDER BY owner_name, job_name;</em></p>
+<table>
+<thead>
+<tr>
+<th>OWNER_NAME</th>
+<th>JOB_NAME</th>
+<th>OPERATION</th>
+<th>JOB_MODE</th>
+<th>STATE</th>
+<th>ATTACHED_SESSIONS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SYSTEM</td>
+<td>SYS_EXPORT_FULL_01</td>
+<td>EXPORT</td>
+<td>FULL</td>
+<td>NOT RUNNING</td>
+<td>0</td>
+</tr>
+<tr>
+<td>SYSTEM</td>
+<td>SYS_EXPORT_FULL_02</td>
+<td>EXPORT</td>
+<td>FULL</td>
+<td>NOT RUNNING</td>
+<td>0</td>
+</tr>
+<tr>
+<td>SYSTEM</td>
+<td>SYS_EXPORT_FULL_03</td>
+<td>EXPORT</td>
+<td>FULL</td>
+<td>NOT RUNNING</td>
+<td>0</td>
+</tr>
+<tr>
+<td>SYSTEM</td>
+<td>SYS_EXPORT_FULL_04</td>
+<td>EXPORT</td>
+<td>FULL</td>
+<td>NOT RUNNING</td>
+<td>0</td>
+</tr>
+<tr>
+<td>SYSTEM</td>
+<td>SYS_EXPORT_FULL_05</td>
+<td>EXPORT</td>
+<td>FULL</td>
+<td>NOT RUNNING</td>
+<td>0</td>
+</tr>
+<tr>
+<td>SYSTEM</td>
+<td>SYS_EXPORT_FULL_06</td>
+<td>EXPORT</td>
+<td>FULL</td>
+<td>NOT RUNNING</td>
+<td>0</td>
+</tr>
+<tr>
+<td>SYSTEM</td>
+<td>SYS_EXPORT_FULL_07</td>
+<td>EXPORT</td>
+<td>FULL</td>
+<td>NOT RUNNING</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>This query retrieves information about Data Pump jobs, helping us understand their current states and attributes.</p>
+<p><strong>Step2:</strong> Confirm Jobs are Not Running</p>
+<p>Before proceeding, ensure that the listed jobs are indeed in a <em>'NOT RUNNING'</em> state.</p>
+<p><strong>Step3:</strong> Drop Tables</p>
+<p>In order to mitigate the space consumption issue, it is recommended to drop the tables associated with the identified Data Pump jobs. For each job, execute the following command:</p>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">OWNER_NAME</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;.</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">JOB_NAME</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;;</span>
+
+<span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">SYSTEM</span><span class="p">.</span><span class="n">SYS_EXPORT_FULL_01</span><span class="p">;</span>
+
+<span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">SYSTEM</span><span class="p">.</span><span class="n">SYS_EXPORT_FULL_02</span><span class="p">;</span>
+
+<span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">SYSTEM</span><span class="p">.</span><span class="n">SYS_EXPORT_FULL_03</span><span class="p">;</span>
+
+<span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">SYSTEM</span><span class="p">.</span><span class="n">SYS_EXPORT_FULL_04</span><span class="p">;</span>
+
+<span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">SYSTEM</span><span class="p">.</span><span class="n">SYS_EXPORT_FULL_05</span><span class="p">;</span>
+
+<span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">SYSTEM</span><span class="p">.</span><span class="n">SYS_EXPORT_FULL_06</span><span class="p">;</span>
+
+<span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">SYSTEM</span><span class="p">.</span><span class="n">SYS_EXPORT_FULL_07</span><span class="p">;</span>
+
+<span class="k">Replace</span><span class="w"> </span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">OWNER_NAME</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">owner</span><span class="err">&#39;</span><span class="n">s</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="k">g</span><span class="p">.,</span><span class="w"> </span><span class="k">SYSTEM</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">JOB_NAME</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">specific</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="k">g</span><span class="p">.,</span><span class="w"> </span><span class="n">SYS_EXPORT_FULL_01</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Step4:</strong> Confirm Table Drops</p>
+<p>After executing the DROP TABLE commands, verify that the tables have been successfully removed.</p>
+<p><strong>Step5:</strong> Rerun Data Pump Job</p>
+<p>With the problematic tables dropped, it's time to rerun the Data Pump job that previously experienced the extended execution time. The issue should now be resolved, and the job should execute without encountering unnecessary space consumption.</p>
+<ol>
+<li><strong>Terminating Running/Executing Data Pump Jobs:</strong></li>
+</ol>
+<p>In the above scenario there were no running datapump jobs. Below steps provide a step-by-step guide on how to terminate running/executing Data Pump job:</p>
+<p><strong>Step1:</strong> Identity Executing Data Pump Jobs</p>
+<p>Begin by identifying the existing Data Pump jobs that are currently executing:</p>
+<p><em>SELECT owner_name, job_name, operation, job_mode, state, attached_sessions</em></p>
+<p><em>FROM dba_datapump_jobs</em></p>
+<p><em>WHERE job_name NOT LIKE 'BIN\$%'</em></p>
+<p><em>ORDER BY owner_name, job_name;</em></p>
+<p><em><img alt="image-20230818-121837" src="../images/oracle-datapump-slowness-scenario-1/image-20230818-121837.png" /></em></p>
+<p>This query provides a comprehensive list of Data Pump jobs that are currently executing.</p>
+<p><strong>Step2:</strong> Attaching to an Export Job</p>
+<p>To monitor the progress of an ongoing export job, you can attach to it using the following steps:</p>
+<ol>
+<li>Open a terminal and log in.</li>
+<li>Attach to the export job using the expdp command with the 'attach' option and the job name:</li>
+</ol>
+<p><em>expdp system/syspwd@database_name attach=SYS_EXPORT_FULL_03</em></p>
+<p><em><img alt="image-20230818-122013" src="../images/oracle-datapump-slowness-scenario-1/image-20230818-122013.png" /></em></p>
+<p><strong>Step3:</strong> Checking Export Job Status</p>
+<p>To monitor the status of an attached export job, follow these steps:</p>
+<ol>
+<li>Within the attached expdp session, use the 'status' command:</li>
+</ol>
+<p>Export&gt; status</p>
+<p><em><img alt="image-20230818-122048" src="../images/oracle-datapump-slowness-scenario-1/image-20230818-122048.png" /></em></p>
+<p><strong>Step4:</strong> Terminating an Export Job</p>
+<p>In situations where it is necessary to terminate an ongoing export job, you can use the 'kill_job' command:</p>
+<ol>
+<li>Within the attached expdp session, use the 'kill_job' command:</li>
+</ol>
+<p>Export&gt; kill_job</p>
+<p><img alt="image-20230818-122130" src="../images/oracle-datapump-slowness-scenario-1/image-20230818-122130.png" /></p>
+<ol>
+<li>Confirm the termination by responding to the prompt: Are you sure you wish to stop this job ([yes]/no): yes</li>
+</ol>
+<p><strong>Note:</strong> When performing a datapump job, avoid closing session directly. Rather gracefully terminate the job using "ctrl+c" or as explained above.</p>
+<p><strong>Conclusion:</strong></p>
+<p>Oracle Data Pump (expdp) offers efficient data export and import capabilities. It empowers users to initiate, monitor, and manage export jobs effectively. By following the provided steps, you can identify executing jobs, attach to them for monitoring, check their status, and if needed, gracefully terminate them using the kill_job command. It is essential to possess the required privileges and to fully comprehend the potential consequences before making use of the kill_job command.</p>
 
 
 
