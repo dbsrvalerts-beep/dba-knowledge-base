@@ -1054,10 +1054,14 @@
 <p><strong>Step1:</strong> Identify Existing Data Pump Jobs</p>
 <p>To begin addressing the issue, it's crucial to identify the Data Pump jobs currently active within the system.</p>
 <p>Run the following SQL query:</p>
-<p><em>SELECT owner_name, job_name, operation, job_mode, state, attached_sessions</em></p>
-<p><em>FROM dba_datapump_jobs</em></p>
-<p><em>WHERE job_name NOT LIKE 'BIN\$%'</em></p>
-<p><em>ORDER BY owner_name, job_name;</em></p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">owner_name</span><span class="p">,</span><span class="w"> </span><span class="n">job_name</span><span class="p">,</span><span class="w"> </span><span class="k">operation</span><span class="p">,</span><span class="w"> </span><span class="n">job_mode</span><span class="p">,</span><span class="w"> </span><span class="k">state</span><span class="p">,</span><span class="w"> </span><span class="n">attached_sessions</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">dba_datapump_jobs</span>
+
+<span class="k">WHERE</span><span class="w"> </span><span class="n">job_name</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;BIN\$%&#39;</span>
+
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">owner_name</span><span class="p">,</span><span class="w"> </span><span class="n">job_name</span><span class="p">;</span>
+</code></pre></div>
 <table>
 <thead>
 <tr>
@@ -1161,10 +1165,14 @@
 <p>In the above scenario there were no running datapump jobs. Below steps provide a step-by-step guide on how to terminate running/executing Data Pump job:</p>
 <p><strong>Step1:</strong> Identity Executing Data Pump Jobs</p>
 <p>Begin by identifying the existing Data Pump jobs that are currently executing:</p>
-<p><em>SELECT owner_name, job_name, operation, job_mode, state, attached_sessions</em></p>
-<p><em>FROM dba_datapump_jobs</em></p>
-<p><em>WHERE job_name NOT LIKE 'BIN\$%'</em></p>
-<p><em>ORDER BY owner_name, job_name;</em></p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">owner_name</span><span class="p">,</span><span class="w"> </span><span class="n">job_name</span><span class="p">,</span><span class="w"> </span><span class="k">operation</span><span class="p">,</span><span class="w"> </span><span class="n">job_mode</span><span class="p">,</span><span class="w"> </span><span class="k">state</span><span class="p">,</span><span class="w"> </span><span class="n">attached_sessions</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">dba_datapump_jobs</span>
+
+<span class="k">WHERE</span><span class="w"> </span><span class="n">job_name</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;BIN\$%&#39;</span>
+
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">owner_name</span><span class="p">,</span><span class="w"> </span><span class="n">job_name</span><span class="p">;</span>
+</code></pre></div>
 <p><em><img alt="image-20230818-121837" src="../images/oracle-datapump-slowness-scenario-1/image-20230818-121837.png" /></em></p>
 <p>This query provides a comprehensive list of Data Pump jobs that are currently executing.</p>
 <p><strong>Step2:</strong> Attaching to an Export Job</p>
@@ -1173,21 +1181,24 @@
 <li>Open a terminal and log in.</li>
 <li>Attach to the export job using the expdp command with the 'attach' option and the job name:</li>
 </ol>
-<p><em>expdp system/syspwd@database_name attach=SYS_EXPORT_FULL_03</em></p>
+<div class="highlight"><pre><span></span><code>expdp<span class="w"> </span>system/syspwd@database_name<span class="w"> </span><span class="nv">attach</span><span class="o">=</span>SYS_EXPORT_FULL_03
+</code></pre></div>
 <p><em><img alt="image-20230818-122013" src="../images/oracle-datapump-slowness-scenario-1/image-20230818-122013.png" /></em></p>
 <p><strong>Step3:</strong> Checking Export Job Status</p>
 <p>To monitor the status of an attached export job, follow these steps:</p>
 <ol>
 <li>Within the attached expdp session, use the 'status' command:</li>
 </ol>
-<p>Export&gt; status</p>
+<div class="highlight"><pre><span></span><code><span class="n">Export</span><span class="o">&gt;</span><span class="w"> </span><span class="n">status</span>
+</code></pre></div>
 <p><em><img alt="image-20230818-122048" src="../images/oracle-datapump-slowness-scenario-1/image-20230818-122048.png" /></em></p>
 <p><strong>Step4:</strong> Terminating an Export Job</p>
 <p>In situations where it is necessary to terminate an ongoing export job, you can use the 'kill_job' command:</p>
 <ol>
 <li>Within the attached expdp session, use the 'kill_job' command:</li>
 </ol>
-<p>Export&gt; kill_job</p>
+<div class="highlight"><pre><span></span><code><span class="n">Export</span><span class="o">&gt;</span><span class="w"> </span><span class="n">kill_job</span>
+</code></pre></div>
 <p><img alt="image-20230818-122130" src="../images/oracle-datapump-slowness-scenario-1/image-20230818-122130.png" /></p>
 <ol>
 <li>Confirm the termination by responding to the prompt: Are you sure you wish to stop this job ([yes]/no): yes</li>
