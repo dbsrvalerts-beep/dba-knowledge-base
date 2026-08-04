@@ -996,24 +996,41 @@
 <li>After finding the datafile missing issue, perform the following step to recover the database :</li>
 </ol>
 <p><strong>Step 1:</strong> At the initial stage, the database was already in open mode:-</p>
-<p><em>SQL&gt; SELECT NAME,OPEN_MODE FROM V\$DATABASE;</em></p>
-<p>&nbsp;<em>NAME OPEN_MODE</em></p>
-<p><em>--------- ----------</em></p>
-<p><em>GINERS READ WRITE</em></p>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">NAME</span><span class="p">,</span><span class="n">OPEN_MODE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">V</span><span class="err">\$</span><span class="k">DATABASE</span><span class="p">;</span>
+
+<span class="n">NAME</span><span class="w"> </span><span class="n">OPEN_MODE</span>
+
+<span class="err">\</span><span class="c1">--------- ----------</span>
+
+<span class="n">GINERS</span><span class="w"> </span><span class="k">READ</span><span class="w"> </span><span class="k">WRITE</span>
+</code></pre></div>
 <p><strong>Step 2:</strong> Performing a database shutdown and subsequent restart to replicate the issue in the database.</p>
-<p><em>SQL&gt; SHUTDOWN IMMEDIATE;</em></p>
-<p><em>Database closed.</em></p>
-<p><em>Database dismounted.</em></p>
-<p>ORACLE instance shut down.</p>
-<p><em>SQL&gt; STARTUP;</em></p>
-<p><em>ORACLE instance started.</em></p>
-<p>&nbsp;<em>Total System Global Area 536870912 bytes</em></p>
-<p><em>Fixed Size 1291652 bytes</em></p>
-<p><em>Variable Size 436210300 bytes</em></p>
-<p><em>Database Buffers 92274688 bytes</em></p>
-<p><em>Redo Buffers 7094272 bytes</em></p>
-<p><em>ORA-00600: internal error code, arguments: [kccpb_sanity_check_2], [18844],</em></p>
-<p><em>[18843], [0x0], [], [], [], []</em></p>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">SHUTDOWN</span><span class="w"> </span><span class="k">IMMEDIATE</span><span class="p">;</span>
+
+<span class="k">Database</span><span class="w"> </span><span class="n">closed</span><span class="p">.</span>
+
+<span class="k">Database</span><span class="w"> </span><span class="n">dismounted</span><span class="p">.</span>
+
+<span class="n">ORACLE</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="n">shut</span><span class="w"> </span><span class="n">down</span><span class="p">.</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">STARTUP</span><span class="p">;</span>
+
+<span class="n">ORACLE</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="n">started</span><span class="p">.</span>
+
+<span class="n">Total</span><span class="w"> </span><span class="k">System</span><span class="w"> </span><span class="k">Global</span><span class="w"> </span><span class="n">Area</span><span class="w"> </span><span class="mi">536870912</span><span class="w"> </span><span class="n">bytes</span>
+
+<span class="n">Fixed</span><span class="w"> </span><span class="k">Size</span><span class="w"> </span><span class="mi">1291652</span><span class="w"> </span><span class="n">bytes</span>
+
+<span class="k">Variable</span><span class="w"> </span><span class="k">Size</span><span class="w"> </span><span class="mi">436210300</span><span class="w"> </span><span class="n">bytes</span>
+
+<span class="k">Database</span><span class="w"> </span><span class="n">Buffers</span><span class="w"> </span><span class="mi">92274688</span><span class="w"> </span><span class="n">bytes</span>
+
+<span class="n">Redo</span><span class="w"> </span><span class="n">Buffers</span><span class="w"> </span><span class="mi">7094272</span><span class="w"> </span><span class="n">bytes</span>
+
+<span class="n">ORA</span><span class="o">-</span><span class="mi">00600</span><span class="p">:</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="n">arguments</span><span class="p">:</span><span class="w"> </span><span class="err">\</span><span class="p">[</span><span class="n">kccpb_sanity_check_2</span><span class="err">\</span><span class="p">],</span><span class="w"> </span><span class="err">\</span><span class="p">[</span><span class="mi">18844</span><span class="err">\</span><span class="p">],</span>
+
+<span class="err">\</span><span class="p">[</span><span class="mi">18843</span><span class="err">\</span><span class="p">],</span><span class="w"> </span><span class="err">\</span><span class="p">[</span><span class="mi">0</span><span class="n">x0</span><span class="err">\</span><span class="p">],</span><span class="w"> </span><span class="err">\</span><span class="p">[</span><span class="err">\</span><span class="p">],</span><span class="w"> </span><span class="err">\</span><span class="p">[</span><span class="err">\</span><span class="p">],</span><span class="w"> </span><span class="err">\</span><span class="p">[</span><span class="err">\</span><span class="p">],</span><span class="w"> </span><span class="err">\</span><span class="p">[</span><span class="err">\</span><span class="p">]</span>
+</code></pre></div>
 <p><strong><em>Note:-</em></strong><em>ORA-00600: This is an internal error message for Oracle program exceptions. It indicates that a process has met a low-level, unexpected condition.</em></p>
 <p>Various causes of this message include:</p>
 <ul>
@@ -1025,129 +1042,245 @@
 </ul>
 <p><strong>Note:</strong> Database started in no mount stage only and cannot be opened further.</p>
 <p><strong>Step3:</strong> Reconnect to the SYS user and create a backup of the parameter file</p>
-<p><em>SQL&gt; CONN SYS/SYSPWD AS SYSDBA</em></p>
-<p><em>Connected.</em></p>
-<p><em>SQL&gt; CREATE PFILE FROM SPFILE;</em></p>
-<p><em>File created.</em></p>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">CONN</span><span class="w"> </span><span class="n">SYS</span><span class="o">/</span><span class="n">SYSPWD</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">SYSDBA</span>
+
+<span class="n">Connected</span><span class="p">.</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="n">PFILE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">SPFILE</span><span class="p">;</span>
+
+<span class="n">File</span><span class="w"> </span><span class="n">created</span><span class="p">.</span>
+</code></pre></div>
 <p><strong>Step 4:</strong> Restart the database again in nomount stage to recreate the control file.</p>
-<p><em>SQL&gt; SHUT IMMEDIATE;</em></p>
-<p><em>ORA-01507: Database not mounted</em></p>
-<p><em>ORACLE instance shut down.</em></p>
-<p><em>SQL&gt; STARTUP NOMOUNT</em></p>
-<p><em>ORACLE instance started.</em></p>
-<p>&nbsp;<em>Total System Global Area 536870912 bytes</em></p>
-<p><em>Fixed Size 1291652 bytes</em></p>
-<p><em>Variable Size 444598908 bytes</em></p>
-<p><em>Database Buffers 83886080 bytes</em></p>
-<p><em>Redo Buffers 7094272 bytes</em></p>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">SHUT</span><span class="w"> </span><span class="k">IMMEDIATE</span><span class="p">;</span>
+
+<span class="n">ORA</span><span class="o">-</span><span class="mi">01507</span><span class="p">:</span><span class="w"> </span><span class="k">Database</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">mounted</span>
+
+<span class="n">ORACLE</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="n">shut</span><span class="w"> </span><span class="n">down</span><span class="p">.</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">STARTUP</span><span class="w"> </span><span class="n">NOMOUNT</span>
+
+<span class="n">ORACLE</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="n">started</span><span class="p">.</span>
+
+<span class="n">Total</span><span class="w"> </span><span class="k">System</span><span class="w"> </span><span class="k">Global</span><span class="w"> </span><span class="n">Area</span><span class="w"> </span><span class="mi">536870912</span><span class="w"> </span><span class="n">bytes</span>
+
+<span class="n">Fixed</span><span class="w"> </span><span class="k">Size</span><span class="w"> </span><span class="mi">1291652</span><span class="w"> </span><span class="n">bytes</span>
+
+<span class="k">Variable</span><span class="w"> </span><span class="k">Size</span><span class="w"> </span><span class="mi">444598908</span><span class="w"> </span><span class="n">bytes</span>
+
+<span class="k">Database</span><span class="w"> </span><span class="n">Buffers</span><span class="w"> </span><span class="mi">83886080</span><span class="w"> </span><span class="n">bytes</span>
+
+<span class="n">Redo</span><span class="w"> </span><span class="n">Buffers</span><span class="w"> </span><span class="mi">7094272</span><span class="w"> </span><span class="n">bytes</span>
+</code></pre></div>
 <p><strong>Step5:</strong> Recreate control file</p>
 <p><strong><em>Note:</em></strong> You have to be in mount stage to create backup of existing control file to trace (backup of control file trace can help to rewrite the content of control file as per your need, but in this case database cannot be opened further from nomount stage so we have to manually write the control file creation command. Manual creation of control file require proper details related to datafiles, redo log files.</p>
-<p><em>"SQL&gt; CREATE CONTROLFILE REUSE DATABASE "GINERS" NORESETLOGS NOARCHIVELOG</em></p>
-<p><em>MAXLOGFILES 16</em></p>
-<p><em>MAXLOGMEMBERS 3</em></p>
-<p><em>MAXDATAFILES 100</em></p>
-<p><em>MAXINSTANCES 8</em></p>
-<p><em>MAXLOGHISTORY 709</em></p>
-<p><em>LOGFILE</em></p>
-<p><em>GROUP 1 ('D:\ORACLE\ORADATA\GINERS\REDO01.LOG',</em></p>
-<p><em>'D:\ORACLE\ORADATA\GINERS\REDO01A.LOG') SIZE 100M,</em></p>
-<p><em>GROUP 2 ('D:\ORACLE\ORADATA\GINERS\REDO02.LOG',</em></p>
-<p><em>'D:\ORACLE\ORADATA\GINERS\REDO02A.LOG') SIZE 100M,</em></p>
-<p><em>GROUP 3 ('D:\ORACLE\ORADATA\GINERS\REDO03.LOG',</em></p>
-<p><em>'D:\ORACLE\ORADATA\GINERS\REDO03A.LOG') SIZE 100M,</em></p>
-<p><em>GROUP 4 ('D:\ORACLE\ORADATA\GINERS\REDO04.LOG',</em></p>
-<p><em>'D:\ORACLE\ORADATA\GINERS\REDO04A.LOG') SIZE 100M,</em></p>
-<p><em>GROUP 5 ('D:\ORACLE\ORADATA\GINERS\REDO05.LOG',</em></p>
-<p><em>'D:\ORACLE\ORADATA\GINERS\REDO05A.LOG') SIZE 100M,</em></p>
-<p><em>GROUP 6 ('D:\ORACLE\ORADATA\GINERS\REDO06.LOG',</em></p>
-<p><em>'D:\ORACLE\ORADATA\GINERS\REDO06A.LOG') SIZE 100M</em></p>
-<p><em>-- STANDBY LOGFILE</em></p>
-<p><em>DATAFILE</em></p>
-<p><em>'D:\Oracle\Oradata\GINERS\SYSTEM01.DBF',</em></p>
-<p><em>'D:\Oracle\Oradata\GINERS\UNDOTBS01.DBF',</em></p>
-<p><em>'D:\Oracle\Oradata\GINERS\SYSAUX01.DBF',</em></p>
-<p><em>'D:\Oracle\Oradata\GINERS\USERS01.DBF',</em></p>
-<p><em>'D:\Oracle\Oradata\GINERS\ERSSTAGING',</em></p>
-<p><em>'D:\Oracle\Oradata\GINERS\ERSDATA',</em></p>
-<p><em>'D:\Oracle\Oradata\GINERS\ERSREPORTS',</em></p>
-<p><em>'D:\Oracle\Oradata\GINERS\ERSINDEX',</em></p>
-<p><em>'D:\Oracle\Oradata\GINERS\INDX01.DBF'</em></p>
-<p><em>CHARACTER SET WE8MSWIN1252;"</em></p>
-<p><em>control file created</em></p>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="n">CONTROLFILE</span><span class="w"> </span><span class="n">REUSE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="ss">&quot;GINERS&quot;</span><span class="w"> </span><span class="n">NORESETLOGS</span><span class="w"> </span><span class="n">NOARCHIVELOG</span>
+
+<span class="n">MAXLOGFILES</span><span class="w"> </span><span class="mi">16</span>
+
+<span class="n">MAXLOGMEMBERS</span><span class="w"> </span><span class="mi">3</span>
+
+<span class="n">MAXDATAFILES</span><span class="w"> </span><span class="mi">100</span>
+
+<span class="n">MAXINSTANCES</span><span class="w"> </span><span class="mi">8</span>
+
+<span class="n">MAXLOGHISTORY</span><span class="w"> </span><span class="mi">709</span>
+
+<span class="n">LOGFILE</span>
+
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\REDO01.LOG&#39;</span><span class="p">,</span>
+
+<span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\REDO01A.LOG&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="p">,</span>
+
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\REDO02.LOG&#39;</span><span class="p">,</span>
+
+<span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\REDO02A.LOG&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="p">,</span>
+
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\REDO03.LOG&#39;</span><span class="p">,</span>
+
+<span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\REDO03A.LOG&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="p">,</span>
+
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\REDO04.LOG&#39;</span><span class="p">,</span>
+
+<span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\REDO04A.LOG&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="p">,</span>
+
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\REDO05.LOG&#39;</span><span class="p">,</span>
+
+<span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\REDO05A.LOG&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="p">,</span>
+
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\REDO06.LOG&#39;</span><span class="p">,</span>
+
+<span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\REDO06A.LOG&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span>
+
+<span class="err">\</span><span class="c1">-- STANDBY LOGFILE</span>
+
+<span class="n">DATAFILE</span>
+
+<span class="s1">&#39;D:\\Oracle\\Oradata\\GINERS\\SYSTEM01.DBF&#39;</span><span class="p">,</span>
+
+<span class="s1">&#39;D:\\Oracle\\Oradata\\GINERS\\UNDOTBS01.DBF&#39;</span><span class="p">,</span>
+
+<span class="s1">&#39;D:\\Oracle\\Oradata\\GINERS\\SYSAUX01.DBF&#39;</span><span class="p">,</span>
+
+<span class="s1">&#39;D:\\Oracle\\Oradata\\GINERS\\USERS01.DBF&#39;</span><span class="p">,</span>
+
+<span class="s1">&#39;D:\\Oracle\\Oradata\\GINERS\\ERSSTAGING&#39;</span><span class="p">,</span>
+
+<span class="s1">&#39;D:\\Oracle\\Oradata\\GINERS\\ERSDATA&#39;</span><span class="p">,</span>
+
+<span class="s1">&#39;D:\\Oracle\\Oradata\\GINERS\\ERSREPORTS&#39;</span><span class="p">,</span>
+
+<span class="s1">&#39;D:\\Oracle\\Oradata\\GINERS\\ERSINDEX&#39;</span><span class="p">,</span>
+
+<span class="s1">&#39;D:\\Oracle\\Oradata\\GINERS\\INDX01.DBF&#39;</span>
+
+<span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">WE8MSWIN1252</span><span class="p">;</span>
+
+<span class="n">control</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="n">created</span>
+</code></pre></div>
 <p><strong>Step 6:</strong> After the creation of the control file the database automatically shifts to mount stage so open the database.</p>
-<p><em>SQL&gt; ALTER DATABASE OPEN;</em></p>
-<p><em>ALTER DATABASE OPEN</em></p>
-<p><em>ERROR at line 1:</em></p>
-<p><em>ORA-01113: file 1 needs media recovery</em></p>
-<p><em>ORA-01110: data file 1: 'D:\ORACLE\ORADATA\GINERS\SYSTEM01.DBF'</em></p>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">OPEN</span><span class="p">;</span>
+
+<span class="k">ALTER</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">OPEN</span>
+
+<span class="n">ERROR</span><span class="w"> </span><span class="k">at</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span>
+
+<span class="n">ORA</span><span class="o">-</span><span class="mi">01113</span><span class="p">:</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">needs</span><span class="w"> </span><span class="n">media</span><span class="w"> </span><span class="n">recovery</span>
+
+<span class="n">ORA</span><span class="o">-</span><span class="mi">01110</span><span class="p">:</span><span class="w"> </span><span class="k">data</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\SYSTEM01.DBF&#39;</span>
+</code></pre></div>
 <p><strong>Step 7:</strong> Database still requires recovery to open in a consistent stage.</p>
-<p><em>SQL&gt; RECOVER DATAFILE 1;</em></p>
-<p><em>Media recovery complete.</em></p>
-<p><em>SQL&gt; ALTER DATABASE OPEN;</em></p>
-<p><em>ERROR at line 1:</em></p>
-<p><em>ORA-01113: file 2 needs media recovery</em></p>
-<p><em>ORA-01110: data file 2: 'D:\ORACLE\ORADATA\GINERS\UNDOTBS01.DBF'</em></p>
-<p>&nbsp;<em>SQL&gt; RECOVER DATAFILE 2;</em></p>
-<p><em>Media recovery complete.</em></p>
-<p><em>SQL&gt; ALTER DATABASE OPEN;</em></p>
-<p><em>ERROR at line 1:</em></p>
-<p><em>ORA-01113: file 3 needs media recovery</em></p>
-<p><em>ORA-01110: data file 3: 'D:\ORACLE\ORADATA\GINERS\SYSAUX01.DBF'</em></p>
-<p>&nbsp;<em>SQL&gt; RECOVER DATAFILE 3;</em></p>
-<p><em>Media recovery complete.</em></p>
-<p><em>SQL&gt; ALTER DATABASE OPEN;</em></p>
-<p>&nbsp;<em>ERROR at line 1:</em></p>
-<p><em>ORA-01113: file 4 needs media recovery</em></p>
-<p><em>ORA-01110: data file 4: 'D:\ORACLE\ORADATA\GINERS\INDX01.DBF'</em></p>
-<p>&nbsp;<em>SQL&gt; RECOVER DATAFILE 4;</em></p>
-<p><em>Media recovery complete.</em></p>
-<p><em>SQL&gt; ALTER DATABASE OPEN;</em></p>
-<p><em>ERROR at line 1:</em></p>
-<p><em>ORA-01113: file 5 needs media recovery</em></p>
-<p><em>ORA-01110: data file 5: 'D:\ORACLE\ORADATA\GINERS\USERS01.DBF'</em></p>
-<p>&nbsp;<em>SQL&gt; RECOVER DATAFILE 5;</em></p>
-<p><em>Media recovery complete.</em></p>
-<p><em>SQL&gt; ALTER DATABASE OPEN;</em></p>
-<p><em>ERROR at line 1:</em></p>
-<p><em>ORA-01113: file 6 needs media recovery</em></p>
-<p><em>ORA-01110: data file 6: 'D:\ORACLE\ORADATA\GINERS\ERSSTAGING'</em></p>
-<p><em>SQL&gt; RECOVER DATAFILE 6;</em></p>
-<p><em>Media recovery complete.</em></p>
-<p><em>SQL&gt; ALTER DATABASE OPEN;</em></p>
-<p><em>ERROR at line 1:</em></p>
-<p><em>ORA-01113: file 7 needs media recovery</em></p>
-<p><em>ORA-01110: data file 7: 'D:\ORACLE\ORADATA\GINERS\ERSDATA'</em></p>
-<p>&nbsp;<em>SQL&gt; RECOVER DATAFILE 7;</em></p>
-<p><em>Media recovery complete.</em></p>
-<p><em>SQL&gt; ALTER DATABASE OPEN;</em></p>
-<p><em>ERROR at line 1:</em></p>
-<p><em>ORA-01113: file 8 needs media recovery</em></p>
-<p><em>ORA-01110: data file 8: 'D:\ORACLE\ORADATA\GINERS\ERSREPORTS'</em></p>
-<p>&nbsp;<em>SQL&gt; RECOVER DATAFILE 8;</em></p>
-<p><em>Media recovery complete.</em></p>
-<p><em>SQL&gt; ALTER DATABASE OPEN;</em></p>
-<p><em>ERROR at line 1:</em></p>
-<p><em>ORA-01113: file 9 needs media recovery</em></p>
-<p><em>ORA-01110: data file 9: 'D:\ORACLE\ORADATA\GINERS\ERSINDEX'</em></p>
-<p>&nbsp;<em>SQL&gt; RECOVER DATAFILE 9;</em></p>
-<p><em>Media recovery complete.</em></p>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">RECOVER</span><span class="w"> </span><span class="n">DATAFILE</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="n">Media</span><span class="w"> </span><span class="n">recovery</span><span class="w"> </span><span class="n">complete</span><span class="p">.</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">OPEN</span><span class="p">;</span>
+
+<span class="n">ERROR</span><span class="w"> </span><span class="k">at</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span>
+
+<span class="n">ORA</span><span class="o">-</span><span class="mi">01113</span><span class="p">:</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">needs</span><span class="w"> </span><span class="n">media</span><span class="w"> </span><span class="n">recovery</span>
+
+<span class="n">ORA</span><span class="o">-</span><span class="mi">01110</span><span class="p">:</span><span class="w"> </span><span class="k">data</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\UNDOTBS01.DBF&#39;</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">RECOVER</span><span class="w"> </span><span class="n">DATAFILE</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+
+<span class="n">Media</span><span class="w"> </span><span class="n">recovery</span><span class="w"> </span><span class="n">complete</span><span class="p">.</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">OPEN</span><span class="p">;</span>
+
+<span class="n">ERROR</span><span class="w"> </span><span class="k">at</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span>
+
+<span class="n">ORA</span><span class="o">-</span><span class="mi">01113</span><span class="p">:</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">needs</span><span class="w"> </span><span class="n">media</span><span class="w"> </span><span class="n">recovery</span>
+
+<span class="n">ORA</span><span class="o">-</span><span class="mi">01110</span><span class="p">:</span><span class="w"> </span><span class="k">data</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">3</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\SYSAUX01.DBF&#39;</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">RECOVER</span><span class="w"> </span><span class="n">DATAFILE</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+
+<span class="n">Media</span><span class="w"> </span><span class="n">recovery</span><span class="w"> </span><span class="n">complete</span><span class="p">.</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">OPEN</span><span class="p">;</span>
+
+<span class="n">ERROR</span><span class="w"> </span><span class="k">at</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span>
+
+<span class="n">ORA</span><span class="o">-</span><span class="mi">01113</span><span class="p">:</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="n">needs</span><span class="w"> </span><span class="n">media</span><span class="w"> </span><span class="n">recovery</span>
+
+<span class="n">ORA</span><span class="o">-</span><span class="mi">01110</span><span class="p">:</span><span class="w"> </span><span class="k">data</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">4</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\INDX01.DBF&#39;</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">RECOVER</span><span class="w"> </span><span class="n">DATAFILE</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+
+<span class="n">Media</span><span class="w"> </span><span class="n">recovery</span><span class="w"> </span><span class="n">complete</span><span class="p">.</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">OPEN</span><span class="p">;</span>
+
+<span class="n">ERROR</span><span class="w"> </span><span class="k">at</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span>
+
+<span class="n">ORA</span><span class="o">-</span><span class="mi">01113</span><span class="p">:</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">needs</span><span class="w"> </span><span class="n">media</span><span class="w"> </span><span class="n">recovery</span>
+
+<span class="n">ORA</span><span class="o">-</span><span class="mi">01110</span><span class="p">:</span><span class="w"> </span><span class="k">data</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">5</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\USERS01.DBF&#39;</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">RECOVER</span><span class="w"> </span><span class="n">DATAFILE</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+
+<span class="n">Media</span><span class="w"> </span><span class="n">recovery</span><span class="w"> </span><span class="n">complete</span><span class="p">.</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">OPEN</span><span class="p">;</span>
+
+<span class="n">ERROR</span><span class="w"> </span><span class="k">at</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span>
+
+<span class="n">ORA</span><span class="o">-</span><span class="mi">01113</span><span class="p">:</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="n">needs</span><span class="w"> </span><span class="n">media</span><span class="w"> </span><span class="n">recovery</span>
+
+<span class="n">ORA</span><span class="o">-</span><span class="mi">01110</span><span class="p">:</span><span class="w"> </span><span class="k">data</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">6</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\ERSSTAGING&#39;</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">RECOVER</span><span class="w"> </span><span class="n">DATAFILE</span><span class="w"> </span><span class="mi">6</span><span class="p">;</span>
+
+<span class="n">Media</span><span class="w"> </span><span class="n">recovery</span><span class="w"> </span><span class="n">complete</span><span class="p">.</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">OPEN</span><span class="p">;</span>
+
+<span class="n">ERROR</span><span class="w"> </span><span class="k">at</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span>
+
+<span class="n">ORA</span><span class="o">-</span><span class="mi">01113</span><span class="p">:</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="n">needs</span><span class="w"> </span><span class="n">media</span><span class="w"> </span><span class="n">recovery</span>
+
+<span class="n">ORA</span><span class="o">-</span><span class="mi">01110</span><span class="p">:</span><span class="w"> </span><span class="k">data</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">7</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\ERSDATA&#39;</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">RECOVER</span><span class="w"> </span><span class="n">DATAFILE</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span>
+
+<span class="n">Media</span><span class="w"> </span><span class="n">recovery</span><span class="w"> </span><span class="n">complete</span><span class="p">.</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">OPEN</span><span class="p">;</span>
+
+<span class="n">ERROR</span><span class="w"> </span><span class="k">at</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span>
+
+<span class="n">ORA</span><span class="o">-</span><span class="mi">01113</span><span class="p">:</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="n">needs</span><span class="w"> </span><span class="n">media</span><span class="w"> </span><span class="n">recovery</span>
+
+<span class="n">ORA</span><span class="o">-</span><span class="mi">01110</span><span class="p">:</span><span class="w"> </span><span class="k">data</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">8</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\ERSREPORTS&#39;</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">RECOVER</span><span class="w"> </span><span class="n">DATAFILE</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
+
+<span class="n">Media</span><span class="w"> </span><span class="n">recovery</span><span class="w"> </span><span class="n">complete</span><span class="p">.</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">OPEN</span><span class="p">;</span>
+
+<span class="n">ERROR</span><span class="w"> </span><span class="k">at</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span>
+
+<span class="n">ORA</span><span class="o">-</span><span class="mi">01113</span><span class="p">:</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">9</span><span class="w"> </span><span class="n">needs</span><span class="w"> </span><span class="n">media</span><span class="w"> </span><span class="n">recovery</span>
+
+<span class="n">ORA</span><span class="o">-</span><span class="mi">01110</span><span class="p">:</span><span class="w"> </span><span class="k">data</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">9</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\ERSINDEX&#39;</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">RECOVER</span><span class="w"> </span><span class="n">DATAFILE</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span>
+
+<span class="n">Media</span><span class="w"> </span><span class="n">recovery</span><span class="w"> </span><span class="n">complete</span><span class="p">.</span>
+</code></pre></div>
 <p><em>Step8: Open Database</em></p>
-<p><em>SQL&gt; ALTER DATABASE OPEN;</em></p>
-<p>&nbsp;<em>Database altered.</em></p>
-<p><em>NAME OPEN_MODE</em></p>
-<p><em>--------- ----------</em></p>
-<p><em>GINERS READ WRITE</em></p>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">OPEN</span><span class="p">;</span>
+
+<span class="k">Database</span><span class="w"> </span><span class="n">altered</span><span class="p">.</span>
+
+<span class="n">NAME</span><span class="w"> </span><span class="n">OPEN_MODE</span>
+
+<span class="err">\</span><span class="c1">--------- ----------</span>
+
+<span class="n">GINERS</span><span class="w"> </span><span class="k">READ</span><span class="w"> </span><span class="k">WRITE</span>
+</code></pre></div>
 <p><strong>Step9:</strong> After opening the database, recreate all the temporary tablespaces</p>
-<p><em>SQL&gt; ALTER TABLESPACE TEMP ADD TEMPFILE 'D:\ORACLE\ORADATA\GINERS\TEMP01.DBF';</em></p>
-<p>&nbsp;<em>Tablespace altered.</em></p>
-<p>&nbsp;<em>SQL&gt; ALTER TABLESPACE TEMP02 ADD TEMPFILE 'D:\ORACLE\ORADATA\GINERS\TEMP02' REUSE;</em></p>
-<p>&nbsp;<em>Tablespace altered.</em></p>
-<p>&nbsp;<em>SQL&gt; ALTER TABLESPACE TEMP03 ADD TEMPFILE 'D:\ORACLE\ORADATA\GINERS\TEMP03' REUSE;</em></p>
-<p>&nbsp;<em>Tablespace altered.</em></p>
-<p>&nbsp;<em>SQL&gt; ALTER TABLESPACE TEMP01 ADD TEMPFILE 'D:\ORACLE\ORADATA\GINERS\TEMP01' REUSE;</em></p>
-<p>&nbsp;<em>Tablespace altered.</em></p>
-<p>&nbsp;<em>SQL&gt; ALTER TABLESPACE TEMP04 ADD TEMPFILE 'D:\ORACLE\ORADATA\GINERS\TEMP04' REUSE;</em></p>
-<p>&nbsp;<em>Tablespace altered.</em></p>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="n">TABLESPACE</span><span class="w"> </span><span class="n">TEMP</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="n">TEMPFILE</span><span class="w"> </span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\TEMP01.DBF&#39;</span><span class="p">;</span>
+
+<span class="n">Tablespace</span><span class="w"> </span><span class="n">altered</span><span class="p">.</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="n">TABLESPACE</span><span class="w"> </span><span class="n">TEMP02</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="n">TEMPFILE</span><span class="w"> </span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\TEMP02&#39;</span><span class="w"> </span><span class="n">REUSE</span><span class="p">;</span>
+
+<span class="n">Tablespace</span><span class="w"> </span><span class="n">altered</span><span class="p">.</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="n">TABLESPACE</span><span class="w"> </span><span class="n">TEMP03</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="n">TEMPFILE</span><span class="w"> </span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\TEMP03&#39;</span><span class="w"> </span><span class="n">REUSE</span><span class="p">;</span>
+
+<span class="n">Tablespace</span><span class="w"> </span><span class="n">altered</span><span class="p">.</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="n">TABLESPACE</span><span class="w"> </span><span class="n">TEMP01</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="n">TEMPFILE</span><span class="w"> </span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\TEMP01&#39;</span><span class="w"> </span><span class="n">REUSE</span><span class="p">;</span>
+
+<span class="n">Tablespace</span><span class="w"> </span><span class="n">altered</span><span class="p">.</span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="n">TABLESPACE</span><span class="w"> </span><span class="n">TEMP04</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="n">TEMPFILE</span><span class="w"> </span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\GINERS\\TEMP04&#39;</span><span class="w"> </span><span class="n">REUSE</span><span class="p">;</span>
+
+<span class="n">Tablespace</span><span class="w"> </span><span class="n">altered</span><span class="p">.</span>
+</code></pre></div>
 
 
 
