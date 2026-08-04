@@ -25,7 +25,7 @@
     
     
       
-        <title>LINUX FIREWALL PERMISSIONS - DBA Knowledge Base</title>
+        <title>Linux Firewall Permissions - DBA Knowledge Base</title>
       
     
     
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              LINUX FIREWALL PERMISSIONS
+              Linux Firewall Permissions
             
           </span>
         </div>
@@ -293,6 +293,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Firewall Permissions
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -300,7 +318,7 @@
   <span class="md-ellipsis">
     
   
-    LINUX FIREWALL PERMISSIONS
+    Linux Firewall Permissions
   
 
     
@@ -309,6 +327,91 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#check-os-firewall-status-in-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check OS Firewall Status in Linux
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#check-existing-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check Existing Rules
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#allow-ip-address-range-and-port-5432-in-firewall-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Allow IP Address Range and Port 5432 in Firewall Settings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stop-and-start-firewall-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stop and Start Firewall Service
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify-existing-rules-newly-added-rules-should-be-visible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify Existing Rules (Newly added rules should be visible)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remove-rich-rule-from-firewall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remove Rich Rule from Firewall
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -329,7 +432,7 @@
   <span class="md-ellipsis">
     
   
-    LVM PARTITION
+    LVM Partition Management
   
 
     
@@ -535,6 +638,80 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#check-os-firewall-status-in-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check OS Firewall Status in Linux
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#check-existing-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check Existing Rules
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#allow-ip-address-range-and-port-5432-in-firewall-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Allow IP Address Range and Port 5432 in Firewall Settings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stop-and-start-firewall-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stop and Start Firewall Service
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify-existing-rules-newly-added-rules-should-be-visible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify Existing Rules (Newly added rules should be visible)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remove-rich-rule-from-firewall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remove Rich Rule from Firewall
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -550,23 +727,27 @@
 
 
 
-<h1 id="linux-firewall-permissions">LINUX FIREWALL PERMISSIONS<a class="headerlink" href="#linux-firewall-permissions" title="Permanent link">&para;</a></h1>
-<h1 id="to-check-os-firewall-status-in-linux">To Check OS Firewall status in Linux<a class="headerlink" href="#to-check-os-firewall-status-in-linux" title="Permanent link">&para;</a></h1>
-<p>systemctl status firewalld</p>
-<h1 id="to-check-existing-rules">To check existing rules<a class="headerlink" href="#to-check-existing-rules" title="Permanent link">&para;</a></h1>
-<p>firewall-cmd --list-all</p>
-<h1 id="to-allow-ip-address-sequence-and-5432-port-in-firewall-settings-execute">To allow ip address sequence and 5432 port in firewall settings execute<a class="headerlink" href="#to-allow-ip-address-sequence-and-5432-port-in-firewall-settings-execute" title="Permanent link">&para;</a></h1>
-<p>following command: firewall-cmd --permanent --zone=public
---add-rich-rule=' rule family="ipv4" source address="10.1.0.0/24" port
-protocol="tcp" port="5432" accept'</p>
-<h1 id="to-stop-and-start-firewall-service">To Stop and Start firewall service<a class="headerlink" href="#to-stop-and-start-firewall-service" title="Permanent link">&para;</a></h1>
-<p>systemctl stop firewalld systemctl start firewalld</p>
-<h1 id="to-check-existing-rules-newly-added-rules-should-be-visible">To check existing rules (Newly added rules should be visible)<a class="headerlink" href="#to-check-existing-rules-newly-added-rules-should-be-visible" title="Permanent link">&para;</a></h1>
-<p>firewall-cmd --list-all</p>
-<h1 id="to-remove-rich-rule-from-firewall">To remove rich rule from firewall<a class="headerlink" href="#to-remove-rich-rule-from-firewall" title="Permanent link">&para;</a></h1>
-<p>firewall-cmd --permanent --zone=public --remove-rich-rule='rule
-family="ipv4" source address="10.1.0.0/24" port protocol="tcp"
-port="5432" accept'</p>
+<h1 id="linux-firewall-permissions">Linux Firewall Permissions<a class="headerlink" href="#linux-firewall-permissions" title="Permanent link">&para;</a></h1>
+<h2 id="check-os-firewall-status-in-linux">Check OS Firewall Status in Linux<a class="headerlink" href="#check-os-firewall-status-in-linux" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>systemctl<span class="w"> </span>status<span class="w"> </span>firewalld
+</code></pre></div>
+<h2 id="check-existing-rules">Check Existing Rules<a class="headerlink" href="#check-existing-rules" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>firewall-cmd<span class="w"> </span>--list-all
+</code></pre></div>
+<h2 id="allow-ip-address-range-and-port-5432-in-firewall-settings">Allow IP Address Range and Port 5432 in Firewall Settings<a class="headerlink" href="#allow-ip-address-range-and-port-5432-in-firewall-settings" title="Permanent link">&para;</a></h2>
+<p>Execute the following command to allow access for the <code>10.1.0.0/24</code> subnet on port <code>5432</code> (TCP):</p>
+<div class="highlight"><pre><span></span><code>firewall-cmd<span class="w"> </span>--permanent<span class="w"> </span>--zone<span class="o">=</span>public<span class="w"> </span>--add-rich-rule<span class="o">=</span><span class="s1">&#39;rule family=&quot;ipv4&quot; source address=&quot;10.1.0.0/24&quot; port protocol=&quot;tcp&quot; port=&quot;5432&quot; accept&#39;</span>
+</code></pre></div>
+<h2 id="stop-and-start-firewall-service">Stop and Start Firewall Service<a class="headerlink" href="#stop-and-start-firewall-service" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>systemctl<span class="w"> </span>stop<span class="w"> </span>firewalld
+systemctl<span class="w"> </span>start<span class="w"> </span>firewalld
+</code></pre></div>
+<h2 id="verify-existing-rules-newly-added-rules-should-be-visible">Verify Existing Rules (Newly added rules should be visible)<a class="headerlink" href="#verify-existing-rules-newly-added-rules-should-be-visible" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>firewall-cmd<span class="w"> </span>--list-all
+</code></pre></div>
+<h2 id="remove-rich-rule-from-firewall">Remove Rich Rule from Firewall<a class="headerlink" href="#remove-rich-rule-from-firewall" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>firewall-cmd<span class="w"> </span>--permanent<span class="w"> </span>--zone<span class="o">=</span>public<span class="w"> </span>--remove-rich-rule<span class="o">=</span><span class="s1">&#39;rule family=&quot;ipv4&quot; source address=&quot;10.1.0.0/24&quot; port protocol=&quot;tcp&quot; port=&quot;5432&quot; accept&#39;</span>
+</code></pre></div>
 
 
 

@@ -25,7 +25,7 @@
     
     
       
-        <title>LVM PARTITION - DBA Knowledge Base</title>
+        <title>LVM Partition Management - DBA Knowledge Base</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#lvm-partition" class="md-skip">
+        <a href="#lvm-partition-management" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              LVM PARTITION
+              LVM Partition Management
             
           </span>
         </div>
@@ -291,7 +291,7 @@
   <span class="md-ellipsis">
     
   
-    LINUX FIREWALL PERMISSIONS
+    Linux Firewall Permissions
   
 
     
@@ -328,7 +328,7 @@
   <span class="md-ellipsis">
     
   
-    LVM PARTITION
+    LVM Partition Management
   
 
     
@@ -346,7 +346,7 @@
   <span class="md-ellipsis">
     
   
-    LVM PARTITION
+    LVM Partition Management
   
 
     
@@ -372,13 +372,52 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#managing-linux-partition-lvm" class="md-nav__link">
+  <a href="#managing-linux-partitions-lvm" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ################################################## MANAGING LINUX PARTITION (LVM)
+        Managing Linux Partitions (LVM)
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Managing Linux Partitions (LVM)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-pvs-physical-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. PVS (Physical Volumes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-vgs-volume-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. VGS (Volume Groups)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-lvs-logical-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. LVS (Logical Volumes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -386,18 +425,7 @@
   <a href="#extend-u02-partition-size-method-1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ######################################################### Extend /u02 partition size (Method 1)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        #################################################################################################################################################
+        Extend /u02 Partition Size (Method 1)
       
     </span>
   </a>
@@ -408,7 +436,7 @@
   <a href="#extend-u02-partition-size-method-2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ######################################################## Extend /u02 partition size (Method 2)
+        Extend /u02 Partition Size (Method 2)
       
     </span>
   </a>
@@ -416,10 +444,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#remove-a-logical-volume" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ##############################################################################################################################################
+        Remove a Logical Volume
       
     </span>
   </a>
@@ -427,13 +455,74 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#decrease-the-size-of-an-lvm-partition-requires-testing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ##############################################################################################################################################
+        Decrease the Size of an LVM Partition (Requires Testing)
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extending-primary-hard-disk-in-vm-100-gb-to-180-gb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extending Primary Hard Disk in VM (100 GB to 180 GB)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Extending Primary Hard Disk in VM (100 GB to 180 GB)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-check-if-growpart-is-available" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Check if growpart is available
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-grow-the-partition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Grow the partition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-resize-the-physical-volume" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Resize the physical volume
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-verify-the-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Verify the changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -645,13 +734,52 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#managing-linux-partition-lvm" class="md-nav__link">
+  <a href="#managing-linux-partitions-lvm" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ################################################## MANAGING LINUX PARTITION (LVM)
+        Managing Linux Partitions (LVM)
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Managing Linux Partitions (LVM)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-pvs-physical-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. PVS (Physical Volumes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-vgs-volume-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. VGS (Volume Groups)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-lvs-logical-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. LVS (Logical Volumes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -659,18 +787,7 @@
   <a href="#extend-u02-partition-size-method-1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ######################################################### Extend /u02 partition size (Method 1)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        #################################################################################################################################################
+        Extend /u02 Partition Size (Method 1)
       
     </span>
   </a>
@@ -681,7 +798,7 @@
   <a href="#extend-u02-partition-size-method-2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ######################################################## Extend /u02 partition size (Method 2)
+        Extend /u02 Partition Size (Method 2)
       
     </span>
   </a>
@@ -689,10 +806,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#remove-a-logical-volume" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ##############################################################################################################################################
+        Remove a Logical Volume
       
     </span>
   </a>
@@ -700,13 +817,74 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#decrease-the-size-of-an-lvm-partition-requires-testing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ##############################################################################################################################################
+        Decrease the Size of an LVM Partition (Requires Testing)
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extending-primary-hard-disk-in-vm-100-gb-to-180-gb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extending Primary Hard Disk in VM (100 GB to 180 GB)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Extending Primary Hard Disk in VM (100 GB to 180 GB)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-check-if-growpart-is-available" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Check if growpart is available
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-grow-the-partition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Grow the partition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-resize-the-physical-volume" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Resize the physical volume
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-verify-the-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Verify the changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -727,121 +905,164 @@
 
 
 
-<h1 id="lvm-partition">LVM PARTITION<a class="headerlink" href="#lvm-partition" title="Permanent link">&para;</a></h1>
-<h6 id="managing-linux-partition-lvm">################################################## MANAGING LINUX PARTITION (LVM)<a class="headerlink" href="#managing-linux-partition-lvm" title="Permanent link">&para;</a></h6>
-<p>In Linux, pvs, vgs, and lvs are commands used for managing and
-displaying information about the Logical Volume Manager (LVM)
-components.</p>
-<p>(1) PVS (Physical Volumes): The pvs command displays information about
-    physical volumes. It provides a quick summary of the physical
-    volumes in the system, showing details such as the physical volume
-    name, volume group it belongs to, size, and status.</p>
-<div class="highlight"><pre><span></span><code>            Example: 
-            [root@prd u02]# pvs
-            PV             VG   Fmt  Attr PSize   PFree 
-            /dev/nvme0n1p3 rhel lvm2 a--   98.99g     0 
-            /dev/nvme0n2   psql lvm2 a--  &lt;15.00g 96.00m
+<h1 id="lvm-partition-management">LVM Partition Management<a class="headerlink" href="#lvm-partition-management" title="Permanent link">&para;</a></h1>
+<h2 id="managing-linux-partitions-lvm">Managing Linux Partitions (LVM)<a class="headerlink" href="#managing-linux-partitions-lvm" title="Permanent link">&para;</a></h2>
+<p>In Linux, <code>pvs</code>, <code>vgs</code>, and <code>lvs</code> are commands used for managing and displaying information about the Logical Volume Manager (LVM) components.</p>
+<h3 id="1-pvs-physical-volumes">1. PVS (Physical Volumes)<a class="headerlink" href="#1-pvs-physical-volumes" title="Permanent link">&para;</a></h3>
+<p>The <code>pvs</code> command displays information about physical volumes. It provides a quick summary of the physical volumes in the system, showing details such as the physical volume name, volume group it belongs to, size, and status.</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="o">[</span>root@prd<span class="w"> </span>u02<span class="o">]</span><span class="c1"># pvs</span>
+PV<span class="w">             </span>VG<span class="w">   </span>Fmt<span class="w">  </span>Attr<span class="w"> </span>PSize<span class="w">   </span>PFree<span class="w"> </span>
+/dev/nvme0n1p3<span class="w"> </span>rhel<span class="w"> </span>lvm2<span class="w"> </span>a--<span class="w">   </span><span class="m">98</span>.99g<span class="w">     </span><span class="m">0</span><span class="w"> </span>
+/dev/nvme0n2<span class="w">   </span>psql<span class="w"> </span>lvm2<span class="w"> </span>a--<span class="w">  </span>&lt;<span class="m">15</span>.00g<span class="w"> </span><span class="m">96</span>.00m
+</code></pre></div></p>
+<h3 id="2-vgs-volume-groups">2. VGS (Volume Groups)<a class="headerlink" href="#2-vgs-volume-groups" title="Permanent link">&para;</a></h3>
+<p>Volume Groups are collections of physical volumes that create a pool of storage out of which logical volumes can be allocated.</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="o">[</span>root@prd<span class="w"> </span>u02<span class="o">]</span><span class="c1"># vgs</span>
+VG<span class="w">   </span><span class="c1">#PV #LV #SN Attr   VSize   VFree </span>
+psql<span class="w">   </span><span class="m">1</span><span class="w">   </span><span class="m">1</span><span class="w">   </span><span class="m">0</span><span class="w"> </span>wz--n-<span class="w"> </span>&lt;<span class="m">15</span>.00g<span class="w"> </span><span class="m">96</span>.00m
+</code></pre></div></p>
+<h3 id="3-lvs-logical-volumes">3. LVS (Logical Volumes)<a class="headerlink" href="#3-lvs-logical-volumes" title="Permanent link">&para;</a></h3>
+<p>Logical Volumes are the virtual block devices created from the volume groups' storage pool. Logical volumes can be resized, moved, and managed independently of the underlying physical storage, providing flexibility in managing disk space.</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="o">[</span>root@prd<span class="w"> </span>u02<span class="o">]</span><span class="c1"># lvs</span>
+LV<span class="w">   </span>VG<span class="w">   </span>Attr<span class="w">       </span>LSize<span class="w">  </span>Pool<span class="w"> </span>Origin<span class="w"> </span>Data%<span class="w">  </span>Meta%<span class="w">  </span>Move<span class="w"> </span>Log<span class="w"> </span>Cpy%Sync<span class="w"> </span>Convert
+lv<span class="w">   </span>psql<span class="w"> </span>-wi-ao----<span class="w"> </span><span class="m">14</span>.90g<span class="w">                                                    </span>
+root<span class="w"> </span>rhel<span class="w"> </span>-wi-ao----<span class="w"> </span><span class="m">15</span>.00g<span class="w">                                                    </span>
+swap<span class="w"> </span>rhel<span class="w"> </span>-wi-ao----<span class="w">  </span><span class="m">4</span>.00g<span class="w">                                                    </span>
+u01<span class="w">  </span>rhel<span class="w"> </span>-wi-ao----<span class="w"> </span><span class="m">79</span>.99g<span class="w">  </span>
+</code></pre></div></p>
+<hr />
+<h2 id="extend-u02-partition-size-method-1">Extend <code>/u02</code> Partition Size (Method 1)<a class="headerlink" href="#extend-u02-partition-size-method-1" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Step 1:</strong> Check the existing physical volume:
+  <div class="highlight"><pre><span></span><code><span class="o">[</span>root@prd<span class="w"> </span>u02<span class="o">]</span><span class="c1"># pvs</span>
+PV<span class="w">             </span>VG<span class="w">   </span>Fmt<span class="w">  </span>Attr<span class="w"> </span>PSize<span class="w">   </span>PFree<span class="w"> </span>
+/dev/nvme0n1<span class="w">   </span>rhel<span class="w"> </span>lvm2<span class="w"> </span>a--<span class="w">   </span><span class="m">98</span>.99g<span class="w"> </span><span class="m">0</span>
+</code></pre></div></li>
+<li><strong>Step 2:</strong> Add a new Hard Disk of 10GB that will be mounted on <code>/u02</code>.</li>
+<li><strong>Step 3:</strong> Create a new Physical Volume:
+  <div class="highlight"><pre><span></span><code>pvcreate<span class="w"> </span>-v<span class="w"> </span>/dev/nvme0n2
+</code></pre></div></li>
+<li><strong>Step 4:</strong> Create a volume group:
+  <div class="highlight"><pre><span></span><code>vgcreate<span class="w"> </span>psql<span class="w"> </span>/dev/nvme0n2
+</code></pre></div></li>
+<li><strong>Step 5:</strong> Create a logical volume:
+  <div class="highlight"><pre><span></span><code>lvcreate<span class="w"> </span>-L<span class="w"> </span><span class="m">9</span>.9G<span class="w"> </span>-n<span class="w"> </span>lv<span class="w"> </span>psql
+</code></pre></div></li>
+<li><strong>Step 6:</strong> Format the logical volume:
+  <div class="highlight"><pre><span></span><code>mkfs.ext4<span class="w"> </span>/dev/psql/lv
+</code></pre></div></li>
+<li><strong>Step 7:</strong> Mount the logical volume to a new mount point <code>/u02</code>:
+  <div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>/u02
+mount<span class="w"> </span>/dev/psql/lv<span class="w"> </span>/u02
+</code></pre></div></li>
+<li><strong>Step 8:</strong> Make an entry in the <code>/etc/fstab</code> file.</li>
+<li><strong>Step 9:</strong> Add/Extend 5GB Hard Disk in the <code>/u02</code> mount point.</li>
+<li><strong>Step 10:</strong> Resize the existing Physical Volume:
+  <div class="highlight"><pre><span></span><code>pvresize<span class="w"> </span>/dev/nvme0n2
+</code></pre></div></li>
+<li><strong>Step 11:</strong> Extend the existing Logical Volume:
+  <div class="highlight"><pre><span></span><code>lvextend<span class="w"> </span>-L<span class="w"> </span>+5G<span class="w"> </span>-r<span class="w"> </span>/dev/psql/lv
+</code></pre></div></li>
+</ul>
+<hr />
+<h2 id="extend-u02-partition-size-method-2">Extend <code>/u02</code> Partition Size (Method 2)<a class="headerlink" href="#extend-u02-partition-size-method-2" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Step 1:</strong> Check the existing physical volume:
+  <div class="highlight"><pre><span></span><code><span class="o">[</span>root@prd<span class="w"> </span>u02<span class="o">]</span><span class="c1"># pvs</span>
+PV<span class="w">             </span>VG<span class="w">   </span>Fmt<span class="w">  </span>Attr<span class="w"> </span>PSize<span class="w">   </span>PFree<span class="w"> </span>
+/dev/nvme0n1<span class="w">   </span>rhel<span class="w"> </span>lvm2<span class="w"> </span>a--<span class="w">   </span><span class="m">98</span>.99g<span class="w"> </span><span class="m">0</span>
+</code></pre></div></li>
+<li><strong>Step 2:</strong> Add a new Hard Disk of 10GB that will be mounted on <code>/u02</code>.</li>
+<li><strong>Step 3:</strong> Create a new Physical Volume:
+  <div class="highlight"><pre><span></span><code>pvcreate<span class="w"> </span>-v<span class="w"> </span>/dev/nvme0n2
+</code></pre></div></li>
+<li><strong>Step 4:</strong> Create a volume group:
+  <div class="highlight"><pre><span></span><code>vgcreate<span class="w"> </span>psql<span class="w"> </span>/dev/nvme0n2
+</code></pre></div></li>
+<li><strong>Step 5:</strong> Create a logical volume:
+  <div class="highlight"><pre><span></span><code>lvcreate<span class="w"> </span>-L<span class="w"> </span><span class="m">9</span>.9G<span class="w"> </span>-n<span class="w"> </span>lv<span class="w"> </span>psql
+</code></pre></div></li>
+<li><strong>Step 6:</strong> Format the logical volume:
+  <div class="highlight"><pre><span></span><code>mkfs.ext4<span class="w"> </span>/dev/psql/lv
+</code></pre></div></li>
+<li><strong>Step 7:</strong> Mount the logical volume to a new mount point <code>/u02</code>:
+  <div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>/u02
+mount<span class="w"> </span>/dev/psql/lv<span class="w"> </span>/u02
+</code></pre></div></li>
+<li><strong>Step 8:</strong> Make an entry in the <code>/etc/fstab</code> file.</li>
+<li><strong>Step 9:</strong> Create a Physical Volume of the newly added hard disk:
+  <div class="highlight"><pre><span></span><code>pvcreate<span class="w"> </span>-v<span class="w"> </span>/dev/nvme0n3
+</code></pre></div></li>
+<li><strong>Step 10:</strong> Format the newly added physical volume:
+  <div class="highlight"><pre><span></span><code>mkfs.ext4<span class="w"> </span>/dev/nvme0n3
+</code></pre></div></li>
+<li><strong>Step 11:</strong> Extend 15GB Hard Disk to the <code>psql</code> Volume Group:
+  <div class="highlight"><pre><span></span><code>vgextend<span class="w"> </span>-v<span class="w"> </span>psql<span class="w"> </span>/dev/nvme0n3
+</code></pre></div></li>
+<li><strong>Step 12:</strong> Extend the Logical Volume:
+  <div class="highlight"><pre><span></span><code>lvextend<span class="w"> </span>-L<span class="w"> </span>+15G<span class="w"> </span>-r<span class="w"> </span>/dev/psql/lv
+</code></pre></div></li>
+</ul>
+<hr />
+<h2 id="remove-a-logical-volume">Remove a Logical Volume<a class="headerlink" href="#remove-a-logical-volume" title="Permanent link">&para;</a></h2>
+<p>To unmount and remove a logical volume:
+<div class="highlight"><pre><span></span><code>lsof<span class="w"> </span>+D<span class="w"> </span>/datafiles
+<span class="nb">kill</span><span class="w"> </span>-9<span class="w"> </span>&lt;PID&gt;
+umount<span class="w"> </span>/datafiles
+lvremove<span class="w"> </span>/dev/orclvg/lvdatafiles
+</code></pre></div></p>
+<hr />
+<h2 id="decrease-the-size-of-an-lvm-partition-requires-testing">Decrease the Size of an LVM Partition (Requires Testing)<a class="headerlink" href="#decrease-the-size-of-an-lvm-partition-requires-testing" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>lvresize<span class="w"> </span>-L<span class="w"> </span>&lt;NEW_SIZE&gt;<span class="w"> </span>/dev/volume-group/logical-volume
 </code></pre></div>
-<p>(2) VGS (Volume Groups): These are collections of physical volumes that
-    create a pool of storage out of which logical volumes can be
-    allocated.</p>
-<div class="highlight"><pre><span></span><code>           Example:
-            [root@prd u02]# vgs
-            VG   #PV #LV #SN Attr   VSize   VFree 
-            psql   1   1   0 wz--n- &lt;15.00g 96.00m
+<hr />
+<h2 id="extending-primary-hard-disk-in-vm-100-gb-to-180-gb">Extending Primary Hard Disk in VM (100 GB to 180 GB)<a class="headerlink" href="#extending-primary-hard-disk-in-vm-100-gb-to-180-gb" title="Permanent link">&para;</a></h2>
+<p>Since the OS is installed on this disk (<code>/dev/nvme0n1</code>), and <code>/dev/nvme0n1p3</code> is part of the root volume group (<code>rhel</code>), you cannot delete and recreate partitions casually — that would be risky and could lead to data loss or a non-bootable system.</p>
+<p>However, we can safely resize the partition without deleting anything using <code>growpart</code>, assuming free space is available after <code>/dev/nvme0n1p3</code>.</p>
+<h3 id="1-check-if-growpart-is-available">1. Check if <code>growpart</code> is available<a class="headerlink" href="#1-check-if-growpart-is-available" title="Permanent link">&para;</a></h3>
+<p>Install the <code>cloud-utils-growpart</code> package if it's not already installed:
+<div class="highlight"><pre><span></span><code>yum<span class="w"> </span>install<span class="w"> </span>cloud-utils-growpart<span class="w"> </span>-y
+</code></pre></div></p>
+<h3 id="2-grow-the-partition">2. Grow the partition<a class="headerlink" href="#2-grow-the-partition" title="Permanent link">&para;</a></h3>
+<p>Now run:
+<div class="highlight"><pre><span></span><code>growpart<span class="w"> </span>/dev/nvme0n1<span class="w"> </span><span class="m">3</span>
 </code></pre></div>
-<p>(3) LVS (Logical Volumes): These are the virtual block devices created
-    from the volume groups' storage pool. Logical volumes can be
-    resized, moved, and managed independently of the underlying physical
-    storage, providing flexibility in managing disk space.</p>
-<div class="highlight"><pre><span></span><code>            Example:
-            [root@prd u02]# lvs
-            LV   VG   Attr       LSize  Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
-            lv   psql -wi-ao---- 14.90g                                                    
-            root rhel -wi-ao---- 15.00g                                                    
-            swap rhel -wi-ao----  4.00g                                                    
-            u01  rhel -wi-ao---- 79.99g
+This will resize partition 3 (<code>nvme0n1p3</code>) to use all remaining unallocated space on the disk — without deleting or touching any data.</p>
+<h3 id="3-resize-the-physical-volume">3. Resize the physical volume<a class="headerlink" href="#3-resize-the-physical-volume" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code>pvresize<span class="w"> </span>/dev/nvme0n1p3
 </code></pre></div>
-<h6 id="extend-u02-partition-size-method-1">######################################################### Extend /u02 partition size (Method 1)<a class="headerlink" href="#extend-u02-partition-size-method-1" title="Permanent link">&para;</a></h6>
-<p>Step 1: Check Existing Physical volume [root@prd u02]# pvs PV VG Fmt
-Attr PSize PFree /dev/nvme0n1 rhel lvm2 a-- 98.99g 0</p>
-<p>Step 2: Add a new Hard Disk of 10GB that will be mounted on /u02</p>
-<p>Step 3: Create a new Physical Volume pvcreate -v /dev/nvme0n2</p>
-<p>Step 4: Create a volume group vgcreate psql /dev/nvme0n2</p>
-<p>Step 5: Create a logical volume lvcreate -L 9.9G -n lv psql</p>
-<p>Step 6: Format the logical volume mkfs.ext4 /dev/psql/lv</p>
-<p>Step 7: Mount the logical volume to a new mount point /u02 mkdir /u02
-mount /dev/psql/lv /u02</p>
-<p>Step 8: Make entry in /etc/fstab file</p>
-<p>Step 9: Add/Extend 5GB Hard Disk in /u02 mount point</p>
-<p>Step 10: Resize the existing Physical Volume pvresize /dev/nvme0n2</p>
-<p>Step 11: Extend the existing Logical Volume lvextend -L +5G -r
-/dev/psql/lv</p>
-<h6 id="_1">#################################################################################################################################################<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h6>
-<h6 id="extend-u02-partition-size-method-2">######################################################## Extend /u02 partition size (Method 2)<a class="headerlink" href="#extend-u02-partition-size-method-2" title="Permanent link">&para;</a></h6>
-<p>Step 1: Check Existing Physical volume [root@prd u02]# pvs PV VG Fmt
-Attr PSize PFree /dev/nvme0n1 rhel lvm2 a-- 98.99g 0</p>
-<p>Step 2: Add a new Hard Disk of 10GB that will be mounted on /u02</p>
-<p>Step 3: Create a new Physical Volume pvcreate -v /dev/nvme0n2</p>
-<p>Step 4: Create a volume group vgcreate psql /dev/nvme0n2</p>
-<p>Step 5: Create a logical volume lvcreate -L 9.9G -n lv psql</p>
-<p>Step 6: Format the logical volume mkfs.ext4 /dev/psql/lv</p>
-<p>Step 7: Mount the logical volume to a new mount point /u02 mkdir /u02
-mount /dev/psql/lv /u02</p>
-<p>Step 8: Make entry in /etc/fstab file</p>
-<p>Step 9: Create a Physical Volume of newly added hard disk pvcreate -v
-/dev/nvme0n3</p>
-<p>Step 10: format the newly added physical volume. mkfs.ext4 /dev/nvme0n3</p>
-<p>Step 11: Extend 15GB Harddisk to psql vgextend -v psql /dev/nvme0n3</p>
-<p>Step 12: Extend LV lvextend -L +15G -r /dev/psql/lv</p>
-<h6 id="_2">##############################################################################################################################################<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h6>
-<p>lsof +D /datafiles kill -9 (id) umount /datafiles lvremove
-/dev/orclvg/lvdatafiles</p>
-<p>NEED TESTING TO DECREASE SIZE OF LVM</p>
-<p>lvresize -L NEW_SIZE /dev/volume-group/logical-volume</p>
-<h6 id="_3">##############################################################################################################################################<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h6>
-<p>IN VM I extend the exiting primary harddisk from 100 GB to 180 GB.</p>
-<p>since the OS is installed on this disk (/dev/nvme0n1), and
-/dev/nvme0n1p3 is part of the root volume group (rhel), you cannot
-delete and recreate partitions casually --- that would be risky and
-could lead to data loss or a non-bootable system.</p>
-<p>But the good news is: we can safely resize the partition without
-deleting anything using growpart, assuming the free space is available
-after nvme0n1p3.</p>
-<ol>
-<li>Check if growpart is available:</li>
-</ol>
-<p>Install the cloud-utils-growpart package if it's not already installed:</p>
-<p>yum install cloud-utils-growpart -y</p>
-<ol>
-<li>Grow the partition:</li>
-</ol>
-<p>Now run:</p>
-<p>growpart /dev/nvme0n1 3</p>
-<p>This will resize partition 3 (nvme0n1p3) to use all remaining
-unallocated space on the disk --- without deleting or touching data.</p>
-<ol>
-<li>Resize the physical volume:</li>
-</ol>
-<p>pvresize /dev/nvme0n1p3</p>
-<p>But I had to no need to resize the pv I just extend the requried lv</p>
-<ol>
-<li>Verify:</li>
-</ol>
-<p>pvs vgs</p>
-<p>this is output of this exercise after partation extend</p>
-<p>[root@RSBDB \~]# pvs PV VG Fmt Attr PSize PFree /dev/nvme0n1p3 rhel
-lvm2 a-- 178.99g 80.00g [root@RSBDB \~]# [root@RSBDB \~]#
-[root@RSBDB \~]# vgs VG #PV #LV #SN Attr VSize VFree rhel 1 3 0 wz--n-
-178.99g 80.00g [root@RSBDB \~]# lvs LV VG Attr LSize Pool Origin Data%
-Meta% Move Log Cpy%Sync Convert root rhel -wi-ao---- 15.00g swap rhel
--wi-ao---- 4.00g u01 rhel -wi-ao---- 79.99g [root@RSBDB \~]# lvextend
--L +80G -r /dev/rhel/u01 Size of logical volume rhel/u01 changed from
-79.99 GiB (20478 extents) to 159.99 GiB (40958 extents). Logical volume
-rhel/u01 successfully resized. resize2fs 1.45.4 (23-Sep-2019) Filesystem
-at /dev/mapper/rhel-u01 is mounted on /u01; on-line resizing required
-old_desc_blocks = 10, new_desc_blocks = 20 The filesystem on
-/dev/mapper/rhel-u01 is now 41940992 (4k) blocks long.</p>
+<em>(Note: If you do not need to resize the PV, you can just extend the required LV directly.)</em></p>
+<h3 id="4-verify-the-changes">4. Verify the changes<a class="headerlink" href="#4-verify-the-changes" title="Permanent link">&para;</a></h3>
+<p>Run verification commands:
+<div class="highlight"><pre><span></span><code>pvs
+vgs
+</code></pre></div></p>
+<p><strong>Example output after partition extension:</strong>
+<div class="highlight"><pre><span></span><code><span class="o">[</span>root@RSBDB<span class="w"> </span>~<span class="o">]</span><span class="c1"># pvs</span>
+PV<span class="w">             </span>VG<span class="w">   </span>Fmt<span class="w">  </span>Attr<span class="w"> </span>PSize<span class="w">    </span>PFree<span class="w">  </span>
+/dev/nvme0n1p3<span class="w"> </span>rhel<span class="w"> </span>lvm2<span class="w"> </span>a--<span class="w">  </span><span class="m">178</span>.99g<span class="w">  </span><span class="m">80</span>.00g<span class="w"> </span>
+
+<span class="o">[</span>root@RSBDB<span class="w"> </span>~<span class="o">]</span><span class="c1"># vgs</span>
+VG<span class="w">   </span><span class="c1">#PV #LV #SN Attr   VSize    VFree  </span>
+rhel<span class="w">   </span><span class="m">1</span><span class="w">   </span><span class="m">3</span><span class="w">   </span><span class="m">0</span><span class="w"> </span>wz--n-<span class="w"> </span><span class="m">178</span>.99g<span class="w">  </span><span class="m">80</span>.00g<span class="w"> </span>
+
+<span class="o">[</span>root@RSBDB<span class="w"> </span>~<span class="o">]</span><span class="c1"># lvs</span>
+LV<span class="w">   </span>VG<span class="w">   </span>Attr<span class="w">       </span>LSize<span class="w">   </span>Pool<span class="w"> </span>Origin<span class="w"> </span>Data%<span class="w">  </span>Meta%<span class="w">  </span>Move<span class="w"> </span>Log<span class="w"> </span>Cpy%Sync<span class="w"> </span>Convert
+root<span class="w"> </span>rhel<span class="w"> </span>-wi-ao----<span class="w">  </span><span class="m">15</span>.00g<span class="w">                                                    </span>
+swap<span class="w"> </span>rhel<span class="w"> </span>-wi-ao----<span class="w">   </span><span class="m">4</span>.00g<span class="w">                                                    </span>
+u01<span class="w">  </span>rhel<span class="w"> </span>-wi-ao----<span class="w">  </span><span class="m">79</span>.99g<span class="w">                                                    </span>
+
+<span class="o">[</span>root@RSBDB<span class="w"> </span>~<span class="o">]</span><span class="c1"># lvextend -L +80G -r /dev/rhel/u01</span>
+Size<span class="w"> </span>of<span class="w"> </span>logical<span class="w"> </span>volume<span class="w"> </span>rhel/u01<span class="w"> </span>changed<span class="w"> </span>from<span class="w"> </span><span class="m">79</span>.99<span class="w"> </span>GiB<span class="w"> </span><span class="o">(</span><span class="m">20478</span><span class="w"> </span>extents<span class="o">)</span><span class="w"> </span>to<span class="w"> </span><span class="m">159</span>.99<span class="w"> </span>GiB<span class="w"> </span><span class="o">(</span><span class="m">40958</span><span class="w"> </span>extents<span class="o">)</span>.
+Logical<span class="w"> </span>volume<span class="w"> </span>rhel/u01<span class="w"> </span>successfully<span class="w"> </span>resized.
+resize2fs<span class="w"> </span><span class="m">1</span>.45.4<span class="w"> </span><span class="o">(</span><span class="m">23</span>-Sep-2019<span class="o">)</span>
+Filesystem<span class="w"> </span>at<span class="w"> </span>/dev/mapper/rhel-u01<span class="w"> </span>is<span class="w"> </span>mounted<span class="w"> </span>on<span class="w"> </span>/u01<span class="p">;</span><span class="w"> </span>on-line<span class="w"> </span>resizing<span class="w"> </span>required
+<span class="nv">old_desc_blocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span>,<span class="w"> </span><span class="nv">new_desc_blocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span>
+The<span class="w"> </span>filesystem<span class="w"> </span>on<span class="w"> </span>/dev/mapper/rhel-u01<span class="w"> </span>is<span class="w"> </span>now<span class="w"> </span><span class="m">41940992</span><span class="w"> </span><span class="o">(</span>4k<span class="o">)</span><span class="w"> </span>blocks<span class="w"> </span>long.
+</code></pre></div></p>
 
 
 
