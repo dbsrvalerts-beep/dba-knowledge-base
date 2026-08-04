@@ -1,0 +1,1128 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Central repository for Oracle/PostgreSQL DBA documentation">
+      
+      
+      
+      
+        <link rel="prev" href="../LINUX%20FIREWALL%20PERMISSIONS/">
+      
+      
+        <link rel="next" href="../../POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Management%20Runbook/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>LVM Partition Management - DBA Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lvm-partition-management" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="DBA Knowledge Base" class="md-header__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DBA Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              LVM Partition Management
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="DBA Knowledge Base" class="md-nav__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    DBA Knowledge Base
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DBA Knowledge Base
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LINUX
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LINUX%20FIREWALL%20PERMISSIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Firewall Permissions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVM Partition Management
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVM Partition Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#managing-linux-partitions-lvm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Managing Linux Partitions (LVM)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Managing Linux Partitions (LVM)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-pvs-physical-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. PVS (Physical Volumes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-vgs-volume-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. VGS (Volume Groups)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-lvs-logical-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. LVS (Logical Volumes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extend-u02-partition-size-method-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extend /u02 Partition Size (Method 1)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extend-u02-partition-size-method-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extend /u02 Partition Size (Method 2)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remove-a-logical-volume" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remove a Logical Volume
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decrease-the-size-of-an-lvm-partition-requires-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decrease the Size of an LVM Partition (Requires Testing)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extending-primary-hard-disk-in-vm-100-gb-to-180-gb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extending Primary Hard Disk in VM (100 GB to 180 GB)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Extending Primary Hard Disk in VM (100 GB to 180 GB)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-check-if-growpart-is-available" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Check if growpart is available
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-grow-the-partition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Grow the partition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-resize-the-physical-volume" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Resize the physical volume
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-verify-the-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Verify the changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    POSTGRESQL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    POSTGRESQL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG SELFHOSTED DEPLOYMENT RUNBOOK
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PG SELFHOSTED DEPLOYMENT RUNBOOK
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Management%20Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL Selfhosted Deployment Management Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Technical%20Deployment%20Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL Selfhosted Technical Deployment Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#managing-linux-partitions-lvm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Managing Linux Partitions (LVM)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Managing Linux Partitions (LVM)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-pvs-physical-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. PVS (Physical Volumes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-vgs-volume-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. VGS (Volume Groups)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-lvs-logical-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. LVS (Logical Volumes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extend-u02-partition-size-method-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extend /u02 Partition Size (Method 1)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extend-u02-partition-size-method-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extend /u02 Partition Size (Method 2)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remove-a-logical-volume" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remove a Logical Volume
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decrease-the-size-of-an-lvm-partition-requires-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decrease the Size of an LVM Partition (Requires Testing)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extending-primary-hard-disk-in-vm-100-gb-to-180-gb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extending Primary Hard Disk in VM (100 GB to 180 GB)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Extending Primary Hard Disk in VM (100 GB to 180 GB)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-check-if-growpart-is-available" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Check if growpart is available
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-grow-the-partition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Grow the partition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-resize-the-physical-volume" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Resize the physical volume
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-verify-the-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Verify the changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lvm-partition-management">LVM Partition Management<a class="headerlink" href="#lvm-partition-management" title="Permanent link">&para;</a></h1>
+<h2 id="managing-linux-partitions-lvm">Managing Linux Partitions (LVM)<a class="headerlink" href="#managing-linux-partitions-lvm" title="Permanent link">&para;</a></h2>
+<p>In Linux, <code>pvs</code>, <code>vgs</code>, and <code>lvs</code> are commands used for managing and displaying information about the Logical Volume Manager (LVM) components.</p>
+<h3 id="1-pvs-physical-volumes">1. PVS (Physical Volumes)<a class="headerlink" href="#1-pvs-physical-volumes" title="Permanent link">&para;</a></h3>
+<p>The <code>pvs</code> command displays information about physical volumes. It provides a quick summary of the physical volumes in the system, showing details such as the physical volume name, volume group it belongs to, size, and status.</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="o">[</span>root@prd<span class="w"> </span>u02<span class="o">]</span><span class="c1"># pvs</span>
+PV<span class="w">             </span>VG<span class="w">   </span>Fmt<span class="w">  </span>Attr<span class="w"> </span>PSize<span class="w">   </span>PFree<span class="w"> </span>
+/dev/nvme0n1p3<span class="w"> </span>rhel<span class="w"> </span>lvm2<span class="w"> </span>a--<span class="w">   </span><span class="m">98</span>.99g<span class="w">     </span><span class="m">0</span><span class="w"> </span>
+/dev/nvme0n2<span class="w">   </span>psql<span class="w"> </span>lvm2<span class="w"> </span>a--<span class="w">  </span>&lt;<span class="m">15</span>.00g<span class="w"> </span><span class="m">96</span>.00m
+</code></pre></div></p>
+<h3 id="2-vgs-volume-groups">2. VGS (Volume Groups)<a class="headerlink" href="#2-vgs-volume-groups" title="Permanent link">&para;</a></h3>
+<p>Volume Groups are collections of physical volumes that create a pool of storage out of which logical volumes can be allocated.</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="o">[</span>root@prd<span class="w"> </span>u02<span class="o">]</span><span class="c1"># vgs</span>
+VG<span class="w">   </span><span class="c1">#PV #LV #SN Attr   VSize   VFree </span>
+psql<span class="w">   </span><span class="m">1</span><span class="w">   </span><span class="m">1</span><span class="w">   </span><span class="m">0</span><span class="w"> </span>wz--n-<span class="w"> </span>&lt;<span class="m">15</span>.00g<span class="w"> </span><span class="m">96</span>.00m
+</code></pre></div></p>
+<h3 id="3-lvs-logical-volumes">3. LVS (Logical Volumes)<a class="headerlink" href="#3-lvs-logical-volumes" title="Permanent link">&para;</a></h3>
+<p>Logical Volumes are the virtual block devices created from the volume groups' storage pool. Logical volumes can be resized, moved, and managed independently of the underlying physical storage, providing flexibility in managing disk space.</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><span class="o">[</span>root@prd<span class="w"> </span>u02<span class="o">]</span><span class="c1"># lvs</span>
+LV<span class="w">   </span>VG<span class="w">   </span>Attr<span class="w">       </span>LSize<span class="w">  </span>Pool<span class="w"> </span>Origin<span class="w"> </span>Data%<span class="w">  </span>Meta%<span class="w">  </span>Move<span class="w"> </span>Log<span class="w"> </span>Cpy%Sync<span class="w"> </span>Convert
+lv<span class="w">   </span>psql<span class="w"> </span>-wi-ao----<span class="w"> </span><span class="m">14</span>.90g<span class="w">                                                    </span>
+root<span class="w"> </span>rhel<span class="w"> </span>-wi-ao----<span class="w"> </span><span class="m">15</span>.00g<span class="w">                                                    </span>
+swap<span class="w"> </span>rhel<span class="w"> </span>-wi-ao----<span class="w">  </span><span class="m">4</span>.00g<span class="w">                                                    </span>
+u01<span class="w">  </span>rhel<span class="w"> </span>-wi-ao----<span class="w"> </span><span class="m">79</span>.99g<span class="w">  </span>
+</code></pre></div></p>
+<hr />
+<h2 id="extend-u02-partition-size-method-1">Extend <code>/u02</code> Partition Size (Method 1)<a class="headerlink" href="#extend-u02-partition-size-method-1" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Step 1:</strong> Check the existing physical volume:
+  <div class="highlight"><pre><span></span><code><span class="o">[</span>root@prd<span class="w"> </span>u02<span class="o">]</span><span class="c1"># pvs</span>
+PV<span class="w">             </span>VG<span class="w">   </span>Fmt<span class="w">  </span>Attr<span class="w"> </span>PSize<span class="w">   </span>PFree<span class="w"> </span>
+/dev/nvme0n1<span class="w">   </span>rhel<span class="w"> </span>lvm2<span class="w"> </span>a--<span class="w">   </span><span class="m">98</span>.99g<span class="w"> </span><span class="m">0</span>
+</code></pre></div></li>
+<li><strong>Step 2:</strong> Add a new Hard Disk of 10GB that will be mounted on <code>/u02</code>.</li>
+<li><strong>Step 3:</strong> Create a new Physical Volume:
+  <div class="highlight"><pre><span></span><code>pvcreate<span class="w"> </span>-v<span class="w"> </span>/dev/nvme0n2
+</code></pre></div></li>
+<li><strong>Step 4:</strong> Create a volume group:
+  <div class="highlight"><pre><span></span><code>vgcreate<span class="w"> </span>psql<span class="w"> </span>/dev/nvme0n2
+</code></pre></div></li>
+<li><strong>Step 5:</strong> Create a logical volume:
+  <div class="highlight"><pre><span></span><code>lvcreate<span class="w"> </span>-L<span class="w"> </span><span class="m">9</span>.9G<span class="w"> </span>-n<span class="w"> </span>lv<span class="w"> </span>psql
+</code></pre></div></li>
+<li><strong>Step 6:</strong> Format the logical volume:
+  <div class="highlight"><pre><span></span><code>mkfs.ext4<span class="w"> </span>/dev/psql/lv
+</code></pre></div></li>
+<li><strong>Step 7:</strong> Mount the logical volume to a new mount point <code>/u02</code>:
+  <div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>/u02
+mount<span class="w"> </span>/dev/psql/lv<span class="w"> </span>/u02
+</code></pre></div></li>
+<li><strong>Step 8:</strong> Make an entry in the <code>/etc/fstab</code> file.</li>
+<li><strong>Step 9:</strong> Add/Extend 5GB Hard Disk in the <code>/u02</code> mount point.</li>
+<li><strong>Step 10:</strong> Resize the existing Physical Volume:
+  <div class="highlight"><pre><span></span><code>pvresize<span class="w"> </span>/dev/nvme0n2
+</code></pre></div></li>
+<li><strong>Step 11:</strong> Extend the existing Logical Volume:
+  <div class="highlight"><pre><span></span><code>lvextend<span class="w"> </span>-L<span class="w"> </span>+5G<span class="w"> </span>-r<span class="w"> </span>/dev/psql/lv
+</code></pre></div></li>
+</ul>
+<hr />
+<h2 id="extend-u02-partition-size-method-2">Extend <code>/u02</code> Partition Size (Method 2)<a class="headerlink" href="#extend-u02-partition-size-method-2" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Step 1:</strong> Check the existing physical volume:
+  <div class="highlight"><pre><span></span><code><span class="o">[</span>root@prd<span class="w"> </span>u02<span class="o">]</span><span class="c1"># pvs</span>
+PV<span class="w">             </span>VG<span class="w">   </span>Fmt<span class="w">  </span>Attr<span class="w"> </span>PSize<span class="w">   </span>PFree<span class="w"> </span>
+/dev/nvme0n1<span class="w">   </span>rhel<span class="w"> </span>lvm2<span class="w"> </span>a--<span class="w">   </span><span class="m">98</span>.99g<span class="w"> </span><span class="m">0</span>
+</code></pre></div></li>
+<li><strong>Step 2:</strong> Add a new Hard Disk of 10GB that will be mounted on <code>/u02</code>.</li>
+<li><strong>Step 3:</strong> Create a new Physical Volume:
+  <div class="highlight"><pre><span></span><code>pvcreate<span class="w"> </span>-v<span class="w"> </span>/dev/nvme0n2
+</code></pre></div></li>
+<li><strong>Step 4:</strong> Create a volume group:
+  <div class="highlight"><pre><span></span><code>vgcreate<span class="w"> </span>psql<span class="w"> </span>/dev/nvme0n2
+</code></pre></div></li>
+<li><strong>Step 5:</strong> Create a logical volume:
+  <div class="highlight"><pre><span></span><code>lvcreate<span class="w"> </span>-L<span class="w"> </span><span class="m">9</span>.9G<span class="w"> </span>-n<span class="w"> </span>lv<span class="w"> </span>psql
+</code></pre></div></li>
+<li><strong>Step 6:</strong> Format the logical volume:
+  <div class="highlight"><pre><span></span><code>mkfs.ext4<span class="w"> </span>/dev/psql/lv
+</code></pre></div></li>
+<li><strong>Step 7:</strong> Mount the logical volume to a new mount point <code>/u02</code>:
+  <div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>/u02
+mount<span class="w"> </span>/dev/psql/lv<span class="w"> </span>/u02
+</code></pre></div></li>
+<li><strong>Step 8:</strong> Make an entry in the <code>/etc/fstab</code> file.</li>
+<li><strong>Step 9:</strong> Create a Physical Volume of the newly added hard disk:
+  <div class="highlight"><pre><span></span><code>pvcreate<span class="w"> </span>-v<span class="w"> </span>/dev/nvme0n3
+</code></pre></div></li>
+<li><strong>Step 10:</strong> Format the newly added physical volume:
+  <div class="highlight"><pre><span></span><code>mkfs.ext4<span class="w"> </span>/dev/nvme0n3
+</code></pre></div></li>
+<li><strong>Step 11:</strong> Extend 15GB Hard Disk to the <code>psql</code> Volume Group:
+  <div class="highlight"><pre><span></span><code>vgextend<span class="w"> </span>-v<span class="w"> </span>psql<span class="w"> </span>/dev/nvme0n3
+</code></pre></div></li>
+<li><strong>Step 12:</strong> Extend the Logical Volume:
+  <div class="highlight"><pre><span></span><code>lvextend<span class="w"> </span>-L<span class="w"> </span>+15G<span class="w"> </span>-r<span class="w"> </span>/dev/psql/lv
+</code></pre></div></li>
+</ul>
+<hr />
+<h2 id="remove-a-logical-volume">Remove a Logical Volume<a class="headerlink" href="#remove-a-logical-volume" title="Permanent link">&para;</a></h2>
+<p>To unmount and remove a logical volume:
+<div class="highlight"><pre><span></span><code>lsof<span class="w"> </span>+D<span class="w"> </span>/datafiles
+<span class="nb">kill</span><span class="w"> </span>-9<span class="w"> </span>&lt;PID&gt;
+umount<span class="w"> </span>/datafiles
+lvremove<span class="w"> </span>/dev/orclvg/lvdatafiles
+</code></pre></div></p>
+<hr />
+<h2 id="decrease-the-size-of-an-lvm-partition-requires-testing">Decrease the Size of an LVM Partition (Requires Testing)<a class="headerlink" href="#decrease-the-size-of-an-lvm-partition-requires-testing" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>lvresize<span class="w"> </span>-L<span class="w"> </span>&lt;NEW_SIZE&gt;<span class="w"> </span>/dev/volume-group/logical-volume
+</code></pre></div>
+<hr />
+<h2 id="extending-primary-hard-disk-in-vm-100-gb-to-180-gb">Extending Primary Hard Disk in VM (100 GB to 180 GB)<a class="headerlink" href="#extending-primary-hard-disk-in-vm-100-gb-to-180-gb" title="Permanent link">&para;</a></h2>
+<p>Since the OS is installed on this disk (<code>/dev/nvme0n1</code>), and <code>/dev/nvme0n1p3</code> is part of the root volume group (<code>rhel</code>), you cannot delete and recreate partitions casually — that would be risky and could lead to data loss or a non-bootable system.</p>
+<p>However, we can safely resize the partition without deleting anything using <code>growpart</code>, assuming free space is available after <code>/dev/nvme0n1p3</code>.</p>
+<h3 id="1-check-if-growpart-is-available">1. Check if <code>growpart</code> is available<a class="headerlink" href="#1-check-if-growpart-is-available" title="Permanent link">&para;</a></h3>
+<p>Install the <code>cloud-utils-growpart</code> package if it's not already installed:
+<div class="highlight"><pre><span></span><code>yum<span class="w"> </span>install<span class="w"> </span>cloud-utils-growpart<span class="w"> </span>-y
+</code></pre></div></p>
+<h3 id="2-grow-the-partition">2. Grow the partition<a class="headerlink" href="#2-grow-the-partition" title="Permanent link">&para;</a></h3>
+<p>Now run:
+<div class="highlight"><pre><span></span><code>growpart<span class="w"> </span>/dev/nvme0n1<span class="w"> </span><span class="m">3</span>
+</code></pre></div>
+This will resize partition 3 (<code>nvme0n1p3</code>) to use all remaining unallocated space on the disk — without deleting or touching any data.</p>
+<h3 id="3-resize-the-physical-volume">3. Resize the physical volume<a class="headerlink" href="#3-resize-the-physical-volume" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code>pvresize<span class="w"> </span>/dev/nvme0n1p3
+</code></pre></div>
+<em>(Note: If you do not need to resize the PV, you can just extend the required LV directly.)</em></p>
+<h3 id="4-verify-the-changes">4. Verify the changes<a class="headerlink" href="#4-verify-the-changes" title="Permanent link">&para;</a></h3>
+<p>Run verification commands:
+<div class="highlight"><pre><span></span><code>pvs
+vgs
+</code></pre></div></p>
+<p><strong>Example output after partition extension:</strong>
+<div class="highlight"><pre><span></span><code><span class="o">[</span>root@RSBDB<span class="w"> </span>~<span class="o">]</span><span class="c1"># pvs</span>
+PV<span class="w">             </span>VG<span class="w">   </span>Fmt<span class="w">  </span>Attr<span class="w"> </span>PSize<span class="w">    </span>PFree<span class="w">  </span>
+/dev/nvme0n1p3<span class="w"> </span>rhel<span class="w"> </span>lvm2<span class="w"> </span>a--<span class="w">  </span><span class="m">178</span>.99g<span class="w">  </span><span class="m">80</span>.00g<span class="w"> </span>
+
+<span class="o">[</span>root@RSBDB<span class="w"> </span>~<span class="o">]</span><span class="c1"># vgs</span>
+VG<span class="w">   </span><span class="c1">#PV #LV #SN Attr   VSize    VFree  </span>
+rhel<span class="w">   </span><span class="m">1</span><span class="w">   </span><span class="m">3</span><span class="w">   </span><span class="m">0</span><span class="w"> </span>wz--n-<span class="w"> </span><span class="m">178</span>.99g<span class="w">  </span><span class="m">80</span>.00g<span class="w"> </span>
+
+<span class="o">[</span>root@RSBDB<span class="w"> </span>~<span class="o">]</span><span class="c1"># lvs</span>
+LV<span class="w">   </span>VG<span class="w">   </span>Attr<span class="w">       </span>LSize<span class="w">   </span>Pool<span class="w"> </span>Origin<span class="w"> </span>Data%<span class="w">  </span>Meta%<span class="w">  </span>Move<span class="w"> </span>Log<span class="w"> </span>Cpy%Sync<span class="w"> </span>Convert
+root<span class="w"> </span>rhel<span class="w"> </span>-wi-ao----<span class="w">  </span><span class="m">15</span>.00g<span class="w">                                                    </span>
+swap<span class="w"> </span>rhel<span class="w"> </span>-wi-ao----<span class="w">   </span><span class="m">4</span>.00g<span class="w">                                                    </span>
+u01<span class="w">  </span>rhel<span class="w"> </span>-wi-ao----<span class="w">  </span><span class="m">79</span>.99g<span class="w">                                                    </span>
+
+<span class="o">[</span>root@RSBDB<span class="w"> </span>~<span class="o">]</span><span class="c1"># lvextend -L +80G -r /dev/rhel/u01</span>
+Size<span class="w"> </span>of<span class="w"> </span>logical<span class="w"> </span>volume<span class="w"> </span>rhel/u01<span class="w"> </span>changed<span class="w"> </span>from<span class="w"> </span><span class="m">79</span>.99<span class="w"> </span>GiB<span class="w"> </span><span class="o">(</span><span class="m">20478</span><span class="w"> </span>extents<span class="o">)</span><span class="w"> </span>to<span class="w"> </span><span class="m">159</span>.99<span class="w"> </span>GiB<span class="w"> </span><span class="o">(</span><span class="m">40958</span><span class="w"> </span>extents<span class="o">)</span>.
+Logical<span class="w"> </span>volume<span class="w"> </span>rhel/u01<span class="w"> </span>successfully<span class="w"> </span>resized.
+resize2fs<span class="w"> </span><span class="m">1</span>.45.4<span class="w"> </span><span class="o">(</span><span class="m">23</span>-Sep-2019<span class="o">)</span>
+Filesystem<span class="w"> </span>at<span class="w"> </span>/dev/mapper/rhel-u01<span class="w"> </span>is<span class="w"> </span>mounted<span class="w"> </span>on<span class="w"> </span>/u01<span class="p">;</span><span class="w"> </span>on-line<span class="w"> </span>resizing<span class="w"> </span>required
+<span class="nv">old_desc_blocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span>,<span class="w"> </span><span class="nv">new_desc_blocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span>
+The<span class="w"> </span>filesystem<span class="w"> </span>on<span class="w"> </span>/dev/mapper/rhel-u01<span class="w"> </span>is<span class="w"> </span>now<span class="w"> </span><span class="m">41940992</span><span class="w"> </span><span class="o">(</span>4k<span class="o">)</span><span class="w"> </span>blocks<span class="w"> </span>long.
+</code></pre></div></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
