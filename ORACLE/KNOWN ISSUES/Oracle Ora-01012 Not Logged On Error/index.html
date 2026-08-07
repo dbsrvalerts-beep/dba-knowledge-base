@@ -25,7 +25,7 @@
     
     
       
-        <title>Oracle Ora 01012 Not Logged On Error - DBA Knowledge Base</title>
+        <title>Oracle Ora-01012: Not Logged On Error - DBA Knowledge Base</title>
       
     
     
@@ -73,6 +73,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#oracle-ora-01012-not-logged-on-error" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -105,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Oracle Ora 01012 Not Logged On Error
+              Oracle Ora-01012: Not Logged On Error
             
           </span>
         </div>
@@ -693,7 +698,7 @@
   <span class="md-ellipsis">
     
   
-    Oracle Database Incarnation (ORA 19909)
+    Oracle Database Incarnation (ORA-19909)
   
 
     
@@ -721,7 +726,7 @@
   <span class="md-ellipsis">
     
   
-    Oracle Database Lost Write Recovery (ORA 00742,ORA 00312)
+    Oracle Database Lost Write Recovery (ORA-00742,ORA-00312)
   
 
     
@@ -749,7 +754,7 @@
   <span class="md-ellipsis">
     
   
-    Oracle Datafile Corruption Issue (ORA 00600)
+    Oracle Datafile Corruption Issue (ORA-00600)
   
 
     
@@ -805,7 +810,7 @@
   <span class="md-ellipsis">
     
   
-    Oracle Datapump Slowness(Scenario 2)
+    Oracle Datapump Slowness (Scenario 2)
   
 
     
@@ -860,6 +865,26 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Ora-01012: Not Logged On Error
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -868,7 +893,7 @@
   <span class="md-ellipsis">
     
   
-    Oracle Ora 01012 Not Logged On Error
+    Oracle Ora-01012: Not Logged On Error
   
 
     
@@ -877,6 +902,152 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-try-to-start-the-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Try to start the database.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-disconnect-from-sqlplus-and-run-the-command-sysresv-on-linux-terminal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Disconnect from sqlplus and run the command sysresv on Linux terminal:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-identify-the-list-of-shared-memory-processes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Identify the list of shared memory processes.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-kill-all-shared-memory-processes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Kill all Shared Memory processes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-connect-to-sqlplus-and-startup-the-database-again" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Connect to sqlplus and startup the database again
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Note:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-instance-will-start-but-database-would-not-go-to-mount-stage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The instance will start but database would not go to mount stage.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ora-01102-occurs-when-you-are-mounting-opening-a-database-and-another-instance-is-already-opened-in-parallel-exclusive-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ORA-01102 occurs when you are mounting (opening) a database and another instance is already opened in parallel (exclusive) mode.
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ORA-01102 occurs when you are mounting (opening) a database and another instance is already opened in parallel (exclusive) mode.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-6-disconnect-from-sqlplus-and-run-the-following-command-to-identify-already-running-oracle-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: Disconnect from sqlplus and run the following command to identify already running oracle process:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-kill-ora_smon_ginesys-process-using-the-following-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7: Kill ora_smon_GINESYS process using the following command:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-8-startup-the-database-again" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 8: Startup the database again
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1163,6 +1334,143 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-try-to-start-the-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Try to start the database.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-disconnect-from-sqlplus-and-run-the-command-sysresv-on-linux-terminal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Disconnect from sqlplus and run the command sysresv on Linux terminal:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-identify-the-list-of-shared-memory-processes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Identify the list of shared memory processes.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-kill-all-shared-memory-processes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Kill all Shared Memory processes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-connect-to-sqlplus-and-startup-the-database-again" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Connect to sqlplus and startup the database again
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Note:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-instance-will-start-but-database-would-not-go-to-mount-stage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The instance will start but database would not go to mount stage.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ora-01102-occurs-when-you-are-mounting-opening-a-database-and-another-instance-is-already-opened-in-parallel-exclusive-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ORA-01102 occurs when you are mounting (opening) a database and another instance is already opened in parallel (exclusive) mode.
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ORA-01102 occurs when you are mounting (opening) a database and another instance is already opened in parallel (exclusive) mode.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-6-disconnect-from-sqlplus-and-run-the-following-command-to-identify-already-running-oracle-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: Disconnect from sqlplus and run the following command to identify already running oracle process:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-kill-ora_smon_ginesys-process-using-the-following-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7: Kill ora_smon_GINESYS process using the following command:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-8-startup-the-database-again" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 8: Startup the database again
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1179,9 +1487,7 @@
 
 
 
-  <h1>Oracle Ora 01012 Not Logged On Error</h1>
-
-<p><strong>Oracle Ora-01012: Not Logged On Error</strong></p>
+<h1 id="oracle-ora-01012-not-logged-on-error">Oracle Ora-01012: Not Logged On Error<a class="headerlink" href="#oracle-ora-01012-not-logged-on-error" title="Permanent link">&para;</a></h1>
 <ol>
 <li><strong>Potential Causes</strong></li>
 </ol>
@@ -1209,40 +1515,38 @@
 <p><strong>Steps for resolving ORA-01012</strong></p>
 </li>
 </ul>
-<p><strong>Step1:</strong> Try to start the database.</p>
+<h3 id="step-1-try-to-start-the-database">Step 1: Try to start the database.<a class="headerlink" href="#step-1-try-to-start-the-database" title="Permanent link">&para;</a></h3>
 <p><strong><img alt="image-20230907-101316" src="../images/oracle-ora-01012-not-logged-on-error/image-20230907-101316.png" /></strong></p>
 <p>Error Log while starting database.</p>
 <div class="highlight"><pre><span></span><code><span class="n">ORA</span><span class="o">-</span><span class="mi">01012</span><span class="p">:</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">logged</span><span class="w"> </span><span class="k">on</span>
 <span class="n">Process</span><span class="w"> </span><span class="n">ID</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
 <span class="k">Session</span><span class="w"> </span><span class="n">ID</span><span class="p">:</span><span class="w"> </span><span class="nb">Serial</span><span class="w"> </span><span class="nb">number</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
 </code></pre></div>
-<p><strong>Step2:</strong> Disconnect from sqlplus and run the command <strong>sysresv</strong> on Linux terminal:</p>
+<h3 id="step-2-disconnect-from-sqlplus-and-run-the-command-sysresv-on-linux-terminal">Step 2: Disconnect from sqlplus and run the command <strong>sysresv</strong> on Linux terminal:<a class="headerlink" href="#step-2-disconnect-from-sqlplus-and-run-the-command-sysresv-on-linux-terminal" title="Permanent link">&para;</a></h3>
 <p><strong><img alt="image-20230907-101839" src="../images/oracle-ora-01012-not-logged-on-error/image-20230907-101839.png" /></strong></p>
-<p><strong>Step 3:</strong> Identify the list of shared memory processes.</p>
+<h3 id="step-3-identify-the-list-of-shared-memory-processes">Step 3: Identify the list of shared memory processes.<a class="headerlink" href="#step-3-identify-the-list-of-shared-memory-processes" title="Permanent link">&para;</a></h3>
 <p><strong><img alt="image-20230911-080848" src="../images/oracle-ora-01012-not-logged-on-error/image-20230911-080848.png" /></strong></p>
-<p><strong>Step4:</strong> Kill all Shared Memory processes</p>
+<h3 id="step-4-kill-all-shared-memory-processes">Step 4: Kill all Shared Memory processes<a class="headerlink" href="#step-4-kill-all-shared-memory-processes" title="Permanent link">&para;</a></h3>
 <p>To kill these sessions run the following command:
 <div class="highlight"><pre><span></span><code>ipcrm<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;ID&quot;</span>
 </code></pre></div>
 <strong><img alt="image-20230907-102844" src="../images/oracle-ora-01012-not-logged-on-error/image-20230907-102844.png" /></strong></p>
-<p><strong>Step5:</strong> Connect to sqlplus and startup the database again</p>
+<h3 id="step-5-connect-to-sqlplus-and-startup-the-database-again">Step 5: Connect to sqlplus and startup the database again<a class="headerlink" href="#step-5-connect-to-sqlplus-and-startup-the-database-again" title="Permanent link">&para;</a></h3>
 <p><strong><img alt="image-20230907-103026" src="../images/oracle-ora-01012-not-logged-on-error/image-20230907-103026.png" /></strong></p>
-<p><strong><em>Note:</em></strong></p>
-<ul>
-<li><strong>The instance will start but database would not go to mount stage.</strong>
+<h2 id="note"><em>Note:</em><a class="headerlink" href="#note" title="Permanent link">&para;</a></h2>
+<h2 id="the-instance-will-start-but-database-would-not-go-to-mount-stage">The instance will start but database would not go to mount stage.<a class="headerlink" href="#the-instance-will-start-but-database-would-not-go-to-mount-stage" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="n">error</span><span class="p">:</span><span class="w"> </span><span class="n">ORA</span><span class="o">-</span><span class="mi">01102</span><span class="p">:</span><span class="w"> </span><span class="n">cannot</span><span class="w"> </span><span class="n">mount</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">EXCLUSIVE</span><span class="w"> </span><span class="k">mode</span><span class="p">.</span>
-</code></pre></div></li>
-<li><strong>ORA-01102 occurs when you are mounting (opening) a database and another instance is already opened in parallel (exclusive) mode.</strong></li>
-</ul>
-<p><strong>Step6:</strong> Disconnect from sqlplus and run the following command to identify already running oracle process:
+</code></pre></div>
+<h2 id="ora-01102-occurs-when-you-are-mounting-opening-a-database-and-another-instance-is-already-opened-in-parallel-exclusive-mode">ORA-01102 occurs when you are mounting (opening) a database and another instance is already opened in parallel (exclusive) mode.<a class="headerlink" href="#ora-01102-occurs-when-you-are-mounting-opening-a-database-and-another-instance-is-already-opened-in-parallel-exclusive-mode" title="Permanent link">&para;</a></h2>
+<h3 id="step-6-disconnect-from-sqlplus-and-run-the-following-command-to-identify-already-running-oracle-process">Step 6: Disconnect from sqlplus and run the following command to identify already running oracle process:<a class="headerlink" href="#step-6-disconnect-from-sqlplus-and-run-the-following-command-to-identify-already-running-oracle-process" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>ps<span class="w"> </span>-ef<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>smon
-</code></pre></div></p>
+</code></pre></div>
 <p><strong><img alt="image-20230907-103656" src="../images/oracle-ora-01012-not-logged-on-error/image-20230907-103656.png" /></strong></p>
-<p><strong>Step7:</strong> Kill ora_smon_GINESYS process using the following command:
+<h3 id="step-7-kill-ora_smon_ginesys-process-using-the-following-command">Step 7: Kill ora_smon_GINESYS process using the following command:<a class="headerlink" href="#step-7-kill-ora_smon_ginesys-process-using-the-following-command" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nb">kill</span><span class="w"> </span>-9<span class="w"> </span>&lt;PID&gt;
-</code></pre></div></p>
+</code></pre></div>
 <p><strong><img alt="image-20230907-103803" src="../images/oracle-ora-01012-not-logged-on-error/image-20230907-103803.png" /></strong></p>
-<p><strong>Step8:</strong> Startup the database again</p>
+<h3 id="step-8-startup-the-database-again">Step 8: Startup the database again<a class="headerlink" href="#step-8-startup-the-database-again" title="Permanent link">&para;</a></h3>
 <p><strong><img alt="image-20230907-103934" src="../images/oracle-ora-01012-not-logged-on-error/image-20230907-103934.png" /></strong></p>
 <p><strong>Conclusion:</strong> This document discussed the ORA-01012 error in Oracle. Causes include database problems, memory issues, crash and file permission changes. The solution involves using sysresv to remove orphaned shared memory and restarting the database.</p>
 

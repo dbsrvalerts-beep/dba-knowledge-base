@@ -25,7 +25,7 @@
     
     
       
-        <title>Oracle Database Incarnation (ORA 19909) - DBA Knowledge Base</title>
+        <title>Oracle Database Incarnation (ORA-19909) - DBA Knowledge Base</title>
       
     
     
@@ -73,6 +73,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#oracle-database-incarnation-ora-19909" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -105,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Oracle Database Incarnation (ORA 19909)
+              Oracle Database Incarnation (ORA-19909)
             
           </span>
         </div>
@@ -692,6 +697,26 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Incarnation (ORA-19909)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -700,7 +725,7 @@
   <span class="md-ellipsis">
     
   
-    Oracle Database Incarnation (ORA 19909)
+    Oracle Database Incarnation (ORA-19909)
   
 
     
@@ -709,6 +734,141 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cause-of-ora-19909-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause of ORA-19909 error
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Note:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#action-on-the-ora-19909-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Action on the ORA-19909 error
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#removing-orphan-entries-from-incarnation-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Removing orphan Entries from Incarnation (Optional)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Removing orphan Entries from Incarnation (Optional)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-first-make-a-backup-of-your-current-control-file-both-binary-and-trace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: First, make a backup of your current control file (both binary and trace):
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-shutdown-and-put-your-database-in-nomount-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: shutdown and put your database in nomount mode:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-using-contents-of-trace-control-file-text-recreate-the-control-file-using-the-noresetlogs-case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Using contents of trace control file text, recreate the control file using the NORESETLOGS case:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-no-recovery-is-needed-as-db-is-shutdown-gracefully" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: No recovery is needed as DB is shutdown gracefully:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-open-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Open Database
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-recheck-database-incarnation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: Recheck database incarnation.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -729,7 +889,7 @@
   <span class="md-ellipsis">
     
   
-    Oracle Database Lost Write Recovery (ORA 00742,ORA 00312)
+    Oracle Database Lost Write Recovery (ORA-00742,ORA-00312)
   
 
     
@@ -757,7 +917,7 @@
   <span class="md-ellipsis">
     
   
-    Oracle Datafile Corruption Issue (ORA 00600)
+    Oracle Datafile Corruption Issue (ORA-00600)
   
 
     
@@ -813,7 +973,7 @@
   <span class="md-ellipsis">
     
   
-    Oracle Datapump Slowness(Scenario 2)
+    Oracle Datapump Slowness (Scenario 2)
   
 
     
@@ -869,7 +1029,7 @@
   <span class="md-ellipsis">
     
   
-    Oracle Ora 01012 Not Logged On Error
+    Oracle Ora-01012: Not Logged On Error
   
 
     
@@ -1163,6 +1323,132 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cause-of-ora-19909-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause of ORA-19909 error
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Note:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#action-on-the-ora-19909-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Action on the ORA-19909 error
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#removing-orphan-entries-from-incarnation-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Removing orphan Entries from Incarnation (Optional)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Removing orphan Entries from Incarnation (Optional)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-first-make-a-backup-of-your-current-control-file-both-binary-and-trace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: First, make a backup of your current control file (both binary and trace):
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-shutdown-and-put-your-database-in-nomount-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: shutdown and put your database in nomount mode:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-using-contents-of-trace-control-file-text-recreate-the-control-file-using-the-noresetlogs-case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Using contents of trace control file text, recreate the control file using the NORESETLOGS case:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-no-recovery-is-needed-as-db-is-shutdown-gracefully" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: No recovery is needed as DB is shutdown gracefully:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-open-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Open Database
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-recheck-database-incarnation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: Recheck database incarnation.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1179,9 +1465,7 @@
 
 
 
-  <h1>Oracle Database Incarnation (ORA 19909)</h1>
-
-<p><strong>Oracle Database Incarnation (ORA-19909)</strong></p>
+<h1 id="oracle-database-incarnation-ora-19909">Oracle Database Incarnation (ORA-19909)<a class="headerlink" href="#oracle-database-incarnation-ora-19909" title="Permanent link">&para;</a></h1>
 <p><strong>Scenario:</strong> received ORA-19909 error when recovering a database on the backup server.</p>
 <div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">recover</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">backup</span><span class="w"> </span><span class="n">controlfile</span><span class="w"> </span><span class="k">until</span><span class="w"> </span><span class="n">cancel</span><span class="p">;</span>
 <span class="n">ORA</span><span class="o">-</span><span class="mi">00283</span><span class="p">:</span><span class="w"> </span><span class="n">recovery</span><span class="w"> </span><span class="k">session</span><span class="w"> </span><span class="n">canceled</span><span class="w"> </span><span class="n">due</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">errors</span>
@@ -1189,7 +1473,7 @@
 <span class="n">ORA</span><span class="o">-</span><span class="mi">01110</span><span class="p">:</span><span class="w"> </span><span class="k">data</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/system01.dbf&#39;</span>
 </code></pre></div>
 <p><strong><img alt="image-20230819-054215" src="../images/oracle-database-incarnation-ora-19909/image-20230819-054215.png" /></strong></p>
-<p><strong>Cause of ORA-19909 error</strong></p>
+<h2 id="cause-of-ora-19909-error">Cause of ORA-19909 error<a class="headerlink" href="#cause-of-ora-19909-error" title="Permanent link">&para;</a></h2>
 <p>Oracle cannot identify which database incarnation the file belongs to. The alert log contains more information.</p>
 <p>This backup file was taken from the production server and restoration was performed on the backup server.</p>
 <p>Check the Database Incarnation of the system on which restoration is performed.</p>
@@ -1201,11 +1485,11 @@
 <div class="highlight"><pre><span></span><code><span class="n">RMAN</span><span class="o">&gt;</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="n">incarnation</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">database</span><span class="p">;</span>
 </code></pre></div>
 <p><strong><img alt="image-20230819-054652" src="../images/oracle-database-incarnation-ora-19909/image-20230819-054652.png" /></strong></p>
-<p><strong>Note:</strong></p>
+<h2 id="note">Note:<a class="headerlink" href="#note" title="Permanent link">&para;</a></h2>
 <p>(a) Current incarnation on backup system and production system are different.</p>
 <p>(b) Production server has current incarnation of 2 with Reset SCN as 1589928 while backup database has incarnation of 3 with Reset SCN as 40968356978.</p>
 <p>(c) In simple words the backup on production server was taken when incarnation of database was 2. Same backup was tried to restore on backup database which has incarnation of 3.</p>
-<p><strong>Action on the ORA-19909 error</strong></p>
+<h2 id="action-on-the-ora-19909-error">Action on the ORA-19909 error<a class="headerlink" href="#action-on-the-ora-19909-error" title="Permanent link">&para;</a></h2>
 <p>Restore a backup file that belongs to either the current or a prior incarnation of the database. If you are using RMAN to restore, RMAN will automatically select the correct backup.</p>
 <p>Production database has incarnation 2 at the time of backup, make incarnation of backup database to 2.</p>
 <p>Connect to RMAN on the backup database and reset incarnation to 2.</p>
@@ -1216,16 +1500,16 @@
 <div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">recover</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">backup</span><span class="w"> </span><span class="n">controlfile</span><span class="w"> </span><span class="k">until</span><span class="w"> </span><span class="n">cancel</span><span class="p">;</span>
 </code></pre></div>
 <p><strong><img alt="image-20230911-080040" src="../images/oracle-database-incarnation-ora-19909/image-20230911-080040.png" /></strong></p>
-<p><strong>Removing orphan Entries from Incarnation (Optional)</strong></p>
+<h2 id="removing-orphan-entries-from-incarnation-optional">Removing orphan Entries from Incarnation (Optional)<a class="headerlink" href="#removing-orphan-entries-from-incarnation-optional" title="Permanent link">&para;</a></h2>
 <p>Once the restoration system is set to Incarnation 2 we do not require Incarnation 3 anymore.</p>
 <p>Steps to remove entry from Incarnation List:</p>
-<p><strong>Step1:</strong> First, make a backup of your current control file (both binary and trace):</p>
+<h3 id="step-1-first-make-a-backup-of-your-current-control-file-both-binary-and-trace">Step 1: First, make a backup of your current control file (both binary and trace):<a class="headerlink" href="#step-1-first-make-a-backup-of-your-current-control-file-both-binary-and-trace" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">backup</span><span class="w"> </span><span class="n">controlfile</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">trace</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="s1">&#39;/u01/control.txt&#39;</span><span class="p">;</span>
 <span class="k">Database</span><span class="w"> </span><span class="n">altered</span>
 <span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">backup</span><span class="w"> </span><span class="n">controlfile</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="s1">&#39;/u01/control.ctl&#39;</span><span class="p">;</span>
 <span class="k">Database</span><span class="w"> </span><span class="n">altered</span>
 </code></pre></div>
-<p><strong>Step2:</strong> shutdown and put your database in nomount mode:</p>
+<h3 id="step-2-shutdown-and-put-your-database-in-nomount-mode">Step 2: shutdown and put your database in nomount mode:<a class="headerlink" href="#step-2-shutdown-and-put-your-database-in-nomount-mode" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">shutdown</span><span class="w"> </span><span class="k">immediate</span><span class="p">;</span>
 <span class="k">Database</span><span class="w"> </span><span class="n">closed</span><span class="p">.</span>
 <span class="k">Database</span><span class="w"> </span><span class="n">dismounted</span><span class="p">.</span>
@@ -1238,7 +1522,7 @@
 <span class="k">Database</span><span class="w"> </span><span class="n">Buffers</span><span class="w"> </span><span class="mi">247463936</span><span class="w"> </span><span class="n">bytes</span>
 <span class="n">Redo</span><span class="w"> </span><span class="n">Buffers</span><span class="w"> </span><span class="mi">5627904</span><span class="w"> </span><span class="n">bytes</span>
 </code></pre></div>
-<p><strong>Step3:</strong> Using contents of trace control file text, recreate the control file using the NORESETLOGS case:</p>
+<h3 id="step-3-using-contents-of-trace-control-file-text-recreate-the-control-file-using-the-noresetlogs-case">Step 3: Using contents of trace control file text, recreate the control file using the NORESETLOGS case:<a class="headerlink" href="#step-3-using-contents-of-trace-control-file-text-recreate-the-control-file-using-the-noresetlogs-case" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="n">CONTROLFILE</span><span class="w"> </span><span class="n">REUSE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="ss">&quot;GINESYS&quot;</span><span class="w"> </span><span class="n">NORESETLOGS</span><span class="w"> </span><span class="n">ARCHIVELOG</span>
 <span class="n">MAXLOGFILES</span><span class="w"> </span><span class="mi">16</span>
 <span class="n">MAXLOGMEMBERS</span><span class="w"> </span><span class="mi">3</span>
@@ -1286,17 +1570,17 @@
 <span class="s1">&#39;/u01/Oracle/oradata/GINESYS/INDX02&#39;</span>
 <span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">WE8MSWIN1252</span><span class="p">;</span>
 </code></pre></div>
-<p><strong>Step4:</strong> No recovery is needed as DB is shutdown gracefully:</p>
+<h3 id="step-4-no-recovery-is-needed-as-db-is-shutdown-gracefully">Step 4: No recovery is needed as DB is shutdown gracefully:<a class="headerlink" href="#step-4-no-recovery-is-needed-as-db-is-shutdown-gracefully" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">RECOVER</span><span class="w"> </span><span class="k">DATABASE</span><span class="p">;</span>
 <span class="n">ORA</span><span class="o">-</span><span class="mi">00283</span><span class="p">:</span><span class="w"> </span><span class="n">recovery</span><span class="w"> </span><span class="k">session</span><span class="w"> </span><span class="n">canceled</span><span class="w"> </span><span class="n">due</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">errors</span>
 <span class="n">ORA</span><span class="o">-</span><span class="mi">00264</span><span class="p">:</span><span class="w"> </span><span class="k">no</span><span class="w"> </span><span class="n">recovery</span><span class="w"> </span><span class="n">required</span>
 </code></pre></div>
-<p><strong>Step5:</strong> Open Database</p>
+<h3 id="step-5-open-database">Step 5: Open Database<a class="headerlink" href="#step-5-open-database" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">open</span><span class="p">;</span>
 <span class="k">Database</span><span class="w"> </span><span class="n">altered</span><span class="p">.</span>
 </code></pre></div>
 <p><strong>Note:</strong> Don't forget to also recreate any temporary tablespace datafile from control file trace text, set up the default RMAN configurations or to re-catalog any other information that is kept in control file.</p>
-<p><strong>Step 6:</strong> Recheck database incarnation.</p>
+<h3 id="step-6-recheck-database-incarnation">Step 6: Recheck database incarnation.<a class="headerlink" href="#step-6-recheck-database-incarnation" title="Permanent link">&para;</a></h3>
 <p><strong>Conclusion:</strong> By systematically addressing the causes and actions related to the ORA-19909 error, you can ensure a successful recovery process and maintain the integrity of your database environment. Proactive measures such as aligning database incarnations and meticulous recovery procedures contribute to a robust and dependable database management approach.</p>
 
 

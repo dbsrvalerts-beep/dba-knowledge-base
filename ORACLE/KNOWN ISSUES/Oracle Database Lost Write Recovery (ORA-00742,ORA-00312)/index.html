@@ -25,7 +25,7 @@
     
     
       
-        <title>Oracle Database Lost Write Recovery (ORA 00742,ORA 00312) - DBA Knowledge Base</title>
+        <title>Oracle Database Lost Write Recovery (ORA-00742,ORA-00312) - DBA Knowledge Base</title>
       
     
     
@@ -73,6 +73,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#oracle-database-lost-write-recovery-ora-00742ora-00312" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -105,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Oracle Database Lost Write Recovery (ORA 00742,ORA 00312)
+              Oracle Database Lost Write Recovery (ORA-00742,ORA-00312)
             
           </span>
         </div>
@@ -693,7 +698,7 @@
   <span class="md-ellipsis">
     
   
-    Oracle Database Incarnation (ORA 19909)
+    Oracle Database Incarnation (ORA-19909)
   
 
     
@@ -720,6 +725,26 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Lost Write Recovery (ORA-00742,ORA-00312)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -728,7 +753,7 @@
   <span class="md-ellipsis">
     
   
-    Oracle Database Lost Write Recovery (ORA 00742,ORA 00312)
+    Oracle Database Lost Write Recovery (ORA-00742,ORA-00312)
   
 
     
@@ -737,6 +762,108 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solution:
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Solution:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-open-the-database-in-the-mount-stage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Open the database in the mount stage.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-check-the-status-of-the-redo-log-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Check the status of the redo log files.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-start-database-recovery-using-the-following-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Start database recovery using the following command:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-mention-the-path-for-redo02log-file-when-specifying-recovery-sequence-134-requires-recovery-and-redo02log-file-contains-that-sequence-reference-vlog-view-for-sequence-column" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Mention the path for REDO02.LOG file when specifying recovery. Sequence 134 requires recovery and REDO02.LOG file contains that sequence. (reference v\$log view for sequence# column)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-once-the-recovery-is-complete-open-the-database-with-the-resetlogs-option" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Once the recovery is complete, open the database with the "RESETLOGS" option.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-lost-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understanding Lost Write
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -757,7 +884,7 @@
   <span class="md-ellipsis">
     
   
-    Oracle Datafile Corruption Issue (ORA 00600)
+    Oracle Datafile Corruption Issue (ORA-00600)
   
 
     
@@ -813,7 +940,7 @@
   <span class="md-ellipsis">
     
   
-    Oracle Datapump Slowness(Scenario 2)
+    Oracle Datapump Slowness (Scenario 2)
   
 
     
@@ -869,7 +996,7 @@
   <span class="md-ellipsis">
     
   
-    Oracle Ora 01012 Not Logged On Error
+    Oracle Ora-01012: Not Logged On Error
   
 
     
@@ -1163,6 +1290,99 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solution:
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Solution:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-open-the-database-in-the-mount-stage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Open the database in the mount stage.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-check-the-status-of-the-redo-log-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Check the status of the redo log files.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-start-database-recovery-using-the-following-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Start database recovery using the following command:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-mention-the-path-for-redo02log-file-when-specifying-recovery-sequence-134-requires-recovery-and-redo02log-file-contains-that-sequence-reference-vlog-view-for-sequence-column" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Mention the path for REDO02.LOG file when specifying recovery. Sequence 134 requires recovery and REDO02.LOG file contains that sequence. (reference v\$log view for sequence# column)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-once-the-recovery-is-complete-open-the-database-with-the-resetlogs-option" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Once the recovery is complete, open the database with the "RESETLOGS" option.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-lost-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understanding Lost Write
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1179,9 +1399,7 @@
 
 
 
-  <h1>Oracle Database Lost Write Recovery (ORA 00742,ORA 00312)</h1>
-
-<p><strong>Oracle Database Lost Write Recovery (ORA-00742,ORA-00312)</strong></p>
+<h1 id="oracle-database-lost-write-recovery-ora-00742ora-00312">Oracle Database Lost Write Recovery (ORA-00742,ORA-00312)<a class="headerlink" href="#oracle-database-lost-write-recovery-ora-00742ora-00312" title="Permanent link">&para;</a></h1>
 <ul>
 <li><strong>Scenario:</strong> While opening the database in READ/WRITE mode following error messages were received:</li>
 </ul>
@@ -1191,24 +1409,22 @@
 
 <span class="n">ORA</span><span class="o">-</span><span class="mi">00312</span><span class="p">:</span><span class="w"> </span><span class="n">online</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">thread</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;D:\\ORACLE\\ORADATA\\TEST\\REDO02.LOG&#39;</span>
 </code></pre></div>
-<ul>
-<li><strong>Solution:</strong></li>
-</ul>
-<p>Step 1: Open the database in the mount stage.</p>
+<h2 id="solution">Solution:<a class="headerlink" href="#solution" title="Permanent link">&para;</a></h2>
+<h3 id="step-1-open-the-database-in-the-mount-stage">Step 1: Open the database in the mount stage.<a class="headerlink" href="#step-1-open-the-database-in-the-mount-stage" title="Permanent link">&para;</a></h3>
 <p><img alt="image-20230809-101205" src="../images/oracle-database-lost-write-recovery-ora-00742-ora-00312/image-20230809-101205.png" /></p>
-<p>Step 2: Check the status of the redo log files.</p>
+<h3 id="step-2-check-the-status-of-the-redo-log-files">Step 2: Check the status of the redo log files.<a class="headerlink" href="#step-2-check-the-status-of-the-redo-log-files" title="Permanent link">&para;</a></h3>
 <p><img alt="image-20230809-101742" src="../images/oracle-database-lost-write-recovery-ora-00742-ora-00312/image-20230809-101742.png" /></p>
-<p>Step 3: Start database recovery using the following command:</p>
+<h3 id="step-3-start-database-recovery-using-the-following-command">Step 3: Start database recovery using the following command:<a class="headerlink" href="#step-3-start-database-recovery-using-the-following-command" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">recover</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">backup</span><span class="w"> </span><span class="n">controlfile</span><span class="w"> </span><span class="k">until</span><span class="w"> </span><span class="n">cancel</span><span class="p">;</span>
 </code></pre></div>
 <p><strong>Note:</strong> By default, database recovery uses archived redo logs for recovery operations. However, we have mentioned recovering with redo logs instead.</p>
-<p>Step 4: Mention the path for REDO02.LOG file when specifying recovery. Sequence 134 requires recovery and REDO02.LOG file contains that sequence. (reference v\$log view for sequence# column)</p>
+<h3 id="step-4-mention-the-path-for-redo02log-file-when-specifying-recovery-sequence-134-requires-recovery-and-redo02log-file-contains-that-sequence-reference-vlog-view-for-sequence-column">Step 4: Mention the path for REDO02.LOG file when specifying recovery. Sequence 134 requires recovery and REDO02.LOG file contains that sequence. (reference v\$log view for sequence# column)<a class="headerlink" href="#step-4-mention-the-path-for-redo02log-file-when-specifying-recovery-sequence-134-requires-recovery-and-redo02log-file-contains-that-sequence-reference-vlog-view-for-sequence-column" title="Permanent link">&para;</a></h3>
 <p><img alt="image-20230809-103052" src="../images/oracle-database-lost-write-recovery-ora-00742-ora-00312/image-20230809-103052.png" /></p>
-<p>Step 5: Once the recovery is complete, open the database with the "RESETLOGS" option.</p>
+<h3 id="step-5-once-the-recovery-is-complete-open-the-database-with-the-resetlogs-option">Step 5: Once the recovery is complete, open the database with the "RESETLOGS" option.<a class="headerlink" href="#step-5-once-the-recovery-is-complete-open-the-database-with-the-resetlogs-option" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">open</span><span class="w"> </span><span class="n">resetlogs</span><span class="p">;</span>
 </code></pre></div>
 <p><img alt="image-20230809-103431" src="../images/oracle-database-lost-write-recovery-ora-00742-ora-00312/image-20230809-103431.png" /></p>
-<p>· <strong>Understanding Lost Write</strong></p>
+<h2 id="understanding-lost-write">Understanding Lost Write<a class="headerlink" href="#understanding-lost-write" title="Permanent link">&para;</a></h2>
 <p>A Lost Write is exactly what the name says it is - when a write to disk from the buffer cache is lost. It can happen on any read-write database. When a database block is loaded to the buffer cache and is changed, the database needs to write it back to disk at some point (flushing dirty blocks). The way it's usually done is that this block is handed to the I/O subsystem and the I/O subsystem acknowledges the handover, but the write to disk itself is not done at this point. The database is OK with this acknowledgement and goes on.</p>
 <p>After the acknowledgement and before the write happens, an error can occur - and the result is that the write will not happen on the I/O subsystem (it will get lost) and we still have the old block on the disk. But the Database still considers that the write happened.</p>
 <p><img alt="image-20230911-083313" src="../images/oracle-database-lost-write-recovery-ora-00742-ora-00312/image-20230911-083313.png" /></p>

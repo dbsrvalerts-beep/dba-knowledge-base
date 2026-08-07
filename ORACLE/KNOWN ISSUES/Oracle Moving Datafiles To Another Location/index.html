@@ -73,6 +73,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#oracle-moving-datafiles-to-another-location" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -693,7 +698,7 @@
   <span class="md-ellipsis">
     
   
-    Oracle Database Incarnation (ORA 19909)
+    Oracle Database Incarnation (ORA-19909)
   
 
     
@@ -721,7 +726,7 @@
   <span class="md-ellipsis">
     
   
-    Oracle Database Lost Write Recovery (ORA 00742,ORA 00312)
+    Oracle Database Lost Write Recovery (ORA-00742,ORA-00312)
   
 
     
@@ -749,7 +754,7 @@
   <span class="md-ellipsis">
     
   
-    Oracle Datafile Corruption Issue (ORA 00600)
+    Oracle Datafile Corruption Issue (ORA-00600)
   
 
     
@@ -805,7 +810,7 @@
   <span class="md-ellipsis">
     
   
-    Oracle Datapump Slowness(Scenario 2)
+    Oracle Datapump Slowness (Scenario 2)
   
 
     
@@ -832,6 +837,26 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Moving Datafiles To Another Location
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -849,6 +874,119 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#steps-to-move-oracle-datafiles-to-different-locations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Steps to move Oracle datafiles to different locations:
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Steps to move Oracle datafiles to different locations:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-stopshutdown-oracle-database-services-a-graceful-shutdown-ensures-that-ongoing-transactions-are-completed-or-rolled-back-preventing-data-inconsistencies-and-potential-corruption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Stop/Shutdown Oracle database services. A graceful shutdown ensures that ongoing transactions are completed or rolled back, preventing data inconsistencies and potential corruption.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-make-a-proper-directory-structure-at-another-location-as-per-your-requirement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Make a proper directory structure at another location as per your requirement.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-using-the-operating-systems-file-management-tools-copy-the-datafiles-from-the-current-storage-directory-to-the-new-disk-array-this-process-involves-careful-verification-of-each-file-to-ensure-data-integrity-during-the-copy-operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Using the operating system's file management tools, copy the datafiles from the current storage directory to the new disk array. This process involves careful verification of each file to ensure data integrity during the copy operation.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-startup-oracle-database-in-the-mount-stage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Startup Oracle database in the mount stage.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-issue-the-following-command-to-update-oracle-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Issue the following command to update Oracle metadata.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-open-the-database-in-readwrite-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: Open the database in read/write mode.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-verify-if-all-datafiles-have-been-moved-properly-and-are-accessible-via-oracle-dynamic-view-vdatafile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7: Verify if all datafiles have been moved properly and are accessible via Oracle Dynamic View v\$datafile
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -869,7 +1007,7 @@
   <span class="md-ellipsis">
     
   
-    Oracle Ora 01012 Not Logged On Error
+    Oracle Ora-01012: Not Logged On Error
   
 
     
@@ -1163,6 +1301,110 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#steps-to-move-oracle-datafiles-to-different-locations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Steps to move Oracle datafiles to different locations:
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Steps to move Oracle datafiles to different locations:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-stopshutdown-oracle-database-services-a-graceful-shutdown-ensures-that-ongoing-transactions-are-completed-or-rolled-back-preventing-data-inconsistencies-and-potential-corruption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Stop/Shutdown Oracle database services. A graceful shutdown ensures that ongoing transactions are completed or rolled back, preventing data inconsistencies and potential corruption.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-make-a-proper-directory-structure-at-another-location-as-per-your-requirement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Make a proper directory structure at another location as per your requirement.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-using-the-operating-systems-file-management-tools-copy-the-datafiles-from-the-current-storage-directory-to-the-new-disk-array-this-process-involves-careful-verification-of-each-file-to-ensure-data-integrity-during-the-copy-operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Using the operating system's file management tools, copy the datafiles from the current storage directory to the new disk array. This process involves careful verification of each file to ensure data integrity during the copy operation.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-startup-oracle-database-in-the-mount-stage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Startup Oracle database in the mount stage.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-issue-the-following-command-to-update-oracle-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Issue the following command to update Oracle metadata.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-open-the-database-in-readwrite-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: Open the database in read/write mode.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-verify-if-all-datafiles-have-been-moved-properly-and-are-accessible-via-oracle-dynamic-view-vdatafile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7: Verify if all datafiles have been moved properly and are accessible via Oracle Dynamic View v\$datafile
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1179,18 +1421,16 @@
 
 
 
-  <h1>Oracle Moving Datafiles To Another Location</h1>
-
-<p><strong>Oracle Moving Datafiles To Another Location</strong></p>
+<h1 id="oracle-moving-datafiles-to-another-location">Oracle Moving Datafiles To Another Location<a class="headerlink" href="#oracle-moving-datafiles-to-another-location" title="Permanent link">&para;</a></h1>
 <ul>
 <li><strong>Scenario:</strong> Over time, the database has grown substantially, and the current storage directory is running out of space, leading to performance issues. If the current directory runs out of space then database will shutdown To address this situation, we need to move the database's datafiles to a new storage location. In the following document, we will be moving 3 datafiles files from the D drive to the E drive.</li>
-<li><strong>Steps to move Oracle datafiles to different locations:</strong></li>
 </ul>
+<h2 id="steps-to-move-oracle-datafiles-to-different-locations">Steps to move Oracle datafiles to different locations:<a class="headerlink" href="#steps-to-move-oracle-datafiles-to-different-locations" title="Permanent link">&para;</a></h2>
 <p><strong><em>Note:</em></strong> <em>Before starting the process make sure to stop all Ginesys application services</em>.</p>
-<p><strong>Step 1:</strong> Stop/Shutdown Oracle database services. A graceful shutdown ensures that ongoing transactions are completed or rolled back, preventing data inconsistencies and potential corruption.</p>
-<p><strong>Step 2:</strong> Make a proper directory structure at another location as per your requirement.</p>
-<p><strong>Step 3:</strong> Using the operating system's file management tools, copy the datafiles from the current storage directory to the new disk array. This process involves careful verification of each file to ensure data integrity during the copy operation.</p>
-<p><strong>Step 4:</strong> Startup Oracle database in the mount stage.</p>
+<h3 id="step-1-stopshutdown-oracle-database-services-a-graceful-shutdown-ensures-that-ongoing-transactions-are-completed-or-rolled-back-preventing-data-inconsistencies-and-potential-corruption">Step 1: Stop/Shutdown Oracle database services. A graceful shutdown ensures that ongoing transactions are completed or rolled back, preventing data inconsistencies and potential corruption.<a class="headerlink" href="#step-1-stopshutdown-oracle-database-services-a-graceful-shutdown-ensures-that-ongoing-transactions-are-completed-or-rolled-back-preventing-data-inconsistencies-and-potential-corruption" title="Permanent link">&para;</a></h3>
+<h3 id="step-2-make-a-proper-directory-structure-at-another-location-as-per-your-requirement">Step 2: Make a proper directory structure at another location as per your requirement.<a class="headerlink" href="#step-2-make-a-proper-directory-structure-at-another-location-as-per-your-requirement" title="Permanent link">&para;</a></h3>
+<h3 id="step-3-using-the-operating-systems-file-management-tools-copy-the-datafiles-from-the-current-storage-directory-to-the-new-disk-array-this-process-involves-careful-verification-of-each-file-to-ensure-data-integrity-during-the-copy-operation">Step 3: Using the operating system's file management tools, copy the datafiles from the current storage directory to the new disk array. This process involves careful verification of each file to ensure data integrity during the copy operation.<a class="headerlink" href="#step-3-using-the-operating-systems-file-management-tools-copy-the-datafiles-from-the-current-storage-directory-to-the-new-disk-array-this-process-involves-careful-verification-of-each-file-to-ensure-data-integrity-during-the-copy-operation" title="Permanent link">&para;</a></h3>
+<h3 id="step-4-startup-oracle-database-in-the-mount-stage">Step 4: Startup Oracle database in the mount stage.<a class="headerlink" href="#step-4-startup-oracle-database-in-the-mount-stage" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">startup</span><span class="w"> </span><span class="n">mount</span><span class="p">;</span>
 <span class="n">ORA</span><span class="o">-</span><span class="mi">32004</span><span class="p">:</span><span class="w"> </span><span class="n">obsolete</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">deprecated</span><span class="w"> </span><span class="k">parameter</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="n">specified</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">RDBMS</span><span class="w"> </span><span class="n">instance</span>
 <span class="n">ORACLE</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="n">started</span><span class="p">.</span>
@@ -1201,15 +1441,15 @@
 <span class="n">Redo</span><span class="w"> </span><span class="n">Buffers</span><span class="w"> </span><span class="mi">131276800</span><span class="w"> </span><span class="n">bytes</span>
 <span class="k">Database</span><span class="w"> </span><span class="n">mounted</span><span class="p">.</span>
 </code></pre></div>
-<p><strong>Step 5:</strong> Issue the following command to update Oracle metadata.</p>
+<h3 id="step-5-issue-the-following-command-to-update-oracle-metadata">Step 5: Issue the following command to update Oracle metadata.<a class="headerlink" href="#step-5-issue-the-following-command-to-update-oracle-metadata" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">rename</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="s1">&#39;D:\Oracle\Database\oradata\GINESYS\USERS05.DBF&#39;</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="s1">&#39;E:\Oracle\Database\oradata\GINESYS\USERS05.DBF&#39;</span><span class="p">;</span>
 <span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">rename</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="s1">&#39;D:\Oracle\Database\oradata\GINESYS\USERS06.DBF&#39;</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="s1">&#39;E:\Oracle\Database\oradata\GINESYS\USERS06.DBF&#39;</span><span class="p">;</span>
 <span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">rename</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="s1">&#39;D:\Oracle\Database\oradata\GINESYS\USERS07.DBF&#39;</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="s1">&#39;E:\Oracle\Database\oradata\GINESYS\USERS07.DBF&#39;</span><span class="p">;</span>
 </code></pre></div>
-<p><strong>Step 6:</strong> Open the database in read/write mode.</p>
+<h3 id="step-6-open-the-database-in-readwrite-mode">Step 6: Open the database in read/write mode.<a class="headerlink" href="#step-6-open-the-database-in-readwrite-mode" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">open</span><span class="p">;</span>
 </code></pre></div>
-<p><strong>Step7:</strong> Verify if all datafiles have been moved properly and are accessible via Oracle Dynamic View v\$datafile</p>
+<h3 id="step-7-verify-if-all-datafiles-have-been-moved-properly-and-are-accessible-via-oracle-dynamic-view-vdatafile">Step 7: Verify if all datafiles have been moved properly and are accessible via Oracle Dynamic View v\$datafile<a class="headerlink" href="#step-7-verify-if-all-datafiles-have-been-moved-properly-and-are-accessible-via-oracle-dynamic-view-vdatafile" title="Permanent link">&para;</a></h3>
 <p><strong><em>Note:</em></strong> <em>Once all steps have been successfully completed start Ginesys application services.</em></p>
 
 
