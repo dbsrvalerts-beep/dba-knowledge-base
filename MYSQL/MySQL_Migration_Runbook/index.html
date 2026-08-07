@@ -73,6 +73,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#mysql-migration-runbook" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -505,6 +510,26 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MySQL Migration Runbook
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -522,6 +547,36 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#direct-from-source-mydumpermyloader-migration-with-binlog-position-based-data-in-replication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Direct-from-Source mydumper/myloader Migration with Binlog Position-Based Data-In Replication
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1105,6 +1160,27 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#direct-from-source-mydumpermyloader-migration-with-binlog-position-based-data-in-replication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Direct-from-Source mydumper/myloader Migration with Binlog Position-Based Data-In Replication
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1121,33 +1197,34 @@
 
 
 
-  <h1>MySQL Migration Runbook</h1>
-
-<p>MySQL Migration Runbook
-Direct-from-Source mydumper/myloader Migration with Binlog Position-Based Data-In Replication
-Source Platform: Azure Database for MySQL Flexible Server [Central India]
+<h1 id="mysql-migration-runbook">MySQL Migration Runbook<a class="headerlink" href="#mysql-migration-runbook" title="Permanent link">&para;</a></h1>
+<h2 id="direct-from-source-mydumpermyloader-migration-with-binlog-position-based-data-in-replication">Direct-from-Source mydumper/myloader Migration with Binlog Position-Based Data-In Replication<a class="headerlink" href="#direct-from-source-mydumpermyloader-migration-with-binlog-position-based-data-in-replication" title="Permanent link">&para;</a></h2>
+<p>Source Platform: Azure Database for MySQL Flexible Server [Central India]
 Target Platform: Azure Database for MySQL Flexible Server [Jio West]
-This runbook dumps directly from the live source using mydumper (no intermediate replica, no read-lock required), and links replication into the Azure Flexible Server target using the binlog file + position captured in mydumper's own metadata file. This version incorporates production-run fixes for system-schema handling, large-table chunking, and long-query-guard behavior.
-Pre-migration 
-Remove duplicate entries and perform cleanup 
+This runbook dumps directly from the live source using mydumper (no intermediate replica, no read-lock required), and links replication into the Azure Flexible Server target using the binlog file + position captured in mydumper's own metadata file. This version incorporates production-run fixes for system-schema handling, large-table chunking, and long-query-guard behavior.</p>
+<h1 id="pre-migration-tasks">Pre-migration Tasks<a class="headerlink" href="#pre-migration-tasks" title="Permanent link">&para;</a></h1>
+<h3 id="1-remove-duplicate-entries">1. Remove Duplicate Entries<a class="headerlink" href="#1-remove-duplicate-entries" title="Permanent link">&para;</a></h3>
+<p>Execute the following queries to check and remove duplicate entries:</p>
 <div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">tenant_db_8432</span><span class="p">.</span><span class="n">pre_order_discounts</span>
 <span class="k">WHERE</span><span class="w"> </span><span class="n">pre_order_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;411618753&#39;</span><span class="p">;</span>
 <span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">tenant_db_8432</span><span class="p">.</span><span class="n">pre_order_discounts</span>
 <span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">460526312</span><span class="p">;</span>
-</code></pre></div></p>
+</code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">tenant_db_8545</span><span class="p">.</span><span class="n">pre_order_discounts</span>
 <span class="k">WHERE</span><span class="w"> </span><span class="n">pre_order_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;2174466571&#39;</span><span class="p">;</span>
 <span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">tenant_db_8545</span><span class="p">.</span><span class="n">pre_order_discounts</span>
 <span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1532931990</span><span class="p">;</span>
 </code></pre></div>
-<p>Perform cleanup
-(3) primary_db : queue_results , cron_history
-(5) deleted_rows_primarydb : btadapter_db.files_logs table
-(6) cleanup of archived_skus_warehouses_* tables from all tenants</p>
-<p>(7) Once data cleanup / truncate activity is completed need to analyze the databases</p>
-<p><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+<h3 id="2-database-table-cleanup-tasks">2. Database Table Cleanup Tasks<a class="headerlink" href="#2-database-table-cleanup-tasks" title="Permanent link">&para;</a></h3>
+<p>Perform the following cleanup operations on the source:
+- <strong>Clean up <code>primary_db</code></strong>: Truncate/remove old data from <code>queue_results</code> and <code>cron_history</code> tables.
+- <strong>Clean up <code>deleted_rows_primarydb</code></strong>: Truncate/remove logs from <code>btadapter_db.files_logs</code> table.
+- <strong>Tenant Cleanup</strong>: Clean up archived tables matching <code>archived_skus_warehouses_*</code> from all tenant databases.</p>
+<h3 id="3-database-analysis">3. Database Analysis<a class="headerlink" href="#3-database-analysis" title="Permanent link">&para;</a></h3>
+<p>Once the data cleanup and truncate operations are complete, analyze the databases using the helper script below to optimize indexes and update statistics:</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 <span class="c1">#</span>
 <span class="c1"># analyze_all_dbs.sh</span>
 <span class="c1"># Runs ANALYZE TABLE (via mysqlcheck) across every database on an Azure MySQL Flexible Server.</span>
@@ -1221,34 +1298,36 @@ Remove duplicate entries and perform cleanup
 <span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Total duration:    </span><span class="nv">$TOTAL_DURATION_HMS</span><span class="s2"> (</span><span class="si">${</span><span class="nv">TOTAL_DURATION</span><span class="si">}</span><span class="s2">s)&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$LOG_FILE</span><span class="s2">&quot;</span>
 <span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Done. </span><span class="nv">$COUNT</span><span class="s2"> databases processed. Full log: </span><span class="nv">$LOG_FILE</span><span class="s2">&quot;</span>
 </code></pre></div>
-Step 1: Source Server Prerequisites
-Confirm binary logging is enabled:
+<h1 id="step-1-source-server-prerequisites">Step 1: Source Server Prerequisites<a class="headerlink" href="#step-1-source-server-prerequisites" title="Permanent link">&para;</a></h1>
+<p>Confirm binary logging is enabled:
 <div class="highlight"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">VARIABLES</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;log_bin&#39;</span><span class="p">;</span>
 </code></pre></div>
 If OFF and the source is on-premises/VM with config-file access:
 Note: It will be by default on in Azure Flexi Server server parameters. Below Steps works for On-prem VM
-[mysqld]
-log-bin=mysql-bin.log
-sudo systemctl restart mysqld
-Match case-sensitivity behavior to the Azure default (required for Data-in Replication to work correctly — commonly overlooked):
-<div class="highlight"><pre><span></span><code><span class="k">SET</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="n">lower_case_table_names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><span class="k">[mysqld]</span>
+<span class="na">log-bin</span><span class="o">=</span><span class="s">mysql-bin.log</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>mysqld
+</code></pre></div>
+Match case-sensitivity behavior to the Azure default (required for Data-in Replication to work correctly — commonly overlooked):</p>
+<p><div class="highlight"><pre><span></span><code><span class="k">SET</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="n">lower_case_table_names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 </code></pre></div>
 Set binary log expiry on the Primary to control how long binlogs are retained:
 <div class="highlight"><pre><span></span><code>binlog_expire_logs_seconds:<span class="w"> </span><span class="m">172800</span><span class="w">   </span>--<span class="w"> </span><span class="m">48</span><span class="w"> </span>hours
-</code></pre></div>
-Step 2: Alter Existing Users and Create the Replication User
-<div class="highlight"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="s1">&#39;read_user&#39;</span><span class="o">@</span><span class="s1">&#39;%&#39;</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;Ginesys@01&#39;</span><span class="p">;</span>
+</code></pre></div></p>
+<h1 id="step-2-alter-existing-users-and-create-the-replication-user">Step 2: Alter Existing Users and Create the Replication User<a class="headerlink" href="#step-2-alter-existing-users-and-create-the-replication-user" title="Permanent link">&para;</a></h1>
+<p><div class="highlight"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="s1">&#39;read_user&#39;</span><span class="o">@</span><span class="s1">&#39;%&#39;</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;Ginesys@01&#39;</span><span class="p">;</span>
 <span class="k">ALTER</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="s1">&#39;btadmin&#39;</span><span class="o">@</span><span class="s1">&#39;%&#39;</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;qs$3?j@*CA6!#Dy&#39;</span><span class="p">;</span>
 
 <span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="s1">&#39;syncuser&#39;</span><span class="o">@</span><span class="s1">&#39;%&#39;</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;yourpassword&#39;</span><span class="w"> </span><span class="n">REQUIRE</span><span class="w"> </span><span class="n">SSL</span><span class="p">;</span>
 <span class="k">GRANT</span><span class="w"> </span><span class="n">REPLICATION</span><span class="w"> </span><span class="n">SLAVE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="o">*</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;syncuser&#39;</span><span class="o">@</span><span class="s1">&#39;%&#39;</span><span class="p">;</span>
 <span class="n">FLUSH</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="p">;</span>
 </code></pre></div>
-REQUIRE SSL is recommended since this account can connect from any host (@'%').
-Step 3: Create the Flexible Server Target
-Provision the Azure Database for MySQL Flexible Server instance that will act as the target before dumping anything. Manually recreate any required user accounts and privileges on it — Data-in Replication does not replicate user accounts.
-Step 4: Run the mydumper Backup Script Against the Live Source
-Full production run script — backs up all tenants and all tables, excluding system schemas.
+REQUIRE SSL is recommended since this account can connect from any host (@'%').</p>
+<h1 id="step-3-create-the-flexible-server-target">Step 3: Create the Flexible Server Target<a class="headerlink" href="#step-3-create-the-flexible-server-target" title="Permanent link">&para;</a></h1>
+<p>Provision the Azure Database for MySQL Flexible Server instance that will act as the target before dumping anything. Manually recreate any required user accounts and privileges on it — Data-in Replication does not replicate user accounts.</p>
+<h1 id="step-4-run-the-mydumper-backup-script-against-the-live-source">Step 4: Run the mydumper Backup Script Against the Live Source<a class="headerlink" href="#step-4-run-the-mydumper-backup-script-against-the-live-source" title="Permanent link">&para;</a></h1>
+<p>Full production run script — backs up all tenants and all tables, excluding system schemas.
 <div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 <span class="c1">############################################################</span>
 <span class="c1"># Script Name : mydumper_backup.sh</span>
@@ -1330,37 +1409,37 @@ mydumper<span class="w"> </span><span class="se">\</span>
 <span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;======================================================&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">LOG_FILE</span><span class="si">}</span><span class="s2">&quot;</span>
 
 <span class="nb">exit</span><span class="w"> </span><span class="si">${</span><span class="nv">STATUS</span><span class="si">}</span>
-</code></pre></div>
-Fixes Incorporated in This Version (Change Log)
---defaults-file=/etc/mydumper.cnf — picks up standard session variables (max_execution_time=0, etc.).
+</code></pre></div></p>
+<h2 id="fixes-incorporated-in-this-version-change-log">Fixes Incorporated in This Version (Change Log)<a class="headerlink" href="#fixes-incorporated-in-this-version-change-log" title="Permanent link">&para;</a></h2>
+<p>--defaults-file=/etc/mydumper.cnf — picks up standard session variables (max_execution_time=0, etc.).
 --rows=1000000 — forces explicit row-chunking on large tables. This fixed the infinite-spin stall previously seen on the orders table.
 --trx-tables — the 0.18.1-correct replacement for the deprecated --trx-consistency-only / --lock-all-tables path. Still only a brief FLUSH TABLES WITH READ LOCK → snapshot → unlock; no sustained lock is held.
 --long-query-guard=10800 (with an explicit value) replacing the earlier bare --kill-long-queries — this fixed the repeating "SET SESSION LONG-QUERY-GUARD" log-spam loop.
 --database="${DB_LIST}" replaces the earlier --regex='^(?!(sys.))' approach — the regex only filtered table-level dumping, but mydumper still attempted schema-level operations (e.g. SHOW EVENTS) against sys, causing an "Access denied ... database 'sys'" failure and a non-zero exit code. An explicit --database list means mydumper never touches these schemas at all: no partial sys files, and no myloader CREATE DATABASE <code>sys</code> failure downstream either.
 Note on consistency mechanism:
---trx-tables takes a consistent InnoDB snapshot via a single transaction, which is what allows this to run safely against a live server without a sustained FLUSH TABLES WITH READ LOCK or setting read_only=ON — no production write-freeze and no intermediate replica required.
-Step 5: Read the Metadata File — the Consistency Anchor
-<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/u01/backup/mydump/metadata
+--trx-tables takes a consistent InnoDB snapshot via a single transaction, which is what allows this to run safely against a live server without a sustained FLUSH TABLES WITH READ LOCK or setting read_only=ON — no production write-freeze and no intermediate replica required.</p>
+<h1 id="step-5-read-the-metadata-file-the-consistency-anchor">Step 5: Read the Metadata File — the Consistency Anchor<a class="headerlink" href="#step-5-read-the-metadata-file-the-consistency-anchor" title="Permanent link">&para;</a></h1>
+<p><div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/u01/backup/mydump/metadata
 </code></pre></div>
 Expected contents:
 [master]
 Log_File = mysql-bin.000004
 Pos = 15524
 Executed_Gtid_Set =
-For this runbook, only Log_File and Pos are used (binlog position-based reconnection). Copy this file somewhere safe before proceeding — these two values are required in Step 9 and must correspond exactly to the moment this dump was taken.
-Step 6: No Transfer Required — Single Jumpbox for Dump and Restore
-A jumpbox VM is used to run both mydumper (Step 4) and myloader (Step 8) from the same machine, against the source and destination servers respectively over the network. Since the dump output already lands locally on this jumpbox, no rsync/file transfer step is required — myloader reads directly from the same directory mydumper wrote to.
+For this runbook, only Log_File and Pos are used (binlog position-based reconnection). Copy this file somewhere safe before proceeding — these two values are required in Step 9 and must correspond exactly to the moment this dump was taken.</p>
+<h1 id="step-6-no-transfer-required-single-jumpbox-for-dump-and-restore">Step 6: No Transfer Required — Single Jumpbox for Dump and Restore<a class="headerlink" href="#step-6-no-transfer-required-single-jumpbox-for-dump-and-restore" title="Permanent link">&para;</a></h1>
+<p>A jumpbox VM is used to run both mydumper (Step 4) and myloader (Step 8) from the same machine, against the source and destination servers respectively over the network. Since the dump output already lands locally on this jumpbox, no rsync/file transfer step is required — myloader reads directly from the same directory mydumper wrote to.
 Ensure the jumpbox has enough local storage to hold the full dump output, sized against the cluster's actual data volume.
-Confirm the jumpbox has network connectivity to both the source and destination MySQL endpoints (firewall/NSG rules permitting outbound 3306 to both).
-Step 7: Set Binlog Expiry on the Destination Before Restore
-Before running myloader, reduce the destination's binary log retention so the restore does not generate and retain an unnecessarily large volume of binlog data purely from the bulk import itself.
+Confirm the jumpbox has network connectivity to both the source and destination MySQL endpoints (firewall/NSG rules permitting outbound 3306 to both).</p>
+<h1 id="step-7-set-binlog-expiry-on-the-destination-before-restore">Step 7: Set Binlog Expiry on the Destination Before Restore<a class="headerlink" href="#step-7-set-binlog-expiry-on-the-destination-before-restore" title="Permanent link">&para;</a></h1>
+<p>Before running myloader, reduce the destination's binary log retention so the restore does not generate and retain an unnecessarily large volume of binlog data purely from the bulk import itself.
 <div class="highlight"><pre><span></span><code><span class="k">SET</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="n">binlog_expire_logs_seconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3600</span><span class="p">;</span><span class="w">   </span><span class="c1">-- 1 hour, restore-time only</span>
 <span class="n">Why</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">matters</span><span class="p">:</span>
 <span class="n">A</span><span class="w"> </span><span class="k">full</span><span class="w"> </span><span class="n">myloader</span><span class="w"> </span><span class="n">restore</span><span class="w"> </span><span class="n">writes</span><span class="w"> </span><span class="k">every</span><span class="w"> </span><span class="n">inserted</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="n">through</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">destination</span><span class="s1">&#39;s own binary log (needed to eventually replicate onward / support PITR). At full data volume, this can generate a very large amount of binlog in a short window. A short retention window during the restore prevents this from accumulating and consuming excessive storage, since none of it needs to be kept for replication purposes yet — replication back to this destination is only established afterward, in Step 9.</span>
 <span class="s1">Revert this to the intended steady-state production value once the restore completes and before Step 9 (linking replication) — leaving it this short permanently would undermine the destination&#39;</span><span class="n">s</span><span class="w"> </span><span class="n">own</span><span class="w"> </span><span class="n">future</span><span class="w"> </span><span class="n">point</span><span class="o">-</span><span class="k">in</span><span class="o">-</span><span class="k">time</span><span class="w"> </span><span class="n">recovery</span><span class="w"> </span><span class="n">capability</span><span class="p">.</span>
 <span class="k">SET</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="n">binlog_expire_logs_seconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">172800</span><span class="p">;</span><span class="w">   </span><span class="c1">-- restore to normal retention, e.g. 48 hours</span>
-</code></pre></div>
-Step 8: Restore with myloader onto the Flexible Server Target
+</code></pre></div></p>
+<h1 id="step-8-restore-with-myloader-onto-the-flexible-server-target">Step 8: Restore with myloader onto the Flexible Server Target<a class="headerlink" href="#step-8-restore-with-myloader-onto-the-flexible-server-target" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 <span class="c1">############################################################</span>
 <span class="c1"># Script Name : myloader_restore.sh</span>
@@ -1428,23 +1507,61 @@ myloader<span class="w"> </span><span class="se">\</span>
 
 <span class="nb">exit</span><span class="w"> </span><span class="si">${</span><span class="nv">STATUS</span><span class="si">}</span>
 </code></pre></div>
-Step 9: Link Replication Using the Binlog Position from Step 5
+<h1 id="step-9-link-replication-using-the-binlog-position-from-step-5">Step 9: Link Replication Using the Binlog Position from Step 5<a class="headerlink" href="#step-9-link-replication-using-the-binlog-position-from-step-5" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><span class="k">CALL</span><span class="w"> </span><span class="n">mysql</span><span class="p">.</span><span class="n">az_replication_change_master</span><span class="p">(</span>
 <span class="w">  </span><span class="s1">&#39;&lt;source_host&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;syncuser&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;yourpassword&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">3306</span><span class="p">,</span>
 <span class="w">  </span><span class="s1">&#39;mysql-bin.000004&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">15524</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&#39;</span>
 <span class="p">);</span>
 </code></pre></div>
-Parameters, in order
-Critical:
-These two values must correspond exactly to the mydumper run in Step 4 — a mismatch here will either replay already-restored transactions (duplicate-key errors) or skip transactions (data loss/inconsistency).
-Step 10: Start Replication
+<h2 id="parameters-in-order">Parameters, in order<a class="headerlink" href="#parameters-in-order" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;source_host&gt;</code></td>
+<td>Hostname/FQDN of the source server.</td>
+</tr>
+<tr>
+<td><code>'syncuser'</code></td>
+<td>The replication user created in Step 2.</td>
+</tr>
+<tr>
+<td><code>'yourpassword'</code></td>
+<td>Its password.</td>
+</tr>
+<tr>
+<td><code>3306</code></td>
+<td>MySQL port.</td>
+</tr>
+<tr>
+<td><code>'mysql-bin.000004'</code></td>
+<td>The exact Log_File value from the Step 5 metadata file.</td>
+</tr>
+<tr>
+<td><code>15524</code></td>
+<td>The exact Pos value from the Step 5 metadata file.</td>
+</tr>
+<tr>
+<td><code>''</code></td>
+<td>Empty string for the SSL CA certificate parameter (leave blank if not using SSL for the replication link itself).</td>
+</tr>
+</tbody>
+</table>
+<p>Critical:
+These two values must correspond exactly to the mydumper run in Step 4 — a mismatch here will either replay already-restored transactions (duplicate-key errors) or skip transactions (data loss/inconsistency).</p>
+<h1 id="step-10-start-replication">Step 10: Start Replication<a class="headerlink" href="#step-10-start-replication" title="Permanent link">&para;</a></h1>
 <div class="highlight"><pre><span></span><code><span class="k">CALL</span><span class="w"> </span><span class="n">mysql</span><span class="p">.</span><span class="n">az_replication_start</span><span class="p">;</span>
 </code></pre></div>
-Step 11: Verify Replication
-On Primary Server
+<h1 id="step-11-verify-replication">Step 11: Verify Replication<a class="headerlink" href="#step-11-verify-replication" title="Permanent link">&para;</a></h1>
+<h2 id="on-primary-server">On Primary Server<a class="headerlink" href="#on-primary-server" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">MASTER</span><span class="w"> </span><span class="n">STATUS</span><span class="p">;</span>
 </code></pre></div>
-On Replica Server
+<h2 id="on-replica-server">On Replica Server<a class="headerlink" href="#on-replica-server" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">REPLICA</span><span class="w"> </span><span class="n">STATUS</span><span class="err">\</span><span class="k">G</span>
 <span class="k">Check</span><span class="p">:</span>
 <span class="n">Replica_IO_Running</span><span class="p">:</span><span class="w"> </span><span class="n">Yes</span>
@@ -1452,14 +1569,14 @@ On Replica Server
 <span class="n">Seconds_Behind_Master</span><span class="w"> </span><span class="n">counting</span><span class="w"> </span><span class="n">down</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="mi">0</span>
 <span class="n">Last_IO_Error</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Last_SQL_Error</span><span class="w"> </span><span class="n">blank</span>
 </code></pre></div>
-Step 12: Prove It End-to-End
--- on source
+<h1 id="step-12-prove-it-end-to-end">Step 12: Prove It End-to-End<a class="headerlink" href="#step-12-prove-it-end-to-end" title="Permanent link">&para;</a></h1>
+<p>-- on source
 INSERT INTO some_db.some_table (...) VALUES (...);</p>
 <p>-- on Flexible Server target
 SELECT ... FROM some_db.some_table WHERE ...;
-The row should appear on the target, confirming the restored snapshot plus everything replicated since Step 4 correctly stitched into one consistent dataset.
-Step 13: Cutover
-Platform limitation:
+The row should appear on the target, confirming the restored snapshot plus everything replicated since Step 4 correctly stitched into one consistent dataset.</p>
+<h1 id="step-13-cutover">Step 13: Cutover<a class="headerlink" href="#step-13-cutover" title="Permanent link">&para;</a></h1>
+<p>Platform limitation:
 SET GLOBAL read_only = ON will not be applicable on Azure Flexible Server due to missing superuser privileges. Application downtime must be ensured manually for this step.
 -- on source
 SET GLOBAL read_only = ON;</p>
@@ -2392,41 +2509,40 @@ write_summary_master_log
 
 <span class="nb">exit</span><span class="w"> </span><span class="nv">$EXIT_VAL</span>
 
-
-
 Key<span class="w"> </span>Characteristics<span class="w"> </span>of<span class="w"> </span>This<span class="w"> </span>Approach
 No<span class="w"> </span>intermediate/disposable<span class="w"> </span>replica<span class="w"> </span>is<span class="w"> </span>created<span class="w"> </span>—<span class="w"> </span>the<span class="w"> </span>dump<span class="w"> </span>runs<span class="w"> </span>directly<span class="w"> </span>against<span class="w"> </span>the<span class="w"> </span>live<span class="w"> </span>source.
 No<span class="w"> </span>sustained<span class="w"> </span>FLUSH<span class="w"> </span>TABLES<span class="w"> </span>WITH<span class="w"> </span>READ<span class="w"> </span>LOCK<span class="w"> </span>or<span class="w"> </span><span class="nv">read_only</span><span class="o">=</span>ON<span class="w"> </span>is<span class="w"> </span>required<span class="w"> </span>on<span class="w"> </span>the<span class="w"> </span>source,<span class="w"> </span>due<span class="w"> </span>to<span class="w"> </span>--trx-tables.
 Consistency<span class="w"> </span>point<span class="w"> </span>is<span class="w"> </span>captured<span class="w"> </span>automatically<span class="w"> </span>by<span class="w"> </span>mydumper<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>metadata<span class="w"> </span>file<span class="w"> </span>—<span class="w"> </span>no<span class="w"> </span>manual<span class="w"> </span>SHOW<span class="w"> </span>SLAVE<span class="w"> </span>STATUS/SHOW<span class="w"> </span>MASTER<span class="w"> </span>STATUS<span class="w"> </span>capture<span class="w"> </span>step<span class="w"> </span>needed.
 Trade-off:<span class="w"> </span>the<span class="w"> </span>dump<span class="w"> </span>itself<span class="w"> </span>adds<span class="w"> </span><span class="nb">read</span><span class="w"> </span>load<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span><span class="nb">source</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>its<span class="w"> </span>full<span class="w"> </span>duration,<span class="w"> </span>since<span class="w"> </span>it<span class="w"> </span>is<span class="w"> </span>not<span class="w"> </span>offloaded<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>separate<span class="w"> </span>replica.<span class="w"> </span>Size<span class="w"> </span>this<span class="w"> </span>against<span class="w"> </span>actual<span class="w"> </span>data<span class="w"> </span>volume<span class="w"> </span>and<span class="w"> </span>production<span class="w"> </span>traffic<span class="w"> </span>pattern<span class="w"> </span>before<span class="w"> </span>using<span class="w"> </span>this<span class="w"> </span>approach<span class="w"> </span><span class="k">for</span><span class="w"> </span>a<span class="w"> </span>real<span class="w"> </span>cutover.
 Reconnection<span class="w"> </span>uses<span class="w"> </span>binlog<span class="w"> </span>file<span class="w"> </span>+<span class="w"> </span>position<span class="w"> </span><span class="o">(</span>not<span class="w"> </span>GTID<span class="o">)</span><span class="w"> </span>—<span class="w"> </span>requires<span class="w"> </span>the<span class="w"> </span>Log_File/Pos<span class="w"> </span>values<span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span>exact<span class="p">;</span><span class="w"> </span>a<span class="w"> </span>mismatch<span class="w"> </span>causes<span class="w"> </span>duplicate-key<span class="w"> </span>errors<span class="w"> </span>or<span class="w"> </span>data<span class="w"> </span>loss.
-Appendix:<span class="w"> </span>Additional<span class="w"> </span>Reference<span class="w"> </span>Queries
-Table<span class="w"> </span>Size<span class="w"> </span>Breakdown<span class="w"> </span><span class="o">(</span>Logical<span class="w"> </span>vs.<span class="w"> </span>File<span class="w"> </span>vs.<span class="w"> </span>Allocated<span class="o">)</span>
-SELECT
-<span class="w">    </span>t.table_name,
-<span class="w">    </span>ROUND<span class="o">((</span>t.data_length<span class="w"> </span>+<span class="w"> </span>t.index_length<span class="o">)</span><span class="w"> </span>/<span class="w"> </span><span class="m">1024</span><span class="w"> </span>/<span class="w"> </span><span class="m">1024</span>/1024,<span class="w"> </span><span class="m">2</span><span class="o">)</span><span class="w"> </span>AS<span class="w"> </span>logical_size_gb,
-<span class="w">    </span>ROUND<span class="o">(</span>ts.file_size<span class="w"> </span>/<span class="w"> </span><span class="m">1024</span><span class="w"> </span>/<span class="w"> </span><span class="m">1024</span>/1024<span class="w"> </span>,<span class="w"> </span><span class="m">2</span><span class="o">)</span><span class="w"> </span>AS<span class="w"> </span>file_size_gb,
-<span class="w">    </span>ROUND<span class="o">(</span>ts.allocated_size<span class="w"> </span>/<span class="w"> </span><span class="m">1024</span><span class="w"> </span>/<span class="w"> </span><span class="m">1024</span>/1024<span class="w"> </span>,<span class="w"> </span><span class="m">2</span><span class="o">)</span><span class="w"> </span>AS<span class="w"> </span>allocated_size_gb
-FROM<span class="w"> </span>information_schema.tables<span class="w"> </span>t
-LEFT<span class="w"> </span>JOIN<span class="w"> </span>information_schema.innodb_tablespaces<span class="w"> </span>ts
-<span class="w">    </span>ON<span class="w"> </span>ts.name<span class="w"> </span><span class="o">=</span><span class="w"> </span>CONCAT<span class="o">(</span>t.table_schema,<span class="w"> </span><span class="s1">&#39;/&#39;</span>,<span class="w"> </span>t.table_name<span class="o">)</span>
-WHERE<span class="w"> </span>t.table_schema<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;primary_db&#39;</span>
-<span class="w">  </span>AND<span class="w"> </span>t.table_name<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;skus_warehouses&#39;</span>
-ORDER<span class="w"> </span>BY<span class="w"> </span>allocated_size_gb<span class="w"> </span>DESC<span class="p">;</span>
-Binary<span class="w"> </span>Log<span class="w"> </span>Inspection
-mysql<span class="w"> </span>-h<span class="w"> </span>bt-26-jul-2026.mysql.database.azure.com<span class="w"> </span>-u<span class="w"> </span>btadmin<span class="w"> </span>-p
+</code></pre></div></p>
+<h1 id="appendix-additional-reference-queries">Appendix: Additional Reference Queries<a class="headerlink" href="#appendix-additional-reference-queries" title="Permanent link">&para;</a></h1>
+<h2 id="table-size-breakdown-logical-vs-file-vs-allocated">Table Size Breakdown (Logical vs. File vs. Allocated)<a class="headerlink" href="#table-size-breakdown-logical-vs-file-vs-allocated" title="Permanent link">&para;</a></h2>
+<p>SELECT
+    t.table_name,
+    ROUND((t.data_length + t.index_length) / 1024 / 1024/1024, 2) AS logical_size_gb,
+    ROUND(ts.file_size / 1024 / 1024/1024 , 2) AS file_size_gb,
+    ROUND(ts.allocated_size / 1024 / 1024/1024 , 2) AS allocated_size_gb
+FROM information_schema.tables t
+LEFT JOIN information_schema.innodb_tablespaces ts
+    ON ts.name = CONCAT(t.table_schema, '/', t.table_name)
+WHERE t.table_schema = 'primary_db'
+  AND t.table_name = 'skus_warehouses'
+ORDER BY allocated_size_gb DESC;</p>
+<h2 id="binary-log-inspection">Binary Log Inspection<a class="headerlink" href="#binary-log-inspection" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>mysql<span class="w"> </span>-h<span class="w"> </span>bt-26-jul-2026.mysql.database.azure.com<span class="w"> </span>-u<span class="w"> </span>btadmin<span class="w"> </span>-p
 
 SHOW<span class="w"> </span>BINARY<span class="w"> </span>LOGS<span class="p">;</span>
 
 SHOW<span class="w"> </span>BINLOG<span class="w"> </span>EVENTS<span class="w"> </span>IN<span class="w"> </span><span class="s1">&#39;mysql-bin.755139&#39;</span><span class="w"> </span>FROM<span class="w"> </span><span class="m">5686488</span><span class="w"> </span>LIMIT<span class="w"> </span><span class="m">10</span><span class="p">;</span>
 
 SHOW<span class="w"> </span>BINLOG<span class="w"> </span>EVENTS<span class="w"> </span>IN<span class="w"> </span><span class="s1">&#39;mysql-bin.755139&#39;</span><span class="w"> </span>LIMIT<span class="w"> </span><span class="m">50</span><span class="p">;</span>
-
-Reference<span class="w"> </span>Links:
-https://learn.microsoft.com/en-us/azure/mysql/flexible-server/how-to-data-in-replication?tabs<span class="o">=</span>bash%2Ccommand-line
-Migrate<span class="w"> </span>Large<span class="w"> </span>Databases<span class="w"> </span>to<span class="w"> </span>Azure<span class="w"> </span>Database<span class="w"> </span><span class="k">for</span><span class="w"> </span>MySQL<span class="w"> </span>Using<span class="w"> </span>Mydumper/myloader<span class="w"> </span>-<span class="w"> </span>Azure<span class="w"> </span>Database<span class="w"> </span><span class="k">for</span><span class="w"> </span>MySQL<span class="w"> </span><span class="p">|</span><span class="w"> </span>Microsoft<span class="w"> </span>Learn
-Migrate<span class="w"> </span>Amazon<span class="w"> </span>RDS<span class="w"> </span><span class="k">for</span><span class="w"> </span>MySQL<span class="w"> </span>Using<span class="w"> </span>Data-In<span class="w"> </span>Replication<span class="w"> </span>-<span class="w"> </span>Azure<span class="w"> </span>Database<span class="w"> </span><span class="k">for</span><span class="w"> </span>MySQL<span class="w"> </span><span class="p">|</span><span class="w"> </span>Microsoft<span class="w"> </span>Learn
-</code></pre></div></p>
+</code></pre></div>
+<h2 id="_1"><a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<h2 id="reference-links">Reference Links:<a class="headerlink" href="#reference-links" title="Permanent link">&para;</a></h2>
+<p>https://learn.microsoft.com/en-us/azure/mysql/flexible-server/how-to-data-in-replication?tabs=bash%2Ccommand-line
+Migrate Large Databases to Azure Database for MySQL Using Mydumper/myloader - Azure Database for MySQL | Microsoft Learn
+Migrate Amazon RDS for MySQL Using Data-In Replication - Azure Database for MySQL | Microsoft Learn</p>
 
 
 
