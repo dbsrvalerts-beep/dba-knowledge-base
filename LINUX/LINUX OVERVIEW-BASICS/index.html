@@ -1610,131 +1610,49 @@ chgrp -R developers /data
   . sort -n file.txt sort numerically ASC( use -r for DESC)<br />
   .</li>
 </ul>
-<div class="joplin-table-wrapper"><table><thead><tr><th><ul><li><strong>Option</strong></li></ul></th><th><p><strong>Description</strong></p></th></tr></thead></table></div>
-
 <table>
 <thead>
 <tr>
-<th>-n</th>
-<th>Sort numerically (e.g., 2 &lt; 10 &lt; 100).</th>
+<th>Option</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td></td>
-<td></td>
+<td>-n</td>
+<td>Sort numerically (e.g., 2 &lt; 10 &lt; 100).</td>
 </tr>
-</tbody>
-</table>
-<table>
-<thead>
 <tr>
-<th>-r</th>
-<th>Reverse the sorting order.</th>
+<td>-r</td>
+<td>Reverse the sorting order.</td>
 </tr>
-</thead>
-<tbody>
 <tr>
-<td></td>
-<td></td>
+<td>-k FIELD</td>
+<td>Sort based on a specific field in the line.</td>
 </tr>
-</tbody>
-</table>
-<table>
-<thead>
 <tr>
-<th>-k FIELD</th>
-<th>Sort based on a specific field in the line.</th>
+<td>-u</td>
+<td>Output only unique lines (combine with other options like -n).</td>
 </tr>
-</thead>
-<tbody>
 <tr>
-<td></td>
-<td></td>
+<td>-f</td>
+<td>Ignore case while sorting.</td>
 </tr>
-</tbody>
-</table>
-<table>
-<thead>
 <tr>
-<th>-u</th>
-<th>Output only unique lines (combine with other options like -n).</th>
+<td>-b</td>
+<td>Ignore leading blanks in lines.</td>
 </tr>
-</thead>
-<tbody>
 <tr>
-<td></td>
-<td></td>
+<td>-o FILE</td>
+<td>Write output to a specific file.</td>
 </tr>
-</tbody>
-</table>
-<table>
-<thead>
 <tr>
-<th>-f</th>
-<th>Ignore case while sorting.</th>
+<td>-c</td>
+<td>Check if the file is sorted; output errors if not.</td>
 </tr>
-</thead>
-<tbody>
 <tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>-b</th>
-<th>Ignore leading blanks in lines.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>-o FILE</th>
-<th>Write output to a specific file.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>-c</th>
-<th>Check if the file is sorted; output errors if not.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>--help</th>
-<th>Display help for the sort command.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
+<td>--help</td>
+<td>Display help for the sort command.</td>
 </tr>
 </tbody>
 </table>
@@ -1769,182 +1687,62 @@ take a example of /etc/passwd file it is delimited by ":"<br />
 <table>
 <thead>
 <tr>
-<th>-i</th>
-<th>Ignore case during the search.</th>
+<th>Option</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td></td>
-<td></td>
+<td>-i</td>
+<td>Ignore case during the search.</td>
 </tr>
-</tbody>
-</table>
-<table>
-<thead>
 <tr>
-<th>-r or -R</th>
-<th>Recursively search directories.</th>
+<td>-r or -R</td>
+<td>Recursively search directories.</td>
 </tr>
-</thead>
-<tbody>
 <tr>
-<td></td>
-<td></td>
+<td>-l</td>
+<td>List only the names of files containing the pattern (not the matching lines).</td>
 </tr>
-</tbody>
-</table>
-<table>
-<thead>
 <tr>
-<th>-l</th>
-<th>List only the names of files containing the pattern (not the matching lines).</th>
+<td>-n</td>
+<td>Show the line numbers along with matching lines.</td>
 </tr>
-</thead>
-<tbody>
 <tr>
-<td></td>
-<td></td>
+<td>-v</td>
+<td>Invert the match, i.e., display lines that do <em>not</em> contain the pattern.</td>
 </tr>
-</tbody>
-</table>
-<table>
-<thead>
 <tr>
-<th>-n</th>
-<th>Show the line numbers along with matching lines.</th>
+<td>-c</td>
+<td>Count the number of matching lines for each file.</td>
 </tr>
-</thead>
-<tbody>
 <tr>
-<td></td>
-<td></td>
+<td>-H</td>
+<td>Show the file name in the output (useful when searching multiple files).</td>
 </tr>
-</tbody>
-</table>
-<table>
-<thead>
 <tr>
-<th>-v</th>
-<th>Invert the match, i.e., display lines that do <em>not</em> contain the pattern.</th>
+<td>-o</td>
+<td>Show only the matched parts of the line, not the entire line.</td>
 </tr>
-</thead>
-<tbody>
 <tr>
-<td></td>
-<td></td>
+<td>-w</td>
+<td>Match whole words only (the pattern must be surrounded by word boundaries).</td>
 </tr>
-</tbody>
-</table>
-<table>
-<thead>
 <tr>
-<th>-c</th>
-<th>Count the number of matching lines for each file.</th>
+<td>-A NUM</td>
+<td>Display NUM lines after the matched line.</td>
 </tr>
-</thead>
-<tbody>
 <tr>
-<td></td>
-<td></td>
+<td>-B NUM</td>
+<td>Display NUM lines before the matched line.</td>
 </tr>
-</tbody>
-</table>
-<table>
-<thead>
 <tr>
-<th>-H</th>
-<th>Show the file name in the output (useful when searching multiple files).</th>
+<td>-C NUM</td>
+<td>Display NUM lines before and after the matched line (a context window).</td>
 </tr>
-</thead>
-<tbody>
 <tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>-o</th>
-<th>Show only the matched parts of the line, not the entire line.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>-w</th>
-<th>Match whole words only (the pattern must be surrounded by word boundaries).</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>-A NUM</th>
-<th>Display NUM lines after the matched line.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>-B NUM</th>
-<th>Display NUM lines before the matched line.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>-C NUM</th>
-<th>Display NUM lines before and after the matched line (a context window).</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>--color</th>
-<th>Highlight the matching text (usually used in combination with grep output).</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
+<td>--color</td>
+<td>Highlight the matching text (usually used in combination with grep output).</td>
 </tr>
 </tbody>
 </table>
