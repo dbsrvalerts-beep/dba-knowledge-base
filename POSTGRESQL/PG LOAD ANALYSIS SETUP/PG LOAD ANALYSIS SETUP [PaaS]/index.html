@@ -2003,8 +2003,9 @@
 </code></pre></div>
 <p>-- If not present, add to server parameters in Azure Portal:</p>
 <p>-- shared_preload_libraries = 'pg_stat_statements'</p>
-<p>-- Then run:</p>
-<p>CREATE EXTENSION IF NOT EXISTS pg_stat_statements;</p>
+<p>-- Then run:
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="n">EXTENSION</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">pg_stat_statements</span><span class="p">;</span>
+</code></pre></div></p>
 <h3 id="12-create-monitoring-user">1.2 Create monitoring user<a class="headerlink" href="#12-create-monitoring-user" title="Permanent link">&para;</a></h3>
 <p>Dedicated read-only role - do not use a superuser account for collection.</p>
 <div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">ROLE</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="w"> </span><span class="n">LOGIN</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="s1">&#39;set-a-strong-password&#39;</span><span class="p">;</span>
