@@ -2192,8 +2192,7 @@
 <p><em>Updated: adds pg_stat_kcache (per-query real CPU), DB Head columns (blk_read_time, blk_write_time, cpu_ms_est), and query_id in session_snapshots | June 2026</em></p>
 <p>Purpose: This is the recommended self-hosted stack. It drops pg_stat_monitor (which crash-looped on prod-05) and uses three mature extensions: pg_stat_statements (per-query wall-clock + I/O), pg_stat_kcache (per-query REAL CPU and physical disk bytes, joined to pg_stat_statements on queryid), and pg_proctab (per-process CPU/memory, including background workers). With kcache, the previous limitation is gone - you now get true CPU attributed to each query, not just per application. Also folds in the DB Head's requested columns (blk_read_time, blk_write_time, cpu_ms_est) and query_id in session_snapshots.</p>
 <h2 id="0-what-this-stack-delivers">0. What This Stack Delivers<a class="headerlink" href="#0-what-this-stack-delivers" title="Permanent link">&para;</a></h2>
-<p><div class="highlight"><pre><span></span><code><span class="k">With</span><span class="w"> </span><span class="n">pg_stat_kcache</span><span class="w"> </span><span class="n">added</span><span class="p">,</span><span class="w"> </span><span class="k">every</span><span class="w"> </span><span class="n">analysis</span><span class="w"> </span><span class="n">question</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">now</span><span class="w"> </span><span class="n">answerable</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">including</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">was</span><span class="w"> </span><span class="n">previously</span><span class="w"> </span><span class="n">impossible</span><span class="w"> </span><span class="p">(</span><span class="n">CPU</span><span class="w"> </span><span class="n">per</span><span class="w"> </span><span class="n">query</span><span class="p">).</span>
-</code></pre></div>
+<p>With pg_stat_kcache added, every analysis question is now answerable - including the one that was previously impossible (CPU per query).
 | <strong>Question</strong>                        | <strong>Answer source</strong>                                | <strong>Granularity</strong>               |
 | ----------------------------------- | ------------------------------------------------ | ----------------------------- |
 | Real CPU per QUERY (was impossible) | pg_stat_kcache exec_user_time + exec_system_time | <strong>Per query - REAL CPU</strong>      |
@@ -2220,27 +2219,25 @@
 <p>sudo systemctl restart postgresql-16</p>
 <h3 id="12-create-extensions">1.2 Create extensions<a class="headerlink" href="#12-create-extensions" title="Permanent link">&para;</a></h3>
 <p>sudo -u postgres psql -d pg_loadmon</p>
-<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="n">EXTENSION</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">pg_stat_statements</span><span class="p">;</span>
-
-<span class="k">CREATE</span><span class="w"> </span><span class="n">EXTENSION</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">pg_stat_kcache</span><span class="p">;</span><span class="w"> </span><span class="c1">-- depends on pg_stat_statements</span>
-<span class="k">CREATE</span><span class="w"> </span><span class="n">EXTENSION</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">pg_proctab</span><span class="p">;</span>
-</code></pre></div>
+<p>CREATE EXTENSION IF NOT EXISTS pg_stat_statements;</p>
+<p>CREATE EXTENSION IF NOT EXISTS pg_stat_kcache; -- depends on pg_stat_statements
+CREATE EXTENSION IF NOT EXISTS pg_proctab;</p>
 <h3 id="13-grants">1.3 Grants<a class="headerlink" href="#13-grants" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="n">pg_monitor</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
-
-<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">pg_stat_statements</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
-
-<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">pg_stat_kcache</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
-
-<span class="k">GRANT</span><span class="w"> </span><span class="k">EXECUTE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">pg_stat_kcache</span><span class="p">()</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
-
-<span class="k">GRANT</span><span class="w"> </span><span class="k">EXECUTE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">pg_proctab</span><span class="p">()</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="n">pg_monitor</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
 </code></pre></div>
-<em>Verify all three loaded: SELECT extname,extversion FROM pg_extension WHERE extname IN ('pg_stat_statements','pg_stat_kcache','pg_proctab'); and confirm SHOW track_io_timing; and SHOW compute_query_id; both return on.</em></p>
+<div class="highlight"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">pg_stat_statements</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">pg_stat_kcache</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="k">EXECUTE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">pg_stat_kcache</span><span class="p">()</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="k">EXECUTE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">pg_proctab</span><span class="p">()</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
+<span class="n">_Verify</span><span class="w"> </span><span class="k">all</span><span class="w"> </span><span class="n">three</span><span class="w"> </span><span class="n">loaded</span><span class="p">:</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">extname</span><span class="p">,</span><span class="n">extversion</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_extension</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">extname</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;pg_stat_statements&#39;</span><span class="p">,</span><span class="s1">&#39;pg_stat_kcache&#39;</span><span class="p">,</span><span class="s1">&#39;pg_proctab&#39;</span><span class="p">);</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">confirm</span><span class="w"> </span><span class="k">SHOW</span><span class="w"> </span><span class="n">track_io_timing</span><span class="p">;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">SHOW</span><span class="w"> </span><span class="n">compute_query_id</span><span class="p">;</span><span class="w"> </span><span class="k">both</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">on</span><span class="p">.</span><span class="n">_</span>
+</code></pre></div>
 <h2 id="2-schema">2. Schema<a class="headerlink" href="#2-schema" title="Permanent link">&para;</a></h2>
 <h3 id="21-stmt_snapshots-per-query-every-5-min">2.1 stmt_snapshots - per-query (every 5 min)<a class="headerlink" href="#21-stmt_snapshots-per-query-every-5-min" title="Permanent link">&para;</a></h3>
 <p>Holds pg_stat_statements wall-clock/I/O, the DB Head columns, and the pg_stat_kcache real CPU + physical disk columns:</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span><span class="w"> </span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span><span class="w"> </span><span class="p">(</span>
 <span class="n">id</span><span class="w"> </span><span class="n">BIGSERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
 <span class="n">captured_at</span><span class="w"> </span><span class="n">TIMESTAMPTZ</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">NOW</span><span class="p">(),</span>
 <span class="n">dbname</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
@@ -2269,11 +2266,9 @@
 <span class="n">exec_minflts</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span><span class="w"> </span><span class="c1">-- minor page faults</span>
 <span class="n">exec_majflts</span><span class="w"> </span><span class="nb">BIGINT</span><span class="w"> </span><span class="c1">-- major page faults (memory pressure)</span>
 <span class="p">);</span>
-
-<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">captured_at</span><span class="p">);</span>
-
-<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">query_id</span><span class="p">);</span>
 </code></pre></div>
+<p>CREATE INDEX ON monitoring.stmt_snapshots (captured_at);</p>
+<p>CREATE INDEX ON monitoring.stmt_snapshots (query_id);
 <em>cpu_ms_est (DB Head estimate) and cpu_total_ms (kcache real) are both kept. cpu_ms_est removes only disk I/O wait; cpu_total_ms is true CPU from getrusage. Compare them in query 4.4 - where they diverge, the query had lock/latch/sleep waits that the estimate cannot see. Once kcache is trusted, cpu_total_ms supersedes cpu_ms_est.</em></p>
 <h3 id="22-session_snapshots-active-sessions-every-30-sec">2.2 session_snapshots - active sessions (every 30 sec)<a class="headerlink" href="#22-session_snapshots-active-sessions-every-30-sec" title="Permanent link">&para;</a></h3>
 <p>Adds query_id (DB Head request) so a sampled active session links to its stmt_snapshots row:</p>
@@ -2290,14 +2285,12 @@
 <span class="n">duration_secs</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span>
 <span class="n">query_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="w"> </span><span class="c1">-- NEW (DB Head request)</span>
 <span class="p">);</span>
-
-<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">captured_at</span><span class="p">);</span>
-
-<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">query_id</span><span class="p">);</span>
 </code></pre></div>
+<p>CREATE INDEX ON monitoring.session_snapshots (captured_at);</p>
+<p>CREATE INDEX ON monitoring.session_snapshots (query_id);</p>
 <h3 id="23-process_snapshots-all-pg_proctab-columns-every-30-sec">2.3 process_snapshots - all pg_proctab columns (every 30 sec)<a class="headerlink" href="#23-process_snapshots-all-pg_proctab-columns-every-30-sec" title="Permanent link">&para;</a></h3>
 <p>Stores every pg_proctab column for per-process CPU/memory, including background workers. Key analysis columns: utime, stime (CPU ticks) and rss (memory pages).</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">process_snapshots</span><span class="w"> </span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">process_snapshots</span><span class="w"> </span><span class="p">(</span>
 <span class="n">id</span><span class="w"> </span><span class="n">BIGSERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
 <span class="n">captured_at</span><span class="w"> </span><span class="n">TIMESTAMPTZ</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">NOW</span><span class="p">(),</span>
 <span class="n">application_name</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
@@ -2313,11 +2306,9 @@
 <span class="n">rchar</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span><span class="w"> </span><span class="n">wchar</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span><span class="w"> </span><span class="n">syscr</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span><span class="w"> </span><span class="n">syscw</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
 <span class="k">reads</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span><span class="w"> </span><span class="n">writes</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span><span class="w"> </span><span class="n">cwrites</span><span class="w"> </span><span class="nb">BIGINT</span>
 <span class="p">);</span>
-
-<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">process_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">captured_at</span><span class="p">,</span><span class="w"> </span><span class="n">application_name</span><span class="p">);</span>
-
-<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">process_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">pid</span><span class="p">);</span>
 </code></pre></div>
+<p>CREATE INDEX ON monitoring.process_snapshots (captured_at, application_name);</p>
+<p>CREATE INDEX ON monitoring.process_snapshots (pid);
 <em>rss is in PAGES (x 4096 / 1024 = KB); vsize is bytes; utime/stime are ticks (x 10 = ms on RHEL 8). process_snapshots is the per-PROCESS view (captures background workers like checkpointer, walwriter, pg_cron launcher that have no query). pg_stat_kcache is the per-QUERY view. They are complementary.</em></p>
 <h3 id="24-lock_snapshots-lock-waits-every-30-sec">2.4 lock_snapshots - lock waits (every 30 sec)<a class="headerlink" href="#24-lock_snapshots-lock-waits-every-30-sec" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span><span class="w"> </span><span class="p">(</span>
@@ -2331,9 +2322,8 @@
 <span class="n">relation</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
 <span class="n">wait_secs</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span>
 <span class="p">);</span>
-
-<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">captured_at</span><span class="p">);</span>
 </code></pre></div>
+<p>CREATE INDEX ON monitoring.lock_snapshots (captured_at);</p>
 <h3 id="25-db_snapshots-per-database-stats-every-60-sec">2.5 db_snapshots - per-database stats (every 60 sec)<a class="headerlink" href="#25-db_snapshots-per-database-stats-every-60-sec" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">db_snapshots</span><span class="w"> </span><span class="p">(</span>
 <span class="n">id</span><span class="w"> </span><span class="n">BIGSERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
@@ -2347,27 +2337,24 @@
 <span class="n">tup_returned</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
 <span class="n">tup_fetched</span><span class="w"> </span><span class="nb">BIGINT</span>
 <span class="p">);</span>
-
-<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">db_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">captured_at</span><span class="p">,</span><span class="w"> </span><span class="n">dbname</span><span class="p">);</span>
-
-<span class="c1">-- Grant on all five tables:</span>
-
-<span class="k">GRANT</span><span class="w"> </span><span class="k">INSERT</span><span class="p">,</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">monitoring</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
-
-<span class="k">GRANT</span><span class="w"> </span><span class="k">USAGE</span><span class="p">,</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">SEQUENCES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">monitoring</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
+</code></pre></div>
+<p>CREATE INDEX ON monitoring.db_snapshots (captured_at, dbname);</p>
+<p>-- Grant on all five tables:</p>
+<div class="highlight"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="k">INSERT</span><span class="p">,</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">monitoring</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="k">USAGE</span><span class="p">,</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">SEQUENCES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">monitoring</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
 </code></pre></div>
 <h2 id="3-collection-queries">3. Collection Queries<a class="headerlink" href="#3-collection-queries" title="Permanent link">&para;</a></h2>
 <h3 id="31-stmt_snapshots-pg_stat_statements-pg_stat_kcache-every-5-min">3.1 stmt_snapshots - pg_stat_statements + pg_stat_kcache (every 5 min)<a class="headerlink" href="#31-stmt_snapshots-pg_stat_statements-pg_stat_kcache-every-5-min" title="Permanent link">&para;</a></h3>
 <p>The kcache function is LEFT JOINed to pg_stat_statements on (queryid, dbid, userid). exec_user_time/exec_system_time are in SECONDS, so multiply by 1000 for ms to match total_exec_time:</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span><span class="w"> </span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span><span class="w"> </span><span class="p">(</span>
+<span class="n">dbname</span><span class="p">,</span><span class="w"> </span><span class="n">query_id</span><span class="p">,</span><span class="w"> </span><span class="n">query_text</span><span class="p">,</span><span class="w"> </span><span class="n">calls</span><span class="p">,</span><span class="w"> </span><span class="n">total_exec_time</span><span class="p">,</span><span class="w"> </span><span class="n">mean_exec_time</span><span class="p">,</span>
 </code></pre></div>
-dbname, query_id, query_text, calls, total_exec_time, mean_exec_time,</p>
 <p>rows, shared_blks_hit, shared_blks_read, temp_blks_written, wal_bytes,</p>
 <p>blk_read_time, blk_write_time, cpu_ms_est,</p>
 <p>cpu_user_ms, cpu_sys_ms, cpu_total_ms,</p>
 <p>phys_read_bytes, phys_write_bytes, exec_minflts, exec_majflts)</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
-</code></pre></div>
+<p>SELECT
 d.datname,</p>
 <p>s.queryid,</p>
 <p>LEFT(s.query, 300),</p>
@@ -2382,41 +2369,37 @@ d.datname,</p>
 <p>k.exec_reads AS phys_read_bytes,</p>
 <p>k.exec_writes AS phys_write_bytes,</p>
 <p>k.exec_minflts, k.exec_majflts</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="n">pg_stat_statements</span><span class="w"> </span><span class="n">s</span>
-</code></pre></div>
+<p>FROM pg_stat_statements s
 JOIN pg_database d ON d.oid = s.dbid</p>
 <p>LEFT JOIN pg_stat_kcache() k ON k.queryid = s.queryid</p>
 <p>AND k.dbid = s.dbid</p>
 <p>AND k.userid = s.userid</p>
 <p>AND k.top IS TRUE</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">WHERE</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">calls</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-</code></pre></div>
+<p>WHERE s.calls &gt; 0;
 <em>k.top IS TRUE matches top-level statements (pg_stat_statements.track = top). If your kcache version errors on the top column, remove that one line - older kcache builds do not expose it. exec_reads/exec_writes are bytes from getrusage (ru_inblock/ru_oublock x 512); on some filesystems they can read 0 even with real I/O - cross-check against shared_blks_read if so.</em></p>
 <h3 id="32-session_snapshots-add-query_id-every-30-sec">3.2 session_snapshots - add query_id (every 30 sec)<a class="headerlink" href="#32-session_snapshots-add-query_id-every-30-sec" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span><span class="w"> </span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span><span class="w"> </span><span class="p">(</span>
+<span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">dbname</span><span class="p">,</span><span class="w"> </span><span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="k">state</span><span class="p">,</span>
 </code></pre></div>
-pid, dbname, application_name, state,</p>
 <p>wait_event_type, wait_event, query_start, duration_secs, query_id)</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">datname</span><span class="p">,</span><span class="w"> </span><span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="k">state</span><span class="p">,</span>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">datname</span><span class="p">,</span><span class="w"> </span><span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="k">state</span><span class="p">,</span>
+<span class="n">wait_event_type</span><span class="p">,</span><span class="w"> </span><span class="n">wait_event</span><span class="p">,</span><span class="w"> </span><span class="n">query_start</span><span class="p">,</span>
 </code></pre></div>
-wait_event_type, wait_event, query_start,</p>
 <p>EXTRACT(EPOCH FROM (NOW() - query_start)),</p>
 <p>query_id</p>
-<div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="n">pg_stat_activity</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="k">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;active&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">pid</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="n">pg_backend_pid</span><span class="p">();</span>
-</code></pre></div>
+<p>FROM pg_stat_activity
+WHERE state = 'active' AND pid &lt;&gt; pg_backend_pid();</p>
 <h3 id="33-process_snapshots-pg_proctab-every-30-sec">3.3 process_snapshots - pg_proctab (every 30 sec)<a class="headerlink" href="#33-process_snapshots-pg_proctab-every-30-sec" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="n">pg_proctab</span><span class="p">()</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">pg_stat_activity</span><span class="w"> </span><span class="n">so</span><span class="w"> </span><span class="n">background</span><span class="w"> </span><span class="n">workers</span><span class="w"> </span><span class="p">(</span><span class="k">no</span><span class="w"> </span><span class="n">pg_stat_activity</span><span class="w"> </span><span class="k">row</span><span class="p">)</span><span class="w"> </span><span class="k">are</span><span class="w"> </span><span class="n">kept</span><span class="p">.</span><span class="w"> </span><span class="n">Filter</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">postgres</span><span class="w"> </span><span class="n">OS</span><span class="w"> </span><span class="k">user</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">capture</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">processes</span><span class="p">:</span>
-<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">process_snapshots</span><span class="w"> </span><span class="p">(</span>
-</code></pre></div>
-application_name, dbname, pid, comm, fullcomm, state, ppid, pgrp,</p>
+<p>FROM pg_proctab() LEFT JOIN pg_stat_activity so background workers (no pg_stat_activity row) are kept. Filter on the postgres OS user to capture ALL database processes:
+<div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">process_snapshots</span><span class="w"> </span><span class="p">(</span>
+<span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="n">dbname</span><span class="p">,</span><span class="w"> </span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">comm</span><span class="p">,</span><span class="w"> </span><span class="n">fullcomm</span><span class="p">,</span><span class="w"> </span><span class="k">state</span><span class="p">,</span><span class="w"> </span><span class="n">ppid</span><span class="p">,</span><span class="w"> </span><span class="n">pgrp</span><span class="p">,</span>
+</code></pre></div></p>
 <p>session, tty_nr, tpgid, flags, minflt, cminflt, majflt, cmajflt,</p>
 <p>utime, stime, cutime, cstime, priority, nice, num_threads, itrealvalue,</p>
 <p>starttime, vsize, rss, exit_signal, processor, rt_priority, policy,</p>
 <p>delayacct_blkio_ticks, uid, username, rchar, wchar, syscr, syscw,</p>
 <p>reads, writes, cwrites)</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
-</code></pre></div>
+<p>SELECT
 COALESCE(NULLIF(sa.application_name,''),</p>
 <p>CASE WHEN sa.pid IS NULL THEN pt.fullcomm ELSE 'unknown' END),</p>
 <p>sa.datname, pt.pid, pt.comm, pt.fullcomm, pt.state, pt.ppid, pt.pgrp,</p>
@@ -2426,61 +2409,54 @@ COALESCE(NULLIF(sa.application_name,''),</p>
 <p>pt.vsize, pt.rss, pt.exit_signal, pt.processor, pt.rt_priority,</p>
 <p>pt.policy, pt.delayacct_blkio_ticks, pt.uid, pt.username,</p>
 <p>pt.rchar, pt.wchar, pt.syscr, pt.syscw, pt.reads, pt.writes, pt.cwrites</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="n">pg_proctab</span><span class="p">()</span><span class="w"> </span><span class="n">pt</span>
-</code></pre></div>
+<p>FROM pg_proctab() pt
 LEFT JOIN pg_stat_activity sa ON sa.pid = pt.pid</p>
-<div class="highlight"><pre><span></span><code><span class="k">WHERE</span><span class="w"> </span><span class="n">pt</span><span class="p">.</span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;postgres&#39;</span><span class="p">;</span>
-</code></pre></div>
+<p>WHERE pt.username = 'postgres';</p>
 <h3 id="34-lock_snapshots-lock-waits-every-30-sec-same-script-as-sessions">3.4 lock_snapshots - lock waits (every 30 sec, same script as sessions)<a class="headerlink" href="#34-lock_snapshots-lock-waits-every-30-sec-same-script-as-sessions" title="Permanent link">&para;</a></h3>
 <p>Collected in the same 30-second script as sessions and process_snapshots:</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span>
+<div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span>
+<span class="p">(</span><span class="n">waiting_pid</span><span class="p">,</span><span class="w"> </span><span class="n">waiting_app</span><span class="p">,</span><span class="w"> </span><span class="n">blocking_pid</span><span class="p">,</span><span class="w"> </span><span class="n">blocking_app</span><span class="p">,</span>
 </code></pre></div>
-(waiting_pid, waiting_app, blocking_pid, blocking_app,</p>
 <p>lock_type, relation, wait_secs)</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">application_name</span><span class="p">,</span>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">application_name</span><span class="p">,</span>
+<span class="n">lw</span><span class="p">.</span><span class="n">locktype</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relname</span><span class="p">,</span>
 </code></pre></div>
-lw.locktype, c.relname,</p>
 <p>EXTRACT(EPOCH FROM (NOW() - w.query_start))</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="n">pg_stat_activity</span><span class="w"> </span><span class="n">w</span>
-</code></pre></div>
+<p>FROM pg_stat_activity w
 JOIN pg_locks lw ON lw.pid = w.pid AND NOT lw.granted</p>
 <p>JOIN pg_locks lb ON lb.locktype = lw.locktype AND lb.granted</p>
 <p>AND lb.relation IS NOT DISTINCT FROM lw.relation</p>
 <p>JOIN pg_stat_activity b ON b.pid = lb.pid</p>
 <p>LEFT JOIN pg_class c ON c.oid = lw.relation</p>
-<div class="highlight"><pre><span></span><code><span class="k">WHERE</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">wait_event_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Lock&#39;</span><span class="p">;</span>
-</code></pre></div>
+<p>WHERE w.wait_event_type = 'Lock';</p>
 <h3 id="35-db_snapshots-per-database-stats-every-60-sec">3.5 db_snapshots - per-database stats (every 60 sec)<a class="headerlink" href="#35-db_snapshots-per-database-stats-every-60-sec" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">db_snapshots</span>
+<div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">db_snapshots</span>
+<span class="p">(</span><span class="n">dbname</span><span class="p">,</span><span class="w"> </span><span class="n">numbackends</span><span class="p">,</span><span class="w"> </span><span class="n">xact_commit</span><span class="p">,</span><span class="w"> </span><span class="n">xact_rollback</span><span class="p">,</span>
 </code></pre></div>
-(dbname, numbackends, xact_commit, xact_rollback,</p>
 <p>blks_hit, blks_read, tup_returned, tup_fetched)</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">datname</span><span class="p">,</span><span class="w"> </span><span class="n">numbackends</span><span class="p">,</span><span class="w"> </span><span class="n">xact_commit</span><span class="p">,</span><span class="w"> </span><span class="n">xact_rollback</span><span class="p">,</span>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">datname</span><span class="p">,</span><span class="w"> </span><span class="n">numbackends</span><span class="p">,</span><span class="w"> </span><span class="n">xact_commit</span><span class="p">,</span><span class="w"> </span><span class="n">xact_rollback</span><span class="p">,</span>
+<span class="n">blks_hit</span><span class="p">,</span><span class="w"> </span><span class="n">blks_read</span><span class="p">,</span><span class="w"> </span><span class="n">tup_returned</span><span class="p">,</span><span class="w"> </span><span class="n">tup_fetched</span>
 </code></pre></div>
-blks_hit, blks_read, tup_returned, tup_fetched</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="n">pg_stat_database</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">datname</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;template0&#39;</span><span class="p">,</span><span class="s1">&#39;template1&#39;</span><span class="p">,</span><span class="s1">&#39;postgres&#39;</span><span class="p">,</span><span class="s1">&#39;pg_loadmon&#39;</span><span class="p">);</span>
-</code></pre></div>
+<p>FROM pg_stat_database
+WHERE datname NOT IN ('template0','template1','postgres','pg_loadmon');
 <em>Script-to-query mapping: collect_stmts.sh runs 3.1 (5 min). collect_sessions.sh runs 3.2 + 3.3 + 3.4 together (30 sec, two cron entries for :00 and :30). collect_db.sh runs 3.5 (60 sec). The shell scripts in Section 5 contain exactly these queries.</em></p>
 <h2 id="4-analysis-queries">4. Analysis Queries<a class="headerlink" href="#4-analysis-queries" title="Permanent link">&para;</a></h2>
 <h3 id="41-per-query-real-cpu-pg_stat_kcache-the-new-headline">4.1 Per-query REAL CPU (pg_stat_kcache) - the new headline<a class="headerlink" href="#41-per-query-real-cpu-pg_stat_kcache-the-new-headline" title="Permanent link">&para;</a></h3>
 <p>This is what kcache unlocks: true CPU attributed to each query shape, ranked. Previously impossible without pg_stat_monitor.</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">WITH</span><span class="w"> </span><span class="n">ranked</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
-<span class="k">SELECT</span><span class="w"> </span><span class="n">query_id</span><span class="p">,</span>
-</code></pre></div>
-MAX(query_text) AS query_text,</p>
+<p>WITH ranked AS (
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">query_id</span><span class="p">,</span>
+<span class="k">MAX</span><span class="p">(</span><span class="n">query_text</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">query_text</span><span class="p">,</span>
+</code></pre></div></p>
 <p>MAX(cpu_total_ms) AS cpu_total_ms,</p>
 <p>MAX(cpu_user_ms) AS cpu_user_ms,</p>
 <p>MAX(cpu_sys_ms) AS cpu_sys_ms,</p>
 <p>MAX(total_exec_time) AS wall_ms,</p>
 <p>MAX(calls) AS calls</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">captured_at</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;24 hours&#39;</span>
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">query_id</span>
-</code></pre></div>
+<p>FROM monitoring.stmt_snapshots
+WHERE captured_at &gt;= NOW() - INTERVAL '24 hours'
+GROUP BY query_id
 )</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
-</code></pre></div>
+<p>SELECT
 LEFT(query_text, 90) AS query_text,</p>
 <p>calls,</p>
 <p>ROUND((cpu_total_ms/1000.0)::NUMERIC,1) AS cpu_sec,</p>
@@ -2489,15 +2465,13 @@ LEFT(query_text, 90) AS query_text,</p>
 <p>ROUND((wall_ms/1000.0)::NUMERIC,1) AS wall_sec,</p>
 <p>ROUND((100.0*(wall_ms-cpu_total_ms)/</p>
 <p>NULLIF(wall_ms,0))::NUMERIC,1) AS pct_wait</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="n">ranked</span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">cpu_total_ms</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="n">NULLS</span><span class="w"> </span><span class="k">LAST</span>
-<span class="k">LIMIT</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span>
-</code></pre></div>
+<p>FROM ranked
+ORDER BY cpu_total_ms DESC NULLS LAST
+LIMIT 30;
 <em>pct_wait here is real: wall-clock minus real CPU = all waiting (I/O + locks + sleep). Unlike cpu_ms_est, this captures lock and sleep waits too, because cpu_total_ms is true getrusage CPU. A pg_sleep query shows ~100% pct_wait and ~0 cpu_sec - correctly.</em></p>
 <h3 id="42-per-query-cpu-vs-io-wait-vs-physical-disk">4.2 Per-query CPU vs I/O wait vs physical disk<a class="headerlink" href="#42-per-query-cpu-vs-io-wait-vs-physical-disk" title="Permanent link">&para;</a></h3>
 <p>Combine kcache real CPU, the DB Head I/O-wait columns, and kcache physical bytes to classify each query as CPU-bound vs I/O-bound:</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
-</code></pre></div>
+<p>SELECT
 LEFT(MAX(query_text),80) AS query_text,</p>
 <p>ROUND((MAX(cpu_total_ms)/1000.0)::NUMERIC,1) AS cpu_sec,</p>
 <p>ROUND((MAX(blk_read_time+blk_write_time)/1000.0)::NUMERIC,1) AS io_wait_sec,</p>
@@ -2505,41 +2479,35 @@ LEFT(MAX(query_text),80) AS query_text,</p>
 <p>MAX(exec_majflts) AS major_faults,</p>
 <p>CASE WHEN MAX(cpu_total_ms) &gt; MAX(blk_read_time+blk_write_time)</p>
 <p>THEN 'CPU-bound' ELSE 'IO-bound' END AS profile</p>
-<div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">captured_at</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;24 hours&#39;</span>
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">query_id</span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">cpu_total_ms</span><span class="p">)</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="n">NULLS</span><span class="w"> </span><span class="k">LAST</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span>
-</code></pre></div>
+<p>FROM monitoring.stmt_snapshots
+WHERE captured_at &gt;= NOW() - INTERVAL '24 hours'
+GROUP BY query_id
+ORDER BY MAX(cpu_total_ms) DESC NULLS LAST LIMIT 30;</p>
 <h3 id="43-per-application-real-cpu-pg_proctab-cross-check">4.3 Per-application real CPU (pg_proctab) - cross-check<a class="headerlink" href="#43-per-application-real-cpu-pg_proctab-cross-check" title="Permanent link">&para;</a></h3>
 <p>pg_proctab provides the per-application view and catches background-worker CPU that has no query_id. Two levels: MAX per PID (peak of the cumulative counter), then SUM per application. ticks x 10 = ms; rss pages x 4096 / 1024 = KB.</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">WITH</span><span class="w"> </span><span class="n">per_pid</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
-<span class="k">SELECT</span>
-</code></pre></div>
+<p>WITH per_pid AS (
+SELECT
 application_name,</p>
 <p>pid,</p>
 <p>MAX(utime) AS pid_user_ticks, -- cumulative, take peak per PID</p>
 <p>MAX(stime) AS pid_sys_ticks,</p>
 <p>MAX(rss) AS pid_rss_pages</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">process_snapshots</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">captured_at</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;24 hours&#39;</span>
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="n">pid</span>
-</code></pre></div>
+<p>FROM monitoring.process_snapshots
+WHERE captured_at &gt;= NOW() - INTERVAL '24 hours'
+GROUP BY application_name, pid
 ),</p>
 <p>totals AS (</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
-</code></pre></div>
+<p>SELECT
 application_name,</p>
 <p>SUM((pid_user_ticks + pid_sys_ticks) * 10) AS cpu_ms, -- ticks*10 = ms</p>
 <p>SUM(pid_user_ticks * 10) AS user_ms,</p>
 <p>SUM(pid_sys_ticks * 10) AS sys_ms,</p>
 <p>SUM(pid_rss_pages * 4096 / 1024) AS rss_kb, -- pages -&gt; KB</p>
 <p>COUNT(DISTINCT pid) AS pids</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="n">per_pid</span>
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">application_name</span>
-</code></pre></div>
+<p>FROM per_pid
+GROUP BY application_name
 )</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
-</code></pre></div>
+<p>SELECT
 application_name,</p>
 <p>ROUND((cpu_ms/1000.0)::NUMERIC,1) AS cpu_sec,</p>
 <p>ROUND((100.0*cpu_ms/NULLIF(SUM(cpu_ms) OVER(),0))::NUMERIC,2) AS pct_cpu,</p>
@@ -2547,42 +2515,37 @@ application_name,</p>
 <p>ROUND((sys_ms/1000.0)::NUMERIC,1) AS sys_sec,</p>
 <p>ROUND((rss_kb/1024.0)::NUMERIC,1) AS rss_mb,</p>
 <p>pids</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="n">totals</span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">pct_cpu</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
-</code></pre></div>
+<p>FROM totals
+ORDER BY pct_cpu DESC;
 <em>Why two levels: pg_proctab CPU is a CUMULATIVE counter per PID. Summing utime directly across snapshots would add the same growing counter many times and over-count. MAX per PID takes each backend's peak, then SUM per application. Read against 4.1: where 4.3 shows CPU that 4.1 (per-query) cannot account for, that is background-worker CPU (checkpointer, walwriter, autovacuum, pg_cron launcher) with no query_id - exactly what pg_proctab catches and kcache cannot. For pooled backends that served many apps, 4.3 is the cross-check; 4.1 (kcache per-query) is the precise figure.</em></p>
 <h3 id="44-estimate-vs-real-how-good-is-cpu_ms_est">4.4 Estimate vs real - how good is cpu_ms_est?<a class="headerlink" href="#44-estimate-vs-real-how-good-is-cpu_ms_est" title="Permanent link">&para;</a></h3>
 <p>Shows the DB Head's estimate beside kcache's real CPU. Large gaps reveal queries with lock/sleep waits the estimate cannot detect:</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
-</code></pre></div>
+<p>SELECT
 LEFT(MAX(query_text),80) AS query_text,</p>
 <p>ROUND((MAX(cpu_ms_est)/1000.0)::NUMERIC,1) AS est_cpu_sec,</p>
 <p>ROUND((MAX(cpu_total_ms)/1000.0)::NUMERIC,1) AS real_cpu_sec,</p>
 <p>ROUND((100.0*(MAX(cpu_ms_est)-MAX(cpu_total_ms))/</p>
 <p>NULLIF(MAX(cpu_ms_est),0))::NUMERIC,1) AS est_overstate_pct</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">captured_at</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;24 hours&#39;</span>
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">query_id</span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">cpu_total_ms</span><span class="p">)</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="n">NULLS</span><span class="w"> </span><span class="k">LAST</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span>
-</code></pre></div>
+<p>FROM monitoring.stmt_snapshots
+WHERE captured_at &gt;= NOW() - INTERVAL '24 hours'
+GROUP BY query_id
+ORDER BY MAX(cpu_total_ms) DESC NULLS LAST LIMIT 30;
 <em>est_overstate_pct shows how much the DB Head estimate over-counts CPU for each query. For pure compute queries it is near 0 (estimate is accurate). For lock/sleep-heavy queries it is high (estimate wrongly counts the wait as CPU). This quantifies why kcache is worth having.</em></p>
 <h3 id="45-link-active-sessions-to-statement-cost-query_id-join">4.5 Link active sessions to statement cost (query_id join)<a class="headerlink" href="#45-link-active-sessions-to-statement-cost-query_id-join" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><span class="k">With</span><span class="w"> </span><span class="n">query_id</span><span class="w"> </span><span class="n">now</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">both</span><span class="w"> </span><span class="n">tables</span><span class="p">,</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">sampled</span><span class="w"> </span><span class="n">active</span><span class="w"> </span><span class="n">sessions</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">their</span><span class="w"> </span><span class="nb">real</span><span class="w"> </span><span class="n">per</span><span class="o">-</span><span class="n">query</span><span class="w"> </span><span class="n">CPU</span><span class="p">:</span>
-<span class="k">SELECT</span><span class="w"> </span><span class="n">ss</span><span class="p">.</span><span class="n">query_id</span><span class="p">,</span>
-</code></pre></div>
-COUNT(*) AS times_caught_active,</p>
+<p>With query_id now in both tables, join the sampled active sessions to their real per-query CPU:
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">ss</span><span class="p">.</span><span class="n">query_id</span><span class="p">,</span>
+<span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">times_caught_active</span><span class="p">,</span>
+</code></pre></div></p>
 <p>LEFT(MAX(st.query_text),80) AS query_text,</p>
 <p>ROUND((MAX(st.cpu_total_ms)/1000.0)::NUMERIC,1) AS real_cpu_sec</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span><span class="w"> </span><span class="n">ss</span>
-</code></pre></div>
+<p>FROM monitoring.session_snapshots ss
 LEFT JOIN LATERAL (</p>
-<p><div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">query_text</span><span class="p">,</span><span class="w"> </span><span class="n">cpu_total_ms</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span><span class="w"> </span><span class="n">st</span>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">query_text</span><span class="p">,</span><span class="w"> </span><span class="n">cpu_total_ms</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span><span class="w"> </span><span class="n">st</span>
 <span class="k">WHERE</span><span class="w"> </span><span class="n">st</span><span class="p">.</span><span class="n">query_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ss</span><span class="p">.</span><span class="n">query_id</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">st</span><span class="p">.</span><span class="n">captured_at</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">1</span>
+<span class="p">)</span><span class="w"> </span><span class="n">st</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">true</span>
 </code></pre></div>
-) st ON true</p>
-<div class="highlight"><pre><span></span><code><span class="k">WHERE</span><span class="w"> </span><span class="n">ss</span><span class="p">.</span><span class="n">captured_at</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;24 hours&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">ss</span><span class="p">.</span><span class="n">query_id</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ss</span><span class="p">.</span><span class="n">query_id</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">times_caught_active</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span>
-</code></pre></div>
+<p>WHERE ss.captured_at &gt;= NOW() - INTERVAL '24 hours' AND ss.query_id IS NOT NULL
+GROUP BY ss.query_id ORDER BY times_caught_active DESC LIMIT 30;</p>
 <h2 id="5-collection-shell-scripts-rhel-8-system-cron">5. Collection Shell Scripts (RHEL 8 system cron)<a class="headerlink" href="#5-collection-shell-scripts-rhel-8-system-cron" title="Permanent link">&para;</a></h2>
 <p>Three scripts under /opt/pgmon/. Credentials via ~/.pgpass (0600), never in the scripts.</p>
 <p>sudo mkdir -p /opt/pgmon /var/log/pgmon &amp;&amp; sudo chown postgres:postgres /opt/pgmon /var/log/pgmon</p>
@@ -2868,31 +2831,28 @@ LEFT JOIN LATERAL (</p>
 <p><em>The purge runs at 02:00 - after pg_basebackup completes and before the morning OLTP peak. It deletes roughly 300,000 rows and runs VACUUM on five tables. At 02:00 the server is near-idle so the DELETE + VACUUM complete in seconds without impacting any active sessions. The purge.log captures row counts (DELETE returns the count in psql verbose output) - tail -f /var/log/pgmon/purge.log to confirm it ran.</em></p>
 <h3 id="64-one-time-permission-grant-run-once-as-superuser">6.4 One-Time Permission Grant (run once as superuser)<a class="headerlink" href="#64-one-time-permission-grant-run-once-as-superuser" title="Permanent link">&para;</a></h3>
 <p>The existing pg_monitor_reader role has INSERT and SELECT on all monitoring tables (Section 2). DELETE must be added once before the purge script will work:</p>
-<div class="highlight"><pre><span></span><code><span class="c1">-- Run as postgres superuser once:</span>
-
-<span class="k">GRANT</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">monitoring</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
+<p>-- Run as postgres superuser once:</p>
+<div class="highlight"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">monitoring</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
 </code></pre></div>
 <h3 id="65-verify-retention-is-working">6.5 Verify Retention Is Working<a class="headerlink" href="#65-verify-retention-is-working" title="Permanent link">&para;</a></h3>
 <p>Run after the first purge execution to confirm the window is correct and sizes are stable:</p>
-<p><div class="highlight"><pre><span></span><code><span class="c1">-- Check oldest row in each table (should be ~3 days ago):</span>
-
-<span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;stmt_snapshots&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tbl</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">oldest</span><span class="p">,</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">newest</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="err">\</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span>
+<p>-- Check oldest row in each table (should be ~3 days ago):</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;stmt_snapshots&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tbl</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">oldest</span><span class="p">,</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">newest</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span>
 <span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
-<span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;session_snapshots&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tbl</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="err">\</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;session_snapshots&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tbl</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span>
 <span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
-<span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;process_snapshots&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tbl</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="err">\</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">process_snapshots</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;process_snapshots&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tbl</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">process_snapshots</span>
 <span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
-<span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;lock_snapshots&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tbl</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="err">\</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;lock_snapshots&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tbl</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span>
 <span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
-<span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;db_snapshots&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tbl</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="err">\</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">db_snapshots</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;db_snapshots&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tbl</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">db_snapshots</span>
 <span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">tbl</span><span class="p">;</span>
-
-<span class="c1">-- Check physical table sizes on disk:</span>
-
-<span class="k">SELECT</span><span class="w"> </span><span class="n">relname</span><span class="p">,</span><span class="w"> </span><span class="n">pg_size_pretty</span><span class="p">(</span><span class="n">pg_total_relation_size</span><span class="p">(</span><span class="n">oid</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_size</span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">pg_class</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">relnamespace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">oid</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_namespace</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nspname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;monitoring&#39;</span><span class="p">)</span>
 </code></pre></div>
-AND relkind = 'r' ORDER BY pg_total_relation_size(oid) DESC;</p>
+<p>-- Check physical table sizes on disk:</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">relname</span><span class="p">,</span><span class="w"> </span><span class="n">pg_size_pretty</span><span class="p">(</span><span class="n">pg_total_relation_size</span><span class="p">(</span><span class="n">oid</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_size</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">pg_class</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">relnamespace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">oid</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_namespace</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nspname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;monitoring&#39;</span><span class="p">)</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">relkind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;r&#39;</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">pg_total_relation_size</span><span class="p">(</span><span class="n">oid</span><span class="p">)</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
 <p><em>Expected output after steady state: oldest row ~3 days ago for all tables, row counts ~302,000 total, total_size across all five tables ~500-600 MB including indexes. If total_size keeps growing day-over-day, the purge job is not running - check /var/log/pgmon/purge.log for errors.</em></p>
 <h2 id="7-reconciling-with-absolute-cpu-azure-vm-metrics">7. Reconciling With Absolute CPU (Azure VM Metrics)<a class="headerlink" href="#7-reconciling-with-absolute-cpu-azure-vm-metrics" title="Permanent link">&para;</a></h2>
 <p>kcache and pg_proctab give RELATIVE attribution (per query / per process). The Azure VM 'Percentage CPU (Max)' metric gives ABSOLUTE utilisation. Read them together.</p>
