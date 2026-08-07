@@ -497,6 +497,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#firewall-configuration-gaurav-sir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firewall Configuration (Gaurav Sir)
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1407,6 +1418,17 @@
     <span class="md-ellipsis">
       
         HOW TO CHANGE THESE PERMISSIONS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firewall-configuration-gaurav-sir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firewall Configuration (Gaurav Sir)
       
     </span>
   </a>
@@ -2373,33 +2395,29 @@ take a example of /etc/passwd file it is delimited by ":"<br />
 <li><strong>firewall-cmd -zone=public -add-service=http -permanent</strong></li>
 <li><strong>firewall-cmd -reload</strong></li>
 <li><strong>firewall-cmd -zone=public -list-service</strong></li>
-<li><strong>firewall-cmd -list-ports<br />
-  <br/><br/>**GAURAV SIR</strong></li>
-<li># To Check OS Firewall status in Linux</li>
-<li>systemctl status firewalld</li>
-<li># To check existing rules</li>
-<li>firewall-cmd --list-all</li>
-<li>
-<h1 id="to-allow-ip-address-sequence-and-5432-port-in-firewall-settings-execute-following-command">To allow ip address sequence and 5432 port in firewall settings execute following command:<a class="headerlink" href="#to-allow-ip-address-sequence-and-5432-port-in-firewall-settings-execute-following-command" title="Permanent link">&para;</a></h1>
-</li>
-<li>firewall-cmd --permanent --zone=public --add-rich-rule='</li>
-<li>rule family="ipv4"</li>
-<li>source address="10.1.0.0/24"</li>
-<li>
-<p>port protocol="tcp" port="5432" accept'</p>
-</li>
-<li>
-<p># To Stop and Start firewall service</p>
-</li>
-<li>systemctl stop firewalld</li>
-<li>systemctl start firewalld</li>
-<li># To check existing rules (Newly added rules should be visible)</li>
-<li>firewall-cmd --list-all</li>
-<li>apps-fileview.texmex_20241212.01_p1</li>
-<li>Linux_Firewall_permissions.txt</li>
-<li>Displaying Linux_Firewall_permissions.txt.<br />
-  <br/></li>
+<li><strong>firewall-cmd --list-ports</strong></li>
 </ul>
+<h3 id="firewall-configuration-gaurav-sir">Firewall Configuration (Gaurav Sir)<a class="headerlink" href="#firewall-configuration-gaurav-sir" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># To Check OS Firewall status in Linux</span>
+systemctl<span class="w"> </span>status<span class="w"> </span>firewalld
+
+<span class="c1"># To check existing rules</span>
+firewall-cmd<span class="w"> </span>--list-all
+
+<span class="c1"># To allow IP address sequence and 5432 port in firewall settings:</span>
+firewall-cmd<span class="w"> </span>--permanent<span class="w"> </span>--zone<span class="o">=</span>public<span class="w"> </span>--add-rich-rule<span class="o">=</span><span class="s1">&#39;rule family=&quot;ipv4&quot; source address=&quot;10.1.0.0/24&quot; port protocol=&quot;tcp&quot; port=&quot;5432&quot; accept&#39;</span>
+
+<span class="c1"># To Stop and Start firewall service</span>
+systemctl<span class="w"> </span>stop<span class="w"> </span>firewalld
+systemctl<span class="w"> </span>start<span class="w"> </span>firewalld
+
+<span class="c1"># To check existing rules (Newly added rules should be visible)</span>
+firewall-cmd<span class="w"> </span>--list-all
+</code></pre></div>
+- apps-fileview.texmex_20241212.01_p1
+- Linux_Firewall_permissions.txt
+- Displaying Linux_Firewall_permissions.txt.<br />
+  <br/></p>
 <p><strong>*** USER AND GROUP RELATED COMMAND<br />
 <br/></strong></p>
 <ul>
