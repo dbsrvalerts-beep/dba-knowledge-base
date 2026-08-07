@@ -11,24 +11,28 @@
       
       
       
+        <link rel="prev" href="../LINUX%20FIREWALL%20PERMISSIONS/">
+      
+      
+        <link rel="next" href="../LVM%20PARTITION/">
       
       
         
       
       
-      <link rel="icon" href="/assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>DBA Knowledge Base</title>
+        <title>LINUX PERMISSIONS - DBA Knowledge Base</title>
       
     
     
-      <link rel="stylesheet" href="/assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="/assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -47,7 +51,7 @@
       
     
     
-    <script>__md_scope=new URL("/",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -69,6 +73,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#linux-permissions" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -81,7 +90,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/." title="DBA Knowledge Base" class="md-header__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+    <a href="../.." title="DBA Knowledge Base" class="md-header__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -101,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              LINUX PERMISSIONS
             
           </span>
         </div>
@@ -181,7 +190,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/." title="DBA Knowledge Base" class="md-nav__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+    <a href="../.." title="DBA Knowledge Base" class="md-nav__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -199,7 +208,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -273,7 +282,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/DEPARTMENT/Cloud%20Database%20Objective/" class="md-nav__link">
+      <a href="../../DEPARTMENT/Cloud%20Database%20Objective/" class="md-nav__link">
         
   
   
@@ -301,7 +310,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/DEPARTMENT/Oracle%20Database%20Solutions%20and%20Service%28Standard%20Version%29/" class="md-nav__link">
+      <a href="../../DEPARTMENT/Oracle%20Database%20Solutions%20and%20Service%28Standard%20Version%29/" class="md-nav__link">
         
   
   
@@ -333,18 +342,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -365,7 +376,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -383,7 +394,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/LINUX/LINUX%20FIREWALL%20PERMISSIONS/" class="md-nav__link">
+      <a href="../LINUX%20FIREWALL%20PERMISSIONS/" class="md-nav__link">
         
   
   
@@ -408,10 +419,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/LINUX/LINUX%20PERMISSIONS/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX PERMISSIONS
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -427,6 +465,37 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#documentation-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DOCUMENTATION GUIDE
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -439,7 +508,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/LINUX/LVM%20PARTITION/" class="md-nav__link">
+      <a href="../LVM%20PARTITION/" class="md-nav__link">
         
   
   
@@ -521,7 +590,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/MYSQL/MySQL_Migration_Runbook/" class="md-nav__link">
+      <a href="../../MYSQL/MySQL_Migration_Runbook/" class="md-nav__link">
         
   
   
@@ -650,7 +719,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Incarnation%20%28ORA-19909%29/" class="md-nav__link">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Incarnation%20%28ORA-19909%29/" class="md-nav__link">
         
   
   
@@ -678,7 +747,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Lost%20Write%20Recovery%20%28ORA-00742%2CORA-00312%29/" class="md-nav__link">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Lost%20Write%20Recovery%20%28ORA-00742%2CORA-00312%29/" class="md-nav__link">
         
   
   
@@ -706,7 +775,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ORACLE/KNOWN%20ISSUES/Oracle%20Datafile%20Corruption%20Issue%20%28ORA-00600%29/" class="md-nav__link">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Datafile%20Corruption%20Issue%20%28ORA-00600%29/" class="md-nav__link">
         
   
   
@@ -734,7 +803,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ORACLE/KNOWN%20ISSUES/Oracle%20Datapump%20Slowness%28Scenario%201%29/" class="md-nav__link">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Datapump%20Slowness%28Scenario%201%29/" class="md-nav__link">
         
   
   
@@ -762,7 +831,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ORACLE/KNOWN%20ISSUES/Oracle%20Datapump%20Slowness%28Scenario%202%29/" class="md-nav__link">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Datapump%20Slowness%28Scenario%202%29/" class="md-nav__link">
         
   
   
@@ -790,7 +859,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ORACLE/KNOWN%20ISSUES/Oracle%20Moving%20Datafiles%20To%20Another%20Location/" class="md-nav__link">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Moving%20Datafiles%20To%20Another%20Location/" class="md-nav__link">
         
   
   
@@ -818,7 +887,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ORACLE/KNOWN%20ISSUES/Oracle%20Ora-01012%20Not%20Logged%20On%20Error/" class="md-nav__link">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Ora-01012%20Not%20Logged%20On%20Error/" class="md-nav__link">
         
   
   
@@ -901,7 +970,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ORACLE/ORACLE%20CLOUD/Cloud%20Database%20Management%20Tasks/" class="md-nav__link">
+      <a href="../../ORACLE/ORACLE%20CLOUD/Cloud%20Database%20Management%20Tasks/" class="md-nav__link">
         
   
   
@@ -1038,7 +1107,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Management%20Runbook/" class="md-nav__link">
+      <a href="../../POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Management%20Runbook/" class="md-nav__link">
         
   
   
@@ -1066,7 +1135,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Technical%20Deployment%20Runbook/" class="md-nav__link">
+      <a href="../../POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Technical%20Deployment%20Runbook/" class="md-nav__link">
         
   
   
@@ -1119,6 +1188,27 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#documentation-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DOCUMENTATION GUIDE
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1131,8 +1221,189 @@
               
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+
+
+<h1 id="linux-permissions">LINUX PERMISSIONS<a class="headerlink" href="#linux-permissions" title="Permanent link">&para;</a></h1>
+<h2 id="documentation-guide">DOCUMENTATION GUIDE<a class="headerlink" href="#documentation-guide" title="Permanent link">&para;</a></h2>
+<ol>
+<li>VIEWING PERMISSION FOR FILES/DIRECTORIES</li>
+<li>GRANTING PERMISSION TO FILES/DIRECTORIES</li>
+<li>LETTER NOTATION</li>
+<li>NUMBER NOTATION</li>
+</ol>
+<h1 id="viewing-permissions-for-filesdirectories">VIEWING PERMISSIONS FOR FILES/DIRECTORIES<a class="headerlink" href="#viewing-permissions-for-filesdirectories" title="Permanent link">&para;</a></h1>
+<ul>
+<li>On Unix-like operating systems, a set of flags associated with each file determines who can access that file, and how they can access it.</li>
+<li>These flags are called file permissions or modes.</li>
+<li>The command name chmod stands for "change mode." It restricts the way a file can be accessed.</li>
+<li>Use command ls -l. When you do so, each file will be listed on a separate line in long format.</li>
+</ul>
+<p><img alt="image" src="../images/documentation-for-linux-permissions/image5.png" /></p>
+<p>Understanding ls -l command</p>
+<ol>
+<li>The first character will almost always be either a '-', which means it's a file, or a 'd', which means it's a directory.</li>
+<li>
+<p>The next nine characters (rw-r-r-) show the permissions of file.</p>
+</li>
+<li>
+<p>First, think of those nine characters as three sets of three characters. Each of the three "rwx" characters refer to a different operation you can perform on the file.</p>
+</li>
+<li>The 'r' means you can "read" the file's contents.</li>
+</ol>
+<p>The 'w' means you can "write", or modify, the file's contents.</p>
+<p>The 'x' means you can "execute" the file. This permission is given only if the file is a program.</p>
+<p>If any of the "rwx" characters is replaced by a '-', then that permission has been revoked.</p>
+<ul>
+<li>First three character represents permission that the owner has over the file.</li>
+<li>Next three character represents permission that group has over the file</li>
+<li>
+<p>Last three character represents permission that everybody else has over the file</p>
+</li>
+<li>
+<p>The next column or field specifies the number of links or directories inside this directory.</p>
+</li>
+<li>The next column specifies the user that owns the file, or directory.</li>
+<li>Next column specifies the group that file belongs to, and any user in that group will have the permissions given in the third character set.</li>
+<li>Next column specifies the size in bytes, you may modify this by using the -h option together with -l this will have the output in kb,Mb,Gb for a better understanding.</li>
+<li>Next column is the date of last modification.</li>
+<li>Finally last column is the name of the file.</li>
+</ul>
+<h3 id="example-1">Example 1<a class="headerlink" href="#example-1" title="Permanent link">&para;</a></h3>
+<p><img alt="image" src="../images/documentation-for-linux-permissions/image6.png" /></p>
+<ol>
+<li>'-' represents type file.</li>
+<li>rwx is permission for owner of file</li>
+<li>r- - is permission for group.</li>
+<li>r- - is permission for everyone except owner and group member.</li>
+<li>oracle is the owner of the file test.sh</li>
+<li>oinstall is the group name of oracle user.</li>
+<li>496 is the size of the file test.sh</li>
+<li>Oct 19 13:30 represents modification date and time for file.</li>
+<li>test.sh is the file name.</li>
+</ol>
+<h3 id="example-2">Example 2<a class="headerlink" href="#example-2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>drwxr-xr-x
+</code></pre></div>
+<p>A folder which has read, write and execute permissions for the owner, but only read and execute permissions for the group and for other users.</p>
+<h3 id="example-3">Example 3<a class="headerlink" href="#example-3" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>-rw-rw-rw-
+</code></pre></div>
+<p>A file that can be read and written by anyone, but not executed at all.</p>
+<h3 id="example-4">Example 4<a class="headerlink" href="#example-4" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>-rw-r--r--
+</code></pre></div>
+<p>A file that can be read and written by the user, but only read by the group and everyone else.</p>
+<h1 id="granting-permission-to-filesdirectories">GRANTING PERMISSION TO FILES/DIRECTORIES<a class="headerlink" href="#granting-permission-to-filesdirectories" title="Permanent link">&para;</a></h1>
+<p>Two methods for providing permissions:</p>
+<ul>
+<li>Letter notation</li>
+<li>Number notation</li>
+</ul>
+<h2 id="letter-notation">Letter Notation<a class="headerlink" href="#letter-notation" title="Permanent link">&para;</a></h2>
+<p>Use letters u (owner/user), g (group) and o (other) to set permissions. r (read), w (write) and x (execute) represent the permissions to set.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>chmod<span class="w"> </span>o+wx<span class="w"> </span>test.sh
+</code></pre></div>
+<p>This command adds write and execution permission for other users for file test.sh</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>chmod<span class="w"> </span>u-x<span class="w"> </span>test.sh
+</code></pre></div>
+<p>This command revokes execution permission from owner of file (Permission for Group and others remains unchanged)</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>chmod<span class="w"> </span><span class="nv">g</span><span class="o">=</span>rx<span class="w"> </span>test.sh
+</code></pre></div>
+<p>This command gives read and execution permission for all members of group Providing combined permission in a single line:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>chmod<span class="w"> </span>o+wx,u-x,g<span class="o">=</span>rx<span class="w"> </span>test.sh
+</code></pre></div>
+<p>This command adds write permission for others, revokes execution permission from owner and grant read and execution permission to group users at the same time for file test.sh</p>
+<h2 id="number-notation">Number Notation<a class="headerlink" href="#number-notation" title="Permanent link">&para;</a></h2>
+<p>As we said earlier, you'll often be asked to do things using numbers, such as "set 755 permissions". What do those numbers mean?</p>
+<p>Well, each of the three numbers corresponds to each of the three sections of letters we referred to earlier. In other words, the first number determines the owner permissions, the second number determines the group permissions, and the third number determines</p>
+<p>the other permissions.</p>
+<p>Number notation command example:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>chmod<span class="w"> </span><span class="m">777</span><span class="w"> </span>filename
+</code></pre></div>
+<p>Each number can have one of eight values ranging from 0 to 7. Each value corresponds to a certain setting of the read, write and execute permissions, as explained in this table:</p>
+<table>
+<thead>
+<tr>
+<th>Number</th>
+<th>Read (R)</th>
+<th>Write (W)</th>
+<th>Execute (X)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>1</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>2</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>3</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Yes</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<p>So, for example:</p>
+<ul>
+<li><code>777</code> is the same as <code>rwxrwxrwx</code></li>
+<li><code>755</code> is the same as <code>rwxr-xr-x</code></li>
+<li><code>666</code> is the same as <code>rw-rw-rw-</code></li>
+<li><code>744</code> is the same as <code>rwxr--r--</code></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -1175,10 +1446,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "/", "features": ["navigation.instant", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "/assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="/assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
