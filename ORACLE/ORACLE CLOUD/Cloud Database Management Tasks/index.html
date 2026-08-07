@@ -1520,14 +1520,14 @@
 
 
 <h1 id="1-cloud-database-management-tasks">1. Cloud Database Management Tasks<a class="headerlink" href="#1-cloud-database-management-tasks" title="Permanent link">&para;</a></h1>
-<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<h3 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h3>
 <p>This document provides a detailed explanation of the tasks performed for managing Cloud databases. The DBA team plays a crucial role in ensuring the smooth operation of these databases.</p>
 <p>The tasks listed below cover various aspects of database management, configuration, monitoring, optimization and on-demand.</p>
 <hr />
-<h2 id="rman-configuration-for-newly-added-cloud-database">RMAN Configuration for Newly Added Cloud Database<a class="headerlink" href="#rman-configuration-for-newly-added-cloud-database" title="Permanent link">&para;</a></h2>
+<h3 id="rman-configuration-for-newly-added-cloud-database">RMAN Configuration for Newly Added Cloud Database<a class="headerlink" href="#rman-configuration-for-newly-added-cloud-database" title="Permanent link">&para;</a></h3>
 <p>For any newly added Cloud database, the Database team performs RMAN configuration to set up and manage the backup and recovery process. This includes defining RMAN backup policies and setting up the database in archive mode to obtain minimum data loss.</p>
 <hr />
-<h2 id="gdba-database">GDBA Database<a class="headerlink" href="#gdba-database" title="Permanent link">&para;</a></h2>
+<h3 id="gdba-database">GDBA Database<a class="headerlink" href="#gdba-database" title="Permanent link">&para;</a></h3>
 <p>GDBA is a centralized and resilient database, functioning as a grid that proficiently manages to link with all cloud databases.</p>
 <ul>
 <li>Within GDBA, comprehensive data from all databases is meticulously stored, promoting optimal efficiency, scalability, and a unified approach to data management.</li>
@@ -1536,7 +1536,7 @@
 </ul>
 <p>These records are gathered using various PROCEDURES that execute on their scheduled time using a database link.</p>
 <hr />
-<h2 id="gathering-information-of-all-cloud-databases-into-gdba">Gathering Information of All Cloud Databases into GDBA<a class="headerlink" href="#gathering-information-of-all-cloud-databases-into-gdba" title="Permanent link">&para;</a></h2>
+<h3 id="gathering-information-of-all-cloud-databases-into-gdba">Gathering Information of All Cloud Databases into GDBA<a class="headerlink" href="#gathering-information-of-all-cloud-databases-into-gdba" title="Permanent link">&para;</a></h3>
 <p>This task involves collecting information about:</p>
 <ul>
 <li>FULL DATABASE BACKUP</li>
@@ -1556,7 +1556,7 @@
 <li>DISK UTILIZATION INFORMATION</li>
 </ul>
 <hr />
-<h2 id="monitoring-information-for-all-cloud-databases">Monitoring Information for All Cloud Databases<a class="headerlink" href="#monitoring-information-for-all-cloud-databases" title="Permanent link">&para;</a></h2>
+<h3 id="monitoring-information-for-all-cloud-databases">Monitoring Information for All Cloud Databases<a class="headerlink" href="#monitoring-information-for-all-cloud-databases" title="Permanent link">&para;</a></h3>
 <p>The DBA team monitors full database backup information daily for all Cloud databases to ensure that backups are completed successfully and on schedule. In case of any backup failure or delay, the corrective measure steps include investigating backup failures and informing the Cloud Team about the status and resolution.</p>
 <ul>
 <li>
@@ -1596,27 +1596,27 @@
 <p>The DBA team gathers full database statistics for all cloud databases, once every month.</p>
 <p>The DBA team gathers statistics for highly modified tables on regular basis. (as soon as stats for highly modified tables are outdated).</p>
 <hr />
-<h2 id="database-cleanup-activities">Database Cleanup Activities<a class="headerlink" href="#database-cleanup-activities" title="Permanent link">&para;</a></h2>
+<h3 id="database-cleanup-activities">Database Cleanup Activities<a class="headerlink" href="#database-cleanup-activities" title="Permanent link">&para;</a></h3>
 <p>To manage database space efficiently, the DBA team identifies and performs data deletion activities on various segments, unused or obsolete data is removed to free up storage space both at the database level and the operating system level.</p>
 <p>Removing events of extinct sites from all cloud databases to optimize performance at the Application level.</p>
 <p>Performing cleanup activity for GINARCHIVE schema's junk/obsolete tables.</p>
 <hr />
-<h2 id="performing-point-in-time-pitr-and-restore-activity">Performing Point-in-Time (PITR) and Restore Activity<a class="headerlink" href="#performing-point-in-time-pitr-and-restore-activity" title="Permanent link">&para;</a></h2>
+<h3 id="performing-point-in-time-pitr-and-restore-activity">Performing Point-in-Time (PITR) and Restore Activity<a class="headerlink" href="#performing-point-in-time-pitr-and-restore-activity" title="Permanent link">&para;</a></h3>
 <p>As per requirement the DBA team performs point-in-time recovery and restore activities for various clients to validate the recoverability of their databases.</p>
 <hr />
-<h2 id="crash-recovery-activity">Crash Recovery Activity<a class="headerlink" href="#crash-recovery-activity" title="Permanent link">&para;</a></h2>
+<h3 id="crash-recovery-activity">Crash Recovery Activity<a class="headerlink" href="#crash-recovery-activity" title="Permanent link">&para;</a></h3>
 <p>In case of database crashes, the DBA team performs crash recovery activities to restore databases to the last consistent state.</p>
 <hr />
-<h2 id="share-database-monthly-report-to-cloud-team">Share Database Monthly Report to Cloud Team<a class="headerlink" href="#share-database-monthly-report-to-cloud-team" title="Permanent link">&para;</a></h2>
+<h3 id="share-database-monthly-report-to-cloud-team">Share Database Monthly Report to Cloud Team<a class="headerlink" href="#share-database-monthly-report-to-cloud-team" title="Permanent link">&para;</a></h3>
 <p>The DBA team prepares and shares report on database size growth and object growth, Backup Time taken and Backup Size Info with the Cloud Team to assist with capacity planning and resource allocation.</p>
 <hr />
-<h2 id="share-other-info-to-cloud-team">Share Other Info to Cloud Team<a class="headerlink" href="#share-other-info-to-cloud-team" title="Permanent link">&para;</a></h2>
+<h3 id="share-other-info-to-cloud-team">Share Other Info to Cloud Team<a class="headerlink" href="#share-other-info-to-cloud-team" title="Permanent link">&para;</a></h3>
 <p>As part of regular updates and communication, the DBA team shares relevant information, insights, and recommendations with the Cloud Team to ensure transparency and collaboration.</p>
 <hr />
-<h2 id="other-miscellaneous-cloud-database-activities">Other Miscellaneous Cloud Database Activities<a class="headerlink" href="#other-miscellaneous-cloud-database-activities" title="Permanent link">&para;</a></h2>
+<h3 id="other-miscellaneous-cloud-database-activities">Other Miscellaneous Cloud Database Activities<a class="headerlink" href="#other-miscellaneous-cloud-database-activities" title="Permanent link">&para;</a></h3>
 <p>Apart from the regular tasks, the DBA team performs other activities as needed, such as setting the NOARCHIVE database mode, handling tenant code changes and addressing any specific database-related requests from the Cloud Team. These activities ensure Cloud databases' smooth operation and alignment with changing business needs.</p>
 <hr />
-<h2 id="on-demand">On-Demand<a class="headerlink" href="#on-demand" title="Permanent link">&para;</a></h2>
+<h3 id="on-demand">On-Demand<a class="headerlink" href="#on-demand" title="Permanent link">&para;</a></h3>
 <ul>
 <li>
 <p>The DBA team promptly addresses any reported slowness issues, recognizing the imperative of a responsive database system to restore optimal performance.</p>
@@ -1632,7 +1632,7 @@
 </li>
 </ul>
 <hr />
-<h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">&para;</a></h2>
+<h3 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">&para;</a></h3>
 <p>This document outlines the various tasks performed by the DBA team to manage, configure, monitor, and optimize Cloud databases. By implementing these tasks, the team ensures the reliability, availability, and performance of Cloud databases while proactively resolving any issues that may arise. The centralization of information in the GDBA database facilitates efficient management and reporting, supporting the Cloud Team in delivering a reliable and robust cloud database service.</p>
 
 
