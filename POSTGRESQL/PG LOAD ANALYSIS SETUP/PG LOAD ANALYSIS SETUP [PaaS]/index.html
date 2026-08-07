@@ -2052,8 +2052,7 @@
 <span class="p">);</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">captured_at</span><span class="p">);</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">query_id</span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">query_id</span><span class="p">);</span>
 </code></pre></div>
 -- Active session snapshots (every 30 sec)</p>
 <div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span><span class="w"> </span><span class="p">(</span>
@@ -2070,10 +2069,11 @@
 <span class="n">query_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="w"> </span><span class="c1">-- from pg_stat_activity (Phase 3)</span>
 <span class="p">);</span>
 </code></pre></div>
-<p>CREATE INDEX ON monitoring.session_snapshots (captured_at);</p>
-<p>CREATE INDEX ON monitoring.session_snapshots (query_id);</p>
-<p>-- Lock wait snapshots (every 30 sec)</p>
-<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span><span class="w"> </span><span class="p">(</span>
+<p><div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">captured_at</span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">query_id</span><span class="p">);</span>
+</code></pre></div>
+-- Lock wait snapshots (every 30 sec)</p>
+<p><div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span><span class="w"> </span><span class="p">(</span>
 <span class="n">id</span><span class="w"> </span><span class="n">BIGSERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
 <span class="n">captured_at</span><span class="w"> </span><span class="n">TIMESTAMPTZ</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">NOW</span><span class="p">(),</span>
 <span class="n">waiting_pid</span><span class="w"> </span><span class="nb">INT</span><span class="p">,</span>
@@ -2085,9 +2085,10 @@
 <span class="n">wait_secs</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span>
 <span class="p">);</span>
 </code></pre></div>
-<p>CREATE INDEX ON monitoring.lock_snapshots (captured_at);</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">captured_at</span><span class="p">);</span>
+</code></pre></div></p>
 <p>-- Database-level snapshots (every 60 sec)</p>
-<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">db_snapshots</span><span class="w"> </span><span class="p">(</span>
+<p><div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">db_snapshots</span><span class="w"> </span><span class="p">(</span>
 <span class="n">id</span><span class="w"> </span><span class="n">BIGSERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
 <span class="n">captured_at</span><span class="w"> </span><span class="n">TIMESTAMPTZ</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">NOW</span><span class="p">(),</span>
 <span class="n">dbname</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
@@ -2100,7 +2101,8 @@
 <span class="n">tup_fetched</span><span class="w"> </span><span class="nb">BIGINT</span>
 <span class="p">);</span>
 </code></pre></div>
-<p>CREATE INDEX ON monitoring.db_snapshots (captured_at, dbname);</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">db_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">captured_at</span><span class="p">,</span><span class="w"> </span><span class="n">dbname</span><span class="p">);</span>
+</code></pre></div></p>
 <p>-- Grant INSERT + SELECT on all tables to collection user:</p>
 <div class="highlight"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="k">INSERT</span><span class="p">,</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">monitoring</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
 </code></pre></div>
