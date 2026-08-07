@@ -1223,17 +1223,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#23-job-3-sessions-locks-at-30-offset-by-pg_sleep" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.3 Job 3 - Sessions + locks at :30 (offset by pg_sleep)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#24-job-4-database-stats-every-1-minute" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1244,218 +1233,8 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#25-verify-all-four-jobs-are-registered" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.5 Verify all four jobs are registered
-      
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#phase-3-schema-changes-db-head-request" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Phase 3 - Schema Changes (DB Head Request)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Phase 3 - Schema Changes (DB Head Request)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#31-prerequisites" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.1 Prerequisites
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-change-1-add-io-timing-and-estimated-cpu-to-stmt_snapshots" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.2 Change 1 - Add I/O timing and estimated CPU to stmt_snapshots
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#33-change-2-add-query_id-to-session_snapshots" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.3 Change 2 - Add query_id to session_snapshots
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#34-drop-and-recreate-pg_cron-jobs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.4 Drop and recreate pg_cron jobs
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#35-verification-after-collection" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.5 Verification after collection
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#36-analysis-estimated-cpu-by-application-db-head-rollup" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.6 Analysis - Estimated CPU by application (DB Head rollup)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#37-analysis-link-active-sessions-to-statement-cost-query_id-join" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.7 Analysis - Link active sessions to statement cost (query_id join)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#38-db-head-attribution-rollup-query" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.8 DB Head Attribution Rollup Query
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#phase-4-retention-lifecycle-3-day-rolling-window" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Phase 4 - Retention Lifecycle (3-Day Rolling Window)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Phase 4 - Retention Lifecycle (3-Day Rolling Window)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#41-data-growth-estimates" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.1 Data Growth Estimates
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#42-one-time-permission-grant" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.2 One-Time Permission Grant
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#43-purge-job-pg_cron-runs-daily-at-0200" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.3 Purge Job - pg_cron (runs daily at 02:00)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#44-important-vacuum-inside-pg_cron-on-flexible-server" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.4 Important: VACUUM inside pg_cron on Flexible Server
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#45-verify-purge-job-is-registered" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.5 Verify Purge Job is Registered
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#46-verify-retention-is-working" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.6 Verify Retention Is Working
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deployment-order-summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Deployment Order Summary
-      
-    </span>
-  </a>
   
 </li>
       
@@ -1733,17 +1512,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#23-job-3-sessions-locks-at-30-offset-by-pg_sleep" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.3 Job 3 - Sessions + locks at :30 (offset by pg_sleep)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#24-job-4-database-stats-every-1-minute" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1754,218 +1522,8 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#25-verify-all-four-jobs-are-registered" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.5 Verify all four jobs are registered
-      
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#phase-3-schema-changes-db-head-request" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Phase 3 - Schema Changes (DB Head Request)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Phase 3 - Schema Changes (DB Head Request)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#31-prerequisites" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.1 Prerequisites
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-change-1-add-io-timing-and-estimated-cpu-to-stmt_snapshots" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.2 Change 1 - Add I/O timing and estimated CPU to stmt_snapshots
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#33-change-2-add-query_id-to-session_snapshots" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.3 Change 2 - Add query_id to session_snapshots
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#34-drop-and-recreate-pg_cron-jobs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.4 Drop and recreate pg_cron jobs
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#35-verification-after-collection" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.5 Verification after collection
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#36-analysis-estimated-cpu-by-application-db-head-rollup" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.6 Analysis - Estimated CPU by application (DB Head rollup)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#37-analysis-link-active-sessions-to-statement-cost-query_id-join" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.7 Analysis - Link active sessions to statement cost (query_id join)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#38-db-head-attribution-rollup-query" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.8 DB Head Attribution Rollup Query
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#phase-4-retention-lifecycle-3-day-rolling-window" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Phase 4 - Retention Lifecycle (3-Day Rolling Window)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Phase 4 - Retention Lifecycle (3-Day Rolling Window)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#41-data-growth-estimates" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.1 Data Growth Estimates
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#42-one-time-permission-grant" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.2 One-Time Permission Grant
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#43-purge-job-pg_cron-runs-daily-at-0200" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.3 Purge Job - pg_cron (runs daily at 02:00)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#44-important-vacuum-inside-pg_cron-on-flexible-server" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.4 Important: VACUUM inside pg_cron on Flexible Server
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#45-verify-purge-job-is-registered" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.5 Verify Purge Job is Registered
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#46-verify-retention-is-working" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.6 Verify Retention Is Working
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deployment-order-summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Deployment Order Summary
-      
-    </span>
-  </a>
   
 </li>
       
@@ -2180,31 +1738,43 @@
 
 <span class="k">FROM</span><span class="w"> </span><span class="n">pg_stat_activity</span>
 <span class="k">WHERE</span><span class="w"> </span><span class="k">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;active&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">pid</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="n">pg_backend_pid</span><span class="p">();</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span>
-<span class="p">(</span><span class="n">waiting_pid</span><span class="p">,</span><span class="w"> </span><span class="n">waiting_app</span><span class="p">,</span><span class="w"> </span><span class="n">blocking_pid</span><span class="p">,</span><span class="w"> </span><span class="n">blocking_app</span><span class="p">,</span>
-</code></pre></div>
-<p>lock_type, relation, wait_secs)</p>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">application_name</span><span class="p">,</span>
-<span class="n">lw</span><span class="p">.</span><span class="n">locktype</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relname</span><span class="p">,</span>
-</code></pre></div>
-<p>EXTRACT(EPOCH FROM (NOW() - w.query_start))</p>
-<p>FROM pg_stat_activity w
-JOIN pg_locks lw ON lw.pid = w.pid AND NOT lw.granted</p>
-<p>JOIN pg_locks lb ON lb.locktype = lw.locktype AND lb.granted</p>
-<p>AND lb.relation IS NOT DISTINCT FROM lw.relation</p>
-<p>JOIN pg_stat_activity b ON b.pid = lb.pid</p>
-<p>LEFT JOIN pg_class c ON c.oid = lw.relation</p>
-<p>WHERE w.wait_event_type = 'Lock';
-\$\$,</p>
-<p>'postgres'</p>
-<p>);</p>
-<h3 id="23-job-3-sessions-locks-at-30-offset-by-pg_sleep">2.3 Job 3 - Sessions + locks at :30 (offset by pg_sleep)<a class="headerlink" href="#23-job-3-sessions-locks-at-30-offset-by-pg_sleep" title="Permanent link">&para;</a></h3>
-<p><em>The leading SELECT pg_sleep(30) is plain SQL - do NOT use PERFORM here (pg_cron bodies are SQL, not PL/pgSQL). The pg_sleep appears as ~98% of pg_cron wall-clock in workload reports. It is harmless (zero CPU) but inflates pg_cron's wall-clock share - exclude it from load conclusions.</em></p>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">schedule_in_database</span><span class="p">(</span>
-<span class="s1">&#39;collect_sessions_locks_30&#39;</span><span class="p">,</span>
 
-<span class="s1">&#39;* * * * *&#39;</span><span class="p">,</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span>
+<span class="p">(</span><span class="n">waiting_pid</span><span class="p">,</span><span class="w"> </span><span class="n">waiting_app</span><span class="p">,</span><span class="w"> </span><span class="n">blocking_pid</span><span class="p">,</span><span class="w"> </span><span class="n">blocking_app</span><span class="p">,</span>
+
+<span class="n">lock_type</span><span class="p">,</span><span class="w"> </span><span class="n">relation</span><span class="p">,</span><span class="w"> </span><span class="n">wait_secs</span><span class="p">)</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">application_name</span><span class="p">,</span>
+<span class="n">lw</span><span class="p">.</span><span class="n">locktype</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relname</span><span class="p">,</span>
+
+<span class="k">EXTRACT</span><span class="p">(</span><span class="n">EPOCH</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">query_start</span><span class="p">))</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">pg_stat_activity</span><span class="w"> </span><span class="n">w</span>
+<span class="k">JOIN</span><span class="w"> </span><span class="n">pg_locks</span><span class="w"> </span><span class="n">lw</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">lw</span><span class="p">.</span><span class="n">pid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">pid</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">lw</span><span class="p">.</span><span class="k">granted</span>
+
+<span class="k">JOIN</span><span class="w"> </span><span class="n">pg_locks</span><span class="w"> </span><span class="n">lb</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">lb</span><span class="p">.</span><span class="n">locktype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lw</span><span class="p">.</span><span class="n">locktype</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">lb</span><span class="p">.</span><span class="k">granted</span>
+
+<span class="k">AND</span><span class="w"> </span><span class="n">lb</span><span class="p">.</span><span class="n">relation</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">lw</span><span class="p">.</span><span class="n">relation</span>
+
+<span class="k">JOIN</span><span class="w"> </span><span class="n">pg_stat_activity</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">pid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lb</span><span class="p">.</span><span class="n">pid</span>
+
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">pg_class</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">oid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lw</span><span class="p">.</span><span class="n">relation</span>
+
+<span class="k">WHERE</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">wait_event_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Lock&#39;</span><span class="p">;</span>
+<span class="err">$$</span><span class="p">,</span>
+
+<span class="s1">&#39;postgres&#39;</span>
+
+<span class="p">);</span>
+
+<span class="o">###</span><span class="w"> </span><span class="mi">2</span><span class="p">.</span><span class="mi">3</span><span class="w"> </span><span class="n">Job</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Sessions</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">locks</span><span class="w"> </span><span class="k">at</span><span class="w"> </span><span class="p">:</span><span class="mi">30</span><span class="w"> </span><span class="p">(</span><span class="k">offset</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">pg_sleep</span><span class="p">)</span>
+
+<span class="n">_The</span><span class="w"> </span><span class="k">leading</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">pg_sleep</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">plain</span><span class="w"> </span><span class="k">SQL</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">use</span><span class="w"> </span><span class="n">PERFORM</span><span class="w"> </span><span class="n">here</span><span class="w"> </span><span class="p">(</span><span class="n">pg_cron</span><span class="w"> </span><span class="n">bodies</span><span class="w"> </span><span class="k">are</span><span class="w"> </span><span class="k">SQL</span><span class="p">,</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">PL</span><span class="o">/</span><span class="n">pgSQL</span><span class="p">).</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">pg_sleep</span><span class="w"> </span><span class="n">appears</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="o">~</span><span class="mi">98</span><span class="o">%</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">pg_cron</span><span class="w"> </span><span class="n">wall</span><span class="o">-</span><span class="n">clock</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">workload</span><span class="w"> </span><span class="n">reports</span><span class="p">.</span><span class="w"> </span><span class="n">It</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">harmless</span><span class="w"> </span><span class="p">(</span><span class="n">zero</span><span class="w"> </span><span class="n">CPU</span><span class="p">)</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="n">inflates</span><span class="w"> </span><span class="n">pg_cron</span><span class="s1">&#39;s wall-clock share - exclude it from load conclusions._</span>
+
+<span class="s1">SELECT cron.schedule_in_database(</span>
+<span class="s1">&#39;</span><span class="n">collect_sessions_locks_30</span><span class="s1">&#39;,</span>
+
+<span class="s1">&#39;</span><span class="o">*</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="o">*</span><span class="err">&#39;</span><span class="p">,</span>
 
 <span class="err">$$</span>
 
@@ -2240,7 +1810,7 @@ JOIN pg_locks lw ON lw.pid = w.pid AND NOT lw.granted</p>
 <p>'postgres'</p>
 <p>);</p>
 <h3 id="24-job-4-database-stats-every-1-minute">2.4 Job 4 - Database stats (every 1 minute)<a class="headerlink" href="#24-job-4-database-stats-every-1-minute" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">schedule_in_database</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">schedule_in_database</span><span class="p">(</span>
 <span class="s1">&#39;collect_db_stats&#39;</span><span class="p">,</span>
 
 <span class="s1">&#39;* * * * *&#39;</span><span class="p">,</span>
@@ -2257,388 +1827,416 @@ JOIN pg_locks lw ON lw.pid = w.pid AND NOT lw.granted</p>
 
 <span class="k">FROM</span><span class="w"> </span><span class="n">pg_stat_database</span>
 <span class="k">WHERE</span><span class="w"> </span><span class="n">datname</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;template0&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;template1&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;postgres&#39;</span><span class="p">);</span>
-</code></pre></div>
-\$\$,</p>
-<p>'postgres'</p>
-<p>);</p>
-<h3 id="25-verify-all-four-jobs-are-registered">2.5 Verify all four jobs are registered<a class="headerlink" href="#25-verify-all-four-jobs-are-registered" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">jobid</span><span class="p">,</span><span class="w"> </span><span class="n">jobname</span><span class="p">,</span><span class="w"> </span><span class="n">schedule</span><span class="p">,</span><span class="w"> </span><span class="k">database</span><span class="p">,</span><span class="w"> </span><span class="n">active</span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">job</span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">jobid</span><span class="p">;</span>
-</code></pre></div>
-<h2 id="phase-3-schema-changes-db-head-request">Phase 3 - Schema Changes (DB Head Request)<a class="headerlink" href="#phase-3-schema-changes-db-head-request" title="Permanent link">&para;</a></h2>
-<p><strong>Purpose:</strong> <em>Two additive schema changes. Change 1 adds blk_read_time, blk_write_time, and derived cpu_ms_est to stmt_snapshots, giving an estimated CPU figure from pg_stat_statements alone. Change 2 adds query_id to session_snapshots so active sessions can be linked back to their statement. Both are additive - no existing columns change. Skip if you created tables using the Phase 1 definitions above (they already include these columns).</em></p>
-<h3 id="31-prerequisites">3.1 Prerequisites<a class="headerlink" href="#31-prerequisites" title="Permanent link">&para;</a></h3>
-<p><strong>Enable track_io_timing</strong></p>
-<p>blk_read_time and blk_write_time are ALWAYS ZERO unless track_io_timing is ON. Without this setting, cpu_ms_est equals total_exec_time, which is meaningless. Note: on PG 17 the source columns are named shared_blk_read_time / shared_blk_write_time in pg_stat_statements - the collection job uses these PG17 names.</p>
-<p>SHOW track_io_timing; -- should return 'on'</p>
-<p>-- If off, set in Azure Portal &gt; Server Parameters:</p>
-<p>-- track_io_timing = on</p>
-<p>-- Then reload (no restart needed):</p>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">pg_reload_conf</span><span class="p">();</span>
-<span class="n">_Overhead</span><span class="p">:</span><span class="w"> </span><span class="n">track_io_timing</span><span class="w"> </span><span class="n">calls</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">OS</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="k">every</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="k">read</span><span class="o">/</span><span class="k">write</span><span class="p">.</span><span class="w"> </span><span class="k">On</span><span class="w"> </span><span class="n">Azure</span><span class="w"> </span><span class="n">Flexible</span><span class="w"> </span><span class="n">Server</span><span class="w"> </span><span class="p">(</span><span class="n">modern</span><span class="w"> </span><span class="n">Linux</span><span class="p">,</span><span class="w"> </span><span class="n">tsc</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="k">source</span><span class="p">)</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">overhead</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">negligible</span><span class="p">.</span><span class="n">_</span>
-</code></pre></div>
-<p><strong>Verify compute_query_id</strong></p>
-<p>SHOW compute_query_id; -- should be 'on' or 'auto'</p>
-<p>-- With pg_stat_statements already loaded, 'auto' is normally on.</p>
-<p>-- If off: set compute_query_id = auto in Server Parameters and reload.</p>
-<h3 id="32-change-1-add-io-timing-and-estimated-cpu-to-stmt_snapshots">3.2 Change 1 - Add I/O timing and estimated CPU to stmt_snapshots<a class="headerlink" href="#32-change-1-add-io-timing-and-estimated-cpu-to-stmt_snapshots" title="Permanent link">&para;</a></h3>
-<p>Run these ALTER statements on the existing table if upgrading from v2.1 base. If created fresh in Phase 1, these columns already exist.</p>
-<p>ALTER TABLE monitoring.stmt_snapshots
-ADD COLUMN IF NOT EXISTS blk_read_time DOUBLE PRECISION, -- our column (source PG17: shared_blk_read_time)</p>
-<p>ADD COLUMN IF NOT EXISTS blk_write_time DOUBLE PRECISION, -- our column (source PG17: shared_blk_write_time)</p>
-<p>ADD COLUMN IF NOT EXISTS cpu_ms_est DOUBLE PRECISION; -- total_exec_time - shared_blk_read_time - shared_blk_write_time</p>
-<p>-- cpu_ms_est formula (PG17): total_exec_time - shared_blk_read_time - shared_blk_write_time</p>
-<p>-- Removes disk I/O wait. Does NOT remove lock/latch/sleep waits.</p>
-<p>-- Label it as an estimate in reports.
-<em>PG17 REQUIRED CHANGE: pg_stat_statements on PostgreSQL 17+ renamed blk_read_time → shared_blk_read_time and blk_write_time → shared_blk_write_time (and added local</em>/temp_variants). The collection job above uses the PG17 names. Your monitoring.stmt_snapshots column names (blk_read_time, blk_write_time) are unchanged - only the source pg_stat_statements column names differ. On PG 16 reverse the names back. Verify your version's column names: SELECT column_name FROM information_schema.columns WHERE table_name='pg_stat_statements' AND column_name LIKE '%blk%time%';_</p>
-<h3 id="33-change-2-add-query_id-to-session_snapshots">3.3 Change 2 - Add query_id to session_snapshots<a class="headerlink" href="#33-change-2-add-query_id-to-session_snapshots" title="Permanent link">&para;</a></h3>
-<p>ALTER TABLE monitoring.session_snapshots
-ADD COLUMN IF NOT EXISTS query_id BIGINT;</p>
-<p>CREATE INDEX IF NOT EXISTS ix_session_snap_qid
-ON monitoring.session_snapshots (query_id);</p>
-<h3 id="34-drop-and-recreate-pg_cron-jobs">3.4 Drop and recreate pg_cron jobs<a class="headerlink" href="#34-drop-and-recreate-pg_cron-jobs" title="Permanent link">&para;</a></h3>
-<p>The two schema changes require the collection jobs to be updated. Drop existing jobs first, then recreate using the Phase 2 definitions (which already include all new columns).</p>
-<p>-- Drop existing jobs:</p>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="s1">&#39;collect_stmts&#39;</span><span class="p">);</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="s1">&#39;collect_sessions_locks_00&#39;</span><span class="p">);</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="s1">&#39;collect_sessions_locks_30&#39;</span><span class="p">);</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="s1">&#39;collect_db_stats&#39;</span><span class="p">);</span>
-</code></pre></div>
-<p>-- Verify cleared:</p>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">jobid</span><span class="p">,</span><span class="w"> </span><span class="n">jobname</span><span class="p">,</span><span class="w"> </span><span class="n">schedule</span><span class="p">,</span><span class="w"> </span><span class="k">database</span><span class="p">,</span><span class="w"> </span><span class="n">active</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">job</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">jobid</span><span class="p">;</span>
-</code></pre></div>
-<p>-- Then recreate using the four job definitions in Phase 2 (Sections 2.1-2.4).
-<em>Order of operations: (1) enable track_io_timing + verify compute_query_id, (2) run both ALTER TABLE statements, (3) drop and recreate jobs. If the columns do not exist when a job runs, the INSERT fails and that snapshot is lost.</em></p>
-<h3 id="35-verification-after-collection">3.5 Verification after collection<a class="headerlink" href="#35-verification-after-collection" title="Permanent link">&para;</a></h3>
-<p>-- Change 1: timing populated (non-zero if track_io_timing=on)</p>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">query_id</span><span class="p">,</span><span class="w"> </span><span class="n">blk_read_time</span><span class="p">,</span><span class="w"> </span><span class="n">blk_write_time</span><span class="p">,</span><span class="w"> </span><span class="n">cpu_ms_est</span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">captured_at</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;10 minutes&#39;</span>
-<span class="k">AND</span><span class="w"> </span><span class="n">blk_read_time</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
-</code></pre></div>
-<p>-- Change 2: query_id populated in session_snapshots</p>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="n">query_id</span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">captured_at</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;10 minutes&#39;</span>
-<span class="k">AND</span><span class="w"> </span><span class="n">query_id</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
-</code></pre></div>
-<h3 id="36-analysis-estimated-cpu-by-application-db-head-rollup">3.6 Analysis - Estimated CPU by application (DB Head rollup)<a class="headerlink" href="#36-analysis-estimated-cpu-by-application-db-head-rollup" title="Permanent link">&para;</a></h3>
-<p>Ranks applications by estimated CPU instead of raw wall-clock. Built-in answer to I/O-bound vs CPU-bound question:</p>
-<p>SELECT
-dbname,</p>
-<p>ROUND((SUM(cpu_ms_est)/1000.0)::NUMERIC, 1) AS cpu_est_sec,</p>
-<p>ROUND((100.0 * SUM(cpu_ms_est) /</p>
-<p>NULLIF(SUM(SUM(cpu_ms_est)) OVER(), 0))::NUMERIC, 2) AS pct_cpu_est,</p>
-<p>ROUND((SUM(total_exec_time)/1000.0)::NUMERIC, 1) AS wall_sec,</p>
-<p>ROUND((SUM(blk_read_time + blk_write_time)/1000.0)::NUMERIC, 1) AS io_wait_sec,</p>
-<p>ROUND((100.0 * SUM(blk_read_time + blk_write_time) /</p>
-<p>NULLIF(SUM(total_exec_time), 0))::NUMERIC, 1) AS pct_io_wait</p>
-<p>FROM monitoring.stmt_snapshots
-WHERE captured_at &gt;= NOW() - INTERVAL '24 hours'
-GROUP BY dbname
-ORDER BY cpu_est_sec DESC;</p>
-<h3 id="37-analysis-link-active-sessions-to-statement-cost-query_id-join">3.7 Analysis - Link active sessions to statement cost (query_id join)<a class="headerlink" href="#37-analysis-link-active-sessions-to-statement-cost-query_id-join" title="Permanent link">&para;</a></h3>
-<p>Shows which query_ids were most often caught actively running, and what they cost:</p>
-<p>SELECT
-ss.query_id,</p>
-<p>COUNT(*) AS times_caught_active,</p>
-<p>MAX(st.query_text) AS query_text,</p>
-<p>ROUND((MAX(st.cpu_ms_est)/1000.0)::NUMERIC,1) AS cpu_est_sec,</p>
-<p>ROUND((MAX(st.blk_read_time)/1000.0)::NUMERIC,1) AS io_read_sec</p>
-<p>FROM monitoring.session_snapshots ss
-LEFT JOIN LATERAL (</p>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">query_text</span><span class="p">,</span><span class="w"> </span><span class="n">cpu_ms_est</span><span class="p">,</span><span class="w"> </span><span class="n">blk_read_time</span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span><span class="w"> </span><span class="n">st</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">st</span><span class="p">.</span><span class="n">query_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ss</span><span class="p">.</span><span class="n">query_id</span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">st</span><span class="p">.</span><span class="n">captured_at</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">1</span>
-<span class="p">)</span><span class="w"> </span><span class="n">st</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">true</span>
-</code></pre></div>
-<p>WHERE ss.captured_at &gt;= NOW() - INTERVAL '24 hours'
-AND ss.query_id IS NOT NULL</p>
-<p>GROUP BY ss.query_id
-ORDER BY times_caught_active DESC
-LIMIT 30;</p>
-<h3 id="38-db-head-attribution-rollup-query">3.8 DB Head Attribution Rollup Query<a class="headerlink" href="#38-db-head-attribution-rollup-query" title="Permanent link">&para;</a></h3>
-<p>Per-application breakdown of execution time, I/O, temp I/O, WAL writes, and buffer cache hit ratio:</p>
-<p>WITH ranked AS (
-SELECT
-application_name, query_id,</p>
-<p>MAX(total_exec_time) AS latest_exec_ms,</p>
-<p>MAX(calls) AS latest_calls,</p>
-<p>MAX(rows) AS latest_rows,</p>
-<p>MAX(shared_blks_read) AS latest_blks_read,</p>
-<p>MAX(shared_blks_hit) AS latest_blks_hit,</p>
-<p>MAX(temp_blks_written) AS latest_temp_blks,</p>
-<p>MAX(wal_bytes) AS latest_wal_bytes,</p>
-<p>COUNT(*) AS times_observed_active</p>
-<p>FROM monitoring.stmt_snapshots
-WHERE captured_at &gt;= NOW() - INTERVAL '24 hours'
-GROUP BY application_name, query_id
-),</p>
-<p>totals AS (</p>
-<p>SELECT
-application_name,</p>
-<p>SUM(latest_exec_ms) AS grp_exec_ms,</p>
-<p>SUM(latest_calls) AS grp_calls,</p>
-<p>SUM(latest_rows) AS grp_rows,</p>
-<p>SUM(latest_blks_read) AS grp_blks_read,</p>
-<p>SUM(latest_blks_hit) AS grp_blks_hit,</p>
-<p>SUM(latest_temp_blks) AS grp_temp_blks,</p>
-<p>SUM(latest_wal_bytes) AS grp_wal_bytes,</p>
-<p>SUM(times_observed_active) AS grp_active_observations</p>
-<p>FROM ranked
-GROUP BY application_name
-)</p>
-<p>SELECT
-application_name,</p>
-<p>grp_calls,</p>
-<p>ROUND((grp_exec_ms / 1000.0)::NUMERIC, 1) AS total_exec_sec,</p>
-<p>ROUND((100.0 * grp_exec_ms / SUM(grp_exec_ms) OVER())::NUMERIC, 2) AS pct_exec_time,</p>
-<p>grp_rows,</p>
-<p>grp_blks_read AS disk_reads,</p>
-<p>ROUND((100.0 * grp_blks_read /</p>
-<p>NULLIF(SUM(grp_blks_read) OVER(), 0))::NUMERIC, 2) AS pct_disk_reads,</p>
-<p>ROUND((100.0 * grp_blks_hit /</p>
-<p>NULLIF(grp_blks_read + grp_blks_hit, 0))::NUMERIC, 2) AS buffer_hit_pct,</p>
-<p>grp_temp_blks AS temp_io_blks,</p>
-<p>ROUND((grp_wal_bytes / 1024.0 / 1024.0)::NUMERIC, 2) AS wal_mb,</p>
-<p>ROUND((100.0 * grp_wal_bytes /</p>
-<p>NULLIF(SUM(grp_wal_bytes) OVER(), 0))::NUMERIC, 2) AS pct_wal_writes,</p>
-<p>grp_active_observations</p>
-<p>FROM totals
-ORDER BY pct_exec_time DESC;</p>
-<h2 id="phase-4-retention-lifecycle-3-day-rolling-window">Phase 4 - Retention Lifecycle (3-Day Rolling Window)<a class="headerlink" href="#phase-4-retention-lifecycle-3-day-rolling-window" title="Permanent link">&para;</a></h2>
-<p>All four monitoring tables grow continuously. Without a purge job the pg_loadmon database will exhaust its Azure disk allocation within days. The policy is: keep exactly 3 days of data, delete everything older. On Azure Flexible Server, retention is implemented as a daily pg_cron job - no shell scripts, no external schedulers.</p>
-<h3 id="41-data-growth-estimates">4.1 Data Growth Estimates<a class="headerlink" href="#41-data-growth-estimates" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th><strong>Table</strong></th>
-<th><strong>Rows/day</strong></th>
-<th><strong>MB/day</strong></th>
-<th><strong>3-day cap</strong></th>
-<th><strong>Collection frequency</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>stmt_snapshots</td>
-<td>~144,000</td>
-<td>~62 MB</td>
-<td>~186 MB</td>
-<td>Every 1 min via pg_cron (1,440 snapshots × ~100 queries/min)</td>
-</tr>
-<tr>
-<td>session_snapshots</td>
-<td>~57,600</td>
-<td>~11 MB</td>
-<td>~33 MB</td>
-<td>Every 30 sec via pg_cron (active sessions only)</td>
-</tr>
-<tr>
-<td>lock_snapshots</td>
-<td>negligible</td>
-<td>&lt;1 MB</td>
-<td>&lt;3 MB</td>
-<td>Every 30 sec (rows only when lock waits exist)</td>
-</tr>
-<tr>
-<td>db_snapshots</td>
-<td>~14,400</td>
-<td>~1 MB</td>
-<td>~3 MB</td>
-<td>Every 60 sec (1,440 × ~10 databases)</td>
-</tr>
-<tr>
-<td><strong>TOTAL (raw + index ~2×)</strong></td>
-<td>~216,000</td>
-<td>~75 MB</td>
-<td>~225 MB</td>
-<td>Stable ceiling once purge job is running</td>
-</tr>
-</tbody>
-</table>
-<p><em>session_snapshots and lock_snapshots only insert rows when sessions are active / when locks exist - so their actual volume is lower than the theoretical max shown above. stmt_snapshots is the dominant table on busy servers because it captures every tracked query shape every minute.</em></p>
-<h3 id="42-one-time-permission-grant">4.2 One-Time Permission Grant<a class="headerlink" href="#42-one-time-permission-grant" title="Permanent link">&para;</a></h3>
-<p>The pg_monitor_reader role has INSERT and SELECT on all monitoring tables. DELETE must be added once before the purge job will succeed:</p>
-<p>-- Run as superuser (postgres) once in pg_loadmon:</p>
-<div class="highlight"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">monitoring</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
-<span class="n">_Without</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="k">grant</span><span class="p">,</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">purge</span><span class="w"> </span><span class="n">pg_cron</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">fail</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">permission</span><span class="w"> </span><span class="n">denied</span><span class="w"> </span><span class="n">error</span><span class="p">.</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">collection</span><span class="w"> </span><span class="n">jobs</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="k">continue</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">tables</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">keep</span><span class="w"> </span><span class="n">growing</span><span class="p">.</span><span class="n">_</span>
-</code></pre></div>
-<h3 id="43-purge-job-pg_cron-runs-daily-at-0200">4.3 Purge Job - pg_cron (runs daily at 02:00)<a class="headerlink" href="#43-purge-job-pg_cron-runs-daily-at-0200" title="Permanent link">&para;</a></h3>
-<p>Register a single pg_cron job that deletes rows older than 3 days from all four tables, then issues VACUUM on each to reclaim pages. This runs inside PostgreSQL - no shell access needed on Azure Flexible Server.</p>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">schedule_in_database</span><span class="p">(</span>
-<span class="s1">&#39;purge_monitoring_3day&#39;</span><span class="p">,</span>
-
-<span class="s1">&#39;18 31 * * *&#39;</span><span class="p">,</span><span class="w"> </span><span class="c1">-- daily at 02:00 (server local time)</span>
-
-<span class="err">$$</span>
-
-<span class="c1">-- ── DELETE old rows (3-day retention) ────────────────────────────</span>
-
-<span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">captured_at</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;3 days&#39;</span><span class="p">;</span>
-
-<span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">captured_at</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;3 days&#39;</span><span class="p">;</span>
-
-<span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">captured_at</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;3 days&#39;</span><span class="p">;</span>
-
-<span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">db_snapshots</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">captured_at</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;3 days&#39;</span><span class="p">;</span>
 <span class="err">$$</span><span class="p">,</span>
 
 <span class="s1">&#39;postgres&#39;</span>
 
 <span class="p">);</span>
-</code></pre></div>
-<p><em>Why 02:00: after the nightly pg_basebackup backup window and before the morning OLTP peak. The purge deletes ~216,000 rows and VACUUMs four tables - at 02:00 this completes in seconds. Adjust the schedule if your backup window is different.</em></p>
-<h3 id="44-important-vacuum-inside-pg_cron-on-flexible-server">4.4 Important: VACUUM inside pg_cron on Flexible Server<a class="headerlink" href="#44-important-vacuum-inside-pg_cron-on-flexible-server" title="Permanent link">&para;</a></h3>
-<p><em>Azure Flexible Server restricts VACUUM inside pg_cron on some versions. If the purge job fails with 'VACUUM cannot run inside a transaction block', replace the four VACUUM statements with a single call to autovacuum or remove them entirely. Autovacuum will handle the dead tuples on its next run. The DELETE rows are still removed; only the page reclamation is delayed.</em></p>
-<p>Alternative if VACUUM fails inside pg_cron - register a separate job that calls VACUUM outside a transaction block:</p>
-<p>-- Alternative: separate VACUUM job (runs right after purge at 02:05)</p>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">schedule_in_database</span><span class="p">(</span>
-<span class="s1">&#39;vacuum_monitoring&#39;</span><span class="p">,</span>
 
-<span class="s1">&#39;31 18 * * *&#39;</span><span class="p">,</span>
+<span class="o">###</span><span class="w"> </span><span class="mi">2</span><span class="p">.</span><span class="mi">5</span><span class="w"> </span><span class="n">Verify</span><span class="w"> </span><span class="k">all</span><span class="w"> </span><span class="n">four</span><span class="w"> </span><span class="n">jobs</span><span class="w"> </span><span class="k">are</span><span class="w"> </span><span class="n">registered</span>
 
-<span class="err">$$</span>
-
-<span class="k">VACUUM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span><span class="p">;</span>
-
-<span class="k">VACUUM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span><span class="p">;</span>
-
-<span class="k">VACUUM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span><span class="p">;</span>
-
-<span class="k">VACUUM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">db_snapshots</span><span class="p">;</span>
-<span class="err">$$</span><span class="p">,</span>
-
-<span class="s1">&#39;pg_loadmon&#39;</span>
-
-<span class="p">);</span>
-</code></pre></div>
-<p>-- If VACUUM still fails, remove from purge job and rely on autovacuum.</p>
-<p>-- Autovacuum fires automatically once dead tuple threshold is reached.</p>
-<p>-- Check autovacuum activity: SELECT * FROM pg_stat_user_tables</p>
-<p>-- WHERE schemaname = 'monitoring' ORDER BY n_dead_tup DESC;</p>
-<h3 id="45-verify-purge-job-is-registered">4.5 Verify Purge Job is Registered<a class="headerlink" href="#45-verify-purge-job-is-registered" title="Permanent link">&para;</a></h3>
-<p>-- Confirm the job exists:</p>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">jobid</span><span class="p">,</span><span class="w"> </span><span class="n">jobname</span><span class="p">,</span><span class="w"> </span><span class="n">schedule</span><span class="p">,</span><span class="w"> </span><span class="k">database</span><span class="p">,</span><span class="w"> </span><span class="n">active</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">jobid</span><span class="p">,</span><span class="w"> </span><span class="n">jobname</span><span class="p">,</span><span class="w"> </span><span class="n">schedule</span><span class="p">,</span><span class="w"> </span><span class="k">database</span><span class="p">,</span><span class="w"> </span><span class="n">active</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">job</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">jobname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;purge_monitoring_3day&#39;</span><span class="p">;</span>
-</code></pre></div>
-<p>-- Check last run status (after first execution):</p>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">jobid</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">return_message</span><span class="p">,</span><span class="w"> </span><span class="n">start_time</span><span class="p">,</span><span class="w"> </span><span class="n">end_time</span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">job_run_details</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">jobid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">jobid</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">job</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">jobname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;purge_monitoring_3day&#39;</span><span class="p">)</span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">start_time</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
-</code></pre></div>
-<h3 id="46-verify-retention-is-working">4.6 Verify Retention Is Working<a class="headerlink" href="#46-verify-retention-is-working" title="Permanent link">&para;</a></h3>
-<p>Run after the first purge execution to confirm the window is correct and table sizes are stable:</p>
-<p>-- Oldest row in each table (should be ~3 days ago):</p>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;stmt_snapshots&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tbl</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">oldest</span><span class="p">,</span>
-<span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">newest</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">rows</span>
-</code></pre></div>
-<p>FROM monitoring.stmt_snapshots
-UNION ALL
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;session_snapshots&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span>
-<span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
-<span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;lock_snapshots&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span>
-<span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
-<span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;db_snapshots&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">db_snapshots</span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">tbl</span><span class="p">;</span>
-</code></pre></div></p>
-<p>-- Physical table sizes:</p>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">relname</span><span class="p">,</span>
-<span class="n">pg_size_pretty</span><span class="p">(</span><span class="n">pg_total_relation_size</span><span class="p">(</span><span class="n">oid</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_size</span>
-</code></pre></div>
-<p>FROM pg_class
-WHERE relnamespace = (
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">oid</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_namespace</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nspname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;monitoring&#39;</span><span class="p">)</span>
-<span class="k">AND</span><span class="w"> </span><span class="n">relkind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;r&#39;</span>
-</code></pre></div></p>
-<p>ORDER BY pg_total_relation_size(oid) DESC;
-<em>Expected steady state: oldest row ~3 days ago for all tables, total size across all four tables ~200-300 MB. If total_size keeps growing day-over-day, the purge job is not running - check cron.job_run_details for errors and confirm the DELETE grant was applied.</em></p>
-<h2 id="deployment-order-summary">Deployment Order Summary<a class="headerlink" href="#deployment-order-summary" title="Permanent link">&para;</a></h2>
-<p>Follow this sequence exactly. Each phase depends on the previous.</p>
-<table>
-<thead>
-<tr>
-<th><strong>Step</strong></th>
-<th><strong>Action</strong></th>
-<th><strong>Section</strong></th>
-<th><strong>Notes</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>1</strong></td>
-<td><strong>Enable track_io_timing + verify compute_query_id</strong></td>
-<td>Phase 3 § 3.1</td>
-<td>Reload only, no restart. Must be done before ALTER TABLE.</td>
-</tr>
-<tr>
-<td><strong>2</strong></td>
-<td><strong>Create pg_loadmon database + all four tables</strong></td>
-<td>Phase 1 § 1.3</td>
-<td>Use Phase 1 definitions (include all Phase 3 columns). Skip if upgrading - go to Step 3.</td>
-</tr>
-<tr>
-<td><strong>3</strong></td>
-<td><strong>ALTER TABLE (upgrades only)</strong></td>
-<td>Phase 3 § 3.2-3.3</td>
-<td>Only needed if tables were created from v2.1 base. New installs skip this.</td>
-</tr>
-<tr>
-<td><strong>4</strong></td>
-<td><strong>Grant DELETE to pg_monitor_reader</strong></td>
-<td>Phase 4 § 4.2</td>
-<td>One-time. Required for purge job.</td>
-</tr>
-<tr>
-<td><strong>5</strong></td>
-<td><strong>Register collection jobs (Jobs 1-4)</strong></td>
-<td>Phase 2 § 2.1-2.4</td>
-<td>Or drop + recreate if upgrading from v2.1.</td>
-</tr>
-<tr>
-<td><strong>6</strong></td>
-<td><strong>Register purge job</strong></td>
-<td>Phase 4 § 4.3</td>
-<td>Daily at 02:00. Runs inside pg_loadmon.</td>
-</tr>
-<tr>
-<td><strong>7</strong></td>
-<td><strong>Verify collection + Phase 3 columns</strong></td>
-<td>Phase 3 § 3.5</td>
-<td>Wait 10 minutes after jobs registered.</td>
-</tr>
-<tr>
-<td><strong>8</strong></td>
-<td><strong>Verify purge after first run</strong></td>
-<td>Phase 4 § 4.6</td>
-<td>Next day after 02:00 - check oldest row and table sizes.</td>
-</tr>
-</tbody>
-</table>
-<p><em>This document consolidates: PG_Load_Analysis_Implementation_v2.1_PaaS.docx + PG_Load_Analysis_Implementation_v2.1_PaaS_Query_id_Change.docx + Phase 4 Retention Lifecycle. Azure Flexible Server. pg_stat_statements + pg_cron. PostgreSQL 16.</em></p>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="s1">&#39;collect_stmts&#39;</span><span class="p">);</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="s1">&#39;collect_sessions_locks_00&#39;</span><span class="p">);</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="s1">&#39;collect_sessions_locks_30&#39;</span><span class="p">);</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="s1">&#39;collect_db_stats&#39;</span><span class="p">);</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="n">purge_monitoring_3day</span><span class="err">&#39;</span><span class="p">);</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">jobid</span><span class="p">;</span>
+<span class="o">##</span><span class="w"> </span><span class="n">Phase</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">Schema</span><span class="w"> </span><span class="n">Changes</span><span class="w"> </span><span class="p">(</span><span class="n">DB</span><span class="w"> </span><span class="n">Head</span><span class="w"> </span><span class="n">Request</span><span class="p">)</span>
+
+<span class="o">**</span><span class="n">Purpose</span><span class="p">:</span><span class="o">**</span><span class="w"> </span><span class="n">_Two</span><span class="w"> </span><span class="n">additive</span><span class="w"> </span><span class="k">schema</span><span class="w"> </span><span class="n">changes</span><span class="p">.</span><span class="w"> </span><span class="n">Change</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">adds</span><span class="w"> </span><span class="n">blk_read_time</span><span class="p">,</span><span class="w"> </span><span class="n">blk_write_time</span><span class="p">,</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">derived</span><span class="w"> </span><span class="n">cpu_ms_est</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">stmt_snapshots</span><span class="p">,</span><span class="w"> </span><span class="n">giving</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">estimated</span><span class="w"> </span><span class="n">CPU</span><span class="w"> </span><span class="n">figure</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">pg_stat_statements</span><span class="w"> </span><span class="n">alone</span><span class="p">.</span><span class="w"> </span><span class="n">Change</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">adds</span><span class="w"> </span><span class="n">query_id</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">session_snapshots</span><span class="w"> </span><span class="n">so</span><span class="w"> </span><span class="n">active</span><span class="w"> </span><span class="n">sessions</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">linked</span><span class="w"> </span><span class="n">back</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">their</span><span class="w"> </span><span class="k">statement</span><span class="p">.</span><span class="w"> </span><span class="k">Both</span><span class="w"> </span><span class="k">are</span><span class="w"> </span><span class="n">additive</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">no</span><span class="w"> </span><span class="k">existing</span><span class="w"> </span><span class="n">columns</span><span class="w"> </span><span class="n">change</span><span class="p">.</span><span class="w"> </span><span class="n">Skip</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">created</span><span class="w"> </span><span class="n">tables</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">Phase</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">definitions</span><span class="w"> </span><span class="n">above</span><span class="w"> </span><span class="p">(</span><span class="n">they</span><span class="w"> </span><span class="n">already</span><span class="w"> </span><span class="n">include</span><span class="w"> </span><span class="n">these</span><span class="w"> </span><span class="n">columns</span><span class="p">).</span><span class="n">_</span>
+
+<span class="o">###</span><span class="w"> </span><span class="mi">3</span><span class="p">.</span><span class="mi">1</span><span class="w"> </span><span class="n">Prerequisites</span>
+
+<span class="o">**</span><span class="n">Enable</span><span class="w"> </span><span class="n">track_io_timing</span><span class="o">**</span>
+
+<span class="n">blk_read_time</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">blk_write_time</span><span class="w"> </span><span class="k">are</span><span class="w"> </span><span class="n">ALWAYS</span><span class="w"> </span><span class="n">ZERO</span><span class="w"> </span><span class="n">unless</span><span class="w"> </span><span class="n">track_io_timing</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">ON</span><span class="p">.</span><span class="w"> </span><span class="k">Without</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">setting</span><span class="p">,</span><span class="w"> </span><span class="n">cpu_ms_est</span><span class="w"> </span><span class="k">equals</span><span class="w"> </span><span class="n">total_exec_time</span><span class="p">,</span><span class="w"> </span><span class="n">which</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">meaningless</span><span class="p">.</span><span class="w"> </span><span class="n">Note</span><span class="p">:</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">PG</span><span class="w"> </span><span class="mi">17</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">source</span><span class="w"> </span><span class="n">columns</span><span class="w"> </span><span class="k">are</span><span class="w"> </span><span class="n">named</span><span class="w"> </span><span class="n">shared_blk_read_time</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">shared_blk_write_time</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">pg_stat_statements</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">collection</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">uses</span><span class="w"> </span><span class="n">these</span><span class="w"> </span><span class="n">PG17</span><span class="w"> </span><span class="k">names</span><span class="p">.</span>
+
+<span class="k">SHOW</span><span class="w"> </span><span class="n">track_io_timing</span><span class="p">;</span><span class="w"> </span><span class="c1">-- should return &#39;on&#39;</span>
+
+<span class="c1">-- If off, set in Azure Portal &gt; Server Parameters:</span>
+
+<span class="c1">-- track_io_timing = on</span>
+
+<span class="c1">-- Then reload (no restart needed):</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">pg_reload_conf</span><span class="p">();</span>
+<span class="n">_Overhead</span><span class="p">:</span><span class="w"> </span><span class="n">track_io_timing</span><span class="w"> </span><span class="n">calls</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">OS</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="k">every</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="k">read</span><span class="o">/</span><span class="k">write</span><span class="p">.</span><span class="w"> </span><span class="k">On</span><span class="w"> </span><span class="n">Azure</span><span class="w"> </span><span class="n">Flexible</span><span class="w"> </span><span class="n">Server</span><span class="w"> </span><span class="p">(</span><span class="n">modern</span><span class="w"> </span><span class="n">Linux</span><span class="p">,</span><span class="w"> </span><span class="n">tsc</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="k">source</span><span class="p">)</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">overhead</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">negligible</span><span class="p">.</span><span class="n">_</span>
+
+<span class="o">**</span><span class="n">Verify</span><span class="w"> </span><span class="n">compute_query_id</span><span class="o">**</span>
+
+<span class="k">SHOW</span><span class="w"> </span><span class="n">compute_query_id</span><span class="p">;</span><span class="w"> </span><span class="c1">-- should be &#39;on&#39; or &#39;auto&#39;</span>
+
+<span class="c1">-- With pg_stat_statements already loaded, &#39;auto&#39; is normally on.</span>
+
+<span class="c1">-- If off: set compute_query_id = auto in Server Parameters and reload.</span>
+<span class="o">###</span><span class="w"> </span><span class="mi">3</span><span class="p">.</span><span class="mi">2</span><span class="w"> </span><span class="n">Change</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">Add</span><span class="w"> </span><span class="n">I</span><span class="o">/</span><span class="n">O</span><span class="w"> </span><span class="n">timing</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">estimated</span><span class="w"> </span><span class="n">CPU</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">stmt_snapshots</span>
+
+<span class="n">Run</span><span class="w"> </span><span class="n">these</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="n">statements</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">existing</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">upgrading</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">v2</span><span class="p">.</span><span class="mi">1</span><span class="w"> </span><span class="n">base</span><span class="p">.</span><span class="w"> </span><span class="k">If</span><span class="w"> </span><span class="n">created</span><span class="w"> </span><span class="n">fresh</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">Phase</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">these</span><span class="w"> </span><span class="n">columns</span><span class="w"> </span><span class="n">already</span><span class="w"> </span><span class="n">exist</span><span class="p">.</span>
+
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span>
+<span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">blk_read_time</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span><span class="w"> </span><span class="c1">-- our column (source PG17: shared_blk_read_time)</span>
+
+<span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">blk_write_time</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span><span class="w"> </span><span class="c1">-- our column (source PG17: shared_blk_write_time)</span>
+
+<span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">cpu_ms_est</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">;</span><span class="w"> </span><span class="c1">-- total_exec_time - shared_blk_read_time - shared_blk_write_time</span>
+
+<span class="c1">-- cpu_ms_est formula (PG17): total_exec_time - shared_blk_read_time - shared_blk_write_time</span>
+
+<span class="c1">-- Removes disk I/O wait. Does NOT remove lock/latch/sleep waits.</span>
+
+<span class="c1">-- Label it as an estimate in reports.</span>
+<span class="n">_PG17</span><span class="w"> </span><span class="n">REQUIRED</span><span class="w"> </span><span class="n">CHANGE</span><span class="p">:</span><span class="w"> </span><span class="n">pg_stat_statements</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">PostgreSQL</span><span class="w"> </span><span class="mi">17</span><span class="o">+</span><span class="w"> </span><span class="n">renamed</span><span class="w"> </span><span class="n">blk_read_time</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">shared_blk_read_time</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">blk_write_time</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">shared_blk_write_time</span><span class="w"> </span><span class="p">(</span><span class="k">and</span><span class="w"> </span><span class="n">added</span><span class="w"> </span><span class="n">local_</span><span class="o">/</span><span class="n">temp_variants</span><span class="p">).</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">collection</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">above</span><span class="w"> </span><span class="n">uses</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">PG17</span><span class="w"> </span><span class="k">names</span><span class="p">.</span><span class="w"> </span><span class="n">Your</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span><span class="w"> </span><span class="k">column</span><span class="w"> </span><span class="k">names</span><span class="w"> </span><span class="p">(</span><span class="n">blk_read_time</span><span class="p">,</span><span class="w"> </span><span class="n">blk_write_time</span><span class="p">)</span><span class="w"> </span><span class="k">are</span><span class="w"> </span><span class="n">unchanged</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">source</span><span class="w"> </span><span class="n">pg_stat_statements</span><span class="w"> </span><span class="k">column</span><span class="w"> </span><span class="k">names</span><span class="w"> </span><span class="n">differ</span><span class="p">.</span><span class="w"> </span><span class="k">On</span><span class="w"> </span><span class="n">PG</span><span class="w"> </span><span class="mi">16</span><span class="w"> </span><span class="n">reverse</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">names</span><span class="w"> </span><span class="n">back</span><span class="p">.</span><span class="w"> </span><span class="n">Verify</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="k">version</span><span class="s1">&#39;s column names: SELECT column_name FROM information_schema.columns WHERE table_name=&#39;</span><span class="n">pg_stat_statements</span><span class="s1">&#39; AND column_name LIKE &#39;</span><span class="o">%</span><span class="n">blk</span><span class="o">%</span><span class="k">time</span><span class="o">%</span><span class="s1">&#39;;_</span>
+
+<span class="s1">### 3.3 Change 2 - Add query_id to session_snapshots</span>
+
+<span class="s1">ALTER TABLE monitoring.session_snapshots</span>
+<span class="s1">ADD COLUMN IF NOT EXISTS query_id BIGINT;</span>
+
+<span class="s1">CREATE INDEX IF NOT EXISTS ix_session_snap_qid</span>
+<span class="s1">ON monitoring.session_snapshots (query_id);</span>
+
+<span class="s1">### 3.4 Drop and recreate pg_cron jobs</span>
+
+<span class="s1">The two schema changes require the collection jobs to be updated. Drop existing jobs first, then recreate using the Phase 2 definitions (which already include all new columns).</span>
+
+<span class="s1">-- Drop existing jobs:</span>
+
+<span class="s1">SELECT cron.unschedule(&#39;</span><span class="n">collect_stmts</span><span class="s1">&#39;);</span>
+
+<span class="s1">SELECT cron.unschedule(&#39;</span><span class="n">collect_sessions_locks_00</span><span class="s1">&#39;);</span>
+
+<span class="s1">SELECT cron.unschedule(&#39;</span><span class="n">collect_sessions_locks_30</span><span class="s1">&#39;);</span>
+
+<span class="s1">SELECT cron.unschedule(&#39;</span><span class="n">collect_db_stats</span><span class="s1">&#39;);</span>
+
+<span class="s1">-- Verify cleared:</span>
+
+<span class="s1">SELECT jobid, jobname, schedule, database, active FROM cron.job ORDER BY jobid;</span>
+
+<span class="s1">-- Then recreate using the four job definitions in Phase 2 (Sections 2.1-2.4).</span>
+<span class="s1">_Order of operations: (1) enable track_io_timing + verify compute_query_id, (2) run both ALTER TABLE statements, (3) drop and recreate jobs. If the columns do not exist when a job runs, the INSERT fails and that snapshot is lost._</span>
+
+<span class="s1">### 3.5 Verification after collection</span>
+
+<span class="s1">-- Change 1: timing populated (non-zero if track_io_timing=on)</span>
+
+<span class="s1">SELECT query_id, blk_read_time, blk_write_time, cpu_ms_est</span>
+<span class="s1">FROM monitoring.stmt_snapshots</span>
+<span class="s1">WHERE captured_at &gt;= NOW() - INTERVAL &#39;</span><span class="mi">10</span><span class="w"> </span><span class="n">minutes</span><span class="s1">&#39;</span>
+<span class="s1">AND blk_read_time &gt; 0 LIMIT 5;</span>
+
+<span class="s1">-- Change 2: query_id populated in session_snapshots</span>
+
+<span class="s1">SELECT pid, application_name, query_id</span>
+<span class="s1">FROM monitoring.session_snapshots</span>
+<span class="s1">WHERE captured_at &gt;= NOW() - INTERVAL &#39;</span><span class="mi">10</span><span class="w"> </span><span class="n">minutes</span><span class="s1">&#39;</span>
+<span class="s1">AND query_id IS NOT NULL LIMIT 5;</span>
+
+<span class="s1">### 3.6 Analysis - Estimated CPU by application (DB Head rollup)</span>
+
+<span class="s1">Ranks applications by estimated CPU instead of raw wall-clock. Built-in answer to I/O-bound vs CPU-bound question:</span>
+
+<span class="s1">SELECT</span>
+<span class="s1">dbname,</span>
+
+<span class="s1">ROUND((SUM(cpu_ms_est)/1000.0)::NUMERIC, 1) AS cpu_est_sec,</span>
+
+<span class="s1">ROUND((100.0 * SUM(cpu_ms_est) /</span>
+
+<span class="s1">NULLIF(SUM(SUM(cpu_ms_est)) OVER(), 0))::NUMERIC, 2) AS pct_cpu_est,</span>
+
+<span class="s1">ROUND((SUM(total_exec_time)/1000.0)::NUMERIC, 1) AS wall_sec,</span>
+
+<span class="s1">ROUND((SUM(blk_read_time + blk_write_time)/1000.0)::NUMERIC, 1) AS io_wait_sec,</span>
+
+<span class="s1">ROUND((100.0 * SUM(blk_read_time + blk_write_time) /</span>
+
+<span class="s1">NULLIF(SUM(total_exec_time), 0))::NUMERIC, 1) AS pct_io_wait</span>
+
+<span class="s1">FROM monitoring.stmt_snapshots</span>
+<span class="s1">WHERE captured_at &gt;= NOW() - INTERVAL &#39;</span><span class="mi">24</span><span class="w"> </span><span class="n">hours</span><span class="s1">&#39;</span>
+<span class="s1">GROUP BY dbname</span>
+<span class="s1">ORDER BY cpu_est_sec DESC;</span>
+<span class="s1">### 3.7 Analysis - Link active sessions to statement cost (query_id join)</span>
+
+<span class="s1">Shows which query_ids were most often caught actively running, and what they cost:</span>
+
+<span class="s1">SELECT</span>
+<span class="s1">ss.query_id,</span>
+
+<span class="s1">COUNT(*) AS times_caught_active,</span>
+
+<span class="s1">MAX(st.query_text) AS query_text,</span>
+
+<span class="s1">ROUND((MAX(st.cpu_ms_est)/1000.0)::NUMERIC,1) AS cpu_est_sec,</span>
+
+<span class="s1">ROUND((MAX(st.blk_read_time)/1000.0)::NUMERIC,1) AS io_read_sec</span>
+
+<span class="s1">FROM monitoring.session_snapshots ss</span>
+<span class="s1">LEFT JOIN LATERAL (</span>
+
+<span class="s1">SELECT query_text, cpu_ms_est, blk_read_time</span>
+<span class="s1">FROM monitoring.stmt_snapshots st</span>
+<span class="s1">WHERE st.query_id = ss.query_id</span>
+<span class="s1">ORDER BY st.captured_at DESC LIMIT 1</span>
+<span class="s1">) st ON true</span>
+
+<span class="s1">WHERE ss.captured_at &gt;= NOW() - INTERVAL &#39;</span><span class="mi">24</span><span class="w"> </span><span class="n">hours</span><span class="s1">&#39;</span>
+<span class="s1">AND ss.query_id IS NOT NULL</span>
+
+<span class="s1">GROUP BY ss.query_id</span>
+<span class="s1">ORDER BY times_caught_active DESC</span>
+<span class="s1">LIMIT 30;</span>
+<span class="s1">### 3.8 DB Head Attribution Rollup Query</span>
+
+<span class="s1">Per-application breakdown of execution time, I/O, temp I/O, WAL writes, and buffer cache hit ratio:</span>
+
+<span class="s1">WITH ranked AS (</span>
+<span class="s1">SELECT</span>
+<span class="s1">application_name, query_id,</span>
+
+<span class="s1">MAX(total_exec_time) AS latest_exec_ms,</span>
+
+<span class="s1">MAX(calls) AS latest_calls,</span>
+
+<span class="s1">MAX(rows) AS latest_rows,</span>
+
+<span class="s1">MAX(shared_blks_read) AS latest_blks_read,</span>
+
+<span class="s1">MAX(shared_blks_hit) AS latest_blks_hit,</span>
+
+<span class="s1">MAX(temp_blks_written) AS latest_temp_blks,</span>
+
+<span class="s1">MAX(wal_bytes) AS latest_wal_bytes,</span>
+
+<span class="s1">COUNT(*) AS times_observed_active</span>
+
+<span class="s1">FROM monitoring.stmt_snapshots</span>
+<span class="s1">WHERE captured_at &gt;= NOW() - INTERVAL &#39;</span><span class="mi">24</span><span class="w"> </span><span class="n">hours</span><span class="s1">&#39;</span>
+<span class="s1">GROUP BY application_name, query_id</span>
+<span class="s1">),</span>
+
+<span class="s1">totals AS (</span>
+
+<span class="s1">SELECT</span>
+<span class="s1">application_name,</span>
+
+<span class="s1">SUM(latest_exec_ms) AS grp_exec_ms,</span>
+
+<span class="s1">SUM(latest_calls) AS grp_calls,</span>
+
+<span class="s1">SUM(latest_rows) AS grp_rows,</span>
+
+<span class="s1">SUM(latest_blks_read) AS grp_blks_read,</span>
+
+<span class="s1">SUM(latest_blks_hit) AS grp_blks_hit,</span>
+
+<span class="s1">SUM(latest_temp_blks) AS grp_temp_blks,</span>
+
+<span class="s1">SUM(latest_wal_bytes) AS grp_wal_bytes,</span>
+
+<span class="s1">SUM(times_observed_active) AS grp_active_observations</span>
+
+<span class="s1">FROM ranked</span>
+<span class="s1">GROUP BY application_name</span>
+<span class="s1">)</span>
+
+<span class="s1">SELECT</span>
+<span class="s1">application_name,</span>
+
+<span class="s1">grp_calls,</span>
+
+<span class="s1">ROUND((grp_exec_ms / 1000.0)::NUMERIC, 1) AS total_exec_sec,</span>
+
+<span class="s1">ROUND((100.0 * grp_exec_ms / SUM(grp_exec_ms) OVER())::NUMERIC, 2) AS pct_exec_time,</span>
+
+<span class="s1">grp_rows,</span>
+
+<span class="s1">grp_blks_read AS disk_reads,</span>
+
+<span class="s1">ROUND((100.0 * grp_blks_read /</span>
+
+<span class="s1">NULLIF(SUM(grp_blks_read) OVER(), 0))::NUMERIC, 2) AS pct_disk_reads,</span>
+
+<span class="s1">ROUND((100.0 * grp_blks_hit /</span>
+
+<span class="s1">NULLIF(grp_blks_read + grp_blks_hit, 0))::NUMERIC, 2) AS buffer_hit_pct,</span>
+
+<span class="s1">grp_temp_blks AS temp_io_blks,</span>
+
+<span class="s1">ROUND((grp_wal_bytes / 1024.0 / 1024.0)::NUMERIC, 2) AS wal_mb,</span>
+
+<span class="s1">ROUND((100.0 * grp_wal_bytes /</span>
+
+<span class="s1">NULLIF(SUM(grp_wal_bytes) OVER(), 0))::NUMERIC, 2) AS pct_wal_writes,</span>
+
+<span class="s1">grp_active_observations</span>
+
+<span class="s1">FROM totals</span>
+<span class="s1">ORDER BY pct_exec_time DESC;</span>
+<span class="s1">## Phase 4 - Retention Lifecycle (3-Day Rolling Window)</span>
+
+<span class="s1">All four monitoring tables grow continuously. Without a purge job the pg_loadmon database will exhaust its Azure disk allocation within days. The policy is: keep exactly 3 days of data, delete everything older. On Azure Flexible Server, retention is implemented as a daily pg_cron job - no shell scripts, no external schedulers.</span>
+
+<span class="s1">### 4.1 Data Growth Estimates</span>
+
+<span class="s1">| **Table**                   | **Rows/day** | **MB/day** | **3-day cap** | **Collection frequency**                                     |</span>
+<span class="s1">| --------------------------- | ------------ | ---------- | ------------- | ------------------------------------------------------------ |</span>
+<span class="s1">| stmt_snapshots              | ~144,000     | ~62 MB     | ~186 MB       | Every 1 min via pg_cron (1,440 snapshots × ~100 queries/min) |</span>
+<span class="s1">| session_snapshots           | ~57,600      | ~11 MB     | ~33 MB        | Every 30 sec via pg_cron (active sessions only)              |</span>
+<span class="s1">| lock_snapshots              | negligible   | &lt;1 MB      | &lt;3 MB         | Every 30 sec (rows only when lock waits exist)               |</span>
+<span class="s1">| db_snapshots                | ~14,400      | ~1 MB      | ~3 MB         | Every 60 sec (1,440 × ~10 databases)                         |</span>
+<span class="s1">| **TOTAL (raw + index ~2×)** | ~216,000     | ~75 MB     | ~225 MB       | Stable ceiling once purge job is running                     |</span>
+
+<span class="s1">_session_snapshots and lock_snapshots only insert rows when sessions are active / when locks exist - so their actual volume is lower than the theoretical max shown above. stmt_snapshots is the dominant table on busy servers because it captures every tracked query shape every minute._</span>
+
+<span class="s1">### 4.2 One-Time Permission Grant</span>
+
+<span class="s1">The pg_monitor_reader role has INSERT and SELECT on all monitoring tables. DELETE must be added once before the purge job will succeed:</span>
+
+<span class="s1">-- Run as superuser (postgres) once in pg_loadmon:</span>
+
+<span class="s1">GRANT DELETE ON ALL TABLES IN SCHEMA monitoring TO pg_monitor_reader;</span>
+<span class="s1">_Without this grant, the purge pg_cron job will fail with a permission denied error. The collection jobs will continue to run but the tables will keep growing._</span>
+
+<span class="s1">### 4.3 Purge Job - pg_cron (runs daily at 02:00)</span>
+
+<span class="s1">Register a single pg_cron job that deletes rows older than 3 days from all four tables, then issues VACUUM on each to reclaim pages. This runs inside PostgreSQL - no shell access needed on Azure Flexible Server.</span>
+
+<span class="s1">SELECT cron.schedule_in_database(</span>
+<span class="s1">&#39;</span><span class="n">purge_monitoring_3day</span><span class="s1">&#39;,</span>
+
+<span class="s1">&#39;</span><span class="mi">18</span><span class="w"> </span><span class="mi">31</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="o">*</span><span class="s1">&#39;, -- daily at 02:00 (server local time)</span>
+
+<span class="s1">$$</span>
+
+<span class="s1">-- ── DELETE old rows (3-day retention) ────────────────────────────</span>
+
+<span class="s1">DELETE FROM monitoring.stmt_snapshots</span>
+<span class="s1">WHERE captured_at &lt; NOW() - INTERVAL &#39;</span><span class="mi">3</span><span class="w"> </span><span class="n">days</span><span class="s1">&#39;;</span>
+
+<span class="s1">DELETE FROM monitoring.session_snapshots</span>
+<span class="s1">WHERE captured_at &lt; NOW() - INTERVAL &#39;</span><span class="mi">3</span><span class="w"> </span><span class="n">days</span><span class="s1">&#39;;</span>
+
+<span class="s1">DELETE FROM monitoring.lock_snapshots</span>
+<span class="s1">WHERE captured_at &lt; NOW() - INTERVAL &#39;</span><span class="mi">3</span><span class="w"> </span><span class="n">days</span><span class="s1">&#39;;</span>
+
+<span class="s1">DELETE FROM monitoring.db_snapshots</span>
+<span class="s1">WHERE captured_at &lt; NOW() - INTERVAL &#39;</span><span class="mi">3</span><span class="w"> </span><span class="n">days</span><span class="s1">&#39;;</span>
+<span class="s1">$$,</span>
+
+<span class="s1">&#39;</span><span class="n">postgres</span><span class="s1">&#39;</span>
+
+<span class="s1">);</span>
+
+<span class="s1">_Why 02:00: after the nightly pg_basebackup backup window and before the morning OLTP peak. The purge deletes ~216,000 rows and VACUUMs four tables - at 02:00 this completes in seconds. Adjust the schedule if your backup window is different._</span>
+
+<span class="s1">### 4.4 Important: VACUUM inside pg_cron on Flexible Server</span>
+
+<span class="s1">_Azure Flexible Server restricts VACUUM inside pg_cron on some versions. If the purge job fails with &#39;</span><span class="k">VACUUM</span><span class="w"> </span><span class="n">cannot</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">inside</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">transaction</span><span class="w"> </span><span class="n">block</span><span class="s1">&#39;, replace the four VACUUM statements with a single call to autovacuum or remove them entirely. Autovacuum will handle the dead tuples on its next run. The DELETE rows are still removed; only the page reclamation is delayed._</span>
+
+<span class="s1">Alternative if VACUUM fails inside pg_cron - register a separate job that calls VACUUM outside a transaction block:</span>
+
+<span class="s1">-- Alternative: separate VACUUM job (runs right after purge at 02:05)</span>
+
+<span class="s1">SELECT cron.schedule_in_database(</span>
+<span class="s1">&#39;</span><span class="n">vacuum_monitoring</span><span class="s1">&#39;,</span>
+
+<span class="s1">&#39;</span><span class="mi">31</span><span class="w"> </span><span class="mi">18</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="o">*</span><span class="s1">&#39;,</span>
+
+<span class="s1">$$</span>
+
+<span class="s1">VACUUM monitoring.stmt_snapshots;</span>
+
+<span class="s1">VACUUM monitoring.session_snapshots;</span>
+
+<span class="s1">VACUUM monitoring.lock_snapshots;</span>
+
+<span class="s1">VACUUM monitoring.db_snapshots;</span>
+<span class="s1">$$,</span>
+
+<span class="s1">&#39;</span><span class="n">pg_loadmon</span><span class="s1">&#39;</span>
+
+<span class="s1">);</span>
+
+<span class="s1">-- If VACUUM still fails, remove from purge job and rely on autovacuum.</span>
+
+<span class="s1">-- Autovacuum fires automatically once dead tuple threshold is reached.</span>
+
+<span class="s1">-- Check autovacuum activity: SELECT * FROM pg_stat_user_tables</span>
+
+<span class="s1">-- WHERE schemaname = &#39;</span><span class="n">monitoring</span><span class="s1">&#39; ORDER BY n_dead_tup DESC;</span>
+<span class="s1">### 4.5 Verify Purge Job is Registered</span>
+
+<span class="s1">-- Confirm the job exists:</span>
+
+<span class="s1">SELECT jobid, jobname, schedule, database, active</span>
+<span class="s1">FROM cron.job</span>
+<span class="s1">WHERE jobname = &#39;</span><span class="n">purge_monitoring_3day</span><span class="s1">&#39;;</span>
+
+<span class="s1">-- Check last run status (after first execution):</span>
+
+<span class="s1">SELECT jobid, status, return_message, start_time, end_time</span>
+<span class="s1">FROM cron.job_run_details</span>
+<span class="s1">WHERE jobid = (SELECT jobid FROM cron.job WHERE jobname = &#39;</span><span class="n">purge_monitoring_3day</span><span class="s1">&#39;)</span>
+<span class="s1">ORDER BY start_time DESC LIMIT 5;</span>
+<span class="s1">### 4.6 Verify Retention Is Working</span>
+
+<span class="s1">Run after the first purge execution to confirm the window is correct and table sizes are stable:</span>
+
+<span class="s1">-- Oldest row in each table (should be ~3 days ago):</span>
+
+<span class="s1">SELECT &#39;</span><span class="n">stmt_snapshots</span><span class="s1">&#39; AS tbl, MIN(captured_at) AS oldest,</span>
+<span class="s1">MAX(captured_at) AS newest, COUNT(*) AS rows</span>
+
+<span class="s1">FROM monitoring.stmt_snapshots</span>
+<span class="s1">UNION ALL</span>
+<span class="s1">SELECT &#39;</span><span class="n">session_snapshots</span><span class="s1">&#39;, MIN(captured_at), MAX(captured_at), COUNT(*)</span>
+<span class="s1">FROM monitoring.session_snapshots</span>
+<span class="s1">UNION ALL</span>
+<span class="s1">SELECT &#39;</span><span class="n">lock_snapshots</span><span class="s1">&#39;, MIN(captured_at), MAX(captured_at), COUNT(*)</span>
+<span class="s1">FROM monitoring.lock_snapshots</span>
+<span class="s1">UNION ALL</span>
+<span class="s1">SELECT &#39;</span><span class="n">db_snapshots</span><span class="s1">&#39;, MIN(captured_at), MAX(captured_at), COUNT(*)</span>
+<span class="s1">FROM monitoring.db_snapshots</span>
+<span class="s1">ORDER BY tbl;</span>
+
+<span class="s1">-- Physical table sizes:</span>
+
+<span class="s1">SELECT relname,</span>
+<span class="s1">pg_size_pretty(pg_total_relation_size(oid)) AS total_size</span>
+
+<span class="s1">FROM pg_class</span>
+<span class="s1">WHERE relnamespace = (</span>
+<span class="s1">SELECT oid FROM pg_namespace WHERE nspname = &#39;</span><span class="n">monitoring</span><span class="s1">&#39;)</span>
+<span class="s1">AND relkind = &#39;</span><span class="n">r</span><span class="s1">&#39;</span>
+
+<span class="s1">ORDER BY pg_total_relation_size(oid) DESC;</span>
+<span class="s1">_Expected steady state: oldest row ~3 days ago for all tables, total size across all four tables ~200-300 MB. If total_size keeps growing day-over-day, the purge job is not running - check cron.job_run_details for errors and confirm the DELETE grant was applied._</span>
+
+<span class="s1">## Deployment Order Summary</span>
+
+<span class="s1">Follow this sequence exactly. Each phase depends on the previous.</span>
+
+<span class="s1">| **Step** | **Action**                                           | **Section**       | **Notes**                                                                                |</span>
+<span class="s1">| -------- | ---------------------------------------------------- | ----------------- | ---------------------------------------------------------------------------------------- |</span>
+<span class="s1">| **1**    | **Enable track_io_timing + verify compute_query_id** | Phase 3 § 3.1     | Reload only, no restart. Must be done before ALTER TABLE.                                |</span>
+<span class="s1">| **2**    | **Create pg_loadmon database + all four tables**     | Phase 1 § 1.3     | Use Phase 1 definitions (include all Phase 3 columns). Skip if upgrading - go to Step 3. |</span>
+<span class="s1">| **3**    | **ALTER TABLE (upgrades only)**                      | Phase 3 § 3.2-3.3 | Only needed if tables were created from v2.1 base. New installs skip this.               |</span>
+<span class="s1">| **4**    | **Grant DELETE to pg_monitor_reader**                | Phase 4 § 4.2     | One-time. Required for purge job.                                                        |</span>
+<span class="s1">| **5**    | **Register collection jobs (Jobs 1-4)**              | Phase 2 § 2.1-2.4 | Or drop + recreate if upgrading from v2.1.                                               |</span>
+<span class="s1">| **6**    | **Register purge job**                               | Phase 4 § 4.3     | Daily at 02:00. Runs inside pg_loadmon.                                                  |</span>
+<span class="s1">| **7**    | **Verify collection + Phase 3 columns**              | Phase 3 § 3.5     | Wait 10 minutes after jobs registered.                                                   |</span>
+<span class="s1">| **8**    | **Verify purge after first run**                     | Phase 4 § 4.6     | Next day after 02:00 - check oldest row and table sizes.                                 |</span>
+
+<span class="s1">_This document consolidates: PG_Load_Analysis_Implementation_v2.1_PaaS.docx + PG_Load_Analysis_Implementation_v2.1_PaaS_Query_id_Change.docx + Phase 4 Retention Lifecycle. Azure Flexible Server. pg_stat_statements + pg_cron. PostgreSQL 16._</span>
+
+<span class="s1">SELECT cron.unschedule(&#39;</span><span class="n">collect_stmts</span><span class="s1">&#39;);</span>
+
+<span class="s1">SELECT cron.unschedule(&#39;</span><span class="n">collect_sessions_locks_00</span><span class="s1">&#39;);</span>
+
+<span class="s1">SELECT cron.unschedule(&#39;</span><span class="n">collect_sessions_locks_30</span><span class="s1">&#39;);</span>
+
+<span class="s1">SELECT cron.unschedule(&#39;</span><span class="n">collect_db_stats</span><span class="s1">&#39;);</span>
+
+<span class="s1">SELECT cron.unschedule(purge_monitoring_3day&#39;</span><span class="p">);</span>
 </code></pre></div>
 
 
