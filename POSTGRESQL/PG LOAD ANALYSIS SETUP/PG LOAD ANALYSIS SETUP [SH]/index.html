@@ -2192,15 +2192,48 @@
 <p><em>Updated: adds pg_stat_kcache (per-query real CPU), DB Head columns (blk_read_time, blk_write_time, cpu_ms_est), and query_id in session_snapshots | June 2026</em></p>
 <p>Purpose: This is the recommended self-hosted stack. It drops pg_stat_monitor (which crash-looped on prod-05) and uses three mature extensions: pg_stat_statements (per-query wall-clock + I/O), pg_stat_kcache (per-query REAL CPU and physical disk bytes, joined to pg_stat_statements on queryid), and pg_proctab (per-process CPU/memory, including background workers). With kcache, the previous limitation is gone - you now get true CPU attributed to each query, not just per application. Also folds in the DB Head's requested columns (blk_read_time, blk_write_time, cpu_ms_est) and query_id in session_snapshots.</p>
 <h2 id="0-what-this-stack-delivers">0. What This Stack Delivers<a class="headerlink" href="#0-what-this-stack-delivers" title="Permanent link">&para;</a></h2>
-<p>With pg_stat_kcache added, every analysis question is now answerable - including the one that was previously impossible (CPU per query).
-| <strong>Question</strong>                        | <strong>Answer source</strong>                                | <strong>Granularity</strong>               |
-| ----------------------------------- | ------------------------------------------------ | ----------------------------- |
-| Real CPU per QUERY (was impossible) | pg_stat_kcache exec_user_time + exec_system_time | <strong>Per query - REAL CPU</strong>      |
-| Physical disk bytes per query       | pg_stat_kcache exec_reads / exec_writes          | <strong>Per query - actual bytes</strong>  |
-| Real CPU per APPLICATION            | pg_proctab (by application_name)                 | Per application - cross-check |
-| Wall-clock + I/O wait per query     | pg_stat_statements + blk_read/write_time         | Per query                     |
-| Estimated CPU (DB Head formula)     | total_exec_time - blk_read_time - blk_write_time | Per query - estimate          |
-| Memory + page faults per backend    | pg_proctab rss / pg_stat_kcache minflts/majflts  | Per process / per query       |</p>
+<p>With pg_stat_kcache added, every analysis question is now answerable - including the one that was previously impossible (CPU per query).</p>
+<table>
+<thead>
+<tr>
+<th><strong>Question</strong></th>
+<th><strong>Answer source</strong></th>
+<th><strong>Granularity</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Real CPU per QUERY (was impossible)</td>
+<td>pg_stat_kcache exec_user_time + exec_system_time</td>
+<td><strong>Per query - REAL CPU</strong></td>
+</tr>
+<tr>
+<td>Physical disk bytes per query</td>
+<td>pg_stat_kcache exec_reads / exec_writes</td>
+<td><strong>Per query - actual bytes</strong></td>
+</tr>
+<tr>
+<td>Real CPU per APPLICATION</td>
+<td>pg_proctab (by application_name)</td>
+<td>Per application - cross-check</td>
+</tr>
+<tr>
+<td>Wall-clock + I/O wait per query</td>
+<td>pg_stat_statements + blk_read/write_time</td>
+<td>Per query</td>
+</tr>
+<tr>
+<td>Estimated CPU (DB Head formula)</td>
+<td>total_exec_time - blk_read_time - blk_write_time</td>
+<td>Per query - estimate</td>
+</tr>
+<tr>
+<td>Memory + page faults per backend</td>
+<td>pg_proctab rss / pg_stat_kcache minflts/majflts</td>
+<td>Per process / per query</td>
+</tr>
+</tbody>
+</table>
 <p><em>pg_stat_kcache keys on (queryid, dbid, userid) - the SAME key as pg_stat_statements - so it joins cleanly into stmt_snapshots. This is why it succeeds where pg_proctab alone could not: pg_proctab keys on PID, kcache keys on query. With both, you get per-query CPU (kcache) AND per-process CPU including background workers (pg_proctab).</em></p>
 <p><em>Stability: pg_stat_kcache is a thin getrusage() wrapper and is mature (part of the PoWA stack). It is far lower-risk than pg_stat_monitor. However it is still a third C extension in shared_preload_libraries on a server that previously crash-looped. Test the full three-extension set on a non-production VM for several days before production. If kcache proves stable, it makes the DB Head's cpu_ms_est estimate obsolete (kcache gives real CPU, not an estimate).</em></p>
 <h2 id="1-configuration">1. Configuration<a class="headerlink" href="#1-configuration" title="Permanent link">&para;</a></h2>
