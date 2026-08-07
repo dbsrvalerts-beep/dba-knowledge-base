@@ -1411,13 +1411,40 @@ mydumper<span class="w"> </span><span class="se">\</span>
 <span class="nb">exit</span><span class="w"> </span><span class="si">${</span><span class="nv">STATUS</span><span class="si">}</span>
 </code></pre></div></p>
 <h2 id="fixes-incorporated-in-this-version-change-log">Fixes Incorporated in This Version (Change Log)<a class="headerlink" href="#fixes-incorporated-in-this-version-change-log" title="Permanent link">&para;</a></h2>
-<p>--defaults-file=/etc/mydumper.cnf — picks up standard session variables (max_execution_time=0, etc.).
---rows=1000000 — forces explicit row-chunking on large tables. This fixed the infinite-spin stall previously seen on the orders table.
---trx-tables — the 0.18.1-correct replacement for the deprecated --trx-consistency-only / --lock-all-tables path. Still only a brief FLUSH TABLES WITH READ LOCK → snapshot → unlock; no sustained lock is held.
---long-query-guard=10800 (with an explicit value) replacing the earlier bare --kill-long-queries — this fixed the repeating "SET SESSION LONG-QUERY-GUARD" log-spam loop.
---database="${DB_LIST}" replaces the earlier --regex='^(?!(sys.))' approach — the regex only filtered table-level dumping, but mydumper still attempted schema-level operations (e.g. SHOW EVENTS) against sys, causing an "Access denied ... database 'sys'" failure and a non-zero exit code. An explicit --database list means mydumper never touches these schemas at all: no partial sys files, and no myloader CREATE DATABASE <code>sys</code> failure downstream either.
-Note on consistency mechanism:
---trx-tables takes a consistent InnoDB snapshot via a single transaction, which is what allows this to run safely against a live server without a sustained FLUSH TABLES WITH READ LOCK or setting read_only=ON — no production write-freeze and no intermediate replica required.</p>
+<table>
+<thead>
+<tr>
+<th>Fix / Parameter</th>
+<th>Description / Impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--defaults-file=/etc/mydumper.cnf</code></td>
+<td>Picks up standard session variables (<code>max_execution_time=0</code>, etc.).</td>
+</tr>
+<tr>
+<td><code>--rows=1000000</code></td>
+<td>Forces explicit row-chunking on large tables. This fixed the infinite-spin stall previously seen on the <code>orders</code> table.</td>
+</tr>
+<tr>
+<td><code>--trx-tables</code></td>
+<td>The 0.18.1-correct replacement for the deprecated <code>--trx-consistency-only</code> / <code>--lock-all-tables</code> path. Still only a brief <code>FLUSH TABLES WITH READ LOCK</code> &rarr; snapshot &rarr; unlock; no sustained lock is held.</td>
+</tr>
+<tr>
+<td><code>--long-query-guard=10800</code></td>
+<td>Replaces the earlier bare <code>--kill-long-queries</code> (using an explicit value) — this fixed the repeating "SET SESSION LONG-QUERY-GUARD" log-spam loop.</td>
+</tr>
+<tr>
+<td><code>--database="${DB_LIST}"</code></td>
+<td>Replaces the earlier <code>--regex='^(?!(sys\.))'</code> approach. The regex only filtered table-level dumping, but <code>mydumper</code> still attempted schema-level operations (e.g. <code>SHOW EVENTS</code>) against <code>sys</code>, causing an "Access denied ... database 'sys'" failure and a non-zero exit code. An explicit <code>--database</code> list means <code>mydumper</code> never touches these schemas at all: no partial <code>sys</code> files, and no <code>myloader</code> <code>CREATE DATABASE sys</code> failure downstream either.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>[!NOTE]
+<strong>Consistency Mechanism Note</strong>: <code>--trx-tables</code> takes a consistent InnoDB snapshot via a single transaction, which is what allows this to run safely against a live server without a sustained <code>FLUSH TABLES WITH READ LOCK</code> or setting <code>read_only=ON</code> — no production write-freeze and no intermediate replica required.</p>
+</blockquote>
 <h1 id="step-5-read-the-metadata-file-the-consistency-anchor">Step 5: Read the Metadata File — the Consistency Anchor<a class="headerlink" href="#step-5-read-the-metadata-file-the-consistency-anchor" title="Permanent link">&para;</a></h1>
 <p><div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/u01/backup/mydump/metadata
 </code></pre></div>
