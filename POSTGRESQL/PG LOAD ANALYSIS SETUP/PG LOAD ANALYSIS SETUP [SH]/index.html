@@ -2310,10 +2310,13 @@
 <span class="n">exec_minflts</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span><span class="w"> </span><span class="c1">-- minor page faults</span>
 <span class="n">exec_majflts</span><span class="w"> </span><span class="nb">BIGINT</span><span class="w"> </span><span class="c1">-- major page faults (memory pressure)</span>
 <span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">captured_at</span><span class="p">);</span>
+
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">query_id</span><span class="p">);</span>
 </code></pre></div>
-<p>CREATE INDEX ON monitoring.stmt_snapshots (captured_at);</p>
-<p>CREATE INDEX ON monitoring.stmt_snapshots (query_id);
-<em>cpu_ms_est (DB Head estimate) and cpu_total_ms (kcache real) are both kept. cpu_ms_est removes only disk I/O wait; cpu_total_ms is true CPU from getrusage. Compare them in query 4.4 - where they diverge, the query had lock/latch/sleep waits that the estimate cannot see. Once kcache is trusted, cpu_total_ms supersedes cpu_ms_est.</em></p>
+<p><em>cpu_ms_est (DB Head estimate) and cpu_total_ms (kcache real) are both kept. cpu_ms_est removes only disk I/O wait; cpu_total_ms is true CPU from getrusage. Compare them in query 4.4 - where they diverge, the query had lock/latch/sleep waits that the estimate cannot see. Once kcache is trusted, cpu_total_ms supersedes cpu_ms_est.</em></p>
 <h3 id="22-session_snapshots-active-sessions-every-30-sec">2.2 session_snapshots - active sessions (every 30 sec)<a class="headerlink" href="#22-session_snapshots-active-sessions-every-30-sec" title="Permanent link">&para;</a></h3>
 <p>Adds query_id (DB Head request) so a sampled active session links to its stmt_snapshots row:</p>
 <div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span><span class="w"> </span><span class="p">(</span>
@@ -2329,9 +2332,10 @@
 <span class="n">duration_secs</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span>
 <span class="n">query_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="w"> </span><span class="c1">-- NEW (DB Head request)</span>
 <span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">captured_at</span><span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">query_id</span><span class="p">);</span>
 </code></pre></div>
-<p>CREATE INDEX ON monitoring.session_snapshots (captured_at);</p>
-<p>CREATE INDEX ON monitoring.session_snapshots (query_id);</p>
 <h3 id="23-process_snapshots-all-pg_proctab-columns-every-30-sec">2.3 process_snapshots - all pg_proctab columns (every 30 sec)<a class="headerlink" href="#23-process_snapshots-all-pg_proctab-columns-every-30-sec" title="Permanent link">&para;</a></h3>
 <p>Stores every pg_proctab column for per-process CPU/memory, including background workers. Key analysis columns: utime, stime (CPU ticks) and rss (memory pages).</p>
 <div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">process_snapshots</span><span class="w"> </span><span class="p">(</span>
@@ -2350,10 +2354,12 @@
 <span class="n">rchar</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span><span class="w"> </span><span class="n">wchar</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span><span class="w"> </span><span class="n">syscr</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span><span class="w"> </span><span class="n">syscw</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
 <span class="k">reads</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span><span class="w"> </span><span class="n">writes</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span><span class="w"> </span><span class="n">cwrites</span><span class="w"> </span><span class="nb">BIGINT</span>
 <span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">process_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">captured_at</span><span class="p">,</span><span class="w"> </span><span class="n">application_name</span><span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">process_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">pid</span><span class="p">);</span>
 </code></pre></div>
-<p>CREATE INDEX ON monitoring.process_snapshots (captured_at, application_name);</p>
-<p>CREATE INDEX ON monitoring.process_snapshots (pid);
-<em>rss is in PAGES (x 4096 / 1024 = KB); vsize is bytes; utime/stime are ticks (x 10 = ms on RHEL 8). process_snapshots is the per-PROCESS view (captures background workers like checkpointer, walwriter, pg_cron launcher that have no query). pg_stat_kcache is the per-QUERY view. They are complementary.</em></p>
+<p><em>rss is in PAGES (x 4096 / 1024 = KB); vsize is bytes; utime/stime are ticks (x 10 = ms on RHEL 8). process_snapshots is the per-PROCESS view (captures background workers like checkpointer, walwriter, pg_cron launcher that have no query). pg_stat_kcache is the per-QUERY view. They are complementary.</em></p>
 <h3 id="24-lock_snapshots-lock-waits-every-30-sec">2.4 lock_snapshots - lock waits (every 30 sec)<a class="headerlink" href="#24-lock_snapshots-lock-waits-every-30-sec" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span><span class="w"> </span><span class="p">(</span>
 <span class="n">id</span><span class="w"> </span><span class="n">BIGSERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
@@ -2366,8 +2372,8 @@
 <span class="n">relation</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
 <span class="n">wait_secs</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span>
 <span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">captured_at</span><span class="p">);</span>
 </code></pre></div>
-<p>CREATE INDEX ON monitoring.lock_snapshots (captured_at);</p>
 <h3 id="25-db_snapshots-per-database-stats-every-60-sec">2.5 db_snapshots - per-database stats (every 60 sec)<a class="headerlink" href="#25-db_snapshots-per-database-stats-every-60-sec" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">db_snapshots</span><span class="w"> </span><span class="p">(</span>
 <span class="n">id</span><span class="w"> </span><span class="n">BIGSERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
@@ -2381,11 +2387,10 @@
 <span class="n">tup_returned</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
 <span class="n">tup_fetched</span><span class="w"> </span><span class="nb">BIGINT</span>
 <span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">db_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">captured_at</span><span class="p">,</span><span class="w"> </span><span class="n">dbname</span><span class="p">);</span>
 </code></pre></div>
-<p>CREATE INDEX ON monitoring.db_snapshots (captured_at, dbname);</p>
 <p>-- Grant on all five tables:</p>
 <div class="highlight"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="k">INSERT</span><span class="p">,</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">monitoring</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
-<span class="o">```</span><span class="k">sql</span>
 <span class="k">GRANT</span><span class="w"> </span><span class="k">USAGE</span><span class="p">,</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">SEQUENCES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">monitoring</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
 </code></pre></div>
 <h2 id="3-collection-queries">3. Collection Queries<a class="headerlink" href="#3-collection-queries" title="Permanent link">&para;</a></h2>
