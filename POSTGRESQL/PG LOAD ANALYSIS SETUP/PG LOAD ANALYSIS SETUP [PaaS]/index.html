@@ -2718,14 +2718,16 @@
 </tbody>
 </table>
 <p><em>This document consolidates: PG_Load_Analysis_Implementation_v2.1_PaaS.docx + PG_Load_Analysis_Implementation_v2.1_PaaS_Query_id_Change.docx + Phase 4 Retention Lifecycle. Azure Flexible Server. pg_stat_statements + pg_cron. PostgreSQL 16.</em></p>
-<p><code>sql
-SELECT cron.unschedule('collect_stmts');</code>sql
-SELECT cron.unschedule('collect_sessions_locks_00');
-<code>sql
-SELECT cron.unschedule('collect_sessions_locks_30');</code>sql
-SELECT cron.unschedule('collect_db_stats');
-```sql
-SELECT cron.unschedule('purge_monitoring_3day');</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="s1">&#39;collect_stmts&#39;</span><span class="p">);</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="s1">&#39;collect_sessions_locks_00&#39;</span><span class="p">);</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="s1">&#39;collect_sessions_locks_30&#39;</span><span class="p">);</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="s1">&#39;collect_db_stats&#39;</span><span class="p">);</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="s1">&#39;purge_monitoring_3day&#39;</span><span class="p">);</span>
+</code></pre></div>
 
 
 
