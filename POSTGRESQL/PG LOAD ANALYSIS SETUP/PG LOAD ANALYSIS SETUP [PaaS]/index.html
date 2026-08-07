@@ -2321,12 +2321,10 @@
 <span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">blk_write_time</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span><span class="w"> </span><span class="c1">-- our column (source PG17: shared_blk_write_time)</span>
 
 <span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">cpu_ms_est</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">;</span><span class="w"> </span><span class="c1">-- total_exec_time - shared_blk_read_time - shared_blk_write_time</span>
-
-<span class="c1">-- cpu_ms_est formula (PG17): total_exec_time - shared_blk_read_time - shared_blk_write_time</span>
-
-<span class="c1">-- Removes disk I/O wait. Does NOT remove lock/latch/sleep waits.</span>
 </code></pre></div>
--- Label it as an estimate in reports.
+-- cpu_ms_est formula (PG17): total_exec_time - shared_blk_read_time - shared_blk_write_time</p>
+<p>-- Removes disk I/O wait. Does NOT remove lock/latch/sleep waits.</p>
+<p>-- Label it as an estimate in reports.
 <em>PG17 REQUIRED CHANGE: pg_stat_statements on PostgreSQL 17+ renamed blk_read_time → shared_blk_read_time and blk_write_time → shared_blk_write_time (and added local</em>/temp_variants). The collection job above uses the PG17 names. Your monitoring.stmt_snapshots column names (blk_read_time, blk_write_time) are unchanged - only the source pg_stat_statements column names differ. On PG 16 reverse the names back. Verify your version's column names: SELECT column_name FROM information_schema.columns WHERE table_name='pg_stat_statements' AND column_name LIKE '%blk%time%';_</p>
 <h3 id="33-change-2-add-query_id-to-session_snapshots">3.3 Change 2 - Add query_id to session_snapshots<a class="headerlink" href="#33-change-2-add-query_id-to-session_snapshots" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span>
@@ -2365,90 +2363,142 @@
 <span class="k">AND</span><span class="w"> </span><span class="n">query_id</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
 </code></pre></div>
 <h3 id="36-analysis-estimated-cpu-by-application-db-head-rollup">3.6 Analysis - Estimated CPU by application (DB Head rollup)<a class="headerlink" href="#36-analysis-estimated-cpu-by-application-db-head-rollup" title="Permanent link">&para;</a></h3>
-<p>Ranks applications by estimated CPU instead of raw wall-clock. Built-in answer to I/O-bound vs CPU-bound question:</p>
-<p>SELECT
-dbname,</p>
-<p>ROUND((SUM(cpu_ms_est)/1000.0)::NUMERIC, 1) AS cpu_est_sec,</p>
-<p>ROUND((100.0 * SUM(cpu_ms_est) /</p>
-<p>NULLIF(SUM(SUM(cpu_ms_est)) OVER(), 0))::NUMERIC, 2) AS pct_cpu_est,</p>
-<p>ROUND((SUM(total_exec_time)/1000.0)::NUMERIC, 1) AS wall_sec,</p>
-<p>ROUND((SUM(blk_read_time + blk_write_time)/1000.0)::NUMERIC, 1) AS io_wait_sec,</p>
-<p>ROUND((100.0 * SUM(blk_read_time + blk_write_time) /</p>
-<p>NULLIF(SUM(total_exec_time), 0))::NUMERIC, 1) AS pct_io_wait</p>
-<p>FROM monitoring.stmt_snapshots
-WHERE captured_at &gt;= NOW() - INTERVAL '24 hours'
-GROUP BY dbname
-ORDER BY cpu_est_sec DESC;</p>
+<p>Ranks applications by estimated CPU instead of raw wall-clock. Built-in answer to I/O-bound vs CPU-bound question:
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
+<span class="n">dbname</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="k">SUM</span><span class="p">(</span><span class="n">cpu_ms_est</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="p">)::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">cpu_est_sec</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="mi">100</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">cpu_ms_est</span><span class="p">)</span><span class="w"> </span><span class="o">/</span>
+
+<span class="k">NULLIF</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">cpu_ms_est</span><span class="p">))</span><span class="w"> </span><span class="n">OVER</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">))::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pct_cpu_est</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="k">SUM</span><span class="p">(</span><span class="n">total_exec_time</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="p">)::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">wall_sec</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="k">SUM</span><span class="p">(</span><span class="n">blk_read_time</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">blk_write_time</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="p">)::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">io_wait_sec</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="mi">100</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">blk_read_time</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">blk_write_time</span><span class="p">)</span><span class="w"> </span><span class="o">/</span>
+
+<span class="k">NULLIF</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">total_exec_time</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">))::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pct_io_wait</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">captured_at</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;24 hours&#39;</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">dbname</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">cpu_est_sec</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div></p>
 <h3 id="37-analysis-link-active-sessions-to-statement-cost-query_id-join">3.7 Analysis - Link active sessions to statement cost (query_id join)<a class="headerlink" href="#37-analysis-link-active-sessions-to-statement-cost-query_id-join" title="Permanent link">&para;</a></h3>
-<p>Shows which query_ids were most often caught actively running, and what they cost:</p>
-<p>SELECT
-ss.query_id,</p>
-<p>COUNT(*) AS times_caught_active,</p>
-<p>MAX(st.query_text) AS query_text,</p>
-<p>ROUND((MAX(st.cpu_ms_est)/1000.0)::NUMERIC,1) AS cpu_est_sec,</p>
-<p>ROUND((MAX(st.blk_read_time)/1000.0)::NUMERIC,1) AS io_read_sec</p>
-<p>FROM monitoring.session_snapshots ss
-LEFT JOIN LATERAL (</p>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">query_text</span><span class="p">,</span><span class="w"> </span><span class="n">cpu_ms_est</span><span class="p">,</span><span class="w"> </span><span class="n">blk_read_time</span>
+<p>Shows which query_ids were most often caught actively running, and what they cost:
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
+<span class="n">ss</span><span class="p">.</span><span class="n">query_id</span><span class="p">,</span>
+
+<span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">times_caught_active</span><span class="p">,</span>
+
+<span class="k">MAX</span><span class="p">(</span><span class="n">st</span><span class="p">.</span><span class="n">query_text</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">query_text</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="k">MAX</span><span class="p">(</span><span class="n">st</span><span class="p">.</span><span class="n">cpu_ms_est</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="p">)::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">cpu_est_sec</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="k">MAX</span><span class="p">(</span><span class="n">st</span><span class="p">.</span><span class="n">blk_read_time</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="p">)::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">io_read_sec</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span><span class="w"> </span><span class="n">ss</span>
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="k">LATERAL</span><span class="w"> </span><span class="p">(</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">query_text</span><span class="p">,</span><span class="w"> </span><span class="n">cpu_ms_est</span><span class="p">,</span><span class="w"> </span><span class="n">blk_read_time</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span><span class="w"> </span><span class="n">st</span>
 <span class="k">WHERE</span><span class="w"> </span><span class="n">st</span><span class="p">.</span><span class="n">query_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ss</span><span class="p">.</span><span class="n">query_id</span>
 <span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">st</span><span class="p">.</span><span class="n">captured_at</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">1</span>
 <span class="p">)</span><span class="w"> </span><span class="n">st</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">true</span>
-</code></pre></div>
-<p>WHERE ss.captured_at &gt;= NOW() - INTERVAL '24 hours'
-AND ss.query_id IS NOT NULL</p>
-<p>GROUP BY ss.query_id
-ORDER BY times_caught_active DESC
-LIMIT 30;</p>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">ss</span><span class="p">.</span><span class="n">captured_at</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;24 hours&#39;</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">ss</span><span class="p">.</span><span class="n">query_id</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
+
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ss</span><span class="p">.</span><span class="n">query_id</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">times_caught_active</span><span class="w"> </span><span class="k">DESC</span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span>
+</code></pre></div></p>
 <h3 id="38-db-head-attribution-rollup-query">3.8 DB Head Attribution Rollup Query<a class="headerlink" href="#38-db-head-attribution-rollup-query" title="Permanent link">&para;</a></h3>
-<p>Per-application breakdown of execution time, I/O, temp I/O, WAL writes, and buffer cache hit ratio:</p>
-<p>WITH ranked AS (
-SELECT
-application_name, query_id,</p>
-<p>MAX(total_exec_time) AS latest_exec_ms,</p>
-<p>MAX(calls) AS latest_calls,</p>
-<p>MAX(rows) AS latest_rows,</p>
-<p>MAX(shared_blks_read) AS latest_blks_read,</p>
-<p>MAX(shared_blks_hit) AS latest_blks_hit,</p>
-<p>MAX(temp_blks_written) AS latest_temp_blks,</p>
-<p>MAX(wal_bytes) AS latest_wal_bytes,</p>
-<p>COUNT(*) AS times_observed_active</p>
-<p>FROM monitoring.stmt_snapshots
-WHERE captured_at &gt;= NOW() - INTERVAL '24 hours'
-GROUP BY application_name, query_id
-),</p>
-<p>totals AS (</p>
-<p>SELECT
-application_name,</p>
-<p>SUM(latest_exec_ms) AS grp_exec_ms,</p>
-<p>SUM(latest_calls) AS grp_calls,</p>
-<p>SUM(latest_rows) AS grp_rows,</p>
-<p>SUM(latest_blks_read) AS grp_blks_read,</p>
-<p>SUM(latest_blks_hit) AS grp_blks_hit,</p>
-<p>SUM(latest_temp_blks) AS grp_temp_blks,</p>
-<p>SUM(latest_wal_bytes) AS grp_wal_bytes,</p>
-<p>SUM(times_observed_active) AS grp_active_observations</p>
-<p>FROM ranked
-GROUP BY application_name
-)</p>
-<p>SELECT
-application_name,</p>
-<p>grp_calls,</p>
-<p>ROUND((grp_exec_ms / 1000.0)::NUMERIC, 1) AS total_exec_sec,</p>
-<p>ROUND((100.0 * grp_exec_ms / SUM(grp_exec_ms) OVER())::NUMERIC, 2) AS pct_exec_time,</p>
-<p>grp_rows,</p>
-<p>grp_blks_read AS disk_reads,</p>
-<p>ROUND((100.0 * grp_blks_read /</p>
-<p>NULLIF(SUM(grp_blks_read) OVER(), 0))::NUMERIC, 2) AS pct_disk_reads,</p>
-<p>ROUND((100.0 * grp_blks_hit /</p>
-<p>NULLIF(grp_blks_read + grp_blks_hit, 0))::NUMERIC, 2) AS buffer_hit_pct,</p>
-<p>grp_temp_blks AS temp_io_blks,</p>
-<p>ROUND((grp_wal_bytes / 1024.0 / 1024.0)::NUMERIC, 2) AS wal_mb,</p>
-<p>ROUND((100.0 * grp_wal_bytes /</p>
-<p>NULLIF(SUM(grp_wal_bytes) OVER(), 0))::NUMERIC, 2) AS pct_wal_writes,</p>
-<p>grp_active_observations</p>
-<p>FROM totals
-ORDER BY pct_exec_time DESC;</p>
+<p>Per-application breakdown of execution time, I/O, temp I/O, WAL writes, and buffer cache hit ratio:
+<div class="highlight"><pre><span></span><code><span class="k">WITH</span><span class="w"> </span><span class="n">ranked</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="k">SELECT</span>
+<span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="n">query_id</span><span class="p">,</span>
+
+<span class="k">MAX</span><span class="p">(</span><span class="n">total_exec_time</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">latest_exec_ms</span><span class="p">,</span>
+
+<span class="k">MAX</span><span class="p">(</span><span class="n">calls</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">latest_calls</span><span class="p">,</span>
+
+<span class="k">MAX</span><span class="p">(</span><span class="k">rows</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">latest_rows</span><span class="p">,</span>
+
+<span class="k">MAX</span><span class="p">(</span><span class="n">shared_blks_read</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">latest_blks_read</span><span class="p">,</span>
+
+<span class="k">MAX</span><span class="p">(</span><span class="n">shared_blks_hit</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">latest_blks_hit</span><span class="p">,</span>
+
+<span class="k">MAX</span><span class="p">(</span><span class="n">temp_blks_written</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">latest_temp_blks</span><span class="p">,</span>
+
+<span class="k">MAX</span><span class="p">(</span><span class="n">wal_bytes</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">latest_wal_bytes</span><span class="p">,</span>
+
+<span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">times_observed_active</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">captured_at</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;24 hours&#39;</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="n">query_id</span>
+<span class="p">),</span>
+
+<span class="n">totals</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+
+<span class="k">SELECT</span>
+<span class="n">application_name</span><span class="p">,</span>
+
+<span class="k">SUM</span><span class="p">(</span><span class="n">latest_exec_ms</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">grp_exec_ms</span><span class="p">,</span>
+
+<span class="k">SUM</span><span class="p">(</span><span class="n">latest_calls</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">grp_calls</span><span class="p">,</span>
+
+<span class="k">SUM</span><span class="p">(</span><span class="n">latest_rows</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">grp_rows</span><span class="p">,</span>
+
+<span class="k">SUM</span><span class="p">(</span><span class="n">latest_blks_read</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">grp_blks_read</span><span class="p">,</span>
+
+<span class="k">SUM</span><span class="p">(</span><span class="n">latest_blks_hit</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">grp_blks_hit</span><span class="p">,</span>
+
+<span class="k">SUM</span><span class="p">(</span><span class="n">latest_temp_blks</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">grp_temp_blks</span><span class="p">,</span>
+
+<span class="k">SUM</span><span class="p">(</span><span class="n">latest_wal_bytes</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">grp_wal_bytes</span><span class="p">,</span>
+
+<span class="k">SUM</span><span class="p">(</span><span class="n">times_observed_active</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">grp_active_observations</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">ranked</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">application_name</span>
+<span class="p">)</span>
+
+<span class="k">SELECT</span>
+<span class="n">application_name</span><span class="p">,</span>
+
+<span class="n">grp_calls</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="n">grp_exec_ms</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="p">)::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_exec_sec</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="mi">100</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">grp_exec_ms</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">grp_exec_ms</span><span class="p">)</span><span class="w"> </span><span class="n">OVER</span><span class="p">())::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pct_exec_time</span><span class="p">,</span>
+
+<span class="n">grp_rows</span><span class="p">,</span>
+
+<span class="n">grp_blks_read</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">disk_reads</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="mi">100</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">grp_blks_read</span><span class="w"> </span><span class="o">/</span>
+
+<span class="k">NULLIF</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">grp_blks_read</span><span class="p">)</span><span class="w"> </span><span class="n">OVER</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">))::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pct_disk_reads</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="mi">100</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">grp_blks_hit</span><span class="w"> </span><span class="o">/</span>
+
+<span class="k">NULLIF</span><span class="p">(</span><span class="n">grp_blks_read</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">grp_blks_hit</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">))::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">buffer_hit_pct</span><span class="p">,</span>
+
+<span class="n">grp_temp_blks</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">temp_io_blks</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="n">grp_wal_bytes</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1024</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1024</span><span class="p">.</span><span class="mi">0</span><span class="p">)::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">wal_mb</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="mi">100</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">grp_wal_bytes</span><span class="w"> </span><span class="o">/</span>
+
+<span class="k">NULLIF</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">grp_wal_bytes</span><span class="p">)</span><span class="w"> </span><span class="n">OVER</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">))::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pct_wal_writes</span><span class="p">,</span>
+
+<span class="n">grp_active_observations</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">totals</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">pct_exec_time</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div></p>
 <h2 id="phase-4-retention-lifecycle-3-day-rolling-window">Phase 4 - Retention Lifecycle (3-Day Rolling Window)<a class="headerlink" href="#phase-4-retention-lifecycle-3-day-rolling-window" title="Permanent link">&para;</a></h2>
 <p>All four monitoring tables grow continuously. Without a purge job the pg_loadmon database will exhaust its Azure disk allocation within days. The policy is: keep exactly 3 days of data, delete everything older. On Azure Flexible Server, retention is implemented as a daily pg_cron job - no shell scripts, no external schedulers.</p>
 <h3 id="41-data-growth-estimates">4.1 Data Growth Estimates<a class="headerlink" href="#41-data-growth-estimates" title="Permanent link">&para;</a></h3>
@@ -2562,8 +2612,10 @@ ORDER BY pct_exec_time DESC;</p>
 </code></pre></div>
 <p>-- If VACUUM still fails, remove from purge job and rely on autovacuum.</p>
 <p>-- Autovacuum fires automatically once dead tuple threshold is reached.</p>
-<p>-- Check autovacuum activity: SELECT * FROM pg_stat_user_tables</p>
-<p>-- WHERE schemaname = 'monitoring' ORDER BY n_dead_tup DESC;</p>
+<p>-- Check autovacuum activity: 
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_stat_user_tables</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">schemaname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;monitoring&#39;</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">n_dead_tup</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div></p>
 <h3 id="45-verify-purge-job-is-registered">4.5 Verify Purge Job is Registered<a class="headerlink" href="#45-verify-purge-job-is-registered" title="Permanent link">&para;</a></h3>
 <p>-- Confirm the job exists:</p>
 <div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">jobid</span><span class="p">,</span><span class="w"> </span><span class="n">jobname</span><span class="p">,</span><span class="w"> </span><span class="n">schedule</span><span class="p">,</span><span class="w"> </span><span class="k">database</span><span class="p">,</span><span class="w"> </span><span class="n">active</span>
@@ -2581,10 +2633,9 @@ ORDER BY pct_exec_time DESC;</p>
 <p>-- Oldest row in each table (should be ~3 days ago):</p>
 <div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;stmt_snapshots&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tbl</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">oldest</span><span class="p">,</span>
 <span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">newest</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">rows</span>
-</code></pre></div>
-<p>FROM monitoring.stmt_snapshots
-UNION ALL
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;session_snapshots&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span>
+<span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;session_snapshots&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span>
 <span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
 <span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;lock_snapshots&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
@@ -2593,18 +2644,17 @@ UNION ALL
 <span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;db_snapshots&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">db_snapshots</span>
 <span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">tbl</span><span class="p">;</span>
-</code></pre></div></p>
+</code></pre></div>
 <p>-- Physical table sizes:</p>
 <div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">relname</span><span class="p">,</span>
 <span class="n">pg_size_pretty</span><span class="p">(</span><span class="n">pg_total_relation_size</span><span class="p">(</span><span class="n">oid</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_size</span>
-</code></pre></div>
-<p>FROM pg_class
-WHERE relnamespace = (
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">oid</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_namespace</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nspname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;monitoring&#39;</span><span class="p">)</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">pg_class</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">relnamespace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">oid</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_namespace</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nspname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;monitoring&#39;</span><span class="p">)</span>
 <span class="k">AND</span><span class="w"> </span><span class="n">relkind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;r&#39;</span>
-</code></pre></div></p>
-<p>ORDER BY pg_total_relation_size(oid) DESC;
-<em>Expected steady state: oldest row ~3 days ago for all tables, total size across all four tables ~200-300 MB. If total_size keeps growing day-over-day, the purge job is not running - check cron.job_run_details for errors and confirm the DELETE grant was applied.</em></p>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">pg_total_relation_size</span><span class="p">(</span><span class="n">oid</span><span class="p">)</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
+<p><em>Expected steady state: oldest row ~3 days ago for all tables, total size across all four tables ~200-300 MB. If total_size keeps growing day-over-day, the purge job is not running - check cron.job_run_details for errors and confirm the DELETE grant was applied.</em></p>
 <h2 id="deployment-order-summary">Deployment Order Summary<a class="headerlink" href="#deployment-order-summary" title="Permanent link">&para;</a></h2>
 <p>Follow this sequence exactly. Each phase depends on the previous.</p>
 <table>
