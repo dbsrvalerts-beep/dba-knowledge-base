@@ -1,0 +1,2455 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Central repository for Oracle/PostgreSQL DBA documentation">
+      
+      
+      
+      
+        <link rel="prev" href="../PGGDBA%20MONTHLY%20QUERIES/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>POSTGRESQL QUERIES - DBA Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#table-of-contents" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="DBA Knowledge Base" class="md-header__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DBA Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              POSTGRESQL QUERIES
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="DBA Knowledge Base" class="md-nav__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    DBA Knowledge Base
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DBA Knowledge Base
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEPARTMENT
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    DEPARTMENT
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../DEPARTMENT/Cloud%20Database%20Objective/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Database Objective
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../DEPARTMENT/Oracle%20Database%20Solutions%20and%20Service%28Standard%20Version%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Solutions and Service(Standard Version)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LINUX
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LINUX/LINUX%20BASICS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX BASICS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LINUX/LINUX%20FIREWALL%20PERMISSIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Firewall Permissions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LINUX/LINUX%20PERMISSIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX PERMISSIONS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LINUX/LVM%20PARTITION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVM Partition Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MYSQL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    MYSQL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../MYSQL/MySQL_Migration_Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MySQL Migration Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORACLE
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ORACLE
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KNOWN ISSUES
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    KNOWN ISSUES
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Incarnation%20%28ORA-19909%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Incarnation (ORA-19909)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Lost%20Write%20Recovery%20%28ORA-00742%2CORA-00312%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Lost Write Recovery (ORA-00742,ORA-00312)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Datafile%20Corruption%20Issue%20%28ORA-00600%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Datafile Corruption Issue (ORA-00600)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Datapump%20Slowness%28Scenario%201%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Datapump Slowness(Scenario 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Datapump%20Slowness%28Scenario%202%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Datapump Slowness (Scenario 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Moving%20Datafiles%20To%20Another%20Location/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Moving Datafiles To Another Location
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Ora-01012%20Not%20Logged%20On%20Error/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Ora-01012: Not Logged On Error
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORACLE CLOUD
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ORACLE CLOUD
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/ORACLE%20CLOUD/Cloud%20Database%20Management%20Tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Cloud Database Management Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    POSTGRESQL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    POSTGRESQL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG LOAD ANALYSIS SETUP
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PG LOAD ANALYSIS SETUP
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PG%20LOAD%20ANALYSIS%20SETUP/PG%20LOAD%20ANALYSIS%20SETUP%20%5BPaaS%5D/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG LOAD ANALYSIS SETUP [PaaS]
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PG%20LOAD%20ANALYSIS%20SETUP/PG%20LOAD%20ANALYSIS%20SETUP%20%5BSH%5D/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG LOAD ANALYSIS SETUP [SH]
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG SELFHOSTED DEPLOYMENT RUNBOOK
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PG SELFHOSTED DEPLOYMENT RUNBOOK
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Management%20Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL Selfhosted Deployment Management Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Technical%20Deployment%20Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL Selfhosted Technical Deployment Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PGGDBA
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PGGDBA
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PGGDBA%20MONTHLY%20QUERIES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PGGDBA Monthly Queries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    POSTGRESQL QUERIES
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<p><strong>PostgreSQL</strong></p>
+<p><strong>DBA Query Reference Guide</strong></p>
+<p><em>Daily Monitoring, Performance &amp; Maintenance Queries</em></p>
+<p>DB Services Team</p>
+<p>Ginesys</p>
+<p>Compiled: July 2026</p>
+<h1 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h1>
+<p><a href="#_Toc233819272">Table of Contents 1</a></p>
+<p><a href="#_Toc233819273">1. Server &amp; Cluster Overview 1</a></p>
+<p><a href="#_Toc233819274">Server Start Time / Uptime 1</a></p>
+<p><a href="#_Toc233819275">Uptime Duration 1</a></p>
+<p><a href="#_Toc233819276">Database Count (Total &amp; Prod) 1</a></p>
+<p><a href="#_Toc233819277">Total Cluster Size 1</a></p>
+<p><a href="#_Toc233819278">Individual Database Sizes 1</a></p>
+<p><a href="#_Toc233819279">Total Cluster Connections (Used vs Max) 1</a></p>
+<p><a href="#_Toc233819280">Connections by State 1</a></p>
+<p><a href="#_Toc233819281">Connections by User / Database / Client 1</a></p>
+<p><a href="#_Toc233819282">User Connections Ratio (% of max_connections used) 1</a></p>
+<p><a href="#_Toc233819283">Check Key Configuration Parameters 1</a></p>
+<p><a href="#_Toc233819284">List Installed Extensions 1</a></p>
+<p><a href="#_Toc233819285">2. Session &amp; Query Monitoring 1</a></p>
+<p><a href="#_Toc233819286">Long Running Sessions (&gt; 1 minute) 1</a></p>
+<p><a href="#_Toc233819287">Long Running Queries (&gt; 2 minutes) 1</a></p>
+<p><a href="#_Toc233819288">Long Running Queries (&gt; 9 seconds) 1</a></p>
+<p><a href="#_Toc233819289">Active Connections Excluding Current Query 1</a></p>
+<p><a href="#_Toc233819290">Sessions Waiting on an Event 1</a></p>
+<p><a href="#_Toc233819291">Session Count by Wait Event Type 1</a></p>
+<p><a href="#_Toc233819292">Idle-in-Transaction / Aborted Sessions 1</a></p>
+<p><a href="#_Toc233819293">Ginview Sessions Running &gt; 30 Minutes (per database) 1</a></p>
+<p><a href="#_Toc233819294">Blocking Sessions - Detailed (lock/relation view) 1</a></p>
+<p><a href="#_Toc233819295">Identify Root Blocking Sessions (simple) 1</a></p>
+<p><a href="#_Toc233819296">Waiting Connections Count for a Lock 1</a></p>
+<p><a href="#_Toc233819297">3. Killing / Terminating Sessions 1</a></p>
+<p><a href="#_Toc233819298">Cancel a Running Query (graceful) 1</a></p>
+<p><a href="#_Toc233819299">Terminate a Specific Session 1</a></p>
+<p><a href="#_Toc233819300">Kill Only Root Blocking Sessions (Best Practice) 1</a></p>
+<p><a href="#_Toc233819301">Kill All Idle Sessions 1</a></p>
+<p><a href="#_Toc233819302">Kill All Idle-in-Transaction Sessions 1</a></p>
+<p><a href="#_Toc233819303">Kill Sessions Idle Beyond a Time Threshold 1</a></p>
+<p><a href="#_Toc233819304">Kill All Active Connections to a Database 1</a></p>
+<p><a href="#_Toc233819305">Kill All Connections to a Database Except Current Session 1</a></p>
+<p><a href="#_Toc233819306">Terminate All Connections Across All Databases (Except Current) 1</a></p>
+<p><a href="#_Toc233819307">Generate Cancel Statements for Active / Idle-in-Transaction Sessions 1</a></p>
+<p><a href="#_Toc233819308">4. Cache &amp; Buffer Analysis 1</a></p>
+<p><a href="#_Toc233819309">Cluster-wide Heap Cache Hit Ratio 1</a></p>
+<p><a href="#_Toc233819310">Cache Hit Ratio per Database 1</a></p>
+<p><a href="#_Toc233819311">Index Cache Hit Ratio 1</a></p>
+<p><a href="#_Toc233819312">Overall Cache Hit Ratio (target &gt; 90%) 1</a></p>
+<p><a href="#_Toc233819313">Shared Buffer Usage per Database (block count) 1</a></p>
+<p><a href="#_Toc233819314">Shared Buffer Status (dirty / clean / empty, in MB) 1</a></p>
+<p><a href="#_Toc233819315">Top Tables Cached in Current Database (by buffer count) 1</a></p>
+<p><a href="#_Toc233819316">How Much of a Table/Index is Buffered (% of relation &amp; shared_buffers) 1</a></p>
+<p><a href="#_Toc233819317">Buffer Usage-Count Distribution (hotness of pages) 1</a></p>
+<p><a href="#_Toc233819318">% of Relation Cached and % Hot (usagecount &gt; 3) 1</a></p>
+<p><a href="#_Toc233819319">Pre-warm a Table into Shared Buffers (pg_prewarm) 1</a></p>
+<p><a href="#_Toc233819320">Check Blocks of a Specific Table in Buffer Cache 1</a></p>
+<p><a href="#_Toc233819321">Dirty Page / Background Writer Stats 1</a></p>
+<p><a href="#_Toc233819322">Requested vs Timed Checkpoints (health check) 1</a></p>
+<p><a href="#_Toc233819323">5. Autovacuum &amp; Table Bloat 1</a></p>
+<p><a href="#_Toc233819324">Autovacuum &amp; Track-Counts Enabled? 1</a></p>
+<p><a href="#_Toc233819325">Autovacuum-Related Configuration Parameters 1</a></p>
+<p><a href="#_Toc233819326">Dead/Live Tuple Counts &amp; Last Vacuum/Analyze Times 1</a></p>
+<p><a href="#_Toc233819327">Tables With ≥ 50% Dead Tuples (bloat candidates) 1</a></p>
+<p><a href="#_Toc233819328">Tables Currently Qualifying for Autovacuum 1</a></p>
+<p><a href="#_Toc233819329">Check Progress of a Running VACUUM 1</a></p>
+<p><a href="#_Toc233819330">Run VACUUM Manually 1</a></p>
+<p><a href="#_Toc233819331">Table-Level Autovacuum Overrides 1</a></p>
+<p><a href="#_Toc233819332">Transaction ID Wraparound Monitoring 1</a></p>
+<p><a href="#_Toc233819333">Database Age (Transaction ID Age per Database) 1</a></p>
+<p><a href="#_Toc233819334">Object Age per Database (relfrozenxid) 1</a></p>
+<p><a href="#_Toc233819335">Row Insert / Update / Delete Distribution per Table 1</a></p>
+<p><a href="#_Toc233819336">HOT Update Percentage per Table (should be close to 100%) 1</a></p>
+<p><a href="#_Toc233819337">6. Index Monitoring 1</a></p>
+<p><a href="#_Toc233819338">List All Indexes in a Schema 1</a></p>
+<p><a href="#_Toc233819339">Indexes with Primary/Unique Key Flags 1</a></p>
+<p><a href="#_Toc233819340">Get Indexes with Column Names 1</a></p>
+<p><a href="#_Toc233819341">Unused Indexes (idx_scan = 0) 1</a></p>
+<p><a href="#_Toc233819342">Rarely-Used Indexes (idx_scan &lt; 100) 1</a></p>
+<p><a href="#_Toc233819343">Duplicate Indexes 1</a></p>
+<p><a href="#_Toc233819344">Index Leaf Fragmentation ≥ 40% (Bloat Check) 1</a></p>
+<p><a href="#_Toc233819345">Index Usage % vs Sequential Scans 1</a></p>
+<p><a href="#_Toc233819346">Index Scan % per Table (alternate) 1</a></p>
+<p><a href="#_Toc233819347">Detect Tables Possibly Missing an Index 1</a></p>
+<p><a href="#_Toc233819348">Average Rows Read per Sequential Scan (potential missing index) 1</a></p>
+<p><a href="#_Toc233819349">Average Tuples Read per Index Scan 1</a></p>
+<p><a href="#_Toc233819350">How Much Index Data is in Cache 1</a></p>
+<p><a href="#_Toc233819351">7. Object, Table &amp; Schema Sizing 1</a></p>
+<p><a href="#_Toc233819352">Table Size Excluding Indexes (per database) 1</a></p>
+<p><a href="#_Toc233819353">Table Size Including Indexes (per database) 1</a></p>
+<p><a href="#_Toc233819354">Single Table Size (excl./incl. index) 1</a></p>
+<p><a href="#_Toc233819355">Top Table Sizes with Index Breakdown 1</a></p>
+<p><a href="#_Toc233819356">Object Sizes with TOAST Info 1</a></p>
+<p><a href="#_Toc233819357">Object Size - All Objects, Simplified 1</a></p>
+<p><a href="#_Toc233819358">Schema Size (% of Total Database) 1</a></p>
+<p><a href="#_Toc233819359">Object Counts - Tables 1</a></p>
+<p><a href="#_Toc233819360">Object Counts - Primary Keys 1</a></p>
+<p><a href="#_Toc233819361">Object Counts - Views 1</a></p>
+<p><a href="#_Toc233819362">Object Counts - Triggers 1</a></p>
+<p><a href="#_Toc233819363">Object Counts - Sequences 1</a></p>
+<p><a href="#_Toc233819364">Object Counts - Functions 1</a></p>
+<p><a href="#_Toc233819365">Useful Sizing Functions - Quick Reference 1</a></p>
+<p><a href="#_Toc233819366">8. Query Performance (pg_stat_statements) 1</a></p>
+<p><a href="#_Toc233819367">Top 5 Queries by Mean Execution Time 1</a></p>
+<p><a href="#_Toc233819368">Top 5 Queries by Total Execution Time 1</a></p>
+<p><a href="#_Toc233819369">Top 10 Queries by Total Time with % CPU Share 1</a></p>
+<p><a href="#_Toc233819370">Queries with Highest I/O Wait Time 1</a></p>
+<p><a href="#_Toc233819371">Top Time-Consuming Queries (full breakdown) 1</a></p>
+<p><a href="#_Toc233819372">Queries with High Memory / Shared Buffer Usage 1</a></p>
+<p><a href="#_Toc233819373">Queries Doing the Most Buffer Writes 1</a></p>
+<p><a href="#_Toc233819374">Queries with the Highest Block Read Time 1</a></p>
+<p><a href="#_Toc233819375">Average Statement Execution Time (cluster-wide) 1</a></p>
+<p><a href="#_Toc233819376">Reset pg_stat_statements 1</a></p>
+<p><a href="#_Toc233819377">9. Replication &amp; WAL 1</a></p>
+<p><a href="#_Toc233819378">Replication Status 1</a></p>
+<p><a href="#_Toc233819379">Replication Lag in Seconds 1</a></p>
+<p><a href="#_Toc233819380">Replication Slot Information 1</a></p>
+<p><a href="#_Toc233819381">Logical Replication Slot Lag Detail 1</a></p>
+<p><a href="#_Toc233819382">WAL Directory Size (MB) 1</a></p>
+<p><a href="#_Toc233819383">WAL Archiver Status 1</a></p>
+<p><a href="#_Toc233819384">WAL Archiving Gap (current vs last archived) 1</a></p>
+<p><a href="#_Toc233819385">10. pg_cron Jobs 1</a></p>
+<p><a href="#_Toc233819386">Cron Job Counts per Database 1</a></p>
+<p><a href="#_Toc233819387">Today's Cron Job Run Status per Database 1</a></p>
+<p><a href="#_Toc233819388">11. Prepared Transactions 1</a></p>
+<p><a href="#_Toc233819389">List Prepared/Orphaned Transactions 1</a></p>
+<p><a href="#_Toc233819390">Find Locks Held by Prepared Transactions 1</a></p>
+<p><a href="#_Toc233819391">Resolve a Prepared Transaction 1</a></p>
+<p><a href="#_Toc233819392">12. Maintenance Commands 1</a></p>
+<p><a href="#_Toc233819393">Reindex a Database 1</a></p>
+<p><a href="#_Toc233819394">Reload Configuration (without restart) 1</a></p>
+<p><a href="#_Toc233819395">Query Store Views (if enabled) 1</a></p>
+<p><a href="#_Toc233819396">13. psql Meta-Command Quick Reference 1</a></p>
+<p><a href="#_Toc233819397">Common \-Commands 1</a></p>
+<p><a href="#_Toc233819398">14. PGGDBA - Historical Trend Queries 1</a></p>
+<p><a href="#_Toc233819399">Historical Database Size (for a given day) 1</a></p>
+<p><a href="#_Toc233819400">Database Growth Comparison (two dates) 1</a></p>
+<p><a href="#_Toc233819401">Top Size-Consuming Segments (historical, &gt; 1000 MB) 1</a></p>
+<p><a href="#_Toc233819402">Object Growth Comparison (two dates) 1</a></p>
+<h1 id="1-server-cluster-overview">1. Server &amp; Cluster Overview<a class="headerlink" href="#1-server-cluster-overview" title="Permanent link">&para;</a></h1>
+<h2 id="server-start-time-uptime">Server Start Time / Uptime<a class="headerlink" href="#server-start-time-uptime" title="Permanent link">&para;</a></h2>
+<p>SELECT pg_postmaster_start_time()::TIMESTAMP(0) AS server_start_time;</p>
+<h2 id="uptime-duration">Uptime Duration<a class="headerlink" href="#uptime-duration" title="Permanent link">&para;</a></h2>
+<p>SELECT date_trunc('second', current_timestamp - pg_postmaster_start_time()) AS "Uptime"</p>
+<p>FROM pg_postmaster_start_time();</p>
+<h2 id="database-count-total-prod">Database Count (Total &amp; Prod)<a class="headerlink" href="#database-count-total-prod" title="Permanent link">&para;</a></h2>
+<p>WITH db_counts AS (</p>
+<p>SELECT</p>
+<p>COUNT(*) AS "TOTAL_DB",</p>
+<p>SUM(CASE WHEN datname ILIKE '%prod%' AND datname NOT LIKE 'ZZZ%' THEN 1 ELSE 0 END) AS "PROD_DB"</p>
+<p>FROM pg_database</p>
+<p>WHERE datistemplate = false</p>
+<p>AND datname NOT ILIKE 'ZZZ%'</p>
+<p>AND datname NOT ILIKE '%prodx'</p>
+<p>)</p>
+<p>SELECT * FROM db_counts;</p>
+<h2 id="total-cluster-size">Total Cluster Size<a class="headerlink" href="#total-cluster-size" title="Permanent link">&para;</a></h2>
+<p>SELECT</p>
+<p>SUM(size_gb) AS "Total Size (GB)"</p>
+<p>FROM</p>
+<p>(SELECT</p>
+<p>pg_database.datname AS database,</p>
+<p>pg_database_size(pg_database.datname) / (1024.0 * 1024 * 1024) AS size_gb</p>
+<p>FROM pg_database</p>
+<p>WHERE datistemplate = false</p>
+<p>AND pg_database_size(pg_database.datname) &gt; 0) AS subquery;</p>
+<h2 id="individual-database-sizes">Individual Database Sizes<a class="headerlink" href="#individual-database-sizes" title="Permanent link">&para;</a></h2>
+<p>SELECT</p>
+<p>pg_database.datname AS database,</p>
+<p>pg_size_pretty(pg_database_size(pg_database.datname)) AS size</p>
+<p>FROM pg_database</p>
+<p>WHERE datistemplate = false</p>
+<p>AND pg_database_size(pg_database.datname) &gt; 0</p>
+<p>ORDER BY pg_database_size(pg_database.datname)::numeric DESC;</p>
+<h2 id="total-cluster-connections-used-vs-max">Total Cluster Connections (Used vs Max)<a class="headerlink" href="#total-cluster-connections-used-vs-max" title="Permanent link">&para;</a></h2>
+<p>SELECT</p>
+<p>(SELECT setting AS max_connections FROM pg_settings WHERE name = 'max_connections') AS max_connections,</p>
+<p>count(*) AS used_connections</p>
+<p>FROM pg_stat_activity;</p>
+<h2 id="connections-by-state">Connections by State<a class="headerlink" href="#connections-by-state" title="Permanent link">&para;</a></h2>
+<p>SELECT</p>
+<p>COALESCE(state, 'background') AS state,</p>
+<p>COUNT(*)</p>
+<p>FROM pg_stat_activity</p>
+<p>GROUP BY state</p>
+<p>ORDER BY 1;</p>
+<h2 id="connections-by-user-database-client">Connections by User / Database / Client<a class="headerlink" href="#connections-by-user-database-client" title="Permanent link">&para;</a></h2>
+<p>SELECT client_addr, usename, datname, count(*)</p>
+<p>FROM pg_stat_activity</p>
+<p>GROUP BY 1,2,3</p>
+<p>ORDER BY 4 DESC;</p>
+<h2 id="user-connections-ratio-of-max_connections-used">User Connections Ratio (% of max_connections used)<a class="headerlink" href="#user-connections-ratio-of-max_connections-used" title="Permanent link">&para;</a></h2>
+<p>SELECT count(*) * 100 / (SELECT current_setting('max_connections')::int)</p>
+<p>FROM pg_stat_activity;</p>
+<h2 id="check-key-configuration-parameters">Check Key Configuration Parameters<a class="headerlink" href="#check-key-configuration-parameters" title="Permanent link">&para;</a></h2>
+<p>SELECT * FROM pg_settings</p>
+<p>WHERE name IN (</p>
+<p>'shared_buffers','work_mem','maintenance_work_mem','temp_buffers','max_connections',</p>
+<p>'max_wal_size','min_wal_size','search_path','timezone','max_prepared_transaction',</p>
+<p>'autovacuum_max_workers','autovacuum_vacuum_scale_factor','autovacuum_vacuum_insert_scale_factor',</p>
+<p>'autovacuum_vacuum_cost_delay','max_parallel_workers_per_gather','track_activity_query_size',</p>
+<p>'cron.max_running_jobs','wal_level','max_replication_slots','max_wal_senders',</p>
+<p>'sync_replication_slots','max_worker_processes'</p>
+<p>);</p>
+<h2 id="list-installed-extensions">List Installed Extensions<a class="headerlink" href="#list-installed-extensions" title="Permanent link">&para;</a></h2>
+<p>SELECT * FROM pg_available_extensions WHERE installed_version IS NOT NULL;</p>
+<h1 id="2-session-query-monitoring">2. Session &amp; Query Monitoring<a class="headerlink" href="#2-session-query-monitoring" title="Permanent link">&para;</a></h1>
+<h2 id="long-running-sessions-1-minute">Long Running Sessions (&gt; 1 minute)<a class="headerlink" href="#long-running-sessions-1-minute" title="Permanent link">&para;</a></h2>
+<p>SELECT pid, usename, datname, application_name, now() - xact_start AS duration, query_id, query</p>
+<p>FROM pg_stat_activity</p>
+<p>WHERE pid &lt;&gt; pg_backend_pid()</p>
+<p>AND state IN ('idle in transaction', 'active')</p>
+<p>AND now() - xact_start &gt; INTERVAL '1 minute'</p>
+<p>ORDER BY duration DESC;</p>
+<h2 id="long-running-queries-2-minutes">Long Running Queries (&gt; 2 minutes)<a class="headerlink" href="#long-running-queries-2-minutes" title="Permanent link">&para;</a></h2>
+<p>SELECT now() - query_start AS runtime, usename, datname, state, query</p>
+<p>FROM pg_stat_activity</p>
+<p>WHERE now() - query_start &gt; '2 minutes'::interval</p>
+<p>ORDER BY runtime DESC;</p>
+<h2 id="long-running-queries-9-seconds">Long Running Queries (&gt; 9 seconds)<a class="headerlink" href="#long-running-queries-9-seconds" title="Permanent link">&para;</a></h2>
+<p>SELECT now() - query_start AS runtime, usename, datname, state, query</p>
+<p>FROM pg_stat_activity</p>
+<p>WHERE now() - query_start &gt; '9 seconds'::interval</p>
+<p>ORDER BY runtime DESC;</p>
+<h2 id="active-connections-excluding-current-query">Active Connections Excluding Current Query<a class="headerlink" href="#active-connections-excluding-current-query" title="Permanent link">&para;</a></h2>
+<p>SELECT age(clock_timestamp(), query_start), usename, datname, query</p>
+<p>FROM pg_stat_activity</p>
+<p>WHERE state != 'idle'</p>
+<p>AND query NOT ILIKE '%pg_stat_activity%'</p>
+<p>ORDER BY age DESC;</p>
+<h2 id="sessions-waiting-on-an-event">Sessions Waiting on an Event<a class="headerlink" href="#sessions-waiting-on-an-event" title="Permanent link">&para;</a></h2>
+<p>SELECT usename, datname, query, wait_event_type, wait_event</p>
+<p>FROM pg_stat_activity</p>
+<p>WHERE state != 'idle'</p>
+<p>AND wait_event IS NOT NULL;</p>
+<h2 id="session-count-by-wait-event-type">Session Count by Wait Event Type<a class="headerlink" href="#session-count-by-wait-event-type" title="Permanent link">&para;</a></h2>
+<p>SELECT</p>
+<p>COALESCE(wait_event_type, 'None') AS wait_type,</p>
+<p>COUNT(*) AS session_count</p>
+<p>FROM pg_stat_activity</p>
+<p>WHERE backend_type = 'client backend'</p>
+<p>GROUP BY wait_type;</p>
+<h2 id="idle-in-transaction-aborted-sessions">Idle-in-Transaction / Aborted Sessions<a class="headerlink" href="#idle-in-transaction-aborted-sessions" title="Permanent link">&para;</a></h2>
+<p>SELECT * FROM pg_stat_activity</p>
+<p>WHERE state IN ('idle in transaction', 'idle in transaction (aborted)');</p>
+<h2 id="ginview-sessions-running-30-minutes-per-database">Ginview Sessions Running &gt; 30 Minutes (per database)<a class="headerlink" href="#ginview-sessions-running-30-minutes-per-database" title="Permanent link">&para;</a></h2>
+<p>SELECT DISTINCT</p>
+<p>current_timestamp AS logdate,</p>
+<p>a.pid, a.usename, a.datname, a.application_name,</p>
+<p>n.nspname AS schema_name, a.state,</p>
+<p>TO_CHAR(now() - a.xact_start, 'HH24:MI') AS duration,</p>
+<p>a.query_id,</p>
+<p>regexp_replace(a.query, '\s+', ' ', 'g') AS query</p>
+<p>FROM pg_stat_activity a</p>
+<p>JOIN pg_locks l ON a.pid = l.pid</p>
+<p>JOIN pg_class c ON l.relation = c.oid</p>
+<p>JOIN pg_namespace n ON c.relnamespace = n.oid</p>
+<p>JOIN pg_database d ON a.datname = d.datname</p>
+<p>WHERE a.state = 'active'</p>
+<p>AND a.application_name = 'w3wp.exe'</p>
+<p>AND a.query_start &lt; NOW() - INTERVAL '30 minutes'</p>
+<p>AND a.query LIKE '%ginview.%'</p>
+<p>AND a.datname = current_database()</p>
+<p>AND n.nspname = 'ginview'</p>
+<p>ORDER BY a.query_start;</p>
+<h2 id="blocking-sessions-detailed-lockrelation-view">Blocking Sessions - Detailed (lock/relation view)<a class="headerlink" href="#blocking-sessions-detailed-lockrelation-view" title="Permanent link">&para;</a></h2>
+<p>SELECT</p>
+<p>d.datname AS database_name,</p>
+<p>a.pid AS blocked_pid,</p>
+<p>l.mode AS lock_mode,</p>
+<p>l.locktype,</p>
+<p>l.relation::regclass AS locked_relation,</p>
+<p>bl.pid AS blocking_pid</p>
+<p>FROM pg_stat_activity AS a</p>
+<p>JOIN pg_locks AS l ON a.pid = l.pid</p>
+<p>JOIN pg_locks AS bl ON l.locktype = bl.locktype</p>
+<p>AND l.relation = bl.relation AND l.pid != bl.pid</p>
+<p>JOIN pg_database AS d ON a.datid = d.oid</p>
+<p>WHERE l.mode &lt;&gt; 'AccessShareLock'</p>
+<p>AND bl.mode &lt;&gt; 'AccessShareLock'</p>
+<p>ORDER BY d.datname, a.pid;</p>
+<h2 id="identify-root-blocking-sessions-simple">Identify Root Blocking Sessions (simple)<a class="headerlink" href="#identify-root-blocking-sessions-simple" title="Permanent link">&para;</a></h2>
+<h2 id="step-1-identify-blocking-sessions">Step 1: Identify Blocking Sessions<a class="headerlink" href="#step-1-identify-blocking-sessions" title="Permanent link">&para;</a></h2>
+<p>SELECT pid, usename, state, wait_event, query<br />
+FROM pg_stat_activity<br />
+WHERE pid IN (<br />
+SELECT unnest(pg_blocking_pids(pid))<br />
+FROM pg_stat_activity<br />
+);<br />
+<br/>Step 2: Kill Only Blocking Sessions (Best Practice)<br />
+SELECT pg_terminate_backend(pid)<br />
+FROM pg_stat_activity<br />
+WHERE pid IN (<br />
+SELECT unnest(pg_blocking_pids(pid))<br />
+FROM pg_stat_activity);</p>
+<h2 id="waiting-connections-count-for-a-lock">Waiting Connections Count for a Lock<a class="headerlink" href="#waiting-connections-count-for-a-lock" title="Permanent link">&para;</a></h2>
+<p>SELECT count(DISTINCT pid) FROM pg_locks WHERE granted = false;</p>
+<h1 id="3-killing-terminating-sessions">3. Killing / Terminating Sessions<a class="headerlink" href="#3-killing-terminating-sessions" title="Permanent link">&para;</a></h1>
+<h2 id="cancel-a-running-query-graceful">Cancel a Running Query (graceful)<a class="headerlink" href="#cancel-a-running-query-graceful" title="Permanent link">&para;</a></h2>
+<p>SELECT pg_cancel_backend(&lt;pid&gt;);</p>
+<p>-- Example: SELECT pg_cancel_backend(27735);</p>
+<h2 id="terminate-a-specific-session">Terminate a Specific Session<a class="headerlink" href="#terminate-a-specific-session" title="Permanent link">&para;</a></h2>
+<p>SELECT pg_terminate_backend(&lt;pid&gt;);</p>
+<h2 id="kill-only-root-blocking-sessions-best-practice">Kill Only Root Blocking Sessions (Best Practice)<a class="headerlink" href="#kill-only-root-blocking-sessions-best-practice" title="Permanent link">&para;</a></h2>
+<p>SELECT pg_terminate_backend(pid)</p>
+<p>FROM pg_stat_activity</p>
+<p>WHERE pid IN (</p>
+<p>SELECT unnest(pg_blocking_pids(pid))</p>
+<p>FROM pg_stat_activity</p>
+<p>);</p>
+<h2 id="kill-all-idle-sessions">Kill All Idle Sessions<a class="headerlink" href="#kill-all-idle-sessions" title="Permanent link">&para;</a></h2>
+<p>SELECT pg_terminate_backend(pg_stat_activity.pid)</p>
+<p>FROM pg_stat_activity</p>
+<p>WHERE pid &lt;&gt; pg_backend_pid()</p>
+<p>AND state = 'idle';</p>
+<h2 id="kill-all-idle-in-transaction-sessions">Kill All Idle-in-Transaction Sessions<a class="headerlink" href="#kill-all-idle-in-transaction-sessions" title="Permanent link">&para;</a></h2>
+<p>SELECT pg_terminate_backend(pid)</p>
+<p>FROM pg_stat_activity</p>
+<p>WHERE datname = '&lt;db_name&gt;'</p>
+<p>AND state = 'idle in transaction';</p>
+<h2 id="kill-sessions-idle-beyond-a-time-threshold">Kill Sessions Idle Beyond a Time Threshold<a class="headerlink" href="#kill-sessions-idle-beyond-a-time-threshold" title="Permanent link">&para;</a></h2>
+<p>SELECT pg_terminate_backend(pid)</p>
+<p>FROM pg_stat_activity</p>
+<p>WHERE datname = '&lt;db_name&gt;'</p>
+<p>AND pid &lt;&gt; pg_backend_pid()</p>
+<p>AND state IN ('idle', 'idle in transaction', 'idle in transaction (aborted)', 'disabled')</p>
+<p>AND state_change &lt; current_timestamp - INTERVAL '15 minutes';</p>
+<h2 id="kill-all-active-connections-to-a-database">Kill All Active Connections to a Database<a class="headerlink" href="#kill-all-active-connections-to-a-database" title="Permanent link">&para;</a></h2>
+<p>SELECT pg_terminate_backend(pid)</p>
+<p>FROM pg_stat_activity</p>
+<p>WHERE datname = '&lt;db_name&gt;'</p>
+<p>AND leader_pid IS NULL;</p>
+<h2 id="kill-all-connections-to-a-database-except-current-session">Kill All Connections to a Database Except Current Session<a class="headerlink" href="#kill-all-connections-to-a-database-except-current-session" title="Permanent link">&para;</a></h2>
+<p>SELECT pg_terminate_backend(pid)</p>
+<p>FROM pg_stat_activity</p>
+<p>WHERE datname = '&lt;db_name&gt;'</p>
+<p>AND pid != pg_backend_pid()</p>
+<p>AND leader_pid IS NULL;</p>
+<h2 id="terminate-all-connections-across-all-databases-except-current">Terminate All Connections Across All Databases (Except Current)<a class="headerlink" href="#terminate-all-connections-across-all-databases-except-current" title="Permanent link">&para;</a></h2>
+<p>SELECT pg_terminate_backend(pid)</p>
+<p>FROM pg_stat_activity</p>
+<p>WHERE pid != pg_backend_pid()</p>
+<p>AND datname IS NOT NULL</p>
+<p>AND leader_pid IS NULL;</p>
+<h2 id="generate-cancel-statements-for-active-idle-in-transaction-sessions">Generate Cancel Statements for Active / Idle-in-Transaction Sessions<a class="headerlink" href="#generate-cancel-statements-for-active-idle-in-transaction-sessions" title="Permanent link">&para;</a></h2>
+<p>SELECT 'SELECT pg_cancel_backend(' || pid || ');'</p>
+<p>FROM pg_stat_activity</p>
+<p>WHERE pid &lt;&gt; pg_backend_pid()</p>
+<p>AND state IN ('idle in transaction', 'active');</p>
+<h1 id="4-cache-buffer-analysis">4. Cache &amp; Buffer Analysis<a class="headerlink" href="#4-cache-buffer-analysis" title="Permanent link">&para;</a></h1>
+<h2 id="cluster-wide-heap-cache-hit-ratio">Cluster-wide Heap Cache Hit Ratio<a class="headerlink" href="#cluster-wide-heap-cache-hit-ratio" title="Permanent link">&para;</a></h2>
+<p>SELECT</p>
+<p>SUM(heap_blks_read) AS "Heap Read",</p>
+<p>SUM(heap_blks_hit) AS "Heap Hit",</p>
+<p>ROUND((SUM(heap_blks_hit) * 100.0) / NULLIF((SUM(heap_blks_hit) + SUM(heap_blks_read)), 0), 2) AS "Hit Ratio Percentage"</p>
+<p>FROM pg_statio_user_tables;</p>
+<h2 id="cache-hit-ratio-per-database">Cache Hit Ratio per Database<a class="headerlink" href="#cache-hit-ratio-per-database" title="Permanent link">&para;</a></h2>
+<p>SELECT datname AS "Database", blks_hit, blks_read,</p>
+<p>round(blks_hit / (blks_hit + blks_read + 0.00001) * 100, 2) AS "cache hit ratio"</p>
+<p>FROM pg_stat_database</p>
+<p>WHERE datname IS NOT NULL</p>
+<p>ORDER BY 4 ASC;</p>
+<h2 id="index-cache-hit-ratio">Index Cache Hit Ratio<a class="headerlink" href="#index-cache-hit-ratio" title="Permanent link">&para;</a></h2>
+<p>SELECT</p>
+<p>sum(idx_blks_read) AS idx_read,</p>
+<p>sum(idx_blks_hit) AS idx_hit,</p>
+<p>(sum(idx_blks_hit) - sum(idx_blks_read)) / sum(idx_blks_hit) AS ratio</p>
+<p>FROM pg_statio_user_indexes;</p>
+<h2 id="overall-cache-hit-ratio-target-90">Overall Cache Hit Ratio (target &gt; 90%)<a class="headerlink" href="#overall-cache-hit-ratio-target-90" title="Permanent link">&para;</a></h2>
+<p>SELECT sum(blks_hit) * 100 / sum(blks_hit + blks_read) AS hit_ratio</p>
+<p>FROM pg_stat_database;</p>
+<h2 id="shared-buffer-usage-per-database-block-count">Shared Buffer Usage per Database (block count)<a class="headerlink" href="#shared-buffer-usage-per-database-block-count" title="Permanent link">&para;</a></h2>
+<p>SELECT</p>
+<p>CASE WHEN c.reldatabase IS NULL THEN ''</p>
+<p>WHEN c.reldatabase = 0 THEN ''</p>
+<p>ELSE d.datname END AS database,</p>
+<p>count(*) AS cached_blocks</p>
+<p>FROM pg_buffercache AS c</p>
+<p>LEFT JOIN pg_database AS d ON c.reldatabase = d.oid</p>
+<p>GROUP BY d.datname, c.reldatabase</p>
+<p>ORDER BY 2 DESC;</p>
+<h2 id="shared-buffer-status-dirty-clean-empty-in-mb">Shared Buffer Status (dirty / clean / empty, in MB)<a class="headerlink" href="#shared-buffer-status-dirty-clean-empty-in-mb" title="Permanent link">&para;</a></h2>
+<p>SELECT buffer_status, round(sum(count) * 8 / 1024) AS "Size(MB)"</p>
+<p>FROM (</p>
+<p>SELECT CASE isdirty WHEN true THEN 'dirty' WHEN false THEN 'clean' ELSE 'empty' END AS buffer_status,</p>
+<p>count(*) AS count</p>
+<p>FROM pg_buffercache</p>
+<p>GROUP BY buffer_status</p>
+<p>UNION ALL</p>
+<p>SELECT * FROM (VALUES ('dirty', 0), ('clean', 0), ('empty', 0)) AS tab2(buffer_status, count)</p>
+<p>) tab1</p>
+<p>GROUP BY buffer_status;</p>
+<h2 id="top-tables-cached-in-current-database-by-buffer-count">Top Tables Cached in Current Database (by buffer count)<a class="headerlink" href="#top-tables-cached-in-current-database-by-buffer-count" title="Permanent link">&para;</a></h2>
+<p>SELECT n.nspname, c.relname, count(*) AS buffers</p>
+<p>FROM pg_buffercache b</p>
+<p>JOIN pg_class c ON b.relfilenode = pg_relation_filenode(c.oid)</p>
+<p>AND b.reldatabase IN (0, (SELECT oid FROM pg_database WHERE datname = current_database()))</p>
+<p>JOIN pg_namespace n ON n.oid = c.relnamespace</p>
+<p>GROUP BY n.nspname, c.relname</p>
+<p>ORDER BY 3 DESC</p>
+<p>LIMIT 10;</p>
+<h2 id="how-much-of-a-tableindex-is-buffered-of-relation-shared_buffers">How Much of a Table/Index is Buffered (% of relation &amp; shared_buffers)<a class="headerlink" href="#how-much-of-a-tableindex-is-buffered-of-relation-shared_buffers" title="Permanent link">&para;</a></h2>
+<p>SELECT</p>
+<p>c.relname,</p>
+<p>pg_size_pretty(count(*) * 8192) AS buffered,</p>
+<p>round(100.0 * count(*) / (SELECT setting FROM pg_settings WHERE name = 'shared_buffers')::integer, 1) AS buffers_percent,</p>
+<p>round(100.0 * count(*) * 8192 / pg_table_size(c.oid), 1) AS percent_of_relation</p>
+<p>FROM pg_class c</p>
+<p>INNER JOIN pg_buffercache b ON b.relfilenode = c.relfilenode</p>
+<p>INNER JOIN pg_database d ON (b.reldatabase = d.oid AND d.datname = current_database())</p>
+<p>GROUP BY c.oid, c.relname</p>
+<p>ORDER BY 3 DESC</p>
+<p>LIMIT 10;</p>
+<h2 id="buffer-usage-count-distribution-hotness-of-pages">Buffer Usage-Count Distribution (hotness of pages)<a class="headerlink" href="#buffer-usage-count-distribution-hotness-of-pages" title="Permanent link">&para;</a></h2>
+<p>SELECT usagecount, count(*)</p>
+<p>FROM pg_buffercache</p>
+<p>GROUP BY usagecount</p>
+<p>ORDER BY usagecount;</p>
+<h2 id="of-relation-cached-and-hot-usagecount-3">% of Relation Cached and % Hot (usagecount &gt; 3)<a class="headerlink" href="#of-relation-cached-and-hot-usagecount-3" title="Permanent link">&para;</a></h2>
+<p>SELECT c.relname,</p>
+<p>count(*) blocks,</p>
+<p>round(100.0 * 8192 * count(*) / pg_table_size(c.oid)) AS "% of rel",</p>
+<p>round(100.0 * 8192 * count(*) FILTER (WHERE b.usagecount &gt; 3) / pg_table_size(c.oid)) AS "% hot"</p>
+<p>FROM pg_buffercache b</p>
+<p>JOIN pg_class c ON pg_relation_filenode(c.oid) = b.relfilenode</p>
+<p>WHERE b.reldatabase IN (0, (SELECT oid FROM pg_database WHERE datname = current_database()))</p>
+<p>AND b.usagecount IS NOT NULL</p>
+<p>GROUP BY c.relname, c.oid</p>
+<p>ORDER BY 2 DESC</p>
+<p>LIMIT 10;</p>
+<h2 id="pre-warm-a-table-into-shared-buffers-pg_prewarm">Pre-warm a Table into Shared Buffers (pg_prewarm)<a class="headerlink" href="#pre-warm-a-table-into-shared-buffers-pg_prewarm" title="Permanent link">&para;</a></h2>
+<p>-- Check page count first</p>
+<p>SELECT oid::regclass AS tbl, relpages FROM pg_class WHERE relname = '&lt;table_name&gt;';</p>
+<p>-- Load table into cache</p>
+<p>SELECT * FROM pg_prewarm('&lt;table_name&gt;');</p>
+<h2 id="check-blocks-of-a-specific-table-in-buffer-cache">Check Blocks of a Specific Table in Buffer Cache<a class="headerlink" href="#check-blocks-of-a-specific-table-in-buffer-cache" title="Permanent link">&para;</a></h2>
+<p>SELECT count(*) FROM pg_buffercache</p>
+<p>WHERE relfilenode = pg_relation_filenode('&lt;table_name&gt;'::regclass);</p>
+<h2 id="dirty-page-background-writer-stats">Dirty Page / Background Writer Stats<a class="headerlink" href="#dirty-page-background-writer-stats" title="Permanent link">&para;</a></h2>
+<p>SELECT buffers_clean, maxwritten_clean, buffers_backend_fsync</p>
+<p>FROM pg_stat_bgwriter;</p>
+<p>-- maxwritten_clean and buffers_backend_fsync should ideally be 0</p>
+<h2 id="requested-vs-timed-checkpoints-health-check">Requested vs Timed Checkpoints (health check)<a class="headerlink" href="#requested-vs-timed-checkpoints-health-check" title="Permanent link">&para;</a></h2>
+<p>SELECT 'bad' AS checkpoints</p>
+<p>FROM pg_stat_bgwriter</p>
+<p>WHERE checkpoints_req &gt; checkpoints_timed;</p>
+<h1 id="5-autovacuum-table-bloat">5. Autovacuum &amp; Table Bloat<a class="headerlink" href="#5-autovacuum-table-bloat" title="Permanent link">&para;</a></h1>
+<h2 id="autovacuum-track-counts-enabled">Autovacuum &amp; Track-Counts Enabled?<a class="headerlink" href="#autovacuum-track-counts-enabled" title="Permanent link">&para;</a></h2>
+<p>SELECT name, setting FROM pg_settings WHERE name IN ('autovacuum', 'track_counts');</p>
+<h2 id="autovacuum-related-configuration-parameters">Autovacuum-Related Configuration Parameters<a class="headerlink" href="#autovacuum-related-configuration-parameters" title="Permanent link">&para;</a></h2>
+<p>SELECT * FROM pg_settings WHERE category LIKE 'Autovacuum%';</p>
+<h2 id="deadlive-tuple-counts-last-vacuumanalyze-times">Dead/Live Tuple Counts &amp; Last Vacuum/Analyze Times<a class="headerlink" href="#deadlive-tuple-counts-last-vacuumanalyze-times" title="Permanent link">&para;</a></h2>
+<p>SELECT schemaname, relname, n_live_tup, n_dead_tup,</p>
+<p>round(n_dead_tup::float / n_live_tup::float * 100) AS dead_pct,</p>
+<p>autovacuum_count, last_vacuum, last_analyze, last_autovacuum, last_autoanalyze</p>
+<p>FROM pg_stat_all_tables</p>
+<p>WHERE n_live_tup &gt; 0</p>
+<p>ORDER BY n_dead_tup DESC;</p>
+<h2 id="tables-with-50-dead-tuples-bloat-candidates">Tables With ≥ 50% Dead Tuples (bloat candidates)<a class="headerlink" href="#tables-with-50-dead-tuples-bloat-candidates" title="Permanent link">&para;</a></h2>
+<p>SELECT * FROM (</p>
+<p>SELECT schemaname, relname, n_live_tup, n_dead_tup,</p>
+<p>round(n_dead_tup::float / n_live_tup::float * 100) dead_pct,</p>
+<p>autovacuum_count, last_vacuum, last_analyze, last_autovacuum, last_autoanalyze</p>
+<p>FROM pg_stat_all_tables</p>
+<p>WHERE n_live_tup &gt; 10</p>
+<p>ORDER BY n_dead_tup DESC</p>
+<p>) sub</p>
+<p>WHERE dead_pct &gt;= 50</p>
+<p>ORDER BY dead_pct DESC;</p>
+<h2 id="tables-currently-qualifying-for-autovacuum">Tables Currently Qualifying for Autovacuum<a class="headerlink" href="#tables-currently-qualifying-for-autovacuum" title="Permanent link">&para;</a></h2>
+<p>SELECT *,</p>
+<p>n_dead_tup &gt; av_threshold AS av_needed,</p>
+<p>CASE WHEN reltuples &gt; 0 THEN round(100.0 * n_dead_tup / reltuples) ELSE 0 END AS pct_dead</p>
+<p>FROM (</p>
+<p>SELECT N.nspname, C.relname,</p>
+<p>pg_stat_get_tuples_inserted(C.oid) AS n_tup_ins,</p>
+<p>pg_stat_get_tuples_updated(C.oid) AS n_tup_upd,</p>
+<p>pg_stat_get_tuples_deleted(C.oid) AS n_tup_del,</p>
+<p>pg_stat_get_live_tuples(C.oid) AS n_live_tup,</p>
+<p>pg_stat_get_dead_tuples(C.oid) AS n_dead_tup,</p>
+<p>C.reltuples AS reltuples,</p>
+<p>round(current_setting('autovacuum_vacuum_threshold')::INTEGER</p>
+<p>+ current_setting('autovacuum_vacuum_scale_factor')::NUMERIC * C.reltuples) AS av_threshold,</p>
+<p>date_trunc('minute', greatest(pg_stat_get_last_vacuum_time(C.oid), pg_stat_get_last_autovacuum_time(C.oid))) AS last_vacuum,</p>
+<p>date_trunc('minute', greatest(pg_stat_get_last_analyze_time(C.oid), pg_stat_get_last_autoanalyze_time(C.oid))) AS last_analyze</p>
+<p>FROM pg_class C</p>
+<p>LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace)</p>
+<p>WHERE C.relkind IN ('r', 't')</p>
+<p>AND N.nspname NOT IN ('pg_catalog', 'information_schema')</p>
+<p>AND N.nspname !~ '^pg_toast'</p>
+<p>) AS av</p>
+<p>ORDER BY av_needed DESC, n_dead_tup DESC;</p>
+<h2 id="check-progress-of-a-running-vacuum">Check Progress of a Running VACUUM<a class="headerlink" href="#check-progress-of-a-running-vacuum" title="Permanent link">&para;</a></h2>
+<p>SELECT * FROM pg_stat_progress_vacuum;</p>
+<h2 id="run-vacuum-manually">Run VACUUM Manually<a class="headerlink" href="#run-vacuum-manually" title="Permanent link">&para;</a></h2>
+<p>VACUUM (VERBOSE, ANALYZE);</p>
+<h2 id="table-level-autovacuum-overrides">Table-Level Autovacuum Overrides<a class="headerlink" href="#table-level-autovacuum-overrides" title="Permanent link">&para;</a></h2>
+<p>SELECT reloptions FROM pg_class WHERE relname = '&lt;table_name&gt;';</p>
+<h2 id="transaction-id-wraparound-monitoring">Transaction ID Wraparound Monitoring<a class="headerlink" href="#transaction-id-wraparound-monitoring" title="Permanent link">&para;</a></h2>
+<p>WITH max_age AS (</p>
+<p>SELECT 2000000000 AS max_old_xid, setting AS autovacuum_freeze_max_age</p>
+<p>FROM pg_catalog.pg_settings</p>
+<p>WHERE name = 'autovacuum_freeze_max_age'</p>
+<p>), per_database_stats AS (</p>
+<p>SELECT datname, m.max_old_xid::int, m.autovacuum_freeze_max_age::int,</p>
+<p>age(d.datfrozenxid) AS oldest_current_xid</p>
+<p>FROM pg_catalog.pg_database d</p>
+<p>JOIN max_age m ON (true)</p>
+<p>WHERE d.datallowconn</p>
+<p>)</p>
+<p>SELECT max(oldest_current_xid) AS oldest_current_xid,</p>
+<p>max(ROUND(100 * (oldest_current_xid / max_old_xid::float))) AS percent_towards_wraparound,</p>
+<p>max(ROUND(100 * (oldest_current_xid / autovacuum_freeze_max_age::float))) AS percent_towards_emergency_autovac</p>
+<p>FROM per_database_stats;</p>
+<h2 id="database-age-transaction-id-age-per-database">Database Age (Transaction ID Age per Database)<a class="headerlink" href="#database-age-transaction-id-age-per-database" title="Permanent link">&para;</a></h2>
+<p>SELECT datname, age(datfrozenxid), current_setting('autovacuum_freeze_max_age')</p>
+<p>FROM pg_database</p>
+<p>ORDER BY 2 DESC;</p>
+<h2 id="object-age-per-database-relfrozenxid">Object Age per Database (relfrozenxid)<a class="headerlink" href="#object-age-per-database-relfrozenxid" title="Permanent link">&para;</a></h2>
+<p>SELECT c.oid::regclass, age(c.relfrozenxid), pg_size_pretty(pg_total_relation_size(c.oid))</p>
+<p>FROM pg_class c</p>
+<p>JOIN pg_namespace n ON c.relnamespace = n.oid</p>
+<p>WHERE relkind IN ('r', 't', 'm')</p>
+<p>AND n.nspname NOT IN ('pg_toast')</p>
+<p>ORDER BY 2 DESC;</p>
+<h2 id="row-insert-update-delete-distribution-per-table">Row Insert / Update / Delete Distribution per Table<a class="headerlink" href="#row-insert-update-delete-distribution-per-table" title="Permanent link">&para;</a></h2>
+<p>SELECT relname,</p>
+<p>cast(n_tup_ins AS numeric) / (n_tup_ins + n_tup_upd + n_tup_del) AS ins_pct,</p>
+<p>cast(n_tup_upd AS numeric) / (n_tup_ins + n_tup_upd + n_tup_del) AS upd_pct,</p>
+<p>cast(n_tup_del AS numeric) / (n_tup_ins + n_tup_upd + n_tup_del) AS del_pct</p>
+<p>FROM pg_stat_user_tables</p>
+<p>ORDER BY relname;</p>
+<h2 id="hot-update-percentage-per-table-should-be-close-to-100">HOT Update Percentage per Table (should be close to 100%)<a class="headerlink" href="#hot-update-percentage-per-table-should-be-close-to-100" title="Permanent link">&para;</a></h2>
+<p>SELECT relname, n_tup_upd, n_tup_hot_upd,</p>
+<p>cast(n_tup_hot_upd AS numeric) / n_tup_upd AS hot_pct</p>
+<p>FROM pg_stat_user_tables</p>
+<p>WHERE n_tup_upd &gt; 0</p>
+<p>ORDER BY hot_pct;</p>
+<h1 id="6-index-monitoring">6. Index Monitoring<a class="headerlink" href="#6-index-monitoring" title="Permanent link">&para;</a></h1>
+<h2 id="list-all-indexes-in-a-schema">List All Indexes in a Schema<a class="headerlink" href="#list-all-indexes-in-a-schema" title="Permanent link">&para;</a></h2>
+<p>SELECT tablename AS "TableName", indexname AS "Index Name", indexdef AS "Index script"</p>
+<p>FROM pg_indexes</p>
+<p>WHERE schemaname = '&lt;schema_name&gt;'</p>
+<p>ORDER BY tablename, indexname;</p>
+<h2 id="indexes-with-primaryunique-key-flags">Indexes with Primary/Unique Key Flags<a class="headerlink" href="#indexes-with-primaryunique-key-flags" title="Permanent link">&para;</a></h2>
+<p>SELECT</p>
+<p>c.relnamespace::regnamespace AS schema_name,</p>
+<p>c.relname AS table_name,</p>
+<p>i.indexrelid::regclass AS index_name,</p>
+<p>i.indisprimary AS is_pk,</p>
+<p>i.indisunique AS is_unique</p>
+<p>FROM pg_index i</p>
+<p>JOIN pg_class c ON c.oid = i.indrelid</p>
+<p>WHERE c.relname = '&lt;table_name&gt;';</p>
+<h2 id="get-indexes-with-column-names">Get Indexes with Column Names<a class="headerlink" href="#get-indexes-with-column-names" title="Permanent link">&para;</a></h2>
+<p>SELECT t.relname AS table_name, i.relname AS index_name,</p>
+<p>string_agg(a.attname, ',') AS column_name</p>
+<p>FROM pg_class t, pg_class i, pg_index ix, pg_attribute a</p>
+<p>WHERE t.oid = ix.indrelid</p>
+<p>AND i.oid = ix.indexrelid</p>
+<p>AND a.attrelid = t.oid</p>
+<p>AND a.attnum = ANY(ix.indkey)</p>
+<p>AND t.relkind = 'r'</p>
+<p>AND t.relname NOT LIKE 'pg_%'</p>
+<p>GROUP BY t.relname, i.relname</p>
+<p>ORDER BY t.relname, i.relname;</p>
+<h2 id="unused-indexes-idx_scan-0">Unused Indexes (idx_scan = 0)<a class="headerlink" href="#unused-indexes-idx_scan-0" title="Permanent link">&para;</a></h2>
+<p>SELECT * FROM pg_stat_all_indexes WHERE idx_scan = 0 AND schemaname = '&lt;schema_name&gt;';</p>
+<h2 id="rarely-used-indexes-idx_scan-100">Rarely-Used Indexes (idx_scan &lt; 100)<a class="headerlink" href="#rarely-used-indexes-idx_scan-100" title="Permanent link">&para;</a></h2>
+<p>SELECT</p>
+<p>relname AS table_name, indexrelname AS index_name,</p>
+<p>pg_size_pretty(pg_relation_size(indexrelid)) AS index_size,</p>
+<p>idx_scan AS index_scan_count</p>
+<p>FROM pg_stat_user_indexes</p>
+<p>WHERE idx_scan &lt; 100</p>
+<p>ORDER BY index_scan_count ASC, pg_relation_size(indexrelid) DESC;</p>
+<h2 id="duplicate-indexes">Duplicate Indexes<a class="headerlink" href="#duplicate-indexes" title="Permanent link">&para;</a></h2>
+<p>SELECT ni.nspname || '.' || ct.relname AS "table",</p>
+<p>ci.relname AS "dup index",</p>
+<p>pg_get_indexdef(i.indexrelid) AS "dup index definition",</p>
+<p>i.indkey AS "dup index attributes",</p>
+<p>cii.relname AS "encompassing index",</p>
+<p>pg_get_indexdef(ii.indexrelid) AS "encompassing index definition",</p>
+<p>ii.indkey AS "enc index attributes"</p>
+<p>FROM pg_index i</p>
+<p>JOIN pg_class ct ON i.indrelid = ct.oid</p>
+<p>JOIN pg_class ci ON i.indexrelid = ci.oid</p>
+<p>JOIN pg_namespace ni ON ci.relnamespace = ni.oid</p>
+<p>JOIN pg_index ii ON ii.indrelid = i.indrelid</p>
+<p>AND ii.indexrelid != i.indexrelid</p>
+<p>AND (array_to_string(ii.indkey, ' ') || ' ') LIKE (array_to_string(i.indkey, ' ') || ' %')</p>
+<p>AND (array_to_string(ii.indcollation, ' ') || ' ') LIKE (array_to_string(i.indcollation, ' ') || ' %')</p>
+<p>AND (array_to_string(ii.indclass, ' ') || ' ') LIKE (array_to_string(i.indclass, ' ') || ' %')</p>
+<p>AND (array_to_string(ii.indoption, ' ') || ' ') LIKE (array_to_string(i.indoption, ' ') || ' %')</p>
+<p>AND NOT (ii.indkey::integer[] @&gt; ARRAY[0])</p>
+<p>AND NOT (i.indkey::integer[] @&gt; ARRAY[0])</p>
+<p>AND i.indpred IS NULL AND ii.indpred IS NULL</p>
+<p>AND CASE WHEN i.indisunique THEN ii.indisunique</p>
+<p>AND array_to_string(ii.indkey, ' ') = array_to_string(i.indkey, ' ') ELSE true END</p>
+<p>JOIN pg_class ctii ON ii.indrelid = ctii.oid</p>
+<p>JOIN pg_class cii ON ii.indexrelid = cii.oid</p>
+<p>WHERE ct.relname NOT LIKE 'pg_%'</p>
+<p>AND NOT i.indisprimary</p>
+<p>ORDER BY 1, 2, 3;</p>
+<h2 id="index-leaf-fragmentation-40-bloat-check">Index Leaf Fragmentation ≥ 40% (Bloat Check)<a class="headerlink" href="#index-leaf-fragmentation-40-bloat-check" title="Permanent link">&para;</a></h2>
+<p>SELECT * FROM (</p>
+<p>SELECT</p>
+<p>current_database() AS database_name,</p>
+<p>i.indexname, i.tablename,</p>
+<p>pg_size_pretty(pg_relation_size(c.oid)) AS index_size,</p>
+<p>pg_relation_size(c.oid) AS index_size_bytes,</p>
+<p>COALESCE(NULLIF((SELECT avg_leaf_density FROM pgstatindex(c.oid)), 'NaN'::float), 0) AS avg_leaf_density,</p>
+<p>COALESCE(NULLIF((SELECT leaf_fragmentation FROM pgstatindex(c.oid)), 'NaN'::float), 0) AS leaf_fragmentation,</p>
+<p>COALESCE(s.idx_scan, 0) AS index_scan_count,</p>
+<p>'REINDEX INDEX ' || i.indexname || ';' AS statement</p>
+<p>FROM pg_indexes i</p>
+<p>JOIN pg_class c ON c.relname = i.indexname</p>
+<p>JOIN pg_namespace n ON n.oid = c.relnamespace</p>
+<p>LEFT JOIN pg_stat_user_indexes s ON s.indexrelid = c.oid</p>
+<p>WHERE n.nspname = '&lt;schema_name&gt;'</p>
+<p>) sub</p>
+<p>WHERE leaf_fragmentation &gt;= 40</p>
+<p>AND index_scan_count &gt;= 100</p>
+<p>ORDER BY leaf_fragmentation DESC, index_size_bytes DESC;</p>
+<h2 id="index-usage-vs-sequential-scans">Index Usage % vs Sequential Scans<a class="headerlink" href="#index-usage-vs-sequential-scans" title="Permanent link">&para;</a></h2>
+<p>SELECT relname, 100 * idx_scan / (seq_scan + idx_scan) AS percent_of_times_index_used,</p>
+<p>n_live_tup AS rows_in_table</p>
+<p>FROM pg_stat_user_tables</p>
+<p>WHERE (seq_scan + idx_scan) &gt; 0</p>
+<p>ORDER BY n_live_tup DESC;</p>
+<h2 id="index-scan-per-table-alternate">Index Scan % per Table (alternate)<a class="headerlink" href="#index-scan-per-table-alternate" title="Permanent link">&para;</a></h2>
+<p>SELECT schemaname, relname, seq_scan, idx_scan,</p>
+<p>cast(idx_scan AS numeric) / (idx_scan + seq_scan) AS idx_scan_pct</p>
+<p>FROM pg_stat_user_tables</p>
+<p>WHERE (idx_scan + seq_scan) &gt; 0</p>
+<p>ORDER BY idx_scan_pct;</p>
+<h2 id="detect-tables-possibly-missing-an-index">Detect Tables Possibly Missing an Index<a class="headerlink" href="#detect-tables-possibly-missing-an-index" title="Permanent link">&para;</a></h2>
+<p>SELECT relname, seq_scan - idx_scan AS too_much_seq,</p>
+<p>CASE WHEN seq_scan - idx_scan &gt; 0 THEN 'Missing/Ineff Index' ELSE 'OK' END,</p>
+<p>pg_relation_size(relname::regclass) AS rel_size, seq_scan, idx_scan</p>
+<p>FROM pg_stat_all_tables</p>
+<p>WHERE schemaname = '&lt;schema_name&gt;'</p>
+<p>AND pg_relation_size(relname::regclass) &gt; 80000</p>
+<p>ORDER BY too_much_seq DESC;</p>
+<h2 id="average-rows-read-per-sequential-scan-potential-missing-index">Average Rows Read per Sequential Scan (potential missing index)<a class="headerlink" href="#average-rows-read-per-sequential-scan-potential-missing-index" title="Permanent link">&para;</a></h2>
+<p>SELECT schemaname, relname, seq_scan, seq_tup_read,</p>
+<p>seq_tup_read / seq_scan AS avg, idx_scan</p>
+<p>FROM pg_stat_user_tables</p>
+<p>WHERE seq_scan &gt; 0</p>
+<p>ORDER BY seq_tup_read DESC</p>
+<p>LIMIT 25;</p>
+<h2 id="average-tuples-read-per-index-scan">Average Tuples Read per Index Scan<a class="headerlink" href="#average-tuples-read-per-index-scan" title="Permanent link">&para;</a></h2>
+<p>SELECT indexrelname,</p>
+<p>cast(idx_tup_read AS numeric) / idx_scan AS avg_tuples,</p>
+<p>idx_scan, idx_tup_read</p>
+<p>FROM pg_stat_user_indexes</p>
+<p>WHERE idx_scan &gt; 0;</p>
+<h2 id="how-much-index-data-is-in-cache">How Much Index Data is in Cache<a class="headerlink" href="#how-much-index-data-is-in-cache" title="Permanent link">&para;</a></h2>
+<p>SELECT sum(idx_blks_read) AS idx_read, sum(idx_blks_hit) AS idx_hit</p>
+<p>FROM pg_statio_user_indexes;</p>
+<h1 id="7-object-table-schema-sizing">7. Object, Table &amp; Schema Sizing<a class="headerlink" href="#7-object-table-schema-sizing" title="Permanent link">&para;</a></h1>
+<h2 id="table-size-excluding-indexes-per-database">Table Size Excluding Indexes (per database)<a class="headerlink" href="#table-size-excluding-indexes-per-database" title="Permanent link">&para;</a></h2>
+<p>SELECT table_name, pg_size_pretty(pg_relation_size(quote_ident(table_name))) AS table_size</p>
+<p>FROM information_schema.tables</p>
+<p>WHERE table_schema NOT IN ('pg_catalog', 'information_schema')</p>
+<p>ORDER BY pg_total_relation_size(quote_ident(table_name)) DESC;</p>
+<h2 id="table-size-including-indexes-per-database">Table Size Including Indexes (per database)<a class="headerlink" href="#table-size-including-indexes-per-database" title="Permanent link">&para;</a></h2>
+<p>SELECT table_name, pg_size_pretty(pg_total_relation_size(quote_ident(table_name))) AS table_size</p>
+<p>FROM information_schema.tables</p>
+<p>WHERE table_schema NOT IN ('pg_catalog', 'information_schema')</p>
+<p>ORDER BY pg_total_relation_size(quote_ident(table_name)) DESC;</p>
+<h2 id="single-table-size-exclincl-index">Single Table Size (excl./incl. index)<a class="headerlink" href="#single-table-size-exclincl-index" title="Permanent link">&para;</a></h2>
+<p>SELECT pg_size_pretty(pg_relation_size('&lt;schema&gt;.&lt;table&gt;')) AS table_size_excl_index;</p>
+<p>SELECT pg_size_pretty(pg_total_relation_size('&lt;schema&gt;.&lt;table&gt;')) AS table_size_incl_index;</p>
+<h2 id="top-table-sizes-with-index-breakdown">Top Table Sizes with Index Breakdown<a class="headerlink" href="#top-table-sizes-with-index-breakdown" title="Permanent link">&para;</a></h2>
+<p>SELECT relname,</p>
+<p>pg_size_pretty(pg_total_relation_size(relname::regclass)) AS full_size,</p>
+<p>pg_size_pretty(pg_relation_size(relname::regclass)) AS table_size,</p>
+<p>pg_size_pretty(pg_total_relation_size(relname::regclass) - pg_relation_size(relname::regclass)) AS index_size</p>
+<p>FROM pg_stat_user_tables</p>
+<p>ORDER BY pg_total_relation_size(relname::regclass) DESC</p>
+<p>LIMIT 10;</p>
+<h2 id="object-sizes-with-toast-info">Object Sizes with TOAST Info<a class="headerlink" href="#object-sizes-with-toast-info" title="Permanent link">&para;</a></h2>
+<p>WITH toast_map AS (</p>
+<p>SELECT r.oid AS parent_oid, r.relname AS parent_table, r.relnamespace AS parent_schema_oid,</p>
+<p>t.oid AS toast_oid, t.relname AS toast_table, i.relname AS toast_index</p>
+<p>FROM pg_class r</p>
+<p>JOIN pg_class t ON t.oid = r.reltoastrelid</p>
+<p>JOIN pg_index d ON d.indrelid = t.oid</p>
+<p>JOIN pg_class i ON i.oid = d.indexrelid</p>
+<p>)</p>
+<p>SELECT</p>
+<p>current_timestamp AS logdate,</p>
+<p>current_database() AS "Database",</p>
+<p>n.nspname AS "Schema",</p>
+<p>c.relname AS "Object Name",</p>
+<p>CASE c.relkind</p>
+<p>WHEN 'r' THEN 'table' WHEN 'i' THEN 'index' WHEN 'S' THEN 'sequence'</p>
+<p>WHEN 'v' THEN 'view' WHEN 'm' THEN 'materialized view' WHEN 'c' THEN 'composite type'</p>
+<p>WHEN 't' THEN 'TOAST table' WHEN 'f' THEN 'foreign table' ELSE 'other'</p>
+<p>END AS "Object Type",</p>
+<p>tm.parent_table AS "Parent Table",</p>
+<p>pg_size_pretty(pg_total_relation_size(c.oid)) AS "Total Size",</p>
+<p>ROUND(pg_total_relation_size(c.oid) / (1024.0 * 1024), 2) AS "Total Size (MB)",</p>
+<p>tm.toast_table AS "TOAST Table",</p>
+<p>tm.toast_index AS "TOAST Index"</p>
+<p>FROM pg_class c</p>
+<p>JOIN pg_namespace n ON c.relnamespace = n.oid</p>
+<p>LEFT JOIN toast_map tm ON tm.toast_oid = c.oid</p>
+<p>ORDER BY pg_total_relation_size(c.oid) DESC;</p>
+<h2 id="object-size-all-objects-simplified">Object Size - All Objects, Simplified<a class="headerlink" href="#object-size-all-objects-simplified" title="Permanent link">&para;</a></h2>
+<p>SELECT</p>
+<p>pg_namespace.nspname AS "Schema", pg_class.relname AS "Object Name",</p>
+<p>CASE relkind</p>
+<p>WHEN 'r' THEN 'table' WHEN 'i' THEN 'index' WHEN 'S' THEN 'sequence'</p>
+<p>WHEN 'v' THEN 'view' WHEN 'm' THEN 'materialized view' WHEN 'c' THEN 'composite type'</p>
+<p>WHEN 't' THEN 'TOAST table' WHEN 'f' THEN 'foreign table' ELSE 'other'</p>
+<p>END AS "Object Type",</p>
+<p>pg_size_pretty(pg_total_relation_size(pg_class.oid)) AS "Total Size"</p>
+<p>FROM pg_catalog.pg_class</p>
+<p>INNER JOIN pg_catalog.pg_namespace ON pg_class.relnamespace = pg_namespace.oid</p>
+<p>WHERE relname NOT LIKE 'pg_%'</p>
+<p>AND relkind &lt;&gt; 'd'</p>
+<p>ORDER BY pg_total_relation_size(pg_class.oid) DESC;</p>
+<h2 id="schema-size-of-total-database">Schema Size (% of Total Database)<a class="headerlink" href="#schema-size-of-total-database" title="Permanent link">&para;</a></h2>
+<p>SELECT schemaname,</p>
+<p>pg_size_pretty(sum(table_size)::bigint) AS schema_size,</p>
+<p>(sum(table_size) / pg_database_size(current_database())) * 100 AS percentage_of_total_db</p>
+<p>FROM (</p>
+<p>SELECT pg_catalog.pg_namespace.nspname AS schemaname,</p>
+<p>pg_relation_size(pg_catalog.pg_class.oid) AS table_size</p>
+<p>FROM pg_catalog.pg_class</p>
+<p>JOIN pg_catalog.pg_namespace ON relnamespace = pg_catalog.pg_namespace.oid</p>
+<p>) t</p>
+<p>GROUP BY schemaname</p>
+<p>ORDER BY 3 DESC;</p>
+<h2 id="object-counts-tables">Object Counts - Tables<a class="headerlink" href="#object-counts-tables" title="Permanent link">&para;</a></h2>
+<p>SELECT table_name</p>
+<p>FROM information_schema.tables</p>
+<p>WHERE table_schema IN ('main', 'ginarchive', 'ginview', 'gateway')</p>
+<p>AND table_type IN ('FOREIGN', 'BASE TABLE')</p>
+<p>ORDER BY table_name;</p>
+<h2 id="object-counts-primary-keys">Object Counts - Primary Keys<a class="headerlink" href="#object-counts-primary-keys" title="Permanent link">&para;</a></h2>
+<p>SELECT c.table_schema, c.table_name, c.constraint_name</p>
+<p>FROM information_schema.table_constraints c</p>
+<p>WHERE c.constraint_type = 'PRIMARY KEY'</p>
+<p>AND c.table_schema IN ('main', 'ginview', 'ginarchive', 'gateway')</p>
+<p>ORDER BY c.table_name;</p>
+<h2 id="object-counts-views">Object Counts - Views<a class="headerlink" href="#object-counts-views" title="Permanent link">&para;</a></h2>
+<p>SELECT table_name</p>
+<p>FROM information_schema.views</p>
+<p>WHERE table_schema IN ('main', 'ginarchive', 'gateway', 'ginview')</p>
+<p>ORDER BY table_name;</p>
+<h2 id="object-counts-triggers">Object Counts - Triggers<a class="headerlink" href="#object-counts-triggers" title="Permanent link">&para;</a></h2>
+<p>SELECT trigger_name, event_manipulation AS event, event_object_table AS table_name,</p>
+<p>action_statement AS trigger_body, action_timing AS trigger_timing</p>
+<p>FROM information_schema.triggers</p>
+<p>WHERE trigger_schema IN ('main', 'ginarchive', 'ginview', 'gateway')</p>
+<p>ORDER BY trigger_name;</p>
+<h2 id="object-counts-sequences">Object Counts - Sequences<a class="headerlink" href="#object-counts-sequences" title="Permanent link">&para;</a></h2>
+<p>SELECT sequence_name</p>
+<p>FROM information_schema.sequences</p>
+<p>WHERE sequence_schema IN ('main', 'ginview', 'gateway', 'ginarchive')</p>
+<p>ORDER BY sequence_name;</p>
+<h2 id="object-counts-functions">Object Counts - Functions<a class="headerlink" href="#object-counts-functions" title="Permanent link">&para;</a></h2>
+<p>SELECT routine_name</p>
+<p>FROM information_schema.routines</p>
+<p>WHERE routine_type = 'FUNCTION'</p>
+<p>AND routine_schema IN ('main', 'ginview', 'gateway', 'ginarchive');</p>
+<h2 id="useful-sizing-functions-quick-reference">Useful Sizing Functions - Quick Reference<a class="headerlink" href="#useful-sizing-functions-quick-reference" title="Permanent link">&para;</a></h2>
+<p>-- pg_size_pretty() formats byte sizes as human readable</p>
+<p>-- pg_relation_size() size of a table/index (no TOAST/index)</p>
+<p>-- pg_total_relation_size() total size incl. indexes and TOAST</p>
+<p>-- pg_database_size() size of a database</p>
+<p>-- pg_indexes_size() total size of all indexes on a table</p>
+<p>-- pg_tablespace_size() size of a tablespace</p>
+<p>-- pg_column_size() size of a value of a specific column/type</p>
+<h1 id="8-query-performance-pg_stat_statements">8. Query Performance (pg_stat_statements)<a class="headerlink" href="#8-query-performance-pg_stat_statements" title="Permanent link">&para;</a></h1>
+<h2 id="top-5-queries-by-mean-execution-time">Top 5 Queries by Mean Execution Time<a class="headerlink" href="#top-5-queries-by-mean-execution-time" title="Permanent link">&para;</a></h2>
+<p>SELECT userid::regrole, dbid, mean_exec_time, query</p>
+<p>FROM pg_stat_statements</p>
+<p>ORDER BY mean_exec_time DESC</p>
+<p>LIMIT 5;</p>
+<h2 id="top-5-queries-by-total-execution-time">Top 5 Queries by Total Execution Time<a class="headerlink" href="#top-5-queries-by-total-execution-time" title="Permanent link">&para;</a></h2>
+<p>SELECT userid::regrole, dbid, query</p>
+<p>FROM pg_stat_statements</p>
+<p>ORDER BY total_exec_time DESC</p>
+<p>LIMIT 5;</p>
+<h2 id="top-10-queries-by-total-time-with-cpu-share">Top 10 Queries by Total Time with % CPU Share<a class="headerlink" href="#top-10-queries-by-total-time-with-cpu-share" title="Permanent link">&para;</a></h2>
+<p>SELECT substring(query, 1, 200) AS query,</p>
+<p>round((100 * total_exec_time / sum(total_exec_time) OVER ())::numeric, 2) AS percent,</p>
+<p>round(total_exec_time::numeric, 2) AS total,</p>
+<p>calls,</p>
+<p>round(mean_exec_time::numeric, 2) AS mean</p>
+<p>FROM pg_stat_statements</p>
+<p>ORDER BY total_exec_time DESC</p>
+<p>LIMIT 10;</p>
+<h2 id="queries-with-highest-io-wait-time">Queries with Highest I/O Wait Time<a class="headerlink" href="#queries-with-highest-io-wait-time" title="Permanent link">&para;</a></h2>
+<p>SELECT userid::regrole, dbid, query, queryid, mean_exec_time / 1000 AS mean_time_seconds</p>
+<p>FROM pg_stat_statements</p>
+<p>ORDER BY (blk_read_time + blk_write_time) DESC</p>
+<p>LIMIT 10;</p>
+<h2 id="top-time-consuming-queries-full-breakdown">Top Time-Consuming Queries (full breakdown)<a class="headerlink" href="#top-time-consuming-queries-full-breakdown" title="Permanent link">&para;</a></h2>
+<p>SELECT userid::regrole, dbid, query, calls,</p>
+<p>total_exec_time / 1000 AS total_time_seconds,</p>
+<p>min_exec_time / 1000 AS min_time_seconds,</p>
+<p>max_exec_time / 1000 AS max_time_seconds,</p>
+<p>mean_exec_time / 1000 AS mean_time_seconds</p>
+<p>FROM pg_stat_statements</p>
+<p>ORDER BY mean_exec_time DESC</p>
+<p>LIMIT 10;</p>
+<h2 id="queries-with-high-memory-shared-buffer-usage">Queries with High Memory / Shared Buffer Usage<a class="headerlink" href="#queries-with-high-memory-shared-buffer-usage" title="Permanent link">&para;</a></h2>
+<p>SELECT userid::regrole, dbid, queryid, query</p>
+<p>FROM pg_stat_statements</p>
+<p>ORDER BY (shared_blks_hit + shared_blks_dirtied) DESC</p>
+<p>LIMIT 10;</p>
+<h2 id="queries-doing-the-most-buffer-writes">Queries Doing the Most Buffer Writes<a class="headerlink" href="#queries-doing-the-most-buffer-writes" title="Permanent link">&para;</a></h2>
+<p>SELECT query, shared_blks_dirtied</p>
+<p>FROM pg_stat_statements</p>
+<p>WHERE shared_blks_dirtied &gt; 0</p>
+<p>ORDER BY 2 DESC;</p>
+<h2 id="queries-with-the-highest-block-read-time">Queries with the Highest Block Read Time<a class="headerlink" href="#queries-with-the-highest-block-read-time" title="Permanent link">&para;</a></h2>
+<p>SELECT * FROM pg_stat_statements</p>
+<p>WHERE blk_read_time &lt;&gt; 0</p>
+<p>ORDER BY blk_read_time DESC;</p>
+<h2 id="average-statement-execution-time-cluster-wide">Average Statement Execution Time (cluster-wide)<a class="headerlink" href="#average-statement-execution-time-cluster-wide" title="Permanent link">&para;</a></h2>
+<p>SELECT (sum(total_exec_time) / sum(calls))::numeric(6,3)</p>
+<p>FROM pg_stat_statements;</p>
+<h2 id="reset-pg_stat_statements">Reset pg_stat_statements<a class="headerlink" href="#reset-pg_stat_statements" title="Permanent link">&para;</a></h2>
+<p>SELECT pg_stat_statements_reset();</p>
+<p>SELECT count(*) FROM pg_stat_statements;</p>
+<h1 id="9-replication-wal">9. Replication &amp; WAL<a class="headerlink" href="#9-replication-wal" title="Permanent link">&para;</a></h1>
+<h2 id="replication-status">Replication Status<a class="headerlink" href="#replication-status" title="Permanent link">&para;</a></h2>
+<p>SELECT * FROM pg_stat_replication;</p>
+<h2 id="replication-lag-in-seconds">Replication Lag in Seconds<a class="headerlink" href="#replication-lag-in-seconds" title="Permanent link">&para;</a></h2>
+<p>SELECT ROUND(EXTRACT(EPOCH FROM replay_lag)) AS lag_seconds</p>
+<p>FROM pg_stat_replication</p>
+<p>WHERE application_name = 'walreceiver';</p>
+<h2 id="replication-slot-information">Replication Slot Information<a class="headerlink" href="#replication-slot-information" title="Permanent link">&para;</a></h2>
+<p>SELECT * FROM pg_replication_slots;</p>
+<h2 id="logical-replication-slot-lag-detail">Logical Replication Slot Lag Detail<a class="headerlink" href="#logical-replication-slot-lag-detail" title="Permanent link">&para;</a></h2>
+<p>SELECT</p>
+<p>s.slot_name, s.active,</p>
+<p>ROUND(pg_wal_lsn_diff(pg_current_wal_lsn(), s.restart_lsn) / 1048576.0, 2) || ' MB' AS slot_lag_size,</p>
+<p>pg_wal_lsn_diff(pg_current_wal_lsn(), s.restart_lsn) AS slot_lag_bytes,</p>
+<p>ROUND(pg_wal_lsn_diff(pg_current_wal_lsn(), s.confirmed_flush_lsn) / 1048576.0, 2) || ' MB' AS consumer_lag_size,</p>
+<p>pg_wal_lsn_diff(pg_current_wal_lsn(), s.confirmed_flush_lsn) AS consumer_lag_bytes,</p>
+<p>s.slot_type, s.database, r.replay_lag, r.write_lag, r.flush_lag</p>
+<p>FROM pg_replication_slots s</p>
+<p>LEFT JOIN pg_stat_replication r ON s.active_pid = r.pid</p>
+<p>WHERE s.slot_type = 'logical'</p>
+<p>ORDER BY slot_lag_bytes DESC NULLS LAST;</p>
+<h2 id="wal-directory-size-mb">WAL Directory Size (MB)<a class="headerlink" href="#wal-directory-size-mb" title="Permanent link">&para;</a></h2>
+<p>SELECT (sum(size))::BIGINT / 1024 / 1024 AS wal_size_mb FROM pg_ls_waldir();</p>
+<h2 id="wal-archiver-status">WAL Archiver Status<a class="headerlink" href="#wal-archiver-status" title="Permanent link">&para;</a></h2>
+<p>SELECT * FROM pg_stat_archiver;</p>
+<h2 id="wal-archiving-gap-current-vs-last-archived">WAL Archiving Gap (current vs last archived)<a class="headerlink" href="#wal-archiving-gap-current-vs-last-archived" title="Permanent link">&para;</a></h2>
+<p>SELECT pg_walfile_name(pg_current_wal_lsn()), last_archived_wal, last_failed_wal,</p>
+<p>('x' || substring(pg_walfile_name(pg_current_wal_lsn()), 9, 8))::bit(32)::int * 256</p>
+<p>+ ('x' || substring(pg_walfile_name(pg_current_wal_lsn()), 17))::bit(32)::int</p>
+<p>- ('x' || substring(last_archived_wal, 9, 8))::bit(32)::int * 256</p>
+<p>- ('x' || substring(last_archived_wal, 17))::bit(32)::int AS diff</p>
+<p>FROM pg_stat_archiver;</p>
+<h1 id="10-pg_cron-jobs">10. pg_cron Jobs<a class="headerlink" href="#10-pg_cron-jobs" title="Permanent link">&para;</a></h1>
+<h2 id="cron-job-counts-per-database">Cron Job Counts per Database<a class="headerlink" href="#cron-job-counts-per-database" title="Permanent link">&para;</a></h2>
+<p>SELECT database, count(jobid) FROM cron.job GROUP BY database;</p>
+<h2 id="todays-cron-job-run-status-per-database">Today's Cron Job Run Status per Database<a class="headerlink" href="#todays-cron-job-run-status-per-database" title="Permanent link">&para;</a></h2>
+<p>SELECT database, status, count(status)</p>
+<p>FROM cron.job_run_details</p>
+<p>WHERE end_time::DATE = CURRENT_DATE::DATE</p>
+<p>GROUP BY database, status;</p>
+<h1 id="11-prepared-transactions">11. Prepared Transactions<a class="headerlink" href="#11-prepared-transactions" title="Permanent link">&para;</a></h1>
+<h2 id="list-preparedorphaned-transactions">List Prepared/Orphaned Transactions<a class="headerlink" href="#list-preparedorphaned-transactions" title="Permanent link">&para;</a></h2>
+<p>SELECT gid, prepared, owner, database, transaction</p>
+<p>FROM pg_prepared_xacts</p>
+<p>ORDER BY age(transaction) DESC;</p>
+<h2 id="find-locks-held-by-prepared-transactions">Find Locks Held by Prepared Transactions<a class="headerlink" href="#find-locks-held-by-prepared-transactions" title="Permanent link">&para;</a></h2>
+<p>SELECT px.gid, px.owner, px.prepared, l.locktype, l.mode, l.granted, c.relname AS object_name</p>
+<p>FROM pg_prepared_xacts px</p>
+<p>JOIN pg_locks l ON px.transaction = l.transactionid</p>
+<p>LEFT JOIN pg_class c ON l.relation = c.oid;</p>
+<h2 id="resolve-a-prepared-transaction">Resolve a Prepared Transaction<a class="headerlink" href="#resolve-a-prepared-transaction" title="Permanent link">&para;</a></h2>
+<p>COMMIT PREPARED '&lt;gid&gt;';</p>
+<p>-- or</p>
+<p>ROLLBACK PREPARED '&lt;gid&gt;';</p>
+<h1 id="12-maintenance-commands">12. Maintenance Commands<a class="headerlink" href="#12-maintenance-commands" title="Permanent link">&para;</a></h1>
+<h2 id="reindex-a-database">Reindex a Database<a class="headerlink" href="#reindex-a-database" title="Permanent link">&para;</a></h2>
+<p>REINDEX (VERBOSE) DATABASE &lt;database_name&gt;;</p>
+<h2 id="reload-configuration-without-restart">Reload Configuration (without restart)<a class="headerlink" href="#reload-configuration-without-restart" title="Permanent link">&para;</a></h2>
+<p>SELECT pg_reload_conf();</p>
+<h2 id="query-store-views-if-enabled">Query Store Views (if enabled)<a class="headerlink" href="#query-store-views-if-enabled" title="Permanent link">&para;</a></h2>
+<p>SELECT * FROM query_store.qs_view;</p>
+<p>SELECT * FROM query_store.pgms_wait_sampling_view;</p>
+<p>SELECT * FROM query_store.query_texts_view;</p>
+<p>SELECT * FROM query_store.query_plans_view;</p>
+<h1 id="13-psql-meta-command-quick-reference">13. psql Meta-Command Quick Reference<a class="headerlink" href="#13-psql-meta-command-quick-reference" title="Permanent link">&para;</a></h1>
+<h2 id="common-commands">Common \-Commands<a class="headerlink" href="#common-commands" title="Permanent link">&para;</a></h2>
+<p>\c dbname Switch connection to a database</p>
+<p>\l / \l+ List databases (with extra info)</p>
+<p>\dt List tables</p>
+<p>\d table_name Describe a table</p>
+<p>\dn List schemas</p>
+<p>\df List functions</p>
+<p>\dv List views</p>
+<p>\du List users/roles</p>
+<p>\ds List sequences</p>
+<p>\g Execute previous command</p>
+<p>\s Command history</p>
+<p>\s filename Save command history to file</p>
+<p>\? Help on psql commands</p>
+<p>\timing Toggle query execution timing</p>
+<p>\e Edit statement in external editor</p>
+<p>\ef Edit function in external editor</p>
+<p>\a Toggle aligned/non-aligned output</p>
+<p>\H Toggle HTML output format</p>
+<p>\conninfo Show current connection info</p>
+<p>\db List tablespaces</p>
+<p>\x Toggle expanded display</p>
+<p>\q Quit psql</p>
+<p>\! cls Clear terminal (Windows)</p>
+<p>\! clear Clear terminal (Linux)</p>
+<p>\! df -h Run an OS-level command (e.g. disk usage)</p>
+<h1 id="14-pggdba-historical-trend-queries">14. PGGDBA - Historical Trend Queries<a class="headerlink" href="#14-pggdba-historical-trend-queries" title="Permanent link">&para;</a></h1>
+<h2 id="historical-database-size-for-a-given-day">Historical Database Size (for a given day)<a class="headerlink" href="#historical-database-size-for-a-given-day" title="Permanent link">&para;</a></h2>
+<p>SELECT INSTANCE_NAME, LOGDATE, DATABASE, SIZE_GB AS SIZE</p>
+<p>FROM DATABASESIZE_INFORMATION</p>
+<p>WHERE LOGDATE::date = CURRENT_DATE::date</p>
+<p>AND DATABASE LIKE '%-PROD'</p>
+<p>AND DATABASE NOT LIKE 'ZZZ%'</p>
+<p>AND instance_name = '&lt;instance_name&gt;'</p>
+<p>ORDER BY SIZE_GB DESC;</p>
+<h2 id="database-growth-comparison-two-dates">Database Growth Comparison (two dates)<a class="headerlink" href="#database-growth-comparison-two-dates" title="Permanent link">&para;</a></h2>
+<p>SELECT</p>
+<p>t."Instance_Name", t.database,</p>
+<p>MAX(t."NEWDATE") AS "NEWDATE", round(SUM(t.newsize) / 1024, 2) AS newsize,</p>
+<p>MAX(t."OLDDATE") AS "OLDDATE", round(SUM(t.oldsize) / 1024, 2) AS oldsize,</p>
+<p>round(SUM(t.newsize - t.oldsize) / 1024, 2) AS diff</p>
+<p>FROM (</p>
+<p>SELECT n.instance_name AS "Instance_Name", n.database,</p>
+<p>n.logdate::date AS "NEWDATE", NULL::date AS "OLDDATE",</p>
+<p>COALESCE(n.size_mb, 0) AS newsize, 0 AS oldsize</p>
+<p>FROM public.databasesize_information AS n</p>
+<p>WHERE n.logdate::date = '&lt;new_date&gt;' AND n.instance_name = '&lt;instance_name&gt;'</p>
+<p>UNION ALL</p>
+<p>SELECT o.instance_name, o.database,</p>
+<p>NULL::date AS "NEWDATE", o.logdate::date AS "OLDDATE",</p>
+<p>0 AS newsize, COALESCE(o.size_mb, 0) AS oldsize</p>
+<p>FROM public.databasesize_information AS o</p>
+<p>WHERE o.logdate::date = '&lt;old_date&gt;' AND o.instance_name = '&lt;instance_name&gt;'</p>
+<p>) t</p>
+<p>WHERE t.database LIKE '&lt;database_name&gt;'</p>
+<p>GROUP BY t.database, t."Instance_Name"</p>
+<p>HAVING SUM(t.newsize - t.oldsize) &lt;&gt; 0</p>
+<p>ORDER BY diff DESC;</p>
+<h2 id="top-size-consuming-segments-historical-1000-mb">Top Size-Consuming Segments (historical, &gt; 1000 MB)<a class="headerlink" href="#top-size-consuming-segments-historical-1000-mb" title="Permanent link">&para;</a></h2>
+<p>SELECT instance_name, logdate, database_name, schema_name, object_name, object_type, object_size, size_mb</p>
+<p>FROM public.object_segment_selfhosted4</p>
+<p>WHERE logdate::date = '&lt;log_date&gt;'</p>
+<p>AND size_mb &gt; 1000</p>
+<p>ORDER BY size_mb DESC;</p>
+<h2 id="object-growth-comparison-two-dates">Object Growth Comparison (two dates)<a class="headerlink" href="#object-growth-comparison-two-dates" title="Permanent link">&para;</a></h2>
+<p>SELECT</p>
+<p>t."Instance_Name", t."database_name", t."object_name",</p>
+<p>MAX(t."NEWDATE") AS "NEWDATE", SUM(t.newsize) AS newsize,</p>
+<p>MAX(t."OLDDATE") AS "OLDDATE", SUM(t.oldsize) AS oldsize,</p>
+<p>SUM(t.newsize - t.oldsize) AS diff</p>
+<p>FROM (</p>
+<p>SELECT n.instance_name AS "Instance_Name", n.database_name, n.object_name,</p>
+<p>n.logdate::date AS "NEWDATE", NULL::date AS "OLDDATE",</p>
+<p>COALESCE(n.size_mb, 0) AS newsize, 0 AS oldsize</p>
+<p>FROM public.object_segment_edb1 AS n</p>
+<p>WHERE n.logdate::date = '&lt;new_date&gt;' AND n.instance_name = '&lt;instance_name&gt;'</p>
+<p>UNION ALL</p>
+<p>SELECT o.instance_name, o.database_name, o.object_name,</p>
+<p>NULL::date AS "NEWDATE", o.logdate::date AS "OLDDATE",</p>
+<p>0 AS newsize, COALESCE(o.size_mb, 0) AS oldsize</p>
+<p>FROM public.object_segment_edb1 AS o</p>
+<p>WHERE o.logdate::date = '&lt;old_date&gt;' AND o.instance_name = '&lt;instance_name&gt;'</p>
+<p>) t</p>
+<p>WHERE t.database_name LIKE '&lt;database_name&gt;'</p>
+<p>GROUP BY t.object_name, t."Instance_Name", t."database_name"</p>
+<p>HAVING SUM(t.newsize - t.oldsize) &lt;&gt; 0</p>
+<p>ORDER BY diff DESC;</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
