@@ -1,3 +1,4 @@
+Cloud Database Objective
 **Cloud Database Objective**
 
 1. **Ginesys Cloud**
@@ -5,7 +6,7 @@
 - The Ginesys Cloud Architecture offers a cloud-based database that typically operates on a cloud computing platform, providing access to the database as a service.
 - In a database-as-a-service model, application owners are relieved from the need to install and maintain the database themselves. Instead, Ginesys assumes the responsibility for both installing and maintaining the database.
 
-![image-20230811-115004](images/image-20230811-115004.png)
+![image-20230811-115004](images/cloud-database-objective/image-20230811-115004.png)
 
 1. **Why are database backups important?**
 
@@ -67,7 +68,7 @@ recovered in the event of a disaster.
 - A synchronization process ensures the synchronization of generated archive log files from the cloud database to Azure Storage, running every five minutes.
 - Synchronization ensures near-real-time database recovery with minimal data loss, approximately up to 10 minutes.
 
-![image-20230811-121520](images/image-20230811-121520.png)
+![image-20230811-121520](images/cloud-database-objective/image-20230811-121520.png)
 
 1. **Disaster recovery testing: Ensuring your backup plan works**
 

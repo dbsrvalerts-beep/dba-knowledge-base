@@ -1,0 +1,2793 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Central repository for Oracle/PostgreSQL DBA documentation">
+      
+      
+      
+      
+        <link rel="prev" href="../../../ORACLE/ORACLE%20CLOUD/Cloud%20Database%20Management%20Tasks/">
+      
+      
+        <link rel="next" href="../PG%20LOAD%20ANALYSIS%20SETUP%20%5BSH%5D/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>PG LOAD ANALYSIS SETUP [PaaS] - DBA Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#pg-load-analysis-setup-paas" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="DBA Knowledge Base" class="md-header__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DBA Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              PG LOAD ANALYSIS SETUP [PaaS]
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="DBA Knowledge Base" class="md-nav__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    DBA Knowledge Base
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DBA Knowledge Base
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEPARTMENT
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    DEPARTMENT
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../DEPARTMENT/Cloud%20Database%20Objective/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Database Objective
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../DEPARTMENT/Oracle%20Database%20Solutions%20and%20Service%28Standard%20Version%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Solutions and Service(Standard Version)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LINUX
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LINUX/LINUX%20BASICS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX BASICS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LINUX/LINUX%20FIREWALL%20PERMISSIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Firewall Permissions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LINUX/LINUX%20PERMISSIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX PERMISSIONS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LINUX/LVM%20PARTITION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVM Partition Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MYSQL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    MYSQL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../MYSQL/MySQL_Migration_Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MySQL Migration Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORACLE
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ORACLE
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KNOWN ISSUES
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    KNOWN ISSUES
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Incarnation%20%28ORA-19909%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Incarnation (ORA-19909)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Lost%20Write%20Recovery%20%28ORA-00742%2CORA-00312%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Lost Write Recovery (ORA-00742,ORA-00312)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Datafile%20Corruption%20Issue%20%28ORA-00600%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Datafile Corruption Issue (ORA-00600)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Datapump%20Slowness%28Scenario%201%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Datapump Slowness(Scenario 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Datapump%20Slowness%28Scenario%202%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Datapump Slowness (Scenario 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Moving%20Datafiles%20To%20Another%20Location/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Moving Datafiles To Another Location
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Ora-01012%20Not%20Logged%20On%20Error/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Ora-01012: Not Logged On Error
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORACLE CLOUD
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ORACLE CLOUD
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/ORACLE%20CLOUD/Cloud%20Database%20Management%20Tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Cloud Database Management Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    POSTGRESQL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    POSTGRESQL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG LOAD ANALYSIS SETUP
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PG LOAD ANALYSIS SETUP
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG LOAD ANALYSIS SETUP [PaaS]
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG LOAD ANALYSIS SETUP [PaaS]
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#phase-1-pre-requisites-environment-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1 - Pre-Requisites &amp; Environment Check
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 1 - Pre-Requisites &amp; Environment Check">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-verify-pg_stat_statements-is-enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Verify pg_stat_statements is enabled
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-create-monitoring-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Create monitoring user
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-create-the-monitoring-schema-and-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Create the monitoring schema and tables
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-monitoring-stack-deployment-pg_cron-jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2 - Monitoring Stack Deployment (pg_cron Jobs)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 2 - Monitoring Stack Deployment (pg_cron Jobs)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-job-1-statement-snapshots-every-1-minute" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Job 1 - Statement snapshots (every 1 minute)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-job-2-sessions-locks-at-00-every-minute" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Job 2 - Sessions + locks at :00 (every minute)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-job-3-sessions-locks-at-30-offset-by-pg_sleep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Job 3 - Sessions + locks at :30 (offset by pg_sleep)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-job-4-database-stats-every-1-minute" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Job 4 - Database stats (every 1 minute)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-verify-all-four-jobs-are-registered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Verify all four jobs are registered
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-schema-changes-db-head-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3 - Schema Changes (DB Head Request)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 3 - Schema Changes (DB Head Request)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-change-1-add-io-timing-and-estimated-cpu-to-stmt_snapshots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Change 1 - Add I/O timing and estimated CPU to stmt_snapshots
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-change-2-add-query_id-to-session_snapshots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Change 2 - Add query_id to session_snapshots
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-drop-and-recreate-pg_cron-jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Drop and recreate pg_cron jobs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-verification-after-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Verification after collection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-analysis-estimated-cpu-by-application-db-head-rollup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 Analysis - Estimated CPU by application (DB Head rollup)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-analysis-link-active-sessions-to-statement-cost-query_id-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 Analysis - Link active sessions to statement cost (query_id join)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38-db-head-attribution-rollup-query" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8 DB Head Attribution Rollup Query
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-4-retention-lifecycle-3-day-rolling-window" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 4 - Retention Lifecycle (3-Day Rolling Window)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 4 - Retention Lifecycle (3-Day Rolling Window)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-data-growth-estimates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Data Growth Estimates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-one-time-permission-grant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 One-Time Permission Grant
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-purge-job-pg_cron-runs-daily-at-0200" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Purge Job - pg_cron (runs daily at 02:00)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-important-vacuum-inside-pg_cron-on-flexible-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Important: VACUUM inside pg_cron on Flexible Server
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-verify-purge-job-is-registered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Verify Purge Job is Registered
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-verify-retention-is-working" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 Verify Retention Is Working
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-order-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment Order Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PG%20LOAD%20ANALYSIS%20SETUP%20%5BSH%5D/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG LOAD ANALYSIS SETUP [SH]
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG SELFHOSTED DEPLOYMENT RUNBOOK
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PG SELFHOSTED DEPLOYMENT RUNBOOK
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Management%20Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL Selfhosted Deployment Management Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Technical%20Deployment%20Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL Selfhosted Technical Deployment Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#phase-1-pre-requisites-environment-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1 - Pre-Requisites &amp; Environment Check
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 1 - Pre-Requisites &amp; Environment Check">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-verify-pg_stat_statements-is-enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Verify pg_stat_statements is enabled
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-create-monitoring-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Create monitoring user
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-create-the-monitoring-schema-and-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Create the monitoring schema and tables
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-monitoring-stack-deployment-pg_cron-jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2 - Monitoring Stack Deployment (pg_cron Jobs)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 2 - Monitoring Stack Deployment (pg_cron Jobs)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-job-1-statement-snapshots-every-1-minute" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Job 1 - Statement snapshots (every 1 minute)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-job-2-sessions-locks-at-00-every-minute" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Job 2 - Sessions + locks at :00 (every minute)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-job-3-sessions-locks-at-30-offset-by-pg_sleep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Job 3 - Sessions + locks at :30 (offset by pg_sleep)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-job-4-database-stats-every-1-minute" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Job 4 - Database stats (every 1 minute)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-verify-all-four-jobs-are-registered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Verify all four jobs are registered
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-schema-changes-db-head-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3 - Schema Changes (DB Head Request)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 3 - Schema Changes (DB Head Request)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-change-1-add-io-timing-and-estimated-cpu-to-stmt_snapshots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Change 1 - Add I/O timing and estimated CPU to stmt_snapshots
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-change-2-add-query_id-to-session_snapshots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Change 2 - Add query_id to session_snapshots
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-drop-and-recreate-pg_cron-jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Drop and recreate pg_cron jobs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-verification-after-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Verification after collection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-analysis-estimated-cpu-by-application-db-head-rollup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 Analysis - Estimated CPU by application (DB Head rollup)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-analysis-link-active-sessions-to-statement-cost-query_id-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 Analysis - Link active sessions to statement cost (query_id join)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38-db-head-attribution-rollup-query" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8 DB Head Attribution Rollup Query
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-4-retention-lifecycle-3-day-rolling-window" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 4 - Retention Lifecycle (3-Day Rolling Window)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 4 - Retention Lifecycle (3-Day Rolling Window)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-data-growth-estimates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Data Growth Estimates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-one-time-permission-grant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 One-Time Permission Grant
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-purge-job-pg_cron-runs-daily-at-0200" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Purge Job - pg_cron (runs daily at 02:00)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-important-vacuum-inside-pg_cron-on-flexible-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Important: VACUUM inside pg_cron on Flexible Server
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-verify-purge-job-is-registered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Verify Purge Job is Registered
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-verify-retention-is-working" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 Verify Retention Is Working
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-order-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment Order Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="pg-load-analysis-setup-paas">PG LOAD ANALYSIS SETUP [PaaS]<a class="headerlink" href="#pg-load-analysis-setup-paas" title="Permanent link">&para;</a></h1>
+<p><strong>PostgreSQL Load Analysis</strong></p>
+<p><strong>Azure Database for PostgreSQL - Flexible Server</strong></p>
+<p>Implementation Steps · Schema Changes · Analysis Queries · Retention Lifecycle</p>
+<p><em>Ginesys / Browntape Technologies | DBA Team | June 2026</em></p>
+<p><em>This is the consolidated PaaS implementation document. It combines the original v2.1 implementation steps (Phase 1-2), the DB Head schema change request (Phase 3: cpu_ms_est, blk_read/write_time, query_id), and the new Phase 4 Retention Lifecycle (3-day rolling purge via pg_cron). PostgreSQL version: PG 17 (Azure Flexible Server). The collection job uses PG17 column names shared_blk_read_time / shared_blk_write_time from pg_stat_statements. Deploy in order: Phase 1 → Phase 2 → Phase 3 → Phase 4.</em></p>
+<h2 id="phase-1-pre-requisites-environment-check">Phase 1 - Pre-Requisites &amp; Environment Check<a class="headerlink" href="#phase-1-pre-requisites-environment-check" title="Permanent link">&para;</a></h2>
+<h3 id="11-verify-pg_stat_statements-is-enabled">1.1 Verify pg_stat_statements is enabled<a class="headerlink" href="#11-verify-pg_stat_statements-is-enabled" title="Permanent link">&para;</a></h3>
+<p>Run on each Flexible Server cluster before starting. If not enabled, add to postgresql.conf (server parameters) and reload.</p>
+<p>-- Check if extension is loaded</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">setting</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_settings</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;shared_preload_libraries&#39;</span><span class="p">;</span>
+</code></pre></div>
+<p>-- Check extension exists</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_extension</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">extname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;pg_stat_statements&#39;</span><span class="p">;</span>
+</code></pre></div>
+<p>-- If not present, add to server parameters in Azure Portal:</p>
+<p>-- shared_preload_libraries = 'pg_stat_statements'</p>
+<p>-- Then run:
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="n">EXTENSION</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">pg_stat_statements</span><span class="p">;</span>
+</code></pre></div></p>
+<h3 id="12-create-monitoring-user">1.2 Create monitoring user<a class="headerlink" href="#12-create-monitoring-user" title="Permanent link">&para;</a></h3>
+<p>Dedicated read-only role - do not use a superuser account for collection.</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">ROLE</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="w"> </span><span class="n">LOGIN</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="s1">&#39;set-a-strong-password&#39;</span><span class="p">;</span>
+<span class="o">```</span><span class="k">sql</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="n">pg_monitor</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
+<span class="o">```</span><span class="k">sql</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">CONNECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">postgres</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
+<span class="o">```</span><span class="k">sql</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">USAGE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
+<span class="o">```</span><span class="k">sql</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">pg_stat_statements</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
+<span class="o">```</span><span class="k">sql</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">pg_stat_activity</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
+<span class="o">```</span><span class="k">sql</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">pg_stat_database</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
+<span class="o">```</span><span class="k">sql</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">pg_locks</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
+</code></pre></div>
+<h3 id="13-create-the-monitoring-schema-and-tables">1.3 Create the monitoring schema and tables<a class="headerlink" href="#13-create-the-monitoring-schema-and-tables" title="Permanent link">&para;</a></h3>
+<p>Created in a separate monitoring database - not on the production databases being measured. These are the final table definitions including all DB Head columns added in Phase 3.</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">pg_loadmon</span><span class="p">;</span>
+<span class="err">\\</span><span class="k">c</span><span class="w"> </span><span class="n">pg_loadmon</span>
+<span class="o">```</span><span class="k">sql</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">monitoring</span><span class="p">;</span>
+</code></pre></div>
+<p>-- Statement-level snapshots (every 1 min)</p>
+<p><div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span><span class="w"> </span><span class="p">(</span>
+<span class="n">id</span><span class="w"> </span><span class="n">BIGSERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="n">captured_at</span><span class="w"> </span><span class="n">TIMESTAMPTZ</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">NOW</span><span class="p">(),</span>
+<span class="n">dbname</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="n">application_name</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="n">query_text</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span><span class="w"> </span><span class="c1">-- first 200 chars</span>
+<span class="n">calls</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="n">total_exec_time</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span>
+<span class="k">rows</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="n">shared_blks_hit</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="n">shared_blks_read</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="n">query_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span><span class="w"> </span><span class="c1">-- queryid from pg_stat_statements</span>
+<span class="n">temp_blks_written</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="n">wal_bytes</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="n">blk_read_time</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span><span class="w"> </span><span class="c1">-- our column name; source on PG17: shared_blk_read_time</span>
+<span class="n">blk_write_time</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span><span class="w"> </span><span class="c1">-- our column name; source on PG17: shared_blk_write_time</span>
+<span class="n">cpu_ms_est</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="w"> </span><span class="c1">-- total_exec_time - shared_blk_read_time - shared_blk_write_time</span>
+<span class="p">);</span>
+<span class="o">```</span><span class="k">sql</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">captured_at</span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">query_id</span><span class="p">);</span>
+</code></pre></div>
+-- Active session snapshots (every 30 sec)</p>
+<p><div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span><span class="w"> </span><span class="p">(</span>
+<span class="n">id</span><span class="w"> </span><span class="n">BIGSERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="n">captured_at</span><span class="w"> </span><span class="n">TIMESTAMPTZ</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">NOW</span><span class="p">(),</span>
+<span class="n">pid</span><span class="w"> </span><span class="nb">INT</span><span class="p">,</span>
+<span class="n">dbname</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="n">application_name</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="k">state</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="n">wait_event_type</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="n">wait_event</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="n">query_start</span><span class="w"> </span><span class="n">TIMESTAMPTZ</span><span class="p">,</span>
+<span class="n">duration_secs</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span>
+<span class="n">query_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="w"> </span><span class="c1">-- from pg_stat_activity (Phase 3)</span>
+<span class="p">);</span>
+<span class="o">```</span><span class="k">sql</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">captured_at</span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">query_id</span><span class="p">);</span>
+</code></pre></div>
+-- Lock wait snapshots (every 30 sec)</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span><span class="w"> </span><span class="p">(</span>
+<span class="n">id</span><span class="w"> </span><span class="n">BIGSERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="n">captured_at</span><span class="w"> </span><span class="n">TIMESTAMPTZ</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">NOW</span><span class="p">(),</span>
+<span class="n">waiting_pid</span><span class="w"> </span><span class="nb">INT</span><span class="p">,</span>
+<span class="n">waiting_app</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="n">blocking_pid</span><span class="w"> </span><span class="nb">INT</span><span class="p">,</span>
+<span class="n">blocking_app</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="n">lock_type</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="n">relation</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="n">wait_secs</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span>
+<span class="p">);</span>
+<span class="o">```</span><span class="k">sql</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">captured_at</span><span class="p">);</span>
+</code></pre></div>
+<p>-- Database-level snapshots (every 60 sec)</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">db_snapshots</span><span class="w"> </span><span class="p">(</span>
+<span class="n">id</span><span class="w"> </span><span class="n">BIGSERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="n">captured_at</span><span class="w"> </span><span class="n">TIMESTAMPTZ</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">NOW</span><span class="p">(),</span>
+<span class="n">dbname</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="n">numbackends</span><span class="w"> </span><span class="nb">INT</span><span class="p">,</span>
+<span class="n">xact_commit</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="n">xact_rollback</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="n">blks_hit</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="n">blks_read</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="n">tup_returned</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="n">tup_fetched</span><span class="w"> </span><span class="nb">BIGINT</span>
+<span class="p">);</span>
+<span class="o">```</span><span class="k">sql</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">db_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">captured_at</span><span class="p">,</span><span class="w"> </span><span class="n">dbname</span><span class="p">);</span>
+</code></pre></div>
+<p>-- Grant INSERT + SELECT on all tables to collection user:</p>
+<div class="highlight"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="k">INSERT</span><span class="p">,</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">monitoring</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
+<span class="o">```</span><span class="k">sql</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">USAGE</span><span class="p">,</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">SEQUENCES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">monitoring</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
+<span class="n">_The</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">definitions</span><span class="w"> </span><span class="n">above</span><span class="w"> </span><span class="k">are</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">final</span><span class="w"> </span><span class="n">combined</span><span class="w"> </span><span class="k">schema</span><span class="w"> </span><span class="p">(</span><span class="n">v2</span><span class="p">.</span><span class="mi">1</span><span class="w"> </span><span class="n">base</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Phase</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">additions</span><span class="p">).</span><span class="w"> </span><span class="k">If</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">already</span><span class="w"> </span><span class="n">created</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">tables</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">v2</span><span class="p">.</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">use</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">statements</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">Phase</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">instead</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">recreating</span><span class="p">.</span><span class="n">_</span>
+</code></pre></div>
+<h2 id="phase-2-monitoring-stack-deployment-pg_cron-jobs">Phase 2 - Monitoring Stack Deployment (pg_cron Jobs)<a class="headerlink" href="#phase-2-monitoring-stack-deployment-pg_cron-jobs" title="Permanent link">&para;</a></h2>
+<p>All collection runs inside pg_loadmon via pg_cron using cron.schedule_in_database(). Connect as superuser to pg_loadmon to register jobs. Collection queries run as the postgres user inside pg_cron workers.</p>
+<p><em>These are the final job definitions including all Phase 3 columns. If you already have earlier jobs registered, skip to Phase 3 Section 3.1 to drop and recreate them.</em></p>
+<h3 id="21-job-1-statement-snapshots-every-1-minute">2.1 Job 1 - Statement snapshots (every 1 minute)<a class="headerlink" href="#21-job-1-statement-snapshots-every-1-minute" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">schedule_in_database</span><span class="p">(</span>
+<span class="s1">&#39;collect_stmts&#39;</span><span class="p">,</span>
+
+<span class="s1">&#39;*/1 * * * *&#39;</span><span class="p">,</span>
+
+<span class="err">$$</span>
+
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span>
+<span class="p">(</span><span class="n">dbname</span><span class="p">,</span><span class="w"> </span><span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="n">query_text</span><span class="p">,</span><span class="w"> </span><span class="n">calls</span><span class="p">,</span><span class="w"> </span><span class="n">total_exec_time</span><span class="p">,</span>
+
+<span class="k">rows</span><span class="p">,</span><span class="w"> </span><span class="n">shared_blks_hit</span><span class="p">,</span><span class="w"> </span><span class="n">shared_blks_read</span><span class="p">,</span><span class="w"> </span><span class="n">query_id</span><span class="p">,</span>
+
+<span class="n">temp_blks_written</span><span class="p">,</span><span class="w"> </span><span class="n">wal_bytes</span><span class="p">,</span>
+
+<span class="n">blk_read_time</span><span class="p">,</span><span class="w"> </span><span class="n">blk_write_time</span><span class="p">,</span><span class="w"> </span><span class="n">cpu_ms_est</span><span class="p">)</span>
+
+<span class="k">SELECT</span>
+<span class="n">d</span><span class="p">.</span><span class="n">datname</span><span class="p">,</span>
+
+<span class="k">COALESCE</span><span class="p">(</span><span class="n">sa</span><span class="p">.</span><span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;unknown&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">application_name</span><span class="p">,</span>
+
+<span class="n">s</span><span class="p">.</span><span class="n">query</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">query_text</span><span class="p">,</span>
+
+<span class="n">s</span><span class="p">.</span><span class="n">calls</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">total_exec_time</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="k">rows</span><span class="p">,</span>
+
+<span class="n">s</span><span class="p">.</span><span class="n">shared_blks_hit</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">shared_blks_read</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">queryid</span><span class="p">,</span>
+
+<span class="n">s</span><span class="p">.</span><span class="n">temp_blks_written</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">wal_bytes</span><span class="p">,</span>
+
+<span class="n">s</span><span class="p">.</span><span class="n">shared_blk_read_time</span><span class="p">,</span><span class="w"> </span><span class="c1">-- PG17+ name</span>
+
+<span class="n">s</span><span class="p">.</span><span class="n">shared_blk_write_time</span><span class="p">,</span><span class="w"> </span><span class="c1">-- PG17+ name</span>
+
+<span class="n">s</span><span class="p">.</span><span class="n">total_exec_time</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">shared_blk_read_time</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">shared_blk_write_time</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">pg_stat_statements</span><span class="w"> </span><span class="n">s</span>
+<span class="k">JOIN</span><span class="w"> </span><span class="n">pg_database</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">oid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">dbid</span>
+
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">pg_stat_activity</span><span class="w"> </span><span class="n">sa</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">sa</span><span class="p">.</span><span class="n">query_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">queryid</span>
+
+<span class="k">AND</span><span class="w"> </span><span class="n">sa</span><span class="p">.</span><span class="n">usesysid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">userid</span>
+
+<span class="k">AND</span><span class="w"> </span><span class="n">sa</span><span class="p">.</span><span class="k">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;active&#39;</span><span class="p">;</span>
+
+<span class="err">$$</span><span class="p">,</span>
+
+<span class="s1">&#39;postgres&#39;</span>
+
+<span class="p">);</span>
+</code></pre></div>
+<h3 id="22-job-2-sessions-locks-at-00-every-minute">2.2 Job 2 - Sessions + locks at :00 (every minute)<a class="headerlink" href="#22-job-2-sessions-locks-at-00-every-minute" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">schedule_in_database</span><span class="p">(</span>
+<span class="s1">&#39;collect_sessions_locks_00&#39;</span><span class="p">,</span>
+
+<span class="s1">&#39;* * * * *&#39;</span><span class="p">,</span>
+
+<span class="err">$$</span>
+
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span>
+<span class="p">(</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">dbname</span><span class="p">,</span><span class="w"> </span><span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="k">state</span><span class="p">,</span><span class="w"> </span><span class="n">wait_event_type</span><span class="p">,</span>
+
+<span class="n">wait_event</span><span class="p">,</span><span class="w"> </span><span class="n">query_start</span><span class="p">,</span><span class="w"> </span><span class="n">duration_secs</span><span class="p">,</span><span class="w"> </span><span class="n">query_id</span><span class="p">)</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">datname</span><span class="p">,</span><span class="w"> </span><span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="k">state</span><span class="p">,</span>
+<span class="n">wait_event_type</span><span class="p">,</span><span class="w"> </span><span class="n">wait_event</span><span class="p">,</span><span class="w"> </span><span class="n">query_start</span><span class="p">,</span>
+
+<span class="k">EXTRACT</span><span class="p">(</span><span class="n">EPOCH</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">query_start</span><span class="p">)),</span>
+
+<span class="n">query_id</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">pg_stat_activity</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;active&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">pid</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="n">pg_backend_pid</span><span class="p">();</span>
+
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span>
+<span class="p">(</span><span class="n">waiting_pid</span><span class="p">,</span><span class="w"> </span><span class="n">waiting_app</span><span class="p">,</span><span class="w"> </span><span class="n">blocking_pid</span><span class="p">,</span><span class="w"> </span><span class="n">blocking_app</span><span class="p">,</span>
+
+<span class="n">lock_type</span><span class="p">,</span><span class="w"> </span><span class="n">relation</span><span class="p">,</span><span class="w"> </span><span class="n">wait_secs</span><span class="p">)</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">application_name</span><span class="p">,</span>
+<span class="n">lw</span><span class="p">.</span><span class="n">locktype</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relname</span><span class="p">,</span>
+
+<span class="k">EXTRACT</span><span class="p">(</span><span class="n">EPOCH</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">query_start</span><span class="p">))</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">pg_stat_activity</span><span class="w"> </span><span class="n">w</span>
+<span class="k">JOIN</span><span class="w"> </span><span class="n">pg_locks</span><span class="w"> </span><span class="n">lw</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">lw</span><span class="p">.</span><span class="n">pid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">pid</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">lw</span><span class="p">.</span><span class="k">granted</span>
+
+<span class="k">JOIN</span><span class="w"> </span><span class="n">pg_locks</span><span class="w"> </span><span class="n">lb</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">lb</span><span class="p">.</span><span class="n">locktype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lw</span><span class="p">.</span><span class="n">locktype</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">lb</span><span class="p">.</span><span class="k">granted</span>
+
+<span class="k">AND</span><span class="w"> </span><span class="n">lb</span><span class="p">.</span><span class="n">relation</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">lw</span><span class="p">.</span><span class="n">relation</span>
+
+<span class="k">JOIN</span><span class="w"> </span><span class="n">pg_stat_activity</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">pid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lb</span><span class="p">.</span><span class="n">pid</span>
+
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">pg_class</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">oid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lw</span><span class="p">.</span><span class="n">relation</span>
+
+<span class="k">WHERE</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">wait_event_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Lock&#39;</span><span class="p">;</span>
+<span class="err">$$</span><span class="p">,</span>
+
+<span class="s1">&#39;postgres&#39;</span>
+
+<span class="p">);</span>
+</code></pre></div>
+<h3 id="23-job-3-sessions-locks-at-30-offset-by-pg_sleep">2.3 Job 3 - Sessions + locks at :30 (offset by pg_sleep)<a class="headerlink" href="#23-job-3-sessions-locks-at-30-offset-by-pg_sleep" title="Permanent link">&para;</a></h3>
+<p><em>The leading SELECT pg_sleep(30) is plain SQL - do NOT use PERFORM here (pg_cron bodies are SQL, not PL/pgSQL). The pg_sleep appears as ~98% of pg_cron wall-clock in workload reports. It is harmless (zero CPU) but inflates pg_cron's wall-clock share - exclude it from load conclusions.</em></p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">schedule_in_database</span><span class="p">(</span>
+<span class="s1">&#39;collect_sessions_locks_30&#39;</span><span class="p">,</span>
+
+<span class="s1">&#39;* * * * *&#39;</span><span class="p">,</span>
+
+<span class="err">$$</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">pg_sleep</span><span class="p">(</span><span class="mi">30</span><span class="p">);</span>
+
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span>
+<span class="p">(</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">dbname</span><span class="p">,</span><span class="w"> </span><span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="k">state</span><span class="p">,</span><span class="w"> </span><span class="n">wait_event_type</span><span class="p">,</span>
+
+<span class="n">wait_event</span><span class="p">,</span><span class="w"> </span><span class="n">query_start</span><span class="p">,</span><span class="w"> </span><span class="n">duration_secs</span><span class="p">,</span><span class="w"> </span><span class="n">query_id</span><span class="p">)</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">datname</span><span class="p">,</span><span class="w"> </span><span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="k">state</span><span class="p">,</span>
+<span class="n">wait_event_type</span><span class="p">,</span><span class="w"> </span><span class="n">wait_event</span><span class="p">,</span><span class="w"> </span><span class="n">query_start</span><span class="p">,</span>
+
+<span class="k">EXTRACT</span><span class="p">(</span><span class="n">EPOCH</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">query_start</span><span class="p">)),</span>
+
+<span class="n">query_id</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">pg_stat_activity</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;active&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">pid</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="n">pg_backend_pid</span><span class="p">();</span>
+
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span>
+<span class="p">(</span><span class="n">waiting_pid</span><span class="p">,</span><span class="w"> </span><span class="n">waiting_app</span><span class="p">,</span><span class="w"> </span><span class="n">blocking_pid</span><span class="p">,</span><span class="w"> </span><span class="n">blocking_app</span><span class="p">,</span>
+
+<span class="n">lock_type</span><span class="p">,</span><span class="w"> </span><span class="n">relation</span><span class="p">,</span><span class="w"> </span><span class="n">wait_secs</span><span class="p">)</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">application_name</span><span class="p">,</span>
+<span class="n">lw</span><span class="p">.</span><span class="n">locktype</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relname</span><span class="p">,</span>
+
+<span class="k">EXTRACT</span><span class="p">(</span><span class="n">EPOCH</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">query_start</span><span class="p">))</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">pg_stat_activity</span><span class="w"> </span><span class="n">w</span>
+<span class="k">JOIN</span><span class="w"> </span><span class="n">pg_locks</span><span class="w"> </span><span class="n">lw</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">lw</span><span class="p">.</span><span class="n">pid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">pid</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">lw</span><span class="p">.</span><span class="k">granted</span>
+
+<span class="k">JOIN</span><span class="w"> </span><span class="n">pg_locks</span><span class="w"> </span><span class="n">lb</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">lb</span><span class="p">.</span><span class="n">locktype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lw</span><span class="p">.</span><span class="n">locktype</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">lb</span><span class="p">.</span><span class="k">granted</span>
+
+<span class="k">AND</span><span class="w"> </span><span class="n">lb</span><span class="p">.</span><span class="n">relation</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">lw</span><span class="p">.</span><span class="n">relation</span>
+
+<span class="k">JOIN</span><span class="w"> </span><span class="n">pg_stat_activity</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">pid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lb</span><span class="p">.</span><span class="n">pid</span>
+
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">pg_class</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">oid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lw</span><span class="p">.</span><span class="n">relation</span>
+
+<span class="k">WHERE</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">wait_event_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Lock&#39;</span><span class="p">;</span>
+<span class="err">$$</span><span class="p">,</span>
+
+<span class="s1">&#39;postgres&#39;</span>
+
+<span class="p">);</span>
+</code></pre></div>
+<h3 id="24-job-4-database-stats-every-1-minute">2.4 Job 4 - Database stats (every 1 minute)<a class="headerlink" href="#24-job-4-database-stats-every-1-minute" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">schedule_in_database</span><span class="p">(</span>
+<span class="s1">&#39;collect_db_stats&#39;</span><span class="p">,</span>
+
+<span class="s1">&#39;* * * * *&#39;</span><span class="p">,</span>
+
+<span class="err">$$</span>
+
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">db_snapshots</span>
+<span class="p">(</span><span class="n">dbname</span><span class="p">,</span><span class="w"> </span><span class="n">numbackends</span><span class="p">,</span><span class="w"> </span><span class="n">xact_commit</span><span class="p">,</span><span class="w"> </span><span class="n">xact_rollback</span><span class="p">,</span>
+
+<span class="n">blks_hit</span><span class="p">,</span><span class="w"> </span><span class="n">blks_read</span><span class="p">,</span><span class="w"> </span><span class="n">tup_returned</span><span class="p">,</span><span class="w"> </span><span class="n">tup_fetched</span><span class="p">)</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">datname</span><span class="p">,</span><span class="w"> </span><span class="n">numbackends</span><span class="p">,</span><span class="w"> </span><span class="n">xact_commit</span><span class="p">,</span><span class="w"> </span><span class="n">xact_rollback</span><span class="p">,</span>
+<span class="n">blks_hit</span><span class="p">,</span><span class="w"> </span><span class="n">blks_read</span><span class="p">,</span><span class="w"> </span><span class="n">tup_returned</span><span class="p">,</span><span class="w"> </span><span class="n">tup_fetched</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">pg_stat_database</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">datname</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;template0&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;template1&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;postgres&#39;</span><span class="p">);</span>
+<span class="err">$$</span><span class="p">,</span>
+
+<span class="s1">&#39;postgres&#39;</span>
+
+<span class="p">);</span>
+</code></pre></div>
+<h3 id="25-verify-all-four-jobs-are-registered">2.5 Verify all four jobs are registered<a class="headerlink" href="#25-verify-all-four-jobs-are-registered" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">jobid</span><span class="p">,</span><span class="w"> </span><span class="n">jobname</span><span class="p">,</span><span class="w"> </span><span class="n">schedule</span><span class="p">,</span><span class="w"> </span><span class="k">database</span><span class="p">,</span><span class="w"> </span><span class="n">active</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">job</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">jobid</span><span class="p">;</span>
+</code></pre></div>
+<h2 id="phase-3-schema-changes-db-head-request">Phase 3 - Schema Changes (DB Head Request)<a class="headerlink" href="#phase-3-schema-changes-db-head-request" title="Permanent link">&para;</a></h2>
+<p><strong>Purpose:</strong> <em>Two additive schema changes. Change 1 adds blk_read_time, blk_write_time, and derived cpu_ms_est to stmt_snapshots, giving an estimated CPU figure from pg_stat_statements alone. Change 2 adds query_id to session_snapshots so active sessions can be linked back to their statement. Both are additive - no existing columns change. Skip if you created tables using the Phase 1 definitions above (they already include these columns).</em></p>
+<h3 id="31-prerequisites">3.1 Prerequisites<a class="headerlink" href="#31-prerequisites" title="Permanent link">&para;</a></h3>
+<p><strong>Enable track_io_timing</strong></p>
+<p>blk_read_time and blk_write_time are ALWAYS ZERO unless track_io_timing is ON. Without this setting, cpu_ms_est equals total_exec_time, which is meaningless. Note: on PG 17 the source columns are named shared_blk_read_time / shared_blk_write_time in pg_stat_statements - the collection job uses these PG17 names.</p>
+<p>SHOW track_io_timing; -- should return 'on'</p>
+<p>-- If off, set in Azure Portal &gt; Server Parameters:</p>
+<p>-- track_io_timing = on</p>
+<p>-- Then reload (no restart needed):</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">pg_reload_conf</span><span class="p">();</span>
+<span class="n">_Overhead</span><span class="p">:</span><span class="w"> </span><span class="n">track_io_timing</span><span class="w"> </span><span class="n">calls</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">OS</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="k">every</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="k">read</span><span class="o">/</span><span class="k">write</span><span class="p">.</span><span class="w"> </span><span class="k">On</span><span class="w"> </span><span class="n">Azure</span><span class="w"> </span><span class="n">Flexible</span><span class="w"> </span><span class="n">Server</span><span class="w"> </span><span class="p">(</span><span class="n">modern</span><span class="w"> </span><span class="n">Linux</span><span class="p">,</span><span class="w"> </span><span class="n">tsc</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="k">source</span><span class="p">)</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">overhead</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">negligible</span><span class="p">.</span><span class="n">_</span>
+</code></pre></div>
+<p><strong>Verify compute_query_id</strong></p>
+<p>SHOW compute_query_id; -- should be 'on' or 'auto'</p>
+<p>-- With pg_stat_statements already loaded, 'auto' is normally on.</p>
+<p>-- If off: set compute_query_id = auto in Server Parameters and reload.</p>
+<h3 id="32-change-1-add-io-timing-and-estimated-cpu-to-stmt_snapshots">3.2 Change 1 - Add I/O timing and estimated CPU to stmt_snapshots<a class="headerlink" href="#32-change-1-add-io-timing-and-estimated-cpu-to-stmt_snapshots" title="Permanent link">&para;</a></h3>
+<p>Run these ALTER statements on the existing table if upgrading from v2.1 base. If created fresh in Phase 1, these columns already exist.</p>
+<p><div class="highlight"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span>
+<span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">blk_read_time</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span><span class="w"> </span><span class="c1">-- our column (source PG17: shared_blk_read_time)</span>
+
+<span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">blk_write_time</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">,</span><span class="w"> </span><span class="c1">-- our column (source PG17: shared_blk_write_time)</span>
+
+<span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">cpu_ms_est</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="p">;</span><span class="w"> </span><span class="c1">-- total_exec_time - shared_blk_read_time - shared_blk_write_time</span>
+</code></pre></div>
+-- cpu_ms_est formula (PG17): total_exec_time - shared_blk_read_time - shared_blk_write_time</p>
+<p>-- Removes disk I/O wait. Does NOT remove lock/latch/sleep waits.</p>
+<p>-- Label it as an estimate in reports.
+<em>PG17 REQUIRED CHANGE: pg_stat_statements on PostgreSQL 17+ renamed blk_read_time → shared_blk_read_time and blk_write_time → shared_blk_write_time (and added local</em>/temp_variants). The collection job above uses the PG17 names. Your monitoring.stmt_snapshots column names (blk_read_time, blk_write_time) are unchanged - only the source pg_stat_statements column names differ. On PG 16 reverse the names back. Verify your version's column names: SELECT column_name FROM information_schema.columns WHERE table_name='pg_stat_statements' AND column_name LIKE '%blk%time%';_</p>
+<h3 id="33-change-2-add-query_id-to-session_snapshots">3.3 Change 2 - Add query_id to session_snapshots<a class="headerlink" href="#33-change-2-add-query_id-to-session_snapshots" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span>
+<span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">query_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">;</span>
+<span class="o">```</span><span class="k">sql</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">ix_session_snap_qid</span>
+<span class="k">ON</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span><span class="w"> </span><span class="p">(</span><span class="n">query_id</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="34-drop-and-recreate-pg_cron-jobs">3.4 Drop and recreate pg_cron jobs<a class="headerlink" href="#34-drop-and-recreate-pg_cron-jobs" title="Permanent link">&para;</a></h3>
+<p>The two schema changes require the collection jobs to be updated. Drop existing jobs first, then recreate using the Phase 2 definitions (which already include all new columns).</p>
+<p>-- Drop existing jobs:</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="s1">&#39;collect_stmts&#39;</span><span class="p">);</span>
+<span class="o">```</span><span class="k">sql</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="s1">&#39;collect_sessions_locks_00&#39;</span><span class="p">);</span>
+<span class="o">```</span><span class="k">sql</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="s1">&#39;collect_sessions_locks_30&#39;</span><span class="p">);</span>
+<span class="o">```</span><span class="k">sql</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="s1">&#39;collect_db_stats&#39;</span><span class="p">);</span>
+</code></pre></div>
+<p>-- Verify cleared:</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">jobid</span><span class="p">,</span><span class="w"> </span><span class="n">jobname</span><span class="p">,</span><span class="w"> </span><span class="n">schedule</span><span class="p">,</span><span class="w"> </span><span class="k">database</span><span class="p">,</span><span class="w"> </span><span class="n">active</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">job</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">jobid</span><span class="p">;</span>
+</code></pre></div>
+<p>-- Then recreate using the four job definitions in Phase 2 (Sections 2.1-2.4).
+<em>Order of operations: (1) enable track_io_timing + verify compute_query_id, (2) run both ALTER TABLE statements, (3) drop and recreate jobs. If the columns do not exist when a job runs, the INSERT fails and that snapshot is lost.</em></p>
+<h3 id="35-verification-after-collection">3.5 Verification after collection<a class="headerlink" href="#35-verification-after-collection" title="Permanent link">&para;</a></h3>
+<p>-- Change 1: timing populated (non-zero if track_io_timing=on)</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">query_id</span><span class="p">,</span><span class="w"> </span><span class="n">blk_read_time</span><span class="p">,</span><span class="w"> </span><span class="n">blk_write_time</span><span class="p">,</span><span class="w"> </span><span class="n">cpu_ms_est</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">captured_at</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;10 minutes&#39;</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">blk_read_time</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+</code></pre></div>
+<p>-- Change 2: query_id populated in session_snapshots</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="n">query_id</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">captured_at</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;10 minutes&#39;</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">query_id</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+</code></pre></div>
+<h3 id="36-analysis-estimated-cpu-by-application-db-head-rollup">3.6 Analysis - Estimated CPU by application (DB Head rollup)<a class="headerlink" href="#36-analysis-estimated-cpu-by-application-db-head-rollup" title="Permanent link">&para;</a></h3>
+<p>Ranks applications by estimated CPU instead of raw wall-clock. Built-in answer to I/O-bound vs CPU-bound question:
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
+<span class="n">dbname</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="k">SUM</span><span class="p">(</span><span class="n">cpu_ms_est</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="p">)::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">cpu_est_sec</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="mi">100</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">cpu_ms_est</span><span class="p">)</span><span class="w"> </span><span class="o">/</span>
+
+<span class="k">NULLIF</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">cpu_ms_est</span><span class="p">))</span><span class="w"> </span><span class="n">OVER</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">))::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pct_cpu_est</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="k">SUM</span><span class="p">(</span><span class="n">total_exec_time</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="p">)::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">wall_sec</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="k">SUM</span><span class="p">(</span><span class="n">blk_read_time</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">blk_write_time</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="p">)::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">io_wait_sec</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="mi">100</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">blk_read_time</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">blk_write_time</span><span class="p">)</span><span class="w"> </span><span class="o">/</span>
+
+<span class="k">NULLIF</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">total_exec_time</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">))::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pct_io_wait</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">captured_at</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;24 hours&#39;</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">dbname</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">cpu_est_sec</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div></p>
+<h3 id="37-analysis-link-active-sessions-to-statement-cost-query_id-join">3.7 Analysis - Link active sessions to statement cost (query_id join)<a class="headerlink" href="#37-analysis-link-active-sessions-to-statement-cost-query_id-join" title="Permanent link">&para;</a></h3>
+<p>Shows which query_ids were most often caught actively running, and what they cost:
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
+<span class="n">ss</span><span class="p">.</span><span class="n">query_id</span><span class="p">,</span>
+
+<span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">times_caught_active</span><span class="p">,</span>
+
+<span class="k">MAX</span><span class="p">(</span><span class="n">st</span><span class="p">.</span><span class="n">query_text</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">query_text</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="k">MAX</span><span class="p">(</span><span class="n">st</span><span class="p">.</span><span class="n">cpu_ms_est</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="p">)::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">cpu_est_sec</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="k">MAX</span><span class="p">(</span><span class="n">st</span><span class="p">.</span><span class="n">blk_read_time</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="p">)::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">io_read_sec</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span><span class="w"> </span><span class="n">ss</span>
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="k">LATERAL</span><span class="w"> </span><span class="p">(</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">query_text</span><span class="p">,</span><span class="w"> </span><span class="n">cpu_ms_est</span><span class="p">,</span><span class="w"> </span><span class="n">blk_read_time</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span><span class="w"> </span><span class="n">st</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">st</span><span class="p">.</span><span class="n">query_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ss</span><span class="p">.</span><span class="n">query_id</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">st</span><span class="p">.</span><span class="n">captured_at</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">1</span>
+<span class="p">)</span><span class="w"> </span><span class="n">st</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">true</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">ss</span><span class="p">.</span><span class="n">captured_at</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;24 hours&#39;</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">ss</span><span class="p">.</span><span class="n">query_id</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
+
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ss</span><span class="p">.</span><span class="n">query_id</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">times_caught_active</span><span class="w"> </span><span class="k">DESC</span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span>
+</code></pre></div></p>
+<h3 id="38-db-head-attribution-rollup-query">3.8 DB Head Attribution Rollup Query<a class="headerlink" href="#38-db-head-attribution-rollup-query" title="Permanent link">&para;</a></h3>
+<p>Per-application breakdown of execution time, I/O, temp I/O, WAL writes, and buffer cache hit ratio:
+<div class="highlight"><pre><span></span><code><span class="k">WITH</span><span class="w"> </span><span class="n">ranked</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="k">SELECT</span>
+<span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="n">query_id</span><span class="p">,</span>
+
+<span class="k">MAX</span><span class="p">(</span><span class="n">total_exec_time</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">latest_exec_ms</span><span class="p">,</span>
+
+<span class="k">MAX</span><span class="p">(</span><span class="n">calls</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">latest_calls</span><span class="p">,</span>
+
+<span class="k">MAX</span><span class="p">(</span><span class="k">rows</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">latest_rows</span><span class="p">,</span>
+
+<span class="k">MAX</span><span class="p">(</span><span class="n">shared_blks_read</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">latest_blks_read</span><span class="p">,</span>
+
+<span class="k">MAX</span><span class="p">(</span><span class="n">shared_blks_hit</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">latest_blks_hit</span><span class="p">,</span>
+
+<span class="k">MAX</span><span class="p">(</span><span class="n">temp_blks_written</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">latest_temp_blks</span><span class="p">,</span>
+
+<span class="k">MAX</span><span class="p">(</span><span class="n">wal_bytes</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">latest_wal_bytes</span><span class="p">,</span>
+
+<span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">times_observed_active</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">captured_at</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;24 hours&#39;</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="n">query_id</span>
+<span class="p">),</span>
+
+<span class="n">totals</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+
+<span class="k">SELECT</span>
+<span class="n">application_name</span><span class="p">,</span>
+
+<span class="k">SUM</span><span class="p">(</span><span class="n">latest_exec_ms</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">grp_exec_ms</span><span class="p">,</span>
+
+<span class="k">SUM</span><span class="p">(</span><span class="n">latest_calls</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">grp_calls</span><span class="p">,</span>
+
+<span class="k">SUM</span><span class="p">(</span><span class="n">latest_rows</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">grp_rows</span><span class="p">,</span>
+
+<span class="k">SUM</span><span class="p">(</span><span class="n">latest_blks_read</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">grp_blks_read</span><span class="p">,</span>
+
+<span class="k">SUM</span><span class="p">(</span><span class="n">latest_blks_hit</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">grp_blks_hit</span><span class="p">,</span>
+
+<span class="k">SUM</span><span class="p">(</span><span class="n">latest_temp_blks</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">grp_temp_blks</span><span class="p">,</span>
+
+<span class="k">SUM</span><span class="p">(</span><span class="n">latest_wal_bytes</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">grp_wal_bytes</span><span class="p">,</span>
+
+<span class="k">SUM</span><span class="p">(</span><span class="n">times_observed_active</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">grp_active_observations</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">ranked</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">application_name</span>
+<span class="p">)</span>
+
+<span class="k">SELECT</span>
+<span class="n">application_name</span><span class="p">,</span>
+
+<span class="n">grp_calls</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="n">grp_exec_ms</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="p">)::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_exec_sec</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="mi">100</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">grp_exec_ms</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">grp_exec_ms</span><span class="p">)</span><span class="w"> </span><span class="n">OVER</span><span class="p">())::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pct_exec_time</span><span class="p">,</span>
+
+<span class="n">grp_rows</span><span class="p">,</span>
+
+<span class="n">grp_blks_read</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">disk_reads</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="mi">100</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">grp_blks_read</span><span class="w"> </span><span class="o">/</span>
+
+<span class="k">NULLIF</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">grp_blks_read</span><span class="p">)</span><span class="w"> </span><span class="n">OVER</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">))::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pct_disk_reads</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="mi">100</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">grp_blks_hit</span><span class="w"> </span><span class="o">/</span>
+
+<span class="k">NULLIF</span><span class="p">(</span><span class="n">grp_blks_read</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">grp_blks_hit</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">))::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">buffer_hit_pct</span><span class="p">,</span>
+
+<span class="n">grp_temp_blks</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">temp_io_blks</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="n">grp_wal_bytes</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1024</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1024</span><span class="p">.</span><span class="mi">0</span><span class="p">)::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">wal_mb</span><span class="p">,</span>
+
+<span class="n">ROUND</span><span class="p">((</span><span class="mi">100</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">grp_wal_bytes</span><span class="w"> </span><span class="o">/</span>
+
+<span class="k">NULLIF</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">grp_wal_bytes</span><span class="p">)</span><span class="w"> </span><span class="n">OVER</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">))::</span><span class="nb">NUMERIC</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pct_wal_writes</span><span class="p">,</span>
+
+<span class="n">grp_active_observations</span>
+
+<span class="k">FROM</span><span class="w"> </span><span class="n">totals</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">pct_exec_time</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div></p>
+<h2 id="phase-4-retention-lifecycle-3-day-rolling-window">Phase 4 - Retention Lifecycle (3-Day Rolling Window)<a class="headerlink" href="#phase-4-retention-lifecycle-3-day-rolling-window" title="Permanent link">&para;</a></h2>
+<p>All four monitoring tables grow continuously. Without a purge job the pg_loadmon database will exhaust its Azure disk allocation within days. The policy is: keep exactly 3 days of data, delete everything older. On Azure Flexible Server, retention is implemented as a daily pg_cron job - no shell scripts, no external schedulers.</p>
+<h3 id="41-data-growth-estimates">4.1 Data Growth Estimates<a class="headerlink" href="#41-data-growth-estimates" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th><strong>Table</strong></th>
+<th><strong>Rows/day</strong></th>
+<th><strong>MB/day</strong></th>
+<th><strong>3-day cap</strong></th>
+<th><strong>Collection frequency</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>stmt_snapshots</td>
+<td>~144,000</td>
+<td>~62 MB</td>
+<td>~186 MB</td>
+<td>Every 1 min via pg_cron (1,440 snapshots × ~100 queries/min)</td>
+</tr>
+<tr>
+<td>session_snapshots</td>
+<td>~57,600</td>
+<td>~11 MB</td>
+<td>~33 MB</td>
+<td>Every 30 sec via pg_cron (active sessions only)</td>
+</tr>
+<tr>
+<td>lock_snapshots</td>
+<td>negligible</td>
+<td>&lt;1 MB</td>
+<td>&lt;3 MB</td>
+<td>Every 30 sec (rows only when lock waits exist)</td>
+</tr>
+<tr>
+<td>db_snapshots</td>
+<td>~14,400</td>
+<td>~1 MB</td>
+<td>~3 MB</td>
+<td>Every 60 sec (1,440 × ~10 databases)</td>
+</tr>
+<tr>
+<td><strong>TOTAL (raw + index ~2×)</strong></td>
+<td>~216,000</td>
+<td>~75 MB</td>
+<td>~225 MB</td>
+<td>Stable ceiling once purge job is running</td>
+</tr>
+</tbody>
+</table>
+<p><em>session_snapshots and lock_snapshots only insert rows when sessions are active / when locks exist - so their actual volume is lower than the theoretical max shown above. stmt_snapshots is the dominant table on busy servers because it captures every tracked query shape every minute.</em></p>
+<h3 id="42-one-time-permission-grant">4.2 One-Time Permission Grant<a class="headerlink" href="#42-one-time-permission-grant" title="Permanent link">&para;</a></h3>
+<p>The pg_monitor_reader role has INSERT and SELECT on all monitoring tables. DELETE must be added once before the purge job will succeed:</p>
+<p>-- Run as superuser (postgres) once in pg_loadmon:</p>
+<div class="highlight"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">monitoring</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">pg_monitor_reader</span><span class="p">;</span>
+<span class="n">_Without</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="k">grant</span><span class="p">,</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">purge</span><span class="w"> </span><span class="n">pg_cron</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">fail</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">permission</span><span class="w"> </span><span class="n">denied</span><span class="w"> </span><span class="n">error</span><span class="p">.</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">collection</span><span class="w"> </span><span class="n">jobs</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="k">continue</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">tables</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">keep</span><span class="w"> </span><span class="n">growing</span><span class="p">.</span><span class="n">_</span>
+</code></pre></div>
+<h3 id="43-purge-job-pg_cron-runs-daily-at-0200">4.3 Purge Job - pg_cron (runs daily at 02:00)<a class="headerlink" href="#43-purge-job-pg_cron-runs-daily-at-0200" title="Permanent link">&para;</a></h3>
+<p>Register a single pg_cron job that deletes rows older than 3 days from all four tables, then issues VACUUM on each to reclaim pages. This runs inside PostgreSQL - no shell access needed on Azure Flexible Server.</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">schedule_in_database</span><span class="p">(</span>
+<span class="s1">&#39;purge_monitoring_3day&#39;</span><span class="p">,</span>
+
+<span class="s1">&#39;18 31 * * *&#39;</span><span class="p">,</span><span class="w"> </span><span class="c1">-- daily at 02:00 (server local time)</span>
+
+<span class="err">$$</span>
+
+<span class="c1">-- ── DELETE old rows (3-day retention) ────────────────────────────</span>
+
+<span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">captured_at</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;3 days&#39;</span><span class="p">;</span>
+
+<span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">captured_at</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;3 days&#39;</span><span class="p">;</span>
+
+<span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">captured_at</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;3 days&#39;</span><span class="p">;</span>
+
+<span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">db_snapshots</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">captured_at</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">&#39;3 days&#39;</span><span class="p">;</span>
+<span class="err">$$</span><span class="p">,</span>
+
+<span class="s1">&#39;postgres&#39;</span>
+
+<span class="p">);</span>
+</code></pre></div>
+<p><em>Why 02:00: after the nightly pg_basebackup backup window and before the morning OLTP peak. The purge deletes ~216,000 rows and VACUUMs four tables - at 02:00 this completes in seconds. Adjust the schedule if your backup window is different.</em></p>
+<h3 id="44-important-vacuum-inside-pg_cron-on-flexible-server">4.4 Important: VACUUM inside pg_cron on Flexible Server<a class="headerlink" href="#44-important-vacuum-inside-pg_cron-on-flexible-server" title="Permanent link">&para;</a></h3>
+<p><em>Azure Flexible Server restricts VACUUM inside pg_cron on some versions. If the purge job fails with 'VACUUM cannot run inside a transaction block', replace the four VACUUM statements with a single call to autovacuum or remove them entirely. Autovacuum will handle the dead tuples on its next run. The DELETE rows are still removed; only the page reclamation is delayed.</em></p>
+<p>Alternative if VACUUM fails inside pg_cron - register a separate job that calls VACUUM outside a transaction block:</p>
+<p>-- Alternative: separate VACUUM job (runs right after purge at 02:05)</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">schedule_in_database</span><span class="p">(</span>
+<span class="s1">&#39;vacuum_monitoring&#39;</span><span class="p">,</span>
+
+<span class="s1">&#39;31 18 * * *&#39;</span><span class="p">,</span>
+
+<span class="err">$$</span>
+
+<span class="k">VACUUM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span><span class="p">;</span>
+
+<span class="k">VACUUM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span><span class="p">;</span>
+
+<span class="k">VACUUM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span><span class="p">;</span>
+
+<span class="k">VACUUM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">db_snapshots</span><span class="p">;</span>
+<span class="err">$$</span><span class="p">,</span>
+
+<span class="s1">&#39;pg_loadmon&#39;</span>
+
+<span class="p">);</span>
+</code></pre></div>
+<p>-- If VACUUM still fails, remove from purge job and rely on autovacuum.</p>
+<p>-- Autovacuum fires automatically once dead tuple threshold is reached.</p>
+<p>-- Check autovacuum activity: 
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_stat_user_tables</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">schemaname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;monitoring&#39;</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">n_dead_tup</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div></p>
+<h3 id="45-verify-purge-job-is-registered">4.5 Verify Purge Job is Registered<a class="headerlink" href="#45-verify-purge-job-is-registered" title="Permanent link">&para;</a></h3>
+<p>-- Confirm the job exists:</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">jobid</span><span class="p">,</span><span class="w"> </span><span class="n">jobname</span><span class="p">,</span><span class="w"> </span><span class="n">schedule</span><span class="p">,</span><span class="w"> </span><span class="k">database</span><span class="p">,</span><span class="w"> </span><span class="n">active</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">job</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">jobname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;purge_monitoring_3day&#39;</span><span class="p">;</span>
+</code></pre></div>
+<p>-- Check last run status (after first execution):</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">jobid</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">return_message</span><span class="p">,</span><span class="w"> </span><span class="n">start_time</span><span class="p">,</span><span class="w"> </span><span class="n">end_time</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">job_run_details</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">jobid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">jobid</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">job</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">jobname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;purge_monitoring_3day&#39;</span><span class="p">)</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">start_time</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+</code></pre></div>
+<h3 id="46-verify-retention-is-working">4.6 Verify Retention Is Working<a class="headerlink" href="#46-verify-retention-is-working" title="Permanent link">&para;</a></h3>
+<p>Run after the first purge execution to confirm the window is correct and table sizes are stable:</p>
+<p>-- Oldest row in each table (should be ~3 days ago):</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;stmt_snapshots&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tbl</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">oldest</span><span class="p">,</span>
+<span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">newest</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">rows</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">stmt_snapshots</span>
+<span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;session_snapshots&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">session_snapshots</span>
+<span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;lock_snapshots&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">lock_snapshots</span>
+<span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;db_snapshots&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">captured_at</span><span class="p">),</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">monitoring</span><span class="p">.</span><span class="n">db_snapshots</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">tbl</span><span class="p">;</span>
+</code></pre></div>
+<p>-- Physical table sizes:</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">relname</span><span class="p">,</span>
+<span class="n">pg_size_pretty</span><span class="p">(</span><span class="n">pg_total_relation_size</span><span class="p">(</span><span class="n">oid</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_size</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">pg_class</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">relnamespace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">oid</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_namespace</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nspname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;monitoring&#39;</span><span class="p">)</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">relkind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;r&#39;</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">pg_total_relation_size</span><span class="p">(</span><span class="n">oid</span><span class="p">)</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
+<p><em>Expected steady state: oldest row ~3 days ago for all tables, total size across all four tables ~200-300 MB. If total_size keeps growing day-over-day, the purge job is not running - check cron.job_run_details for errors and confirm the DELETE grant was applied.</em></p>
+<h2 id="deployment-order-summary">Deployment Order Summary<a class="headerlink" href="#deployment-order-summary" title="Permanent link">&para;</a></h2>
+<p>Follow this sequence exactly. Each phase depends on the previous.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Step</strong></th>
+<th><strong>Action</strong></th>
+<th><strong>Section</strong></th>
+<th><strong>Notes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td><strong>Enable track_io_timing + verify compute_query_id</strong></td>
+<td>Phase 3 § 3.1</td>
+<td>Reload only, no restart. Must be done before ALTER TABLE.</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td><strong>Create pg_loadmon database + all four tables</strong></td>
+<td>Phase 1 § 1.3</td>
+<td>Use Phase 1 definitions (include all Phase 3 columns). Skip if upgrading - go to Step 3.</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td><strong>ALTER TABLE (upgrades only)</strong></td>
+<td>Phase 3 § 3.2-3.3</td>
+<td>Only needed if tables were created from v2.1 base. New installs skip this.</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td><strong>Grant DELETE to pg_monitor_reader</strong></td>
+<td>Phase 4 § 4.2</td>
+<td>One-time. Required for purge job.</td>
+</tr>
+<tr>
+<td><strong>5</strong></td>
+<td><strong>Register collection jobs (Jobs 1-4)</strong></td>
+<td>Phase 2 § 2.1-2.4</td>
+<td>Or drop + recreate if upgrading from v2.1.</td>
+</tr>
+<tr>
+<td><strong>6</strong></td>
+<td><strong>Register purge job</strong></td>
+<td>Phase 4 § 4.3</td>
+<td>Daily at 02:00. Runs inside pg_loadmon.</td>
+</tr>
+<tr>
+<td><strong>7</strong></td>
+<td><strong>Verify collection + Phase 3 columns</strong></td>
+<td>Phase 3 § 3.5</td>
+<td>Wait 10 minutes after jobs registered.</td>
+</tr>
+<tr>
+<td><strong>8</strong></td>
+<td><strong>Verify purge after first run</strong></td>
+<td>Phase 4 § 4.6</td>
+<td>Next day after 02:00 - check oldest row and table sizes.</td>
+</tr>
+</tbody>
+</table>
+<p><em>This document consolidates: PG_Load_Analysis_Implementation_v2.1_PaaS.docx + PG_Load_Analysis_Implementation_v2.1_PaaS_Query_id_Change.docx + Phase 4 Retention Lifecycle. Azure Flexible Server. pg_stat_statements + pg_cron. PostgreSQL 16.</em></p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="s1">&#39;collect_stmts&#39;</span><span class="p">);</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="s1">&#39;collect_sessions_locks_00&#39;</span><span class="p">);</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="s1">&#39;collect_sessions_locks_30&#39;</span><span class="p">);</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="s1">&#39;collect_db_stats&#39;</span><span class="p">);</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">cron</span><span class="p">.</span><span class="n">unschedule</span><span class="p">(</span><span class="s1">&#39;purge_monitoring_3day&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

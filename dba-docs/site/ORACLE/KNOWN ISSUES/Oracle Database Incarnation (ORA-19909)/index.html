@@ -1,0 +1,1758 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Central repository for Oracle/PostgreSQL DBA documentation">
+      
+      
+      
+      
+        <link rel="prev" href="../../../MYSQL/MySQL_Migration_Runbook/">
+      
+      
+        <link rel="next" href="../Oracle%20Database%20Lost%20Write%20Recovery%20%28ORA-00742%2CORA-00312%29/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Oracle Database Incarnation (ORA-19909) - DBA Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#oracle-database-incarnation-ora-19909" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="DBA Knowledge Base" class="md-header__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DBA Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Oracle Database Incarnation (ORA-19909)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="DBA Knowledge Base" class="md-nav__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    DBA Knowledge Base
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DBA Knowledge Base
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEPARTMENT
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    DEPARTMENT
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../DEPARTMENT/Cloud%20Database%20Objective/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Database Objective
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../DEPARTMENT/Oracle%20Database%20Solutions%20and%20Service%28Standard%20Version%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Solutions and Service(Standard Version)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LINUX
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LINUX/LINUX%20BASICS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX BASICS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LINUX/LINUX%20FIREWALL%20PERMISSIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Firewall Permissions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LINUX/LINUX%20PERMISSIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX PERMISSIONS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LINUX/LVM%20PARTITION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVM Partition Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MYSQL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    MYSQL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../MYSQL/MySQL_Migration_Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MySQL Migration Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORACLE
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ORACLE
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KNOWN ISSUES
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    KNOWN ISSUES
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Incarnation (ORA-19909)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Incarnation (ORA-19909)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cause-of-ora-19909-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause of ORA-19909 error
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Note:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#action-on-the-ora-19909-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Action on the ORA-19909 error
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#removing-orphan-entries-from-incarnation-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Removing orphan Entries from Incarnation (Optional)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Removing orphan Entries from Incarnation (Optional)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-first-make-a-backup-of-your-current-control-file-both-binary-and-trace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: First, make a backup of your current control file (both binary and trace):
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-shutdown-and-put-your-database-in-nomount-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: shutdown and put your database in nomount mode:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-using-contents-of-trace-control-file-text-recreate-the-control-file-using-the-noresetlogs-case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Using contents of trace control file text, recreate the control file using the NORESETLOGS case:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-no-recovery-is-needed-as-db-is-shutdown-gracefully" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: No recovery is needed as DB is shutdown gracefully:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-open-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Open Database
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-recheck-database-incarnation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: Recheck database incarnation.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Oracle%20Database%20Lost%20Write%20Recovery%20%28ORA-00742%2CORA-00312%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Lost Write Recovery (ORA-00742,ORA-00312)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Oracle%20Datafile%20Corruption%20Issue%20%28ORA-00600%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Datafile Corruption Issue (ORA-00600)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Oracle%20Datapump%20Slowness%28Scenario%201%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Datapump Slowness(Scenario 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Oracle%20Datapump%20Slowness%28Scenario%202%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Datapump Slowness (Scenario 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Oracle%20Moving%20Datafiles%20To%20Another%20Location/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Moving Datafiles To Another Location
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Oracle%20Ora-01012%20Not%20Logged%20On%20Error/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Ora-01012: Not Logged On Error
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORACLE CLOUD
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ORACLE CLOUD
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ORACLE%20CLOUD/Cloud%20Database%20Management%20Tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Cloud Database Management Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    POSTGRESQL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    POSTGRESQL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG LOAD ANALYSIS SETUP
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PG LOAD ANALYSIS SETUP
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../POSTGRESQL/PG%20LOAD%20ANALYSIS%20SETUP/PG%20LOAD%20ANALYSIS%20SETUP%20%5BPaaS%5D/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG LOAD ANALYSIS SETUP [PaaS]
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../POSTGRESQL/PG%20LOAD%20ANALYSIS%20SETUP/PG%20LOAD%20ANALYSIS%20SETUP%20%5BSH%5D/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG LOAD ANALYSIS SETUP [SH]
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG SELFHOSTED DEPLOYMENT RUNBOOK
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PG SELFHOSTED DEPLOYMENT RUNBOOK
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Management%20Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL Selfhosted Deployment Management Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Technical%20Deployment%20Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL Selfhosted Technical Deployment Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cause-of-ora-19909-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cause of ORA-19909 error
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Note:
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#action-on-the-ora-19909-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Action on the ORA-19909 error
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#removing-orphan-entries-from-incarnation-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Removing orphan Entries from Incarnation (Optional)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Removing orphan Entries from Incarnation (Optional)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-first-make-a-backup-of-your-current-control-file-both-binary-and-trace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: First, make a backup of your current control file (both binary and trace):
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-shutdown-and-put-your-database-in-nomount-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: shutdown and put your database in nomount mode:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-using-contents-of-trace-control-file-text-recreate-the-control-file-using-the-noresetlogs-case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Using contents of trace control file text, recreate the control file using the NORESETLOGS case:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-no-recovery-is-needed-as-db-is-shutdown-gracefully" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: No recovery is needed as DB is shutdown gracefully:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-open-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Open Database
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-recheck-database-incarnation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: Recheck database incarnation.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="oracle-database-incarnation-ora-19909">Oracle Database Incarnation (ORA-19909)<a class="headerlink" href="#oracle-database-incarnation-ora-19909" title="Permanent link">&para;</a></h1>
+<p><strong>Scenario:</strong> received ORA-19909 error when recovering a database on the backup server.</p>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">recover</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">backup</span><span class="w"> </span><span class="n">controlfile</span><span class="w"> </span><span class="k">until</span><span class="w"> </span><span class="n">cancel</span><span class="p">;</span>
+<span class="n">ORA</span><span class="o">-</span><span class="mi">00283</span><span class="p">:</span><span class="w"> </span><span class="n">recovery</span><span class="w"> </span><span class="k">session</span><span class="w"> </span><span class="n">canceled</span><span class="w"> </span><span class="n">due</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">errors</span>
+<span class="n">ORA</span><span class="o">-</span><span class="mi">19909</span><span class="p">:</span><span class="w"> </span><span class="n">datafile</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">belongs</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">orphan</span><span class="w"> </span><span class="n">incarnation</span>
+<span class="n">ORA</span><span class="o">-</span><span class="mi">01110</span><span class="p">:</span><span class="w"> </span><span class="k">data</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/system01.dbf&#39;</span>
+</code></pre></div>
+<p><strong><img alt="image-20230819-054215" src="../images/oracle-database-incarnation-ora-19909/image-20230819-054215.png" /></strong></p>
+<h2 id="cause-of-ora-19909-error">Cause of ORA-19909 error<a class="headerlink" href="#cause-of-ora-19909-error" title="Permanent link">&para;</a></h2>
+<p>Oracle cannot identify which database incarnation the file belongs to. The alert log contains more information.</p>
+<p>This backup file was taken from the production server and restoration was performed on the backup server.</p>
+<p>Check the Database Incarnation of the system on which restoration is performed.</p>
+<p>Connect to RMAN and query list incarnation of the database;</p>
+<div class="highlight"><pre><span></span><code><span class="n">RMAN</span><span class="o">&gt;</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="n">incarnation</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">database</span><span class="p">;</span>
+</code></pre></div>
+<p><strong><img alt="image-20230819-054448" src="../images/oracle-database-incarnation-ora-19909/image-20230819-054448.png" /></strong></p>
+<p>Check Database Incarnation of the production database.</p>
+<div class="highlight"><pre><span></span><code><span class="n">RMAN</span><span class="o">&gt;</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="n">incarnation</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">database</span><span class="p">;</span>
+</code></pre></div>
+<p><strong><img alt="image-20230819-054652" src="../images/oracle-database-incarnation-ora-19909/image-20230819-054652.png" /></strong></p>
+<h2 id="note">Note:<a class="headerlink" href="#note" title="Permanent link">&para;</a></h2>
+<p>(a) Current incarnation on backup system and production system are different.</p>
+<p>(b) Production server has current incarnation of 2 with Reset SCN as 1589928 while backup database has incarnation of 3 with Reset SCN as 40968356978.</p>
+<p>(c) In simple words the backup on production server was taken when incarnation of database was 2. Same backup was tried to restore on backup database which has incarnation of 3.</p>
+<h2 id="action-on-the-ora-19909-error">Action on the ORA-19909 error<a class="headerlink" href="#action-on-the-ora-19909-error" title="Permanent link">&para;</a></h2>
+<p>Restore a backup file that belongs to either the current or a prior incarnation of the database. If you are using RMAN to restore, RMAN will automatically select the correct backup.</p>
+<p>Production database has incarnation 2 at the time of backup, make incarnation of backup database to 2.</p>
+<p>Connect to RMAN on the backup database and reset incarnation to 2.</p>
+<div class="highlight"><pre><span></span><code><span class="n">RMAN</span><span class="o">&gt;</span><span class="w"> </span><span class="k">reset</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">incarnation</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+</code></pre></div>
+<p><strong><img alt="image-20230819-055417" src="../images/oracle-database-incarnation-ora-19909/image-20230819-055417.png" /></strong></p>
+<p>Once incarnation has been reset, start database recovery.</p>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">recover</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">backup</span><span class="w"> </span><span class="n">controlfile</span><span class="w"> </span><span class="k">until</span><span class="w"> </span><span class="n">cancel</span><span class="p">;</span>
+</code></pre></div>
+<p><strong><img alt="image-20230911-080040" src="../images/oracle-database-incarnation-ora-19909/image-20230911-080040.png" /></strong></p>
+<h2 id="removing-orphan-entries-from-incarnation-optional">Removing orphan Entries from Incarnation (Optional)<a class="headerlink" href="#removing-orphan-entries-from-incarnation-optional" title="Permanent link">&para;</a></h2>
+<p>Once the restoration system is set to Incarnation 2 we do not require Incarnation 3 anymore.</p>
+<p>Steps to remove entry from Incarnation List:</p>
+<h3 id="step-1-first-make-a-backup-of-your-current-control-file-both-binary-and-trace">Step 1: First, make a backup of your current control file (both binary and trace):<a class="headerlink" href="#step-1-first-make-a-backup-of-your-current-control-file-both-binary-and-trace" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">backup</span><span class="w"> </span><span class="n">controlfile</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">trace</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="s1">&#39;/u01/control.txt&#39;</span><span class="p">;</span>
+<span class="k">Database</span><span class="w"> </span><span class="n">altered</span>
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">backup</span><span class="w"> </span><span class="n">controlfile</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="s1">&#39;/u01/control.ctl&#39;</span><span class="p">;</span>
+<span class="k">Database</span><span class="w"> </span><span class="n">altered</span>
+</code></pre></div>
+<h3 id="step-2-shutdown-and-put-your-database-in-nomount-mode">Step 2: shutdown and put your database in nomount mode:<a class="headerlink" href="#step-2-shutdown-and-put-your-database-in-nomount-mode" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">shutdown</span><span class="w"> </span><span class="k">immediate</span><span class="p">;</span>
+<span class="k">Database</span><span class="w"> </span><span class="n">closed</span><span class="p">.</span>
+<span class="k">Database</span><span class="w"> </span><span class="n">dismounted</span><span class="p">.</span>
+<span class="n">ORACLE</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="n">shut</span><span class="w"> </span><span class="n">down</span><span class="p">.</span>
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">startup</span><span class="w"> </span><span class="n">nomount</span><span class="p">;</span>
+<span class="n">ORACLE</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="n">started</span><span class="p">.</span>
+<span class="n">Total</span><span class="w"> </span><span class="k">System</span><span class="w"> </span><span class="k">Global</span><span class="w"> </span><span class="n">Area</span><span class="w"> </span><span class="mi">627732480</span><span class="w"> </span><span class="n">bytes</span>
+<span class="n">Fixed</span><span class="w"> </span><span class="k">Size</span><span class="w"> </span><span class="mi">1346756</span><span class="w"> </span><span class="n">bytes</span>
+<span class="k">Variable</span><span class="w"> </span><span class="k">Size</span><span class="w"> </span><span class="mi">373293884</span><span class="w"> </span><span class="n">bytes</span>
+<span class="k">Database</span><span class="w"> </span><span class="n">Buffers</span><span class="w"> </span><span class="mi">247463936</span><span class="w"> </span><span class="n">bytes</span>
+<span class="n">Redo</span><span class="w"> </span><span class="n">Buffers</span><span class="w"> </span><span class="mi">5627904</span><span class="w"> </span><span class="n">bytes</span>
+</code></pre></div>
+<h3 id="step-3-using-contents-of-trace-control-file-text-recreate-the-control-file-using-the-noresetlogs-case">Step 3: Using contents of trace control file text, recreate the control file using the NORESETLOGS case:<a class="headerlink" href="#step-3-using-contents-of-trace-control-file-text-recreate-the-control-file-using-the-noresetlogs-case" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="n">CONTROLFILE</span><span class="w"> </span><span class="n">REUSE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="ss">&quot;GINESYS&quot;</span><span class="w"> </span><span class="n">NORESETLOGS</span><span class="w"> </span><span class="n">ARCHIVELOG</span>
+<span class="n">MAXLOGFILES</span><span class="w"> </span><span class="mi">16</span>
+<span class="n">MAXLOGMEMBERS</span><span class="w"> </span><span class="mi">3</span>
+<span class="n">MAXDATAFILES</span><span class="w"> </span><span class="mi">100</span>
+<span class="n">MAXINSTANCES</span><span class="w"> </span><span class="mi">8</span>
+<span class="n">MAXLOGHISTORY</span><span class="w"> </span><span class="mi">13080</span>
+<span class="n">LOGFILE</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/redo01.log&#39;</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="w"> </span><span class="n">BLOCKSIZE</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/redo02.log&#39;</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="w"> </span><span class="n">BLOCKSIZE</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/redo03.log&#39;</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="w"> </span><span class="n">BLOCKSIZE</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/redo04.log&#39;</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="w"> </span><span class="n">BLOCKSIZE</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/redo05.log&#39;</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="w"> </span><span class="n">BLOCKSIZE</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/redo06.log&#39;</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="w"> </span><span class="n">BLOCKSIZE</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/redo07.log&#39;</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="w"> </span><span class="n">BLOCKSIZE</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/redo08.log&#39;</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="w"> </span><span class="n">BLOCKSIZE</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">9</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/redo09.log&#39;</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="w"> </span><span class="n">BLOCKSIZE</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="s1">&#39;/u01/Oracle/oradata/GINESYS/redo10.log&#39;</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">100</span><span class="n">M</span><span class="w"> </span><span class="n">BLOCKSIZE</span><span class="w"> </span><span class="mi">512</span>
+<span class="err">\</span><span class="c1">-- STANDBY LOGFILE</span>
+<span class="n">DATAFILE</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/system01.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/GIN_TS_SUMMARY_01&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/sysaux01.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/undotbs01.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/GIN_TS_TX_DATA_01&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/users01.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/GIN_TS_NOLOGGING_01&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/GINOLAP01&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/INDX01&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/undotbs03.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/undotbs02.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/users10.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/users09.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/users08.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/users07.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/users06.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/users05.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/users04.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/users03.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/users02.dbf&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/INDX07&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/INDX06&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/INDX05&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/INDX04&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/INDX03&#39;</span><span class="p">,</span>
+<span class="s1">&#39;/u01/Oracle/oradata/GINESYS/INDX02&#39;</span>
+<span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">WE8MSWIN1252</span><span class="p">;</span>
+</code></pre></div>
+<h3 id="step-4-no-recovery-is-needed-as-db-is-shutdown-gracefully">Step 4: No recovery is needed as DB is shutdown gracefully:<a class="headerlink" href="#step-4-no-recovery-is-needed-as-db-is-shutdown-gracefully" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">RECOVER</span><span class="w"> </span><span class="k">DATABASE</span><span class="p">;</span>
+<span class="n">ORA</span><span class="o">-</span><span class="mi">00283</span><span class="p">:</span><span class="w"> </span><span class="n">recovery</span><span class="w"> </span><span class="k">session</span><span class="w"> </span><span class="n">canceled</span><span class="w"> </span><span class="n">due</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">errors</span>
+<span class="n">ORA</span><span class="o">-</span><span class="mi">00264</span><span class="p">:</span><span class="w"> </span><span class="k">no</span><span class="w"> </span><span class="n">recovery</span><span class="w"> </span><span class="n">required</span>
+</code></pre></div>
+<h3 id="step-5-open-database">Step 5: Open Database<a class="headerlink" href="#step-5-open-database" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">open</span><span class="p">;</span>
+<span class="k">Database</span><span class="w"> </span><span class="n">altered</span><span class="p">.</span>
+</code></pre></div>
+<p><strong>Note:</strong> Don't forget to also recreate any temporary tablespace datafile from control file trace text, set up the default RMAN configurations or to re-catalog any other information that is kept in control file.</p>
+<h3 id="step-6-recheck-database-incarnation">Step 6: Recheck database incarnation.<a class="headerlink" href="#step-6-recheck-database-incarnation" title="Permanent link">&para;</a></h3>
+<p><strong>Conclusion:</strong> By systematically addressing the causes and actions related to the ORA-19909 error, you can ensure a successful recovery process and maintain the integrity of your database environment. Proactive measures such as aligning database incarnations and meticulous recovery procedures contribute to a robust and dependable database management approach.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

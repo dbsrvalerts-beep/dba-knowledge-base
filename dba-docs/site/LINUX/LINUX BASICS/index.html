@@ -1,0 +1,2569 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Central repository for Oracle/PostgreSQL DBA documentation">
+      
+      
+      
+      
+        <link rel="prev" href="../../DEPARTMENT/Oracle%20Database%20Solutions%20and%20Service%28Standard%20Version%29/">
+      
+      
+        <link rel="next" href="../LINUX%20FIREWALL%20PERMISSIONS/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>LINUX BASICS - DBA Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#linux-basics" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="DBA Knowledge Base" class="md-header__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DBA Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              LINUX BASICS
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="DBA Knowledge Base" class="md-nav__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    DBA Knowledge Base
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DBA Knowledge Base
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEPARTMENT
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    DEPARTMENT
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../DEPARTMENT/Cloud%20Database%20Objective/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Database Objective
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../DEPARTMENT/Oracle%20Database%20Solutions%20and%20Service%28Standard%20Version%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Solutions and Service(Standard Version)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LINUX
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX BASICS
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX BASICS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#types-of-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TYPES OF SHELL
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basic-command-line-utility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BASIC COMMAND LINE UTILITY
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#permission-on-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PERMISSION ON FILES
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-change-these-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HOW TO CHANGE THESE PERMISSIONS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firewall-configuration-gaurav-sir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firewall Configuration (Gaurav Sir)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LINUX%20FIREWALL%20PERMISSIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Firewall Permissions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LINUX%20PERMISSIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX PERMISSIONS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LVM%20PARTITION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVM Partition Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MYSQL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    MYSQL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MYSQL/MySQL_Migration_Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MySQL Migration Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORACLE
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ORACLE
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KNOWN ISSUES
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    KNOWN ISSUES
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Incarnation%20%28ORA-19909%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Incarnation (ORA-19909)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Lost%20Write%20Recovery%20%28ORA-00742%2CORA-00312%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Lost Write Recovery (ORA-00742,ORA-00312)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Datafile%20Corruption%20Issue%20%28ORA-00600%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Datafile Corruption Issue (ORA-00600)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Datapump%20Slowness%28Scenario%201%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Datapump Slowness(Scenario 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Datapump%20Slowness%28Scenario%202%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Datapump Slowness (Scenario 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Moving%20Datafiles%20To%20Another%20Location/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Moving Datafiles To Another Location
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Ora-01012%20Not%20Logged%20On%20Error/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Ora-01012: Not Logged On Error
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORACLE CLOUD
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ORACLE CLOUD
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ORACLE/ORACLE%20CLOUD/Cloud%20Database%20Management%20Tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Cloud Database Management Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    POSTGRESQL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    POSTGRESQL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG LOAD ANALYSIS SETUP
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PG LOAD ANALYSIS SETUP
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../POSTGRESQL/PG%20LOAD%20ANALYSIS%20SETUP/PG%20LOAD%20ANALYSIS%20SETUP%20%5BPaaS%5D/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG LOAD ANALYSIS SETUP [PaaS]
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../POSTGRESQL/PG%20LOAD%20ANALYSIS%20SETUP/PG%20LOAD%20ANALYSIS%20SETUP%20%5BSH%5D/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG LOAD ANALYSIS SETUP [SH]
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG SELFHOSTED DEPLOYMENT RUNBOOK
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PG SELFHOSTED DEPLOYMENT RUNBOOK
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Management%20Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL Selfhosted Deployment Management Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Technical%20Deployment%20Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL Selfhosted Technical Deployment Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#types-of-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TYPES OF SHELL
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basic-command-line-utility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BASIC COMMAND LINE UTILITY
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#permission-on-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PERMISSION ON FILES
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-change-these-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HOW TO CHANGE THESE PERMISSIONS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firewall-configuration-gaurav-sir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firewall Configuration (Gaurav Sir)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="linux-basics">LINUX BASICS<a class="headerlink" href="#linux-basics" title="Permanent link">&para;</a></h1>
+<p>SHELL: shell is a command intrepeter which intrepets the command that gives you and conveys them to the kernel.</p>
+<h3 id="types-of-shell">TYPES OF SHELL<a class="headerlink" href="#types-of-shell" title="Permanent link">&para;</a></h3>
+<p>1.BOURN SHELL<br />
+2.KORN SHELL<br />
+3.C SHELL</p>
+<h3 id="basic-command-line-utility">BASIC COMMAND LINE UTILITY<a class="headerlink" href="#basic-command-line-utility" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Who list all the connected users</li>
+<li>Whoami list the current connected user</li>
+<li>
+<p>ls list all the files in current directory</p>
+</li>
+<li>
+<p>ls -l list the files with 9 columns</p>
+</li>
+<li>ls -a list all the file directorie,hidden or unhidded files and directories</li>
+<li>ls -lt list all the file acoordingly the time, the latest created file will be on top</li>
+<li>ls -ltr list all the full in the descending order like the latest created file will be on bottom(r means reverse)</li>
+<li>ls p* list all the files that filename start with p</li>
+<li>ls *.backup list all the files that end with *.backup extension</li>
+<li>ls -ltr -full-time</li>
+<li>-R recursively</li>
+<li>ls -ap|grep -v "/"|grep "^\." (used to display the hidden files)</li>
+<li>ls -ltR|grep ^- (used to list the total files in user home directory)</li>
+<li>lsof</li>
+<li>
+<p>ls -l --time-style="+%d %b"|grep "21 Dec"</p>
+</li>
+<li>
+<p>touch create a empty file<br />
+   . stat filename display the access, creation , modification , change time of file</p>
+</li>
+<li>cat &gt; filename create file append data and press CTRL D for save</li>
+<li>cat filename for viewing the contents of the data</li>
+<li>cat &gt;&gt; filename for appending the data in existing file and press CTRL D for save</li>
+<li>cat file1 file2 &gt; file3 it will redirect the output of file1 and file2 in file3( use &gt;&gt; for appending)</li>
+<li>cp copy the file from one destination to another directory</li>
+<li>rm remove the file or directory<br />
+   . -r it will delete file or directory recursively<br />
+   . -i before deletion the file or directory it will ask for confirmation<br />
+   . -f it will delete forcefully</li>
+<li>mv mv command can use for renaming the filename or transferring from one dest to another dest</li>
+<li>ln create a links of files<br />
+   . ln file 1 fil2 (hard link)<br />
+   . ln -s file1 file2 ( soft link)</li>
+</ol>
+<h3 id="permission-on-files">PERMISSION ON FILES<a class="headerlink" href="#permission-on-files" title="Permanent link">&para;</a></h3>
+<p>The first field of ls -l signify the permissions on the files and also signify who can access the file. A set of nine characters denotes the file permissions.</p>
+<p>There are three type of permissions that apply on three denotes(USERS,GROUP,OTHERS)</p>
+<ul>
+<li>READ values 4</li>
+<li>WRITE values 2</li>
+<li>EXECUTE value 1</li>
+</ul>
+<p><img alt="image" src="../images/linux-overview-basics/image1.png" /></p>
+<p>NOW TAKING THE EXAMPLE of sh.sh file</p>
+<ul>
+<li>The first rwx denotes that the USER have the read , write and execute permission on the sh.sh file</li>
+<li>The second r-- denotes that the GROUP has only read permission on sh.sh file it is means that group members can only read file . it can neither change the contents of file nor execute file</li>
+<li>The last r-x denotes that the OTHER user has only the privilege of read and execute on the sh.sh . it has no privilege to of write and changing the contents of file.</li>
+<li>r+w+x weightage is 4+2+1=7</li>
+<li>r weightage is 4</li>
+<li>r+x weightage is 4+1=5</li>
+</ul>
+<h3 id="how-to-change-these-permissions">HOW TO CHANGE THESE PERMISSIONS<a class="headerlink" href="#how-to-change-these-permissions" title="Permanent link">&para;</a></h3>
+<ul>
+<li>chmod chmod (change mode) utility to change the permissions of files<br />
+  . chmod 700 file1 rwx for user , no permission for group and other<br />
+  . chmod 574 rx for user, rwx for group and r for other user<br />
+  . chmod +x file1 it will append the execute permission on the existing permission to USER,GROUP and OTHER<br />
+  . chmod gu+r,uo-w file1 it is means that it will append the read permissions on the GROUP and USER but uo-w remove the permission of write from USER and OTHER<br />
+  .chmod go=r,u=rw file1 it is means that it will remove all the permissions from GROUP and OTHER and assign only the read permission and u=rw will remove all the permission from USER and assign only read,write permission</li>
+<li>UMASK command<br />
+  The umask command is essential for controlling file and directory permissions, helping manage security by restricting access to newly created files and directories. Adjusting it properly ensures that files have the appropriate level of access based on your environment.<br />
+  <br/>by default the permission of the file is 666<br />
+  and the directory permission is 777<br />
+  and the umask has the values 0022 ( first zero denotes the octal number)</li>
+<li><strong>Common umask Values</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>umask</th>
+<th>File Permissions</th>
+<th>Directory Permissions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0000</td>
+<td>666 (rw-rw-rw-)</td>
+<td>777 (rwxrwxrwx)</td>
+<td>No restrictions</td>
+</tr>
+<tr>
+<td>0002</td>
+<td>664 (rw-rw-r--)</td>
+<td>775 (rwxrwxr-x)</td>
+<td>Typical for shared group environments</td>
+</tr>
+<tr>
+<td>0022</td>
+<td>644 (rw-r--r--)</td>
+<td>755 (rwxr-xr-x)</td>
+<td>Default for most systems</td>
+</tr>
+<tr>
+<td>0077</td>
+<td>600 (rw-------)</td>
+<td>700 (rwx------)</td>
+<td>Private files and directories</td>
+</tr>
+</tbody>
+</table>
+<p>The umask decide which file and directory have the permission after the creation</p>
+<ul>
+<li>STICKY BIT<br />
+  The <strong>sticky bit</strong> in Linux is a permission setting applied to directories to control deletion rights. When the sticky bit is set, only the <strong>owner of the file, the owner of the directory, or the root user</strong> can delete or modify the files inside that directory, even if other users have write permissions.</li>
+</ul>
+<p>This is commonly used for directories like /tmp, where multiple users have write access, but no one should be allowed to delete or modify other users' files.</p>
+<p><strong>How to Use the Sticky Bit</strong></p>
+<p><strong>Set the Sticky Bit</strong></p>
+<p>You can set the sticky bit using the chmod command with the +t option or by using octal mode.</p>
+<p><strong>Using chmod +t</strong>:</p>
+<div class="highlight"><pre><span></span><code>chmod<span class="w"> </span>+t<span class="w"> </span>directory_name
+</code></pre></div>
+<p><strong>Using Octal Mode</strong>: The sticky bit is represented by the digit 1 in the <strong>most significant octal place</strong>:</p>
+<p>chmod 1755 directory_name</p>
+<p><strong>Verify the Sticky Bit</strong></p>
+<p>Use the <code>ls -ld</code> command to check directory permissions. When the sticky bit is set, you'll see a <strong>t</strong> at the end of the permissions:</p>
+<div class="highlight"><pre><span></span><code>ls<span class="w"> </span>-ld<span class="w"> </span>directory_name
+</code></pre></div>
+<p>Example output:</p>
+<div class="highlight"><pre><span></span><code>drwxrwxrwt<span class="w"> </span><span class="m">2</span><span class="w"> </span>root<span class="w"> </span>root<span class="w"> </span><span class="m">4096</span><span class="w"> </span>Dec<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="m">15</span>:30<span class="w"> </span>/tmp
+</code></pre></div>
+<p>The t at the end indicates the sticky bit is active.</p>
+<p>/tmp is a real-world example of a directory with the sticky bit set.</p>
+<p><strong>Sticky Bit Example</strong></p>
+<ul>
+<li><strong>1. Create a Shared Directory</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>/shared
+chmod<span class="w"> </span><span class="m">777</span><span class="w"> </span>/shared
+</code></pre></div>
+<p>This creates a directory /shared where all users have read, write, and execute permissions.</p>
+<p><strong>2. Set the Sticky Bit</strong></p>
+<div class="highlight"><pre><span></span><code>chmod<span class="w"> </span>+t<span class="w"> </span>/shared
+</code></pre></div>
+<p>Now only the owner of a file can delete it, even though other users can create files in /shared.</p>
+<p><strong>3. Test the Sticky Bit</strong></p>
+<p><strong>Step 1: User A creates a file</strong></p>
+<div class="highlight"><pre><span></span><code>su<span class="w"> </span>-<span class="w"> </span>userA
+<span class="nb">cd</span><span class="w"> </span>/shared
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;This is UserA&#39;s file&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>fileA.txt
+</code></pre></div>
+<p><strong>Step 2: User B tries to delete the file</strong></p>
+<div class="highlight"><pre><span></span><code>su<span class="w"> </span>-<span class="w"> </span>userB
+<span class="nb">cd</span><span class="w"> </span>/shared
+rm<span class="w"> </span>fileA.txt
+</code></pre></div>
+<p>Without the sticky bit: User B can delete the file because /shared has write permissions for everyone.</p>
+<p>With the sticky bit: User B cannot delete the file. They will see an error like:</p>
+<div class="highlight"><pre><span></span><code>rm: cannot remove &#39;fileA.txt&#39;: Operation not permitted
+</code></pre></div>
+<p><strong>Step 3: User A deletes their file</strong></p>
+<div class="highlight"><pre><span></span><code>su<span class="w"> </span>-<span class="w"> </span>userA
+rm<span class="w"> </span>fileA.txt
+</code></pre></div>
+<ul>
+<li>CHOWN AND CHGRP command (ROOT COMMANDS)</li>
+</ul>
+<p>The chown and chgrp commands in Linux are used to modify file ownership and group ownership.<br />
+<br/>The chown (change owner) command changes the ownership and group of a file or directory.<br />
+<br/>```bash
+chown john file.txt
+chown john:developers file.txt
+chown -R john:developers /data
+<div class="highlight"><pre><span></span><code>&lt;br/&gt;
+
+- The chgrp (change group) command changes the group ownership of a file or directory.  
+  &lt;br/&gt;```bash
+chgrp developers file.txt
+chgrp -R developers /data
+</code></pre></div></p>
+<ol>
+<li>mkdir make a directory<br />
+   . mkdir -p /u01/archive/psql create a directory recursively<br />
+   . mkdir -m 754 batch create a directory with a default permissions of 754</li>
+<li>rmdir removes the directory<br />
+   . rmdir -p /u01/archive/psql removes the directory recursively<br />
+   . rmdir /u01/archive/psql removes the child directory(psql)</li>
+<li>tree used to display the hierarchy of directory and files</li>
+<li>cd used to change directory<br />
+   . cd ~ switch to home directory of current user<br />
+   . cd / switch to the root directory<br />
+   . cd - switch to latest previous directory you were in before</li>
+<li>logname display current username</li>
+<li>pwd displays current working directory</li>
+<li>tty displays the current terminal that you are working</li>
+<li>date display the current date and time<br />
+   date '+DATE %d-%m-%y %n TIME +%HH24_%MM_%SS'<br />
+   DATE 05-12-24<br />
+   TIME +22H24_38M_25S<br />
+   <br/>. date -d "+45 days" next 45 days<br />
+   . date -d "+45 days -ago"<br />
+   . date -date="45 days"</li>
+<li>lsblk display the information about block devices<br />
+   . lsblk -a<br />
+   . lsblk -f</li>
+<li>df (disk free) display the information about the disk usage and free of your filesystem<br />
+    . df -h<br />
+    . df -i<br />
+    . df -T<br />
+    . df -ivt</li>
+<li>du ( disk usage) display the information about which files and directories exhaust the amount of memory<br />
+    . du -h<br />
+    . du .<br />
+    . du -s<br />
+    . du /tmp</li>
+</ol>
+<p>Ulimit after setting the ulimit the users cannot create the files and directory above the ulitmit.<br />
+. ulimit 1 it is means that the user cannot create the file whose is bigger than 512 bytes<br />
+. ulimit 2097152 it is means that the user cannot create file bigger that 2097152 bytes 0r 2048 KB<br />
+<br/>- <strong>File size (-f)</strong>: Maximum size of files a process can create.</p>
+<ul>
+<li>
+<p><strong>Open files (-n)</strong>: Maximum number of open file descriptors per process.</p>
+</li>
+<li>
+<p><strong>Stack size (-s)</strong>: Maximum size of the process's stack.</p>
+</li>
+<li>
+<p><strong>CPU time (-t)</strong>: Maximum CPU time a process can use.</p>
+</li>
+<li>
+<p><strong>Virtual memory (-v)</strong>: Maximum amount of virtual memory a process can use.</p>
+</li>
+<li>
+<p><strong>Number of processes (-u)</strong>: Maximum number of processes a user can have.</p>
+</li>
+<li>
+<ul>
+<li><strong>Core file size (-c)</strong>: Maximum size of a core file (for debugging).<br />
+   <br/># Set maximum number of open files<br />
+   ulimit -n 65535<br />
+   <br/># Set maximum stack size<br />
+   ulimit -s 8192<br />
+   # Set maximum virtual memory<br />
+   ulimit -v unlimited<br />
+   <br/></li>
+</ul>
+</li>
+<li>passwd password command is used to change the password of the users . by default it is a root level command but normal can change its own password because there is a special type of permission (SUID) set on psswd command that normal user can change its password</li>
+</ul>
+<p>. which passwd (command)<br />
+. cd /usr/bin<br />
+. ls -ltr passwd</p>
+<p><img alt="image" src="../images/linux-overview-basics/image2.png" /></p>
+<p>As seen above image the user has <strong>rwsr</strong> s denotes the SUID special type of permission. Due to this SUID the normal user can change only own password.</p>
+<p>/etc/passwd file contains the information about all the users accounts.</p>
+<p>It is a plain text file that can be read by all users but is writable only by the superuser (root).</p>
+<p>john:x:1000:1000:John Doe:/home/john:/bin/bash</p>
+<ul>
+<li><strong>username</strong>: john</li>
+<li><strong>x</strong>: Password is stored in /etc/shadow.</li>
+<li><strong>UID</strong>: 1000 (unique user ID for john).</li>
+<li><strong>GID</strong>: 1000 (primary group ID for john).</li>
+<li><strong>comment</strong>: John Doe (optional user information).</li>
+<li><strong>home_directory</strong>: /home/john (default location for user's files).</li>
+<li><strong>shell</strong>: /bin/bash (default shell for the user).</li>
+</ul>
+<p>The /etc/shadow file in Linux is a secure system file that contains encrypted password information for user accounts, along with additional settings related to password aging and expiration.</p>
+<p>Unlike /etc/passwd, it is accessible only by the root user.</p>
+<ul>
+<li>cal command used diplay the calendar</li>
+<li>file command used to display the type of file and directories whether it is file, directory, ascii file, encrypted file or empty file</li>
+</ul>
+<p><img alt="image" src="../images/linux-overview-basics/image3.png" /></p>
+<ul>
+<li>wc it is a simple and usage that count number of lines , word and character in the given file.<br />
+  . wc -l<br />
+  . wc -w<br />
+  . wc -c<br />
+  . wc -lwc</li>
+<li>sort The sort command in Linux is a text-processing utility used to sort lines in a file or from standard input. It organizes the input based on various criteria, such as alphabetically, numerically, or in reverse order.<br />
+  . sort file.txt sort the lines in alphabetically ASC (user -r for DESC) NOTE: sort according to the first character of line<br />
+  . sort -n file.txt sort numerically ASC( use -r for DESC)<br />
+  .</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-n</td>
+<td>Sort numerically (e.g., 2 &lt; 10 &lt; 100).</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>Reverse the sorting order.</td>
+</tr>
+<tr>
+<td>-k FIELD</td>
+<td>Sort based on a specific field in the line.</td>
+</tr>
+<tr>
+<td>-u</td>
+<td>Output only unique lines (combine with other options like -n).</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>Ignore case while sorting.</td>
+</tr>
+<tr>
+<td>-b</td>
+<td>Ignore leading blanks in lines.</td>
+</tr>
+<tr>
+<td>-o FILE</td>
+<td>Write output to a specific file.</td>
+</tr>
+<tr>
+<td>-c</td>
+<td>Check if the file is sorted; output errors if not.</td>
+</tr>
+<tr>
+<td>--help</td>
+<td>Display help for the sort command.</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Cut used extract the specified column from the file</li>
+</ul>
+<p>. cut -f 2 file.txt extract the second field of the file<br />
+. cut -f 2,5 file.txt extract the second and fifth field of the file<br />
+. cut -f 2,-5 file.txt extract the field from 2<sup>nd</sup> to 5<sup>th</sup> from the file<br />
+. cut -c 2,10 file.txt extract the character from the line of the file<br />
+<strong>NOTE:</strong><br />
+if the file is delimited by any symbol(:,;_) or any thing so you can use the delimeter<br />
+take a example of /etc/passwd file it is delimited by ":"<br />
+. cat /etc/passwd|cut -d":" -f3 I have cut the 3<sup>rd</sup> column of /etc/passwd file</p>
+<p>. cat /etc/passwd|cut -d":" -f3-7</p>
+<ul>
+<li>grep(globally search regular expression print)<br />
+  with the help of grep you can search a patter , string , word in a file<br />
+  <br/>. grep "string" file.txt<br />
+  . grep -i "string" file.txt (i means ignore case)<br />
+  . grep "string" -n file.txt ( -n represent the line number in accordance with matched string)<br />
+  . grep -c "string" file.txt ( -c counts the matched strings)<br />
+  . grep -l "string" * ( -l displays all the files that have matched string)<br />
+  . grep -n "string" ( search the string in every file and also display the number line of the string in the file)<br />
+  . grep -v ( -v verbose)<br />
+  . grep -w ( display the particular word)<br />
+  . grep -w -o ( display the only word not the full line)<br />
+  . grep -v "^\$" (display only the readable lines)<br />
+  . grep "^\$" filename (display the blank lines)<br />
+  . grep -e "string1" -e "string2" (you can search the multiple strings)</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-i</td>
+<td>Ignore case during the search.</td>
+</tr>
+<tr>
+<td>-r or -R</td>
+<td>Recursively search directories.</td>
+</tr>
+<tr>
+<td>-l</td>
+<td>List only the names of files containing the pattern (not the matching lines).</td>
+</tr>
+<tr>
+<td>-n</td>
+<td>Show the line numbers along with matching lines.</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>Invert the match, i.e., display lines that do <em>not</em> contain the pattern.</td>
+</tr>
+<tr>
+<td>-c</td>
+<td>Count the number of matching lines for each file.</td>
+</tr>
+<tr>
+<td>-H</td>
+<td>Show the file name in the output (useful when searching multiple files).</td>
+</tr>
+<tr>
+<td>-o</td>
+<td>Show only the matched parts of the line, not the entire line.</td>
+</tr>
+<tr>
+<td>-w</td>
+<td>Match whole words only (the pattern must be surrounded by word boundaries).</td>
+</tr>
+<tr>
+<td>-A NUM</td>
+<td>Display NUM lines after the matched line.</td>
+</tr>
+<tr>
+<td>-B NUM</td>
+<td>Display NUM lines before the matched line.</td>
+</tr>
+<tr>
+<td>-C NUM</td>
+<td>Display NUM lines before and after the matched line (a context window).</td>
+</tr>
+<tr>
+<td>--color</td>
+<td>Highlight the matching text (usually used in combination with grep output).</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>dd command used to converting the data type<br />
+  from ascii to encryption and lower to upper case<br />
+  . dd if=file.txt of=newfile.txt conv=ebcdic (convert the file into encryption and user vice versa).<br />
+  . dd if=file conv=ebcdic ( covert the file without making a new file)</li>
+</ul>
+<p>EBCDIC (Extended Binary Coded Decimal Interchange Code)</p>
+<ul>
+<li>
+<p>head display the first few lines of the file<br />
+  . head file.txt (display the first 10 lines)<br />
+  . head -n 20 file.txt (display the first 20 lines)</p>
+</li>
+<li>
+<p>tail display the last few lines<br />
+  . tail file.txt display the last ten line<br />
+  . tail -n 5 display the last 5 lines<br />
+  <br/>tail -f /var/log/syslog | more wait for append the data<br />
+  <br/></p>
+</li>
+<li>more The more command in Linux is a pager program used to view the contents of a file one screen at a time. It allows users to scroll through the content interactively, making it easier to read large files or long output from commands<br />
+  <br/>. more file.txt<br />
+  . more +20 file.txt To start viewing a file from line 20.<br />
+  . more -15 file.txt To set the number of lines displayed per screen to 15</li>
+</ul>
+<p>COMPRESSION</p>
+<ul>
+<li>compress (it is used to compress the size of the file)<br />
+  <br/>. compress -v file.txt (compress the size of the file with .<strong>Z</strong> extension but you can see tha data after compression)<br />
+  . uncompress file.txt (uncompress the file )</li>
+<li>gzip file.txt ( it compress the size of the file with .<strong>gz</strong> extension as well it will encrypt the data of the file )<br />
+  <br/>. zcat file.txt.gz ( for seeing the contents of the file)<br />
+  .gunzip file.txt.gz (uncompress and decrypt the file)</li>
+<li>bzip2 (used to compress and decrypt the file it is more preferable and powerfull the compression command )<br />
+  <br/>. bzcat file.txt.bz2 ( seeing the contents of the file)<br />
+  . bunzip2 file.txt.bz2 (decompress the file)</li>
+<li>
+<p>zip ( used to archive multiple files )<br />
+  <br/>. zip archive.zip file1.txt file2.txt file3.txt<br />
+  . zip -r archive.zip directory_name<br />
+  . unzip archive.zip</p>
+</li>
+<li>
+<p>tar<br />
+  <br/>. tar -cvf newfile file.txt<br />
+  . tar -xvf newfile /home/postgres<br />
+  <br/></p>
+</li>
+<li>
+<p>PIPING<br />
+  <br/>Piping in Linux refers to the process of passing the output of one command as input to another command. This is done using the pipe operator (|). Piping allows you to combine multiple commands to perform complex tasks more efficiently by passing data between them<br />
+  <br/>. ls | wc -l<br />
+  . ps -aux | grep "apache"<br />
+  . ps aux | sort -n</p>
+</li>
+<li>
+<p>tee<br />
+  <br/>The tee command in Linux is used to read the input from standard input (stdin) and write it to both standard output (stdout) and one or more files simultaneously. It is especially useful in pipelines to capture the intermediate or final output while still displaying it on the terminal.<br />
+  <br/>ex. ls -ltr|tee file1 file2|sort -k9 -o file3<br />
+  <br/></p>
+</li>
+<li>Vi editor<br />
+  <br/>* MODE<br />
+  1. INSERT MODE<br />
+  2. COMMAND MODE<br />
+  3. EX MODE<br />
+  <br/>* HOW TO DELETE,COPY and PASTE THE CHARACTERS AND WORD<br />
+  1. x delete current cursor character<br />
+  2. nx delete the number of character ( n is the number of character)<br />
+  3. X delete the character to the left of the cursor.<br />
+  4. dX delete the nth number of characters to the left of the cursor<br />
+  5. dw delete the current cursor word.<br />
+  6. ndw delete the nth number of words.<br />
+  7. dd delete the current line.<br />
+  8. ndd delete the nth number of lines after the cursor.<br />
+  9. d0 delete the current line from the cursor to the beginning of the line.<br />
+  10. d\$ delete the current line from the cursor the to end of the line.<br />
+  <br/>NOTE: this command should be execute in ex mode.<br />
+  11. :1,50 dd delete the line from 1<sup>st</sup> line to 50<sup>th</sup> line<br />
+  <br/>12. :nd deletes the nth line (ex. 10 line)<br />
+  13. :n mo p move the nth line and paste after the pth line (ex. 1 mo 10 the 1 line move after the 10<sup>th</sup> line)<br />
+  14. :m,n mo p move the line from mth to nth and paste after pth line (ex. 1,10 mo 40)<br />
+  15. :n co p copy the nth line and paste after pth line.<br />
+  16. :n,m co p copy the lines from the nth line to mth line and paste after pth line.<br />
+  17. :n,m w filename save the buffer from the nth line to mth line to the file.<br />
+  18. :n,m w &gt;&gt; filename overwrites the buffer of the file with nth line to mth line.<br />
+  19. :r filename reads the data of the file at the current cursor position.<br />
+  20. :r !ls execute the ls command in Vi.<br />
+  <br/><br/>* MOVE THE CURSOR<br />
+  <br/>1. 0 move the cursor to beginning of the current line<br />
+  2. \$ move the cursor the end of the line<br />
+  3. Ctrl f scroll the screen forward to the full window.<br />
+  4. Ctrl b scroll the screen backward to the full window.<br />
+  5. w<br />
+  6. b<br />
+  7. e<br />
+  8. G move the cursor to the last of the of the file<br />
+  9. nG move to the cursor to the nth line of the file<br />
+  <br/><br/></li>
+<li>
+<p>Inserting the text<br />
+  <br/>1. a enter the text input mode and append the text after the curstor.<br />
+  2. A enter the text input mode and append the text at end of the line.<br />
+  3. i enter the text input mode and append the text at the cursor.<br />
+  4. I enter the text input mode and append the text at the beginning of the line.<br />
+  5. o enter the text input mode by opening a new line below the current line<br />
+  6. O enter the text input mode by opening a new line above the current line<br />
+  <br/></p>
+</li>
+<li>
+<p>Some basic command<br />
+  <br/>1. ~ change upper to lower and lower to upper by current cursor character.<br />
+  2. :sh temporarily return to the shell command and perform some command and return to the Vi.<br />
+  3. ZZ writes the buffer to file and quits Vi.<br />
+  4. wq writes the buffer to file and quits Vi.<br />
+  5. w filename and :q write the buffer to the file (newfilename) and quits Vi.<br />
+  6. w! filename and :q overwrites the file to the buffer and quits Vi.<br />
+  7. q! quit the Vi.<br />
+  8. u undoes the effect of the last executed command.<br />
+  9. U<br />
+  10. /"string" search the string pattern of the file<br />
+  <br/></p>
+</li>
+<li>How to the search particular string and replace with another string<br />
+  <br/>1. 1,\$ s/"string/"string2"/g replace the 1<sup>st</sup> string to the 2<sup>nd</sup> string in the file from 1<sup>st</sup> line to end of the line.<br />
+  1. .,\$ s/"string/"string2"/g replace the string from the current cursor the end of the line.<br />
+  3. 1,. s/"string/"string2"/g replace the string from 1<sup>st</sup> line to the current cursor.<br />
+  4. 10,50 s/"string/"string2"/g replace the string from 10<sup>th</sup> line to 50<sup>th</sup> line.<br />
+  <br/>5. 1,\$ s/[,]/;/g<br />
+  6. 1,\$ s/.*/\U&amp;/g (lower to upper)<br />
+  7. 1,\$ g/^\$/d<br />
+  8. 1,\$ s/^/#/g<br />
+  9. 1,\$ g/^/m0<br />
+  <br/><br/></li>
+<li>YANK(copy) and PASTE the line<br />
+  <br/>1. yw yank the current cursor word<br />
+  2. yy yank the current cursor line<br />
+  3. y0 yank the current line from the cursor to the beginning of the line.<br />
+  4. y\$ yank the current line from current cursor to the end of the line.<br />
+  5. p paste the yank buffer.<br />
+  6. vi +100 file open the vi editor of the file at the 100<sup>th</sup> line of the file.<br />
+  7. Vi +/pattern file open the vi editor of the file and the particular pattern of the file.<br />
+  8. view file open the editor but you can not change the contents.<br />
+  <br/><br/><br/><br/></li>
+<li>PROCESSES<br />
+  <br/>. ps ps command shows the processes which is currently running<br />
+  . ps -a ps -a shows the running process of all the connected users.<br />
+  . ps -u users1 ps -u shows the users1 running processes.<br />
+  . ps -t tty1 ps -t list all the processes which is executed on the tty1 terminal.<br />
+  . ps -f ps -f list all the running process with additional information.<br />
+  . ps -e ps -e list every process<br />
+  . ps aef<br />
+  <br/><br/></li>
+<li>BACKGROUND PROCESS<br />
+  <br/>how to execute any command and process in background<br />
+  <br/>. sort filename &gt; newfile &amp; (&amp; denotes that this process will be executed in background).<br />
+  <br/></li>
+<li>How can you take the process from background to foreground and foreground to backupground.<br />
+  <br/>NOW take a example<br />
+  <br/>I am going to put a process in forground<br />
+  <br/>. sleep 100s<br />
+  . ps -aef|grep sleep<br />
+  . ctrl z (stopped the process)<br />
+  . job ( job command is a utility to display the running completed stopped processes) and also take the JOBID from job command<br />
+  . bg JOBID (this command will put the process in background)<br />
+  <br/><br/><br/><br/><br/><br/></li>
+<li>NOHUP command<br />
+  <br/>The nohup command in Linux is used to run processes or commands in the background, ensuring they continue running even if the user logs out or the terminal is closed.<br />
+  <br/>. nohup ./myscript.sh &amp;<br />
+  . ps -aef|grep myscipt.sh<br />
+  <br/></li>
+<li>KILL PROCESS<br />
+  <br/>. kill -l list all the available options<br />
+  . kill -9 PID The kill -9 command in Linux is used to forcibly terminate a process using its <strong>process ID (PID)</strong>.<br />
+  <br/>. kill -5 PID The kill -15 command sends the <strong>SIGTERM</strong> signal to a process in Linux, requesting it to terminate gracefully.<br />
+  <br/><br/>how to change process priorities<br />
+  . ps -l display the priorities of process<br />
+  . nice<br />
+  .renice<br />
+  <br/><br/></li>
+<li>SCHEDULING A PROCESS<br />
+  <br/>. at command The at command in Linux is used to schedule one-time tasks to run at a specific time in the future.<br />
+  <br/>. at now + 5 minutes<br />
+  . echo "Hello, World!" &gt; /tmp/hello.txt<br />
+  . at 2:30 PM<br />
+  . at 8:00 AM tomorrow<br />
+  .atq list the scheduled job<br />
+  . atrm or at -r to remove the job<br />
+  <br/>. batch command The batch command in Linux is used to schedule jobs to run when the system load average drops below a certain level. It is similar to the at command but focuses on scheduling tasks during low system load.<br />
+  <br/>. batch</li>
+</ul>
+<p>. echo "Batch job running!" &gt; /tmp/batch_job.txt</p>
+<p>. cron command<br />
+<br/><br/></p>
+<ul>
+<li>SED command<br />
+  <br/>The sed command (Stream Editor) in Unix/Linux is a powerful tool for processing and transforming text. It can be used to perform basic text manipulation tasks such as searching, replacing, inserting, and deleting lines in files or streams.<br />
+  <br/><br/>. sed 's/string1/string2/g' filename (it converts one string to another string)<br />
+  <br/>. sed -n '3p' filename (display the 3<sup>rd</sup> line)<br />
+  . sed -n '\$p' filename (display the last line)<br />
+  . sed -n '2,5p' filename (display the line from 2<sup>nd</sup> to 5<sup>th</sup> )<br />
+  . sed -n '2p;10p' filename display the 2<sup>nd</sup> and 10<sup>th</sup> line)<br />
+  . sed -n '/string/p' filename (display the line with particular matched strings)<br />
+  . sed -n -e '/string1/p' -e '/string2/p' (display all the lines matched with both the strings)<br />
+  . sed -n '2,+10p' filename (display the 10 more line after 2<sup>nd</sup> line)<br />
+  . sed '2 s/string/string2/g' (it change the string on only 2<sup>nd</sup> line)<br />
+  . sed '2d' filename (it deletes the 2<sup>nd</sup> line)<br />
+  . sed '2,5d') filename (it delete the line from 2<sup>nd</sup> to 5<sup>th</sup>)<br />
+  . sed '2d;10d' filename ( it deletes the 2<sup>nd</sup> and 10<sup>th</sup> line)<br />
+  . sed '/string/d' ( it deletes the line with matched string)<br />
+  . sed '/^\$/d' (delete blanks line from file)<br />
+  . sed '/^\$/!d' filename (delete readable lines not blank lines)<br />
+  . sed '/string w filename' filename ( it append the data in the files with matched string)<br />
+  . sed '3 r filename' file (read the contents of file at the 3<sup>rd</sup> line)<br />
+  . sed '2 e date' filename ( execute the date command on 2<sup>nd</sup> line)<br />
+  . sed '=' file ( give the number line to the file)<br />
+  <br/><br/><br/><br/></li>
+<li>AWK command<br />
+  <br/>AWK stands for AHO WEIBNERGER KERNIGHAN<br />
+  <br/><br/>The awk command in Linux is a powerful text processing tool used for pattern scanning and processing. It is designed to work with structured text data by using patterns and actions, making it ideal for data extraction, transformation, and reporting.</li>
+</ul>
+<p>. awk '{}' filename (this is the syntax of awk command)<br />
+. awk '{print \$2}' file (display the second column of the file)<br />
+. awk '{print \$2,\$5}' file (display the column from 2<sup>nd</sup> to 5<sup>th</sup>)<br />
+. awk '{\$NF}' file (display the last filed)<br />
+. awk '{print NR ":" \$0}' file (give the number line)<br />
+. awk -F":" '{print \$2}' file (display the second field with the help of delimeter)<br />
+. awk '/string {print \$0}' file (display the contents with matched strings)<br />
+. awk 'NR==8{print \$0}' file (display the 8<sup>th</sup> line)<br />
+. awk 'NR=="8",NR=="155" { print \$0}' file (display the lines from 8<sup>th</sup> to 155<sup>th</sup> )<br />
+. awl ' \$0 ~ /string {print \$0}' file<br />
+<br/><br/><br/><br/></p>
+<ul>
+<li>FIND command<br />
+  <br/>The awk command in Linux is a powerful text processing tool used for pattern scanning and processing. It is designed to work with structured text data by using patterns and actions, making it ideal for data extraction, transformation, and reporting.<br />
+  <br/>. <strong>find . -name file.txt ( find the specific file in current working directory)<br />
+  . find /home -name file.txt ( find the file in the home directory)<br />
+  . find /home -iname file.txt ( ignore the case upper and lower)<br />
+  . find / -type d -name USER ( display the the USER directory in the / root directory)<br />
+  . find . -type f -name tec.php (display the file with name in current working directory)<br />
+  . find . -type f -name "*.php" (display the all the file with .php extension)<br />
+  . find . -type f -perm 0777 -print (display all the files with 777 permissions)<br />
+  . find . -type f -perm ! 0777 -print ( display all the files except 777 permissions )<br />
+  . find / -perm 644<br />
+  . find / -perm /u=r<br />
+  . find / -perm /a=x</strong></li>
+</ul>
+<p><strong>. find / -type f -perm 0777 -print -exec chmod 644 {} \;</strong></p>
+<p><strong>. find . -type d -perm 777 -print -exec chmod 755 {} \;</strong></p>
+<p><strong>. find . -type f -name "tecH.txt" -exec rm -f {} \;</strong></p>
+<p><strong>. find . -type f -name "*.txt" -exec rm -f {} \;<br />
+. find . -type f -empty</strong></p>
+<p><strong>. find . -type d -empty</strong></p>
+<p><strong>. find /tmp -type f -name ".*" (hidden files)<br />
+. find / -user oracle -name tech.txt<br />
+. find / -mtime 50 ( 50 days back modified file)</strong></p>
+<p><strong>. find / -atime 50 ( last 50 days accessed file )<br />
+. find / -mtime +50 -mtime -100</strong></p>
+<p><strong>. find / -cmin -60 ( last hour changed file )</strong></p>
+<p><strong>. find / -mmin -60 (last hour modified files)<br />
+. find / -amin -60 ( last hour accessed file)</strong></p>
+<p><strong>. find / -type f -size +100M -exec rm -f {} \;</strong></p>
+<p><strong>. find / -type f -name *.mp3 -size +10M -exec rm {} \;<br />
+<br/></strong></p>
+<p><strong>ROOT level commands</strong></p>
+<ul>
+<li><strong>lsblk</strong> display about the block devices<br />
+  . lsblk -a (empty block as well)<br />
+  . lsblk -f (in bytes)<br />
+  . lsblk -m (display information about device owner, group and mode of block)<br />
+  . lsblk -f ( display with UUID)</li>
+<li><strong>blkid</strong> used to get information about block devices with UUID.</li>
+<li><strong>How can make a partition with parted command.<br />
+  <br/>. parted /dev/sdb<br />
+  . mkpart (choose primary)<br />
+  . xfs (choose xfs filesystem)<br />
+  . start 2048<br />
+  . end 1000 MB.<br />
+  . quit<br />
+  . udevadm settle (run this command on terminal that system is ready for detect new partition and created associated device files under dev directory).<br />
+  . mkfs.xfs /dev/sdb1 (for creating a filesystem)<br />
+  . mount /dev/sdb1 /mnt (mount new filesystem on mnt directory)<br />
+  <br/><br/></strong></li>
+<li><strong>Now make a partition with fdisk command<br />
+  <br/>. fdisk -l<br />
+  . fdisk /dev/sdb<br />
+  . p (print)<br />
+  . n (new)<br />
+  . t (type of filesystem)<br />
+  . l (listing)<br />
+  .d (delete)<br />
+  . w (write , save and quite)<br />
+  . mkfs.xfs /dev/sdb1<br />
+  . partprobe<br />
+  . mount /dev/sdb1 /mnt<br />
+  <br/>if you want to make a permanent entry that edit a /etc/fstab file with UUID</strong></li>
+<li><strong><br />
+  <br/>* HOW to make a partition of swap space<br />
+  <br/>. parted /dev/sdb<br />
+  . mkpart<br />
+  . partition name (swap1)<br />
+  . filesystem type( linux.swap)<br />
+  . start 1001 MB<br />
+  . end 1275 MB<br />
+  . quit<br />
+  . udevadm settle<br />
+  . mkswap /dev/sdb1<br />
+  . swapon /dev/sdb1<br />
+  . mount /dev/sdb1 /mnt<br />
+  <br/></strong></li>
+<li><strong>SYSTEMD daemon manages startup of linux. It activates system resources , server daemons and other processes.<br />
+  <br/></strong></li>
+<li><strong>Daemon process are processes or utility program that run silently in the background that monitor and take care of system susbsystems to ensure that operating system runs properly.<br />
+  <br/>. crond<br />
+  . sshd<br />
+  . httpd<br />
+  . nfsd<br />
+  <br/>. journald is the daemon process that collects the logs from various log secure like syslog.<br />
+  . journalctl is a command line utility that helps you to interact with journal logs.<br />
+  <br/>. journalctl -xe (latest logs)<br />
+  . journalctl -p err (all errors)</strong></li>
+<li><strong>Systemctl command is command line utility that used control and manage the syste services,daemons and other processes.<br />
+  <br/>. systemctl status sshd.service<br />
+  . systemctl is-active sshd.service<br />
+  . systemctl is-enabled sshd.service<br />
+  . systemctl is-failed sshd.service<br />
+  . systemctl start sshd.service<br />
+  . systemctl stop sshd.service<br />
+  . systemctl reload sshd.service<br />
+  <br/></strong></li>
+</ul>
+<p><strong>Networking related commands<br />
+<br/></strong></p>
+<ul>
+<li><strong>Nmcli dev status (detailed information about all new network interfaces)</strong></li>
+<li><strong>ip link show or ip a (list all the network interface with ip's)</strong></li>
+<li><strong>cat /etc/hosts ( it is a plaint text files that maps hostname to the IP address).</strong></li>
+<li><strong>ip addr show ens160 (particular interface)</strong></li>
+<li><strong>ip -s link show ens10 (shows the statistics of particular interface)</strong></li>
+<li><strong>ping ( used to check the connectivity between host and server)<br />
+  . ping ip or hostname<br />
+  . ping -c3 ip (3 output)<br />
+  . ping -i2 ip (interval)<br />
+  . ping -c3 -q ip ( summary only)<br />
+  . ping -f (send packets as fast as)<br />
+  . ping -w 10 ip (end of summary after 10 seconds)</strong></li>
+<li><strong>traceroute and tracepath are the command line utility that use to displaying the possible routes for transisting of network packets.<br />
+  <br/>ex. traceroute</strong> <a href="http://www.google.com"><strong>www.google.com</strong></a><strong><br />
+  <br/>NOTE. The internet commonly used TCP(transmission control protocol) and UDP (User datagram protocol)<br />
+  <br/></strong></li>
+<li><strong>netstat command is utility that used to display detailed information about how you computer is communicating with network devices, display the network connection for TCP,UDP.<br />
+  <br/><br/>. netstat -putan|grep :22<br />
+  (add one new user on another terminal<br />
+  <br/></strong></li>
+<li><strong>hostnamectl command used to hostname<br />
+  hostnamectl set-hostname oracle<br />
+  <br/><br/></strong></li>
+<li><strong>log /var/log</strong></li>
+<li><strong>/var/log/cron (cron jobs related logs)</strong></li>
+<li><strong>/var/log/boot (booting related logs)</strong></li>
+<li><strong>/var/log/secure (keeps the record of the logging activity)</strong></li>
+<li><strong>/var/log/messages ( general logs related hardware, software)</strong></li>
+<li><strong>/var/log/maillog (log related to the sendmail deamon)</strong></li>
+<li><strong>timedatectl (show current date and time on your system)</strong></li>
+<li><strong>timedatectl list-timezones</strong></li>
+<li><strong>LVM (logical volume management)<br />
+  <br/>. physical volume (in phycial volumn just create a partitions)<br />
+  . volume group ( it is a collection of physical volume)<br />
+  . logical volume<br />
+  <br/><br/>* how to add logical volume<br />
+  <br/>in this process we have a more than one partition from the filesystem<br />
+  so create more than one partition from /dev/sdb named 1./dev/sdba and 2./dev/sdb2<br />
+  <br/>. fdisk /dev/sdb<br />
+  . p (print)<br />
+  . n (new)<br />
+  . t (type)<br />
+  . w (save and quite)<br />
+  . mkfs.xfs /dev/sdb1<br />
+  . partprobe<br />
+  . lsblk -f<br />
+  <br/>now create /dev/sdb2<br />
+  <br/>.fdisk /dev/sdb<br />
+  . p<br />
+  . n<br />
+  .t<br />
+  . w<br />
+  . mkfs.xfs /dev/sdb2<br />
+  . partprobe<br />
+  <br/>* now create physical volumes of /dev/sdb1 and /dev/sdb2<br />
+  . pvcreate /dev/sdb1 /dev/sdb2<br />
+  .pvs or pvdisplay<br />
+  <br/>*now create the volume group of physical volume<br />
+  . vgcreate vg01 /dev/sdb1 /dev/sdb2<br />
+  . vgs or vgdisplay<br />
+  <br/>* now create logical volume<br />
+  <br/>. lvcreate -n lv01 -L 50G vg01<br />
+  . lvs or lvdisplay<br />
+  <br/>. ls /dev/mapper or /dev/vg01/lv01<br />
+  <br/>. mkfs.xfs /dev/vg01/lv01<br />
+  . mount /dev/vg01/lv01 /u01<br />
+  <br/><br/>*** how to remove logical volume<br />
+  <br/>. umount /u01 /dev/vg01/lv01 (unmount )<br />
+  . lvremove /dev/vg01/lv01<br />
+  . lvremove /dev/vg01/lv02<br />
+  <br/>.lvs or lvdisplay<br />
+  . vgremove vg01<br />
+  .vgs or vgdisplay<br />
+  <br/>. pvremove /dev/sdb1<br />
+  . pvremove /dev/sdb2<br />
+  . pvs or pvdisplay<br />
+  <br/></strong></li>
+</ul>
+<p><strong>*** how to extend LVM<br />
+<br/>. lvextend -L +5G /dev/vg01/lv01<br />
+<br/><br/>***GAURAV SIR<br />
+<br/><br/>######################################################## MANAGING LINUX PARTITION (LVM) #################################################################</strong></p>
+<p><strong>In Linux, pvs, vgs, and lvs are commands used for managing and displaying information about the Logical Volume Manager (LVM) components.</strong></p>
+<p><strong>(1) PVS (Physical Volumes): The pvs command displays information about physical volumes. It provides a quick summary of the physical volumes in the system, showing details such as the physical volume name, volume group it belongs to, size, and status.</strong></p>
+<p><strong>Example:</strong></p>
+<p><strong>[root@prd u02]# pvs</strong></p>
+<p><strong>PV VG Fmt Attr PSize PFree</strong></p>
+<p><strong>/dev/nvme0n1p3 rhel lvm2 a-- 98.99g 0</strong></p>
+<p><strong>/dev/nvme0n2 psql lvm2 a-- &lt;15.00g 96.00m</strong></p>
+<p><strong>(2) VGS (Volume Groups): These are collections of physical volumes that create a pool of storage out of which logical volumes can be allocated.</strong></p>
+<p><strong>Example:</strong></p>
+<p><strong>[root@prd u02]# vgs</strong></p>
+<p><strong>VG #PV #LV #SN Attr VSize VFree</strong></p>
+<p><strong>psql 1 1 0 wz--n- &lt;15.00g 96.00m</strong></p>
+<p><strong>(3) LVS (Logical Volumes): These are the virtual block devices created from the volume groups' storage pool. Logical volumes can be resized, moved, and managed independently of the underlying physical storage, providing flexibility in managing disk space.</strong></p>
+<p><strong>Example:</strong></p>
+<p><strong>[root@prd u02]# lvs</strong></p>
+<p><strong>LV VG Attr LSize Pool Origin Data% Meta% Move Log Cpy%Sync Convert</strong></p>
+<p><strong>lv psql -wi-ao---- 14.90g</strong></p>
+<p><strong>root rhel -wi-ao---- 15.00g</strong></p>
+<p><strong>swap rhel -wi-ao---- 4.00g</strong></p>
+<p><strong>u01 rhel -wi-ao---- 79.99g</strong></p>
+<p><strong>############################################################### Extend /u02 partition size (Method 1) #################################################</strong></p>
+<p><strong>Step 1: Check Existing Physical volume</strong></p>
+<p><strong>[root@prd u02]# pvs</strong></p>
+<p><strong>PV VG Fmt Attr PSize PFree</strong></p>
+<p><strong>/dev/nvme0n1 rhel lvm2 a-- 98.99g 0</strong></p>
+<p><strong>Step 2: Add a new Hard Disk of 10GB that will be mounted on /u02</strong></p>
+<p><strong>Step 3: Create a new Physical Volume</strong></p>
+<p><strong>pvcreate -v /dev/nvme0n2</strong></p>
+<p><strong>Step 4: Create a volume group</strong></p>
+<p><strong>vgcreate psql /dev/nvme0n2</strong></p>
+<p><strong>Step 5: Create a logical volume</strong></p>
+<p><strong>lvcreate -L 9.9G -n lv psql</strong></p>
+<p><strong>Step 6: Format the logical volume</strong></p>
+<p><strong>mkfs.ext4 /dev/psql/lv</strong></p>
+<p><strong>Step 7: Mount the logical volume to a new mount point /u02</strong></p>
+<p><strong>mkdir /u02</strong></p>
+<p><strong>mount /dev/psql/lv /u02</strong></p>
+<p><strong>Step 8: Make entry in /etc/fstab file</strong></p>
+<p><strong>Step 9: Add/Extend 5GB Hard Disk in /u02 mount point</strong></p>
+<p><strong>Step 10: Resize the existing Physical Volume</strong></p>
+<p><strong>pvresize /dev/nvme0n2</strong></p>
+<p><strong>Step 11: Extend the existing Logical Volume</strong></p>
+<p><strong>lvextend -L +5G -r /dev/psql/lv</strong></p>
+<p><strong>#######################################################################################################################################################</strong></p>
+<p><strong>############################################################## Extend /u02 partition size (Method 2) ###################################################</strong></p>
+<p><strong>Step 1: Check Existing Physical volume</strong></p>
+<p><strong>[root@prd u02]# pvs</strong></p>
+<p><strong>PV VG Fmt Attr PSize PFree</strong></p>
+<p><strong>/dev/nvme0n1 rhel lvm2 a-- 98.99g 0</strong></p>
+<p><strong>Step 2: Add a new Hard Disk of 10GB that will be mounted on /u02</strong></p>
+<p><strong>Step 3: Create a new Physical Volume</strong></p>
+<p><strong>pvcreate -v /dev/nvme0n2</strong></p>
+<p><strong>Step 4: Create a volume group</strong></p>
+<p><strong>vgcreate psql /dev/nvme0n2</strong></p>
+<p><strong>Step 5: Create a logical volume</strong></p>
+<p><strong>lvcreate -L 9.9G -n lv psql</strong></p>
+<p><strong>Step 6: Format the logical volume</strong></p>
+<p><strong>mkfs.ext4 /dev/psql/lv</strong></p>
+<p><strong>Step 7: Mount the logical volume to a new mount point /u02</strong></p>
+<p><strong>mkdir /u02</strong></p>
+<p><strong>mount /dev/psql/lv /u02</strong></p>
+<p><strong>Step 8: Make entry in /etc/fstab file</strong></p>
+<p><strong>Step 9: Create a Physical Volume of newly added hard disk</strong></p>
+<p><strong>pvcreate -V psql /dev/nvme0n3</strong></p>
+<p><strong>Step 10: format the newly added physical volume.</strong></p>
+<p><strong>mkfs.ext4 /dev/nvme0n3</strong></p>
+<p><strong>Step 11: Extend 15GB Harddisk to psql</strong></p>
+<p><strong>vgextend -V psql /dev/nvme0n3</strong></p>
+<p><strong>Step 12: Extend LV</strong></p>
+<p><strong>lvextend -L +15G -r /dev/psql/lv</strong></p>
+<p><strong>####################################################################################################################################################</strong></p>
+<p><strong>apps-fileview.texmex_20241212.01_p1</strong></p>
+<p><strong>LVM_PARTITION.txt</strong></p>
+<p><strong>Displaying LVM_PARTITION.txt.</strong></p>
+<p><strong><br />
+<br/><br/>***FIREWALL RELATED COMMANDS<br />
+<br/>ports related information<br />
+<br/></strong></p>
+<ul>
+<li><strong>ftp=20,21</strong></li>
+<li><strong>ssh=22</strong></li>
+<li><strong>telnet=23</strong></li>
+<li><strong>smtp=25</strong></li>
+<li><strong>dns=53</strong></li>
+<li><strong>dhcp=67,68</strong></li>
+<li><strong>http=80</strong></li>
+<li><strong>https=443<br />
+  <br/><br/></strong></li>
+<li><strong>rpm -qa|grep firewall</strong></li>
+<li><strong>dnf remove firewalld -y</strong></li>
+<li><strong>dnf install firewall -y</strong></li>
+<li><strong>systemctl start firewalld</strong></li>
+<li><strong>systemctl status firewalld</strong></li>
+<li><strong>systemctl enable firewalld<br />
+  <br/></strong></li>
+<li><strong>firewall-cmd -list-all (listing information about services and ports)</strong></li>
+<li><strong>firewall-cmd -get-services (lsiting all the services)</strong></li>
+<li><strong>firewall-cmd -zone=public -add-service=http -permanent</strong></li>
+<li><strong>firewall-cmd -reload</strong></li>
+<li><strong>firewall-cmd -zone=public -list-service</strong></li>
+<li><strong>firewall-cmd --list-ports</strong></li>
+</ul>
+<h3 id="firewall-configuration-gaurav-sir">Firewall Configuration (Gaurav Sir)<a class="headerlink" href="#firewall-configuration-gaurav-sir" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># To Check OS Firewall status in Linux</span>
+systemctl<span class="w"> </span>status<span class="w"> </span>firewalld
+
+<span class="c1"># To check existing rules</span>
+firewall-cmd<span class="w"> </span>--list-all
+
+<span class="c1"># To allow IP address sequence and 5432 port in firewall settings:</span>
+firewall-cmd<span class="w"> </span>--permanent<span class="w"> </span>--zone<span class="o">=</span>public<span class="w"> </span>--add-rich-rule<span class="o">=</span><span class="s1">&#39;rule family=&quot;ipv4&quot; source address=&quot;10.1.0.0/24&quot; port protocol=&quot;tcp&quot; port=&quot;5432&quot; accept&#39;</span>
+
+<span class="c1"># To Stop and Start firewall service</span>
+systemctl<span class="w"> </span>stop<span class="w"> </span>firewalld
+systemctl<span class="w"> </span>start<span class="w"> </span>firewalld
+
+<span class="c1"># To check existing rules (Newly added rules should be visible)</span>
+firewall-cmd<span class="w"> </span>--list-all
+</code></pre></div>
+- apps-fileview.texmex_20241212.01_p1
+- Linux_Firewall_permissions.txt
+- Displaying Linux_Firewall_permissions.txt.<br />
+  <br/></p>
+<p><strong>*** USER AND GROUP RELATED COMMAND<br />
+<br/></strong></p>
+<ul>
+<li><strong>id command used to display about the username,userid and group name,groupid<br />
+  <br/>. id -g<br />
+  . id -G<br />
+  . id -n<br />
+  <br/></strong></li>
+<li>**/etc/passwd and /etc/group file contains the information about all the users and groups<br />
+  **</li>
+<li><strong>/etc/shadow file contains the encrypted password of all the users<br />
+  <br/></strong></li>
+<li><strong>Man -k5 passwd<br />
+  <br/></strong></li>
+</ul>
+<p><strong>**how to give sudo permission to the user<br />
+</strong></p>
+<ul>
+<li>**Make a entry either in /etc/sudoers or /etc/sudoers.d file<br />
+  the sudoers.d is a directory you have to make username file and then make a directory<br />
+  <br/>zeeshan1 ALL=(ALL) ALL<br />
+  %group ALL=(ALL) ALL<br />
+  <br/>***how to manage user and group<br />
+  <br/>. the /etc/skel contains basic structure for newly added user.this file contains basic files and directories that copied over a new users.<br />
+  <br/>. /etc/login.defs contains basics settings for newly added user and group. The useradd,usermod,groupadd,groupmod utilites takes default values from this file.<br />
+  **</li>
+<li><strong>useradd command line utility that used to create and manage user account.<br />
+  <br/>. -c comment<br />
+  . -g groupid (primary)<br />
+  . -G groupid (secondary)<br />
+  . -a append (when you want to add a new supplementary group)<br />
+  . -d /home/directory<br />
+  . -m move existing directory<br />
+  . -s specify a particular login shell<br />
+  . -L lock user account<br />
+  . -U unlock user account<br />
+  . -k for /etc/skel<br />
+  <br/></strong></li>
+<li><strong>userdel used to delete the user account but it does not delete the user home directory<br />
+  <br/>. used with -r (userdel -r) it delete the entry from passwd file and also deletes the working directory.<br />
+  <br/>ex. sudo useradd -m -d /custom/home/newuser -s /bin/bash -g users -G sudo,developers -p \$(openssl passwd -1 'password123') -c "John Doe" newuser<br />
+  <br/></strong></li>
+<li><strong>groupadd command used to add new groups.<br />
+  . -g specified a group userid<br />
+  <br/></strong></li>
+<li><strong>groupmod used change the group credentials.<br />
+  groupmod -n newname -g newgroupid groupname.<br />
+  <br/><br/></strong></li>
+</ul>
+<p><strong>**HOW TO CHANGE A PASSWORD OF A USER AND SET EXPIRY<br />
+<br/></strong></p>
+<ul>
+<li><strong>change command used to set some date time limit on a user passwd.<br />
+  <br/>. change -l zeeshan display all the relevant information about user<br />
+  <br/>- Last password change: The date when the password was last modified.</strong></li>
+<li><strong>- Password expires: The date when the current password will expire.</strong></li>
+<li><strong>- Password inactive: The number of days after password expiration before the account becomes inactive.</strong></li>
+<li><strong>- Account expires: The date when the user account will be disabled.</strong></li>
+<li><strong>- Minimum number of days between password change: The minimum interval required between password changes.</strong></li>
+<li><strong>- Maximum number of days between password change: The maximum allowed duration before a password must be changed.</strong></li>
+<li><strong>- Number of days of warning before password expires: The number of days prior to password expiration that the user will receive a warning.<br />
+  <br/>***options</strong></li>
+</ul>
+<p><strong>. change -m set a minimum number of days<br />
+. change -M set a maximum number of days<br />
+. -W set a warning days<br />
+. -d set last change date<br />
+. -I set inactive days<br />
+<br/></strong></p>
+<ul>
+<li><strong>chage -d 0 zeeshan command forces the user to update its password on next login.<br />
+  <br/></strong></li>
+<li><strong>chage -E 2025-09-05 command set the expiry on 2025-09-14<br />
+  <br/></strong></li>
+<li><strong>chage -m 0 -M 80 -W 5 -I 7 zeeshan<br />
+  <br/>command set the minimum number of days 0 , maximum no of days 80 , set warning days 5 and inactivie period 7 on Zeeshan user<br />
+  <br/></strong></li>
+<li><strong>usermod -s /sbin/login Zeeshan set no login shell to the Zeeshan user<br />
+  <br/></strong></li>
+<li><strong>how to set selinux permisions<br />
+  <br/>. ls -Z FILE to see the selinux permisions<br />
+  . getenforce to know about selinux permisions whether is permissive or enforcing<br />
+  . setenforce 0 set permissive<br />
+  . setenforce 1 set enforcing<br />
+  <br/>either change in /etc/selinux/config</strong></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1898 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Central repository for Oracle/PostgreSQL DBA documentation">
+      
+      
+      
+      
+        <link rel="prev" href="../Cloud%20Database%20Objective/">
+      
+      
+        <link rel="next" href="../../LINUX/LINUX%20BASICS/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Oracle Database Solutions and Service(Standard Version) - DBA Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="DBA Knowledge Base" class="md-header__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DBA Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Oracle Database Solutions and Service(Standard Version)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="DBA Knowledge Base" class="md-nav__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    DBA Knowledge Base
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DBA Knowledge Base
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEPARTMENT
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    DEPARTMENT
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Cloud%20Database%20Objective/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Database Objective
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Solutions and Service(Standard Version)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LINUX
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../LINUX/LINUX%20BASICS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX BASICS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../LINUX/LINUX%20FIREWALL%20PERMISSIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Firewall Permissions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../LINUX/LINUX%20PERMISSIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX PERMISSIONS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../LINUX/LVM%20PARTITION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVM Partition Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MYSQL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    MYSQL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MYSQL/MySQL_Migration_Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MySQL Migration Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORACLE
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ORACLE
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KNOWN ISSUES
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    KNOWN ISSUES
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Incarnation%20%28ORA-19909%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Incarnation (ORA-19909)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Lost%20Write%20Recovery%20%28ORA-00742%2CORA-00312%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Lost Write Recovery (ORA-00742,ORA-00312)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Datafile%20Corruption%20Issue%20%28ORA-00600%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Datafile Corruption Issue (ORA-00600)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Datapump%20Slowness%28Scenario%201%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Datapump Slowness(Scenario 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Datapump%20Slowness%28Scenario%202%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Datapump Slowness (Scenario 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Moving%20Datafiles%20To%20Another%20Location/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Moving Datafiles To Another Location
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Ora-01012%20Not%20Logged%20On%20Error/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Ora-01012: Not Logged On Error
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORACLE CLOUD
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ORACLE CLOUD
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ORACLE/ORACLE%20CLOUD/Cloud%20Database%20Management%20Tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Cloud Database Management Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    POSTGRESQL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    POSTGRESQL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG LOAD ANALYSIS SETUP
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PG LOAD ANALYSIS SETUP
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../POSTGRESQL/PG%20LOAD%20ANALYSIS%20SETUP/PG%20LOAD%20ANALYSIS%20SETUP%20%5BPaaS%5D/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG LOAD ANALYSIS SETUP [PaaS]
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../POSTGRESQL/PG%20LOAD%20ANALYSIS%20SETUP/PG%20LOAD%20ANALYSIS%20SETUP%20%5BSH%5D/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG LOAD ANALYSIS SETUP [SH]
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG SELFHOSTED DEPLOYMENT RUNBOOK
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PG SELFHOSTED DEPLOYMENT RUNBOOK
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Management%20Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL Selfhosted Deployment Management Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Technical%20Deployment%20Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL Selfhosted Technical Deployment Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Oracle Database Solutions and Service(Standard Version)</h1>
+
+<p><strong>Oracle Database Solutions and Service(Standard Version)</strong></p>
+<ol>
+<li>
+<p><strong>WHY ARE DATABASE BACKUPS IMPORTANT</strong></p>
+</li>
+<li>
+<p>Organizations rely on data to conduct business, so it is imperative that you are prepared with a plan to counteract failures.</p>
+</li>
+<li>Today, retailers are making ever-greater use of data to drive future improvements in sales and service. Growth in demand for this kind of business intelligence, as well the steady increase in data volumes among retail organizations, is causing many companies re-evaluate their backup strategy.</li>
+<li>
+<p>A sound backup and recovery plan can be thought of as an insurance policy for your data.</p>
+</li>
+<li>
+<p><strong>TYPES OF FAILURE</strong></p>
+</li>
+</ol>
+<p><strong>Instance Failure:</strong> Usually connected with an Oracle process failure</p>
+<p><strong>Media Failure:</strong> Disk failure, storage array controller failure etc.</p>
+<p><strong>Block Corruption:</strong> Usually caused by bugs in software or hardware failure.</p>
+<p><strong>Human Error:</strong> Accidentally deleted/updated data by the Database user or DBA.</p>
+<p><strong>Disaster:</strong> Fire, flood, earthquake, plane crash etc.</p>
+<ol>
+<li><strong>INFRASTRUCTURE ARCHITECTURE WITH ORACLE STANDARD EDITION</strong></li>
+</ol>
+<p><strong><img alt="image-20230818-120549" src="../images/oracle-database-solutions-and-service-standard-version/image-20230818-120549.png" /></strong></p>
+<p><strong>(</strong>a) <em>Application Server:</em></p>
+<ul>
+<li>An application server is a modern form of platform middleware.</li>
+<li>It is system software that resides between the operating system (OS) on one side, the external resources (database management system, communications and Internet services) on another side and the users' applications on the third side.</li>
+</ul>
+<p>(b) <em>Production Database Server</em></p>
+<ul>
+<li>A production database contains the data You are using for production tasks such as creating and updating features.</li>
+<li>Depending on the data model you are using, data in a production database can be used to create a digital or hard-copy map or chart or a specific type of data.</li>
+</ul>
+<p>(c) <em>Backup Database Server</em></p>
+<p>A backup database is a database replica created from a backup of a primary database.</p>
+<p>A backup database has the following main purposes:</p>
+<ul>
+<li>Disaster protection</li>
+<li>Protection against data corruption.</li>
+<li>If the primary database is destroyed or its data becomes corrupted, you can perform a failover to the backup database (Manually), in which case the backup database becomes the new primary database.</li>
+</ul>
+<p><em>(d) Remote DR Server</em></p>
+<ul>
+<li>Process of storing and retrieving files at a separate site than production.</li>
+<li>This type of data backup is much more secure than storing at home. It is not susceptible to the unforeseen events like fires or floods like with local. Whatever happens at your workplace, your files will be secure.</li>
+</ul>
+<p>3.1 <strong>INFRASTRUCTURAL IMPLEMENTATION</strong></p>
+<ul>
+<li>We have four servers for Ginesys Application, Production and Backup database along with remote DR storage</li>
+<li>Window 2012 R2 64-Bit installed in Application Server.</li>
+<li>Linux RHEL 7.x 64-Bit installed in Production, Backup and Remote Server.</li>
+<li>Oracle 12c Standard Edition 64-Bit installed for Production and Backup.</li>
+<li>SSD HDD used for Oracle Database in Production Server.</li>
+<li>SSD HDD used to keep archive and database backup.</li>
+<li>The Database in Archive mode for RMAN implementation.</li>
+<li>Raid 5 configured in SSD.</li>
+<li>Provided servers are virtual machine for Ginesys Application and Production and Backup. In term of High Availability in VM.</li>
+<li>Minimum 2 LAN port(1GB) are used in database and backup server - out of the same, one used explicitly for connecting Production server &amp; backup server.</li>
+</ul>
+<p>3.2 <strong>HARDWARE AND VMWARE LANDSCAPE</strong></p>
+<ul>
+<li><em>Mount Point details for Production Server</em></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>HDD</strong></th>
+<th><strong>Mount point</strong></th>
+<th><strong>Disk Type</strong></th>
+<th><strong>RAID Level</strong></th>
+<th><strong>File System</strong></th>
+<th><strong>Size</strong></th>
+<th><strong>Unit</strong></th>
+<th><strong>Used for</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sda</td>
+<td>/root</td>
+<td>SAS/SSD</td>
+<td>RAID 5</td>
+<td>Using LVM with EXT4</td>
+<td>100</td>
+<td>GB</td>
+<td>To keep Linux operating</td>
+</tr>
+<tr>
+<td>sda</td>
+<td>/boot</td>
+<td>SAS/SSD</td>
+<td>RAID 5</td>
+<td>Using LVM with EXT4</td>
+<td>1</td>
+<td>GB</td>
+<td>boot.ini file</td>
+</tr>
+<tr>
+<td>sda</td>
+<td>swap</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>128</td>
+<td>GB</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>sda</td>
+<td>/u01</td>
+<td>SSD</td>
+<td>RAID 5</td>
+<td>Using LVM with EXT4</td>
+<td>900</td>
+<td>GB</td>
+<td>Oracle setup/binaries/Database</td>
+</tr>
+<tr>
+<td>sda</td>
+<td>/u02</td>
+<td>SSD</td>
+<td>RAID 5</td>
+<td>Using LVM with EXT4</td>
+<td>407</td>
+<td>GB</td>
+<td>Oracle Database</td>
+</tr>
+<tr>
+<td>sdb</td>
+<td>/arch</td>
+<td>SAS/SSD</td>
+<td>RAID 5</td>
+<td>Using LVM with EXT4</td>
+<td>800</td>
+<td>GB</td>
+<td>Oracle Archive log file</td>
+</tr>
+<tr>
+<td>sdb</td>
+<td>/backup</td>
+<td>SAS/SSD</td>
+<td>RAID 5</td>
+<td>Using LVM with EXT4</td>
+<td>1024</td>
+<td>GB</td>
+<td>Oracle RMAN backup files</td>
+</tr>
+<tr>
+<td>Total</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>3360</td>
+<td>GB</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>32</td>
+<td>core</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>RAM</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>128</td>
+<td>GB</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><em>Mount Point details for Backup Server</em></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>HDD</strong></th>
+<th><strong>Mount point</strong></th>
+<th><strong>Disk Type</strong></th>
+<th><strong>RAID Level</strong></th>
+<th><strong>File System</strong></th>
+<th><strong>Size</strong></th>
+<th><strong>Unit</strong></th>
+<th><strong>Used for</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sda</td>
+<td>/root</td>
+<td>SAS/SSD</td>
+<td>RAID 5</td>
+<td>Using LVM with EXT4</td>
+<td>100</td>
+<td>GB</td>
+<td>To keep Linux operating</td>
+</tr>
+<tr>
+<td>sda</td>
+<td>/boot</td>
+<td>SAS/SSD</td>
+<td>RAID 5</td>
+<td>Using LVM with EXT4</td>
+<td>1</td>
+<td>GB</td>
+<td>boot.ini file</td>
+</tr>
+<tr>
+<td>sda</td>
+<td>Swap</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>128</td>
+<td>GB</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>sda</td>
+<td>/u01</td>
+<td>SSD</td>
+<td>RAID 5</td>
+<td>Using LVM with EXT4</td>
+<td>900</td>
+<td>GB</td>
+<td>Oracle setup/binaries/Database</td>
+</tr>
+<tr>
+<td>sda</td>
+<td>/u02</td>
+<td>SAS/SSD</td>
+<td>RAID 5</td>
+<td>Using LVM with EXT4</td>
+<td>407</td>
+<td>GB</td>
+<td>Oracle Database</td>
+</tr>
+<tr>
+<td>sda</td>
+<td>/arch</td>
+<td>SAS/SSD</td>
+<td>RAID 5</td>
+<td>Using LVM with EXT4</td>
+<td>800</td>
+<td>GB</td>
+<td>Oracle Archive log file</td>
+</tr>
+<tr>
+<td>sdb</td>
+<td>/backup</td>
+<td>SAS/SSD</td>
+<td>RAID 5</td>
+<td>Using LVM with EXT4</td>
+<td>1024</td>
+<td>GB</td>
+<td>Oracle RMAN backup files</td>
+</tr>
+<tr>
+<td>Total</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>3360</td>
+<td>GB</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>32</td>
+<td>core</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>RAM</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>128</td>
+<td>GB</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li><strong>SOLUTIONS</strong></li>
+</ol>
+<p>(a) <em>Configuration of Oracle RMAN</em></p>
+<ul>
+<li>Oracle RMAN is a utility built into oracle databases to automate backup and recovery procedures</li>
+<li>RMAN automates administration of backup strategies and ensures database integrity.</li>
+<li>Oracle RMAN enables the concept of online backup.</li>
+<li>Oracle RMAN handles underlying maintenance tasks that must be performed before or after any database backup or recovery.</li>
+</ul>
+<p>(b) <em>Conversion of Database into Archive Log Mode</em></p>
+<ul>
+<li>Enables the concept of online backup.</li>
+<li>Log switch occurs with an interval of every four minutes incrementally.</li>
+<li>Backups can be performed while the database is open and available for use.</li>
+<li>More recovery options are available, such as the ability to perform point-in-time recovery.</li>
+<li>Minimal Data Loss</li>
+</ul>
+<p>(c) <em>Synchronization with Backup Server</em></p>
+<ul>
+<li>Multiple copies of database full backup and archive log are managed and stored on Backup Server.</li>
+<li>As soon as database full backup is complete, a copy of that data is sent from Production Server to Backup Server.</li>
+<li>A synchronization process runs every five minute that synchronize generated archive log files from Production Server to Backup Server physically.</li>
+<li>Ensuring availability of Backup Database at the time of production site failure with minimum downtime.</li>
+</ul>
+<p>(d) <em>Availability of Backup Database</em></p>
+<ul>
+<li>Creating a database replica from full backup of a primary database on backup server.</li>
+<li>Implementing a managed backup configuration where archives are applied on backup database that are shipped from production database.</li>
+<li>Making backup database the new primary database with minimal loss of time and data if the primary database is completely destroyed.</li>
+</ul>
+<p>(e) <em>Recovery Time Objective / Recovery Point Objective</em></p>
+<ul>
+<li>RTO is the goal your organization sets for the maximum length of time it should take to restore normal operations following an outage or data loss.</li>
+<li>RPO is your goal for the maximum amount of data the organization can tolerate losing.</li>
+<li>With the help of proposed solution, the backup server will be at par with an approximate RPO less than 15 minutes company to the production database.</li>
+<li>This can be achieved by generating archive files (increment data) in every 4 min and pushing the same file in every 5 minutes - this will minimize our data lose.</li>
+</ul>
+<p>(f) <em>Disaster Recovery Testing: Ensuring your backup plan works</em></p>
+<ul>
+<li>Database recovery testing is a multi-step drill of an organization's disaster recovery plan designed to assure that information technology systems will be restored if an actual disaster occurs.</li>
+<li>The main objective of Database Restore Drill is to make sure that, in case a disaster does happen, the Recovery plan will actually work.</li>
+<li>Recovery testing drill reveals whether the backup is truly as full proof as it needs to be.</li>
+</ul>
+<p><em><img alt="image-20230818-123657" src="../images/oracle-database-solutions-and-service-standard-version/image-20230818-123657.png" /></em></p>
+<ol>
+<li><strong>SERVICES</strong></li>
+</ol>
+<p>Ginesys Team service includes:</p>
+<p>(a) <em>Performing Full Database Backup</em></p>
+<ul>
+<li><em>Performing full database backup using Rman which greatly simplifies in backing up, restoring, and recovering database files processes.</em></li>
+<li><em>Performing compressed Full backup for minimum utilization of hardware resources.</em></li>
+<li><em>Monitoring full backup alert logs on daily basis.</em></li>
+<li><em>Retaining important information about error messages and exceptions that occur during database operations from alert logs.</em></li>
+</ul>
+<p>(b) <em>Performing daily deletion of old Backup files</em></p>
+<ul>
+<li><em>Managing limited space for maximum utilization.</em></li>
+<li><em>Deleting old backup pieces to increase storage availability.</em></li>
+<li><em>Performing old backup deletion on daily basis.</em></li>
+<li><em>Monitoring alert logs of daily space availability on server after deletion of old backup files.</em></li>
+</ul>
+<p><em>(c) Performing Archive Backup</em></p>
+<ul>
+<li><em>Performing Daily incremental files backup.</em></li>
+</ul>
+<p><em>(d)</em> Monitoring Archive Generation</p>
+<ul>
+<li>Checking archive log generation at physical locations.</li>
+<li>Checking archive log sequence logically at database level.</li>
+<li>Monitoring any gap in archive log sequence and take proper action.</li>
+</ul>
+<p><em>(_e) _Monitoring long-running operations</em></p>
+<ul>
+<li>Checking all long running queries in database.</li>
+<li>Monitoring session's status and processes they are consuming.</li>
+<li>Monitoring input/output, waits, access of each session and to stop the session if found degrading database performance.</li>
+<li>Monitoring alerts logs of long running queries and operations every two hours.</li>
+</ul>
+<p>(f) <em>Managing Database locks</em></p>
+<ul>
+<li>Monitoring locks created in database through alert logs generated every two hours.</li>
+<li>Managing and resolving all locking and deadlock conflicts.</li>
+<li>Ensures smooth working of database transactions for optimal performance of database.</li>
+<li>Taking immediate action against sessions creating database locks.</li>
+</ul>
+<p>(g) <em>Matching performance with Ginesys application</em></p>
+<ul>
+<li>Removing events of extinct sites from production to optimize performance with application (it is Standard practice of application system will create events on any alteration / removing/addition (s) and that will be place in a queue for further sync and suppose user forgot to mark extinct site and later on the marked extinct ).</li>
+</ul>
+<p>(h) <em>Tablespace Utilization</em></p>
+<ul>
+<li>Monitoring all tablespaces utilization daily through alert logs and via database.</li>
+<li>Making sufficient space for all existing and new objects to reside.</li>
+<li>Adding new data files when required and increasing space on existing one at regular basis.</li>
+<li>Gathering tablespace data and analyzing database growth over time.</li>
+<li>Checking temporary tablespaces and files.</li>
+<li>Tuning undo retention with undo tablespace.</li>
+</ul>
+<p>(i) <em>Synchronization with Backup Server</em></p>
+<ul>
+<li>Movement of full database backup from Production Server to Backup Server daily.</li>
+<li>Moving Archive Backup from Production Server to Backup Server daily.</li>
+<li>Managing multiple copies of data files backup and archive backup on each server.</li>
+<li>Managing RSYNC with cron jobs to transfer and synchronize physical database data across network.</li>
+<li>Managing RSYNC which initiates synchronization every five minutes and sync archive log from Production Server to Backup Server.</li>
+<li>Ensuring availability of Backup Database at the time of production site failure with minimum downtime.</li>
+</ul>
+<p>(j) <em>Archive Log Recovery on Backup Server</em></p>
+<ul>
+<li>Monitoring transfer of archive log from Production Server to Backup Server and recovering archive log to the latest archive generated.</li>
+<li>Physically matching archive log size on both servers.</li>
+<li>Logically matching archive log sequence on production with Backup server.</li>
+<li>Ensuring no gap in sequence after archive are applied on Backup server.</li>
+<li>Monitoring Archive Applying alert log generation after every two hours.</li>
+</ul>
+<p>(k) <em>Performing archive flushing task</em></p>
+<ul>
+<li>Performing archive flushing task on regular basis to reclaim archive space within database after physical deletion of archive log.</li>
+</ul>
+<p>(l) <em>Performing Database Recovery</em></p>
+<ul>
+<li>Performing Database Recovery Drill to verify integrity of database backups.</li>
+<li>Preparation of quarterly recovery drill logs and sharing with concerned individual.</li>
+</ul>
+<p>(m) <em>Database Maintenance Statistics</em></p>
+<ul>
+<li>Database Growth Comparison statistics</li>
+<li>Analyzing database and schemas statistics.</li>
+<li>Performing Proactive maintenance tasks for Database and OS server.</li>
+</ul>
+<p>(n) <em>Managing Database Indexes</em></p>
+<ul>
+<li>Rebuilding of Indexes, if bulk load of data is inserted.</li>
+<li>Check index monitoring usage to validate the index usage which is not used yet.</li>
+<li>Drop/Mark unusable and unused indexes with proper change management.</li>
+<li>Making sure all indexes should use INDEXES tablespace and not use.</li>
+<li>DATA/Other tablespace. If so, then move all indexes to its Index Tablespace.</li>
+<li>Managing and moving file system of indexes to fix Input Output performance of database.</li>
+</ul>
+<p>(o) <em>Database Health Check Report</em></p>
+<ul>
+<li>Generating, modifying and sharing Database health check report on monthly basis.</li>
+<li>Diagnosing and maintaining database health and stability as per health check report output.</li>
+<li>
+<p>Health check of Database Instance and Listener.</p>
+</li>
+<li>
+<p><strong>DATABASE ALERT LOGS</strong></p>
+</li>
+<li>
+<p>Alert logs contain important information about error messages and exceptions that occur during database operations.</p>
+</li>
+<li>Multiple database alerts are configured for managing the database activity and smooth working.</li>
+<li>Ginesys Database team monitor database alerts every two hours on daily basis.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><a href="http://s.no/">S.NO</a></th>
+<th><strong>LIST OF ALERT LOG</strong></th>
+<th><strong>FREQUENCY</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td>Old backup deletion on Production Server</td>
+<td>once per day</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td>RMAN full backup completion on Production Server</td>
+<td>once per day</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td>Old backup deletion on Backup Server</td>
+<td>once per day</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td>RMAN backup copied from Production Server to Backup Server</td>
+<td>once per day</td>
+</tr>
+<tr>
+<td><strong>5</strong></td>
+<td>Archive synchronization gap between Production Server and Backup Server</td>
+<td>12 times a day repeat every two hours</td>
+</tr>
+<tr>
+<td><strong>6</strong></td>
+<td>Archive applied on Backup Server</td>
+<td>12 times a day repeat every two hours</td>
+</tr>
+<tr>
+<td><strong>7</strong></td>
+<td>Old Backup deletion on Remote Server</td>
+<td>once per day</td>
+</tr>
+<tr>
+<td><strong>8</strong></td>
+<td>RMAN backup copied from Backup Server to Remote Server</td>
+<td>once per day</td>
+</tr>
+<tr>
+<td><strong>9</strong></td>
+<td>Archive synchronization gap between Backup Server and Remote Server</td>
+<td>12 times a day repeat every two hours</td>
+</tr>
+<tr>
+<td><strong>10</strong></td>
+<td>Tablespace utilization information</td>
+<td>once per day</td>
+</tr>
+<tr>
+<td><strong>11</strong></td>
+<td>Database long running query information</td>
+<td>12 times a day repeat every two hours</td>
+</tr>
+<tr>
+<td><strong>12</strong></td>
+<td>Database locking sessions</td>
+<td>12 times a day repeat every two hours</td>
+</tr>
+<tr>
+<td><strong>13</strong></td>
+<td>Server disk utilization and free space</td>
+<td>12 times a day repeat every two hours</td>
+</tr>
+<tr>
+<td><strong>14</strong></td>
+<td>Deletion of extinct p-site events</td>
+<td>5 times a month</td>
+</tr>
+<tr>
+<td><strong>15</strong></td>
+<td>Expired archive flush from backup server<br><br>&nbsp;</td>
+<td>2 times a month repeats after every 15 days</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

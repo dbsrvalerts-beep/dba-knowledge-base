@@ -213,3 +213,38 @@ Filesystem at /dev/mapper/rhel-u01 is mounted on /u01; on-line resizing required
 old_desc_blocks = 10, new_desc_blocks = 20
 The filesystem on /dev/mapper/rhel-u01 is now 41940992 (4k) blocks long.
 ```
+
+---
+
+## Resizing LVM Logical Volumes Within the Same Volume Group (ext4)
+Storage Reallocation: Shrinking /arch and Extending /u01 on prdbkp (RHEL, LVM, ext4)
+The goal was to reclaim 100GB of underutilized space from the arch logical volume (44% used, plenty of headroom) and reassign it to the u01 logical volume, which was critically low on space (99% used, only 25GB free) — all within the same volume group, without adding new storage.
+
+```bash
+# 1. Unmount /arch — will fail if anything has it open (good, that's your safety check)
+umount /arch
+
+# 2. Mandatory filesystem check before ext4 resize
+e2fsck -f /dev/mapper/rhel00-arch
+
+# 3. Shrink the filesystem to 881G (981.5G current - 100G)
+#    Give it a little buffer — shrink to 880G to be safe, not exactly to the edge
+resize2fs /dev/mapper/rhel00-arch 880G
+
+# 4. Shrink the LV to match (should be >= filesystem size, small buffer is fine)
+lvreduce -L 880G /dev/mapper/rhel00-arch
+
+# 5. Remount arch, verify it's healthy
+mount /arch
+df -Th /arch
+
+# 6. Extend u01 LV with the freed space
+lvextend -L +100G /dev/mapper/rhel00-u01
+
+# 7. Grow u01 filesystem online (ext4, no unmount needed)
+resize2fs /dev/mapper/rhel00-u01
+
+# 8. Verify final state
+df -Th /arch /u01
+lvs rhel00
+```

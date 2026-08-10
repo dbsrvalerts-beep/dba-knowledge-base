@@ -1,6 +1,6 @@
-# Cloud Database Management Tasks
+# 1. Cloud Database Management Tasks
 
-## Introduction
+### Introduction
 
 This document provides a detailed explanation of the tasks performed for managing Cloud databases. The DBA team plays a crucial role in ensuring the smooth operation of these databases.
 
@@ -8,13 +8,13 @@ The tasks listed below cover various aspects of database management, configurati
 
 ---
 
-## RMAN Configuration for Newly Added Cloud Database
+### RMAN Configuration for Newly Added Cloud Database
 
 For any newly added Cloud database, the Database team performs RMAN configuration to set up and manage the backup and recovery process. This includes defining RMAN backup policies and setting up the database in archive mode to obtain minimum data loss.
 
 ---
 
-## GDBA Database
+### GDBA Database
 
 GDBA is a centralized and resilient database, functioning as a grid that proficiently manages to link with all cloud databases.
 
@@ -26,7 +26,7 @@ These records are gathered using various PROCEDURES that execute on their schedu
 
 ---
 
-## Gathering Information of All Cloud Databases into GDBA
+### Gathering Information of All Cloud Databases into GDBA
 
 This task involves collecting information about:
 
@@ -47,7 +47,7 @@ This task involves collecting information about:
 - DISK UTILIZATION INFORMATION
 ---
 
-## Monitoring Information for All Cloud Databases
+### Monitoring Information for All Cloud Databases
 
 The DBA team monitors full database backup information daily for all Cloud databases to ensure that backups are completed successfully and on schedule. In case of any backup failure or delay, the corrective measure steps include investigating backup failures and informing the Cloud Team about the status and resolution.
 
@@ -79,7 +79,7 @@ The DBA team gathers statistics for highly modified tables on regular basis. (as
 
 ---
 
-## Database Cleanup Activities
+### Database Cleanup Activities
 
 To manage database space efficiently, the DBA team identifies and performs data deletion activities on various segments, unused or obsolete data is removed to free up storage space both at the database level and the operating system level.
 
@@ -89,37 +89,37 @@ Performing cleanup activity for GINARCHIVE schema's junk/obsolete tables.
 
 ---
 
-## Performing Point-in-Time (PITR) and Restore Activity
+### Performing Point-in-Time (PITR) and Restore Activity
 
 As per requirement the DBA team performs point-in-time recovery and restore activities for various clients to validate the recoverability of their databases.
 
 ---
 
-## Crash Recovery Activity
+### Crash Recovery Activity
 
 In case of database crashes, the DBA team performs crash recovery activities to restore databases to the last consistent state.
 
 ---
 
-## Share Database Monthly Report to Cloud Team
+### Share Database Monthly Report to Cloud Team
 
 The DBA team prepares and shares report on database size growth and object growth, Backup Time taken and Backup Size Info with the Cloud Team to assist with capacity planning and resource allocation.
 
 ---
 
-## Share Other Info to Cloud Team
+### Share Other Info to Cloud Team
 
 As part of regular updates and communication, the DBA team shares relevant information, insights, and recommendations with the Cloud Team to ensure transparency and collaboration.
 
 ---
 
-## Other Miscellaneous Cloud Database Activities
+### Other Miscellaneous Cloud Database Activities
 
 Apart from the regular tasks, the DBA team performs other activities as needed, such as setting the NOARCHIVE database mode, handling tenant code changes and addressing any specific database-related requests from the Cloud Team. These activities ensure Cloud databases' smooth operation and alignment with changing business needs.
 
 ---
 
-## On-Demand
+### On-Demand
 
 - The DBA team promptly addresses any reported slowness issues, recognizing the imperative of a responsive database system to restore optimal performance.
 
@@ -131,6 +131,6 @@ Apart from the regular tasks, the DBA team performs other activities as needed, 
 
 ---
 
-## Conclusion
+### Conclusion
 
 This document outlines the various tasks performed by the DBA team to manage, configure, monitor, and optimize Cloud databases. By implementing these tasks, the team ensures the reliability, availability, and performance of Cloud databases while proactively resolving any issues that may arise. The centralization of information in the GDBA database facilitates efficient management and reporting, supporting the Cloud Team in delivering a reliable and robust cloud database service.
