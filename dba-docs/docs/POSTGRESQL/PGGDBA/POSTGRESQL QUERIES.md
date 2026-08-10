@@ -7,15 +7,15 @@
 
 ---
 
-# 1. Server & Cluster Overview
+## 1. Server & Cluster Overview
 
-## Server Start Time / Uptime
+### Server Start Time / Uptime
 
 ```sql
 SELECT pg_postmaster_start_time()::TIMESTAMP(0) AS server_start_time;
 ```
 
-## Uptime Duration
+### Uptime Duration
 
 ```sql
 SELECT date_trunc('second', current_timestamp - pg_postmaster_start_time()) AS "Uptime"
@@ -23,7 +23,7 @@ SELECT date_trunc('second', current_timestamp - pg_postmaster_start_time()) AS "
 FROM pg_postmaster_start_time();
 ```
 
-## Database Count (Total & Prod)
+### Database Count (Total & Prod)
 
 ```sql
 WITH db_counts AS (
@@ -47,7 +47,7 @@ AND datname NOT ILIKE '%prodx'
 SELECT * FROM db_counts;
 ```
 
-## Total Cluster Size
+### Total Cluster Size
 
 ```sql
 SELECT
@@ -69,7 +69,7 @@ WHERE datistemplate = false
 AND pg_database_size(pg_database.datname) > 0) AS subquery;
 ```
 
-## Individual Database Sizes
+### Individual Database Sizes
 
 ```sql
 SELECT
@@ -87,7 +87,7 @@ AND pg_database_size(pg_database.datname) > 0
 ORDER BY pg_database_size(pg_database.datname)::numeric DESC;
 ```
 
-## Total Cluster Connections (Used vs Max)
+### Total Cluster Connections (Used vs Max)
 
 ```sql
 SELECT
@@ -99,7 +99,7 @@ count(*) AS used_connections
 FROM pg_stat_activity;
 ```
 
-## Connections by State
+### Connections by State
 
 ```sql
 SELECT
@@ -115,7 +115,7 @@ GROUP BY state
 ORDER BY 1;
 ```
 
-## Connections by User / Database / Client
+### Connections by User / Database / Client
 
 ```sql
 SELECT client_addr, usename, datname, count(*)
@@ -127,7 +127,7 @@ GROUP BY 1,2,3
 ORDER BY 4 DESC;
 ```
 
-## User Connections Ratio (% of max_connections used)
+### User Connections Ratio (% of max_connections used)
 
 ```sql
 SELECT count(*) * 100 / (SELECT current_setting('max_connections')::int)
@@ -135,7 +135,7 @@ SELECT count(*) * 100 / (SELECT current_setting('max_connections')::int)
 FROM pg_stat_activity;
 ```
 
-## Check Key Configuration Parameters
+### Check Key Configuration Parameters
 
 ```sql
 SELECT * FROM pg_settings
@@ -157,15 +157,15 @@ WHERE name IN (
 );
 ```
 
-## List Installed Extensions
+### List Installed Extensions
 
 ```sql
 SELECT * FROM pg_available_extensions WHERE installed_version IS NOT NULL;
 ```
 
-# 2. Session & Query Monitoring
+## 2. Session & Query Monitoring
 
-## Long Running Sessions (> 1 minute)
+### Long Running Sessions (> 1 minute)
 
 ```sql
 SELECT pid, usename, datname, application_name, now() - xact_start AS duration, query_id, query
@@ -181,7 +181,7 @@ AND now() - xact_start > INTERVAL '1 minute'
 ORDER BY duration DESC;
 ```
 
-## Long Running Queries (> 2 minutes)
+### Long Running Queries (> 2 minutes)
 
 ```sql
 SELECT now() - query_start AS runtime, usename, datname, state, query
@@ -193,7 +193,7 @@ WHERE now() - query_start > '2 minutes'::interval
 ORDER BY runtime DESC;
 ```
 
-## Long Running Queries (> 9 seconds)
+### Long Running Queries (> 9 seconds)
 
 ```sql
 SELECT now() - query_start AS runtime, usename, datname, state, query
@@ -205,7 +205,7 @@ WHERE now() - query_start > '9 seconds'::interval
 ORDER BY runtime DESC;
 ```
 
-## Active Connections Excluding Current Query
+### Active Connections Excluding Current Query
 
 ```sql
 SELECT age(clock_timestamp(), query_start), usename, datname, query
@@ -219,7 +219,7 @@ AND query NOT ILIKE '%pg_stat_activity%'
 ORDER BY age DESC;
 ```
 
-## Sessions Waiting on an Event
+### Sessions Waiting on an Event
 
 ```sql
 SELECT usename, datname, query, wait_event_type, wait_event
@@ -231,7 +231,7 @@ WHERE state != 'idle'
 AND wait_event IS NOT NULL;
 ```
 
-## Session Count by Wait Event Type
+### Session Count by Wait Event Type
 
 ```sql
 SELECT
@@ -247,7 +247,7 @@ WHERE backend_type = 'client backend'
 GROUP BY wait_type;
 ```
 
-## Idle-in-Transaction / Aborted Sessions
+### Idle-in-Transaction / Aborted Sessions
 
 ```sql
 SELECT * FROM pg_stat_activity
@@ -255,7 +255,7 @@ SELECT * FROM pg_stat_activity
 WHERE state IN ('idle in transaction', 'idle in transaction (aborted)');
 ```
 
-## Ginview Sessions Running > 30 Minutes (per database)
+### Ginview Sessions Running > 30 Minutes (per database)
 
 ```sql
 SELECT DISTINCT
@@ -297,7 +297,7 @@ AND n.nspname = 'ginview'
 ORDER BY a.query_start;
 ```
 
-## Blocking Sessions - Detailed (lock/relation view)
+### Blocking Sessions - Detailed (lock/relation view)
 
 ```sql
 SELECT
@@ -331,9 +331,9 @@ AND bl.mode <> 'AccessShareLock'
 ORDER BY d.datname, a.pid;
 ```
 
-## Identify Root Blocking Sessions (simple)
+### Identify Root Blocking Sessions (simple)
 
-## Step 1: Identify Blocking Sessions
+### Step 1: Identify Blocking Sessions
 
 ```sql
 SELECT pid, usename, state, wait_event, query  
@@ -350,15 +350,15 @@ SELECT unnest(pg_blocking_pids(pid))
 FROM pg_stat_activity);
 ```
 
-## Waiting Connections Count for a Lock
+### Waiting Connections Count for a Lock
 
 ```sql
 SELECT count(DISTINCT pid) FROM pg_locks WHERE granted = false;
 ```
 
-# 3. Killing / Terminating Sessions
+## 3. Killing / Terminating Sessions
 
-## Cancel a Running Query (graceful)
+### Cancel a Running Query (graceful)
 
 ```sql
 SELECT pg_cancel_backend(<pid>);
@@ -366,13 +366,13 @@ SELECT pg_cancel_backend(<pid>);
 -- Example: SELECT pg_cancel_backend(27735);
 ```
 
-## Terminate a Specific Session
+### Terminate a Specific Session
 
 ```sql
 SELECT pg_terminate_backend(<pid>);
 ```
 
-## Kill Only Root Blocking Sessions (Best Practice)
+### Kill Only Root Blocking Sessions (Best Practice)
 
 ```sql
 SELECT pg_terminate_backend(pid)
@@ -388,7 +388,7 @@ FROM pg_stat_activity
 );
 ```
 
-## Kill All Idle Sessions
+### Kill All Idle Sessions
 
 ```sql
 SELECT pg_terminate_backend(pg_stat_activity.pid)
@@ -400,7 +400,7 @@ WHERE pid <> pg_backend_pid()
 AND state = 'idle';
 ```
 
-## Kill All Idle-in-Transaction Sessions
+### Kill All Idle-in-Transaction Sessions
 
 ```sql
 SELECT pg_terminate_backend(pid)
@@ -412,7 +412,7 @@ WHERE datname = '<db_name>'
 AND state = 'idle in transaction';
 ```
 
-## Kill Sessions Idle Beyond a Time Threshold
+### Kill Sessions Idle Beyond a Time Threshold
 
 ```sql
 SELECT pg_terminate_backend(pid)
@@ -428,7 +428,7 @@ AND state IN ('idle', 'idle in transaction', 'idle in transaction (aborted)', 'd
 AND state_change < current_timestamp - INTERVAL '15 minutes';
 ```
 
-## Kill All Active Connections to a Database
+### Kill All Active Connections to a Database
 
 ```sql
 SELECT pg_terminate_backend(pid)
@@ -440,7 +440,7 @@ WHERE datname = '<db_name>'
 AND leader_pid IS NULL;
 ```
 
-## Kill All Connections to a Database Except Current Session
+### Kill All Connections to a Database Except Current Session
 
 ```sql
 SELECT pg_terminate_backend(pid)
@@ -454,7 +454,7 @@ AND pid != pg_backend_pid()
 AND leader_pid IS NULL;
 ```
 
-## Terminate All Connections Across All Databases (Except Current)
+### Terminate All Connections Across All Databases (Except Current)
 
 ```sql
 SELECT pg_terminate_backend(pid)
@@ -468,7 +468,7 @@ AND datname IS NOT NULL
 AND leader_pid IS NULL;
 ```
 
-## Generate Cancel Statements for Active / Idle-in-Transaction Sessions
+### Generate Cancel Statements for Active / Idle-in-Transaction Sessions
 
 ```sql
 SELECT 'SELECT pg_cancel_backend(' || pid || ');'
@@ -480,9 +480,9 @@ WHERE pid <> pg_backend_pid()
 AND state IN ('idle in transaction', 'active');
 ```
 
-# 4. Cache & Buffer Analysis
+## 4. Cache & Buffer Analysis
 
-## Cluster-wide Heap Cache Hit Ratio
+### Cluster-wide Heap Cache Hit Ratio
 
 ```sql
 SELECT
@@ -496,7 +496,7 @@ ROUND((SUM(heap_blks_hit) * 100.0) / NULLIF((SUM(heap_blks_hit) + SUM(heap_blks_
 FROM pg_statio_user_tables;
 ```
 
-## Cache Hit Ratio per Database
+### Cache Hit Ratio per Database
 
 ```sql
 SELECT datname AS "Database", blks_hit, blks_read,
@@ -510,7 +510,7 @@ WHERE datname IS NOT NULL
 ORDER BY 4 ASC;
 ```
 
-## Index Cache Hit Ratio
+### Index Cache Hit Ratio
 
 ```sql
 SELECT
@@ -524,7 +524,7 @@ sum(idx_blks_hit) AS idx_hit,
 FROM pg_statio_user_indexes;
 ```
 
-## Overall Cache Hit Ratio (target > 90%)
+### Overall Cache Hit Ratio (target > 90%)
 
 ```sql
 SELECT sum(blks_hit) * 100 / sum(blks_hit + blks_read) AS hit_ratio
@@ -532,7 +532,7 @@ SELECT sum(blks_hit) * 100 / sum(blks_hit + blks_read) AS hit_ratio
 FROM pg_stat_database;
 ```
 
-## Shared Buffer Usage per Database (block count)
+### Shared Buffer Usage per Database (block count)
 
 ```sql
 SELECT
@@ -554,7 +554,7 @@ GROUP BY d.datname, c.reldatabase
 ORDER BY 2 DESC;
 ```
 
-## Shared Buffer Status (dirty / clean / empty, in MB)
+### Shared Buffer Status (dirty / clean / empty, in MB)
 
 ```sql
 SELECT buffer_status, round(sum(count) * 8 / 1024) AS "Size(MB)"
@@ -578,7 +578,7 @@ SELECT * FROM (VALUES ('dirty', 0), ('clean', 0), ('empty', 0)) AS tab2(buffer_s
 GROUP BY buffer_status;
 ```
 
-## Top Tables Cached in Current Database (by buffer count)
+### Top Tables Cached in Current Database (by buffer count)
 
 ```sql
 SELECT n.nspname, c.relname, count(*) AS buffers
@@ -598,7 +598,7 @@ ORDER BY 3 DESC
 LIMIT 10;
 ```
 
-## How Much of a Table/Index is Buffered (% of relation & shared_buffers)
+### How Much of a Table/Index is Buffered (% of relation & shared_buffers)
 
 ```sql
 SELECT
@@ -624,7 +624,7 @@ ORDER BY 3 DESC
 LIMIT 10;
 ```
 
-## Buffer Usage-Count Distribution (hotness of pages)
+### Buffer Usage-Count Distribution (hotness of pages)
 
 ```sql
 SELECT usagecount, count(*)
@@ -636,7 +636,7 @@ GROUP BY usagecount
 ORDER BY usagecount;
 ```
 
-## % of Relation Cached and % Hot (usagecount > 3)
+### % of Relation Cached and % Hot (usagecount > 3)
 
 ```sql
 SELECT c.relname,
@@ -662,7 +662,7 @@ ORDER BY 2 DESC
 LIMIT 10;
 ```
 
-## Pre-warm a Table into Shared Buffers (pg_prewarm)
+### Pre-warm a Table into Shared Buffers (pg_prewarm)
 
 ```sql
 -- Check page count first
@@ -674,7 +674,7 @@ SELECT oid::regclass AS tbl, relpages FROM pg_class WHERE relname = '<table_name
 SELECT * FROM pg_prewarm('<table_name>');
 ```
 
-## Check Blocks of a Specific Table in Buffer Cache
+### Check Blocks of a Specific Table in Buffer Cache
 
 ```sql
 SELECT count(*) FROM pg_buffercache
@@ -682,7 +682,7 @@ SELECT count(*) FROM pg_buffercache
 WHERE relfilenode = pg_relation_filenode('<table_name>'::regclass);
 ```
 
-## Dirty Page / Background Writer Stats
+### Dirty Page / Background Writer Stats
 
 ```sql
 SELECT buffers_clean, maxwritten_clean, buffers_backend_fsync
@@ -692,7 +692,7 @@ FROM pg_stat_bgwriter;
 -- maxwritten_clean and buffers_backend_fsync should ideally be 0
 ```
 
-## Requested vs Timed Checkpoints (health check)
+### Requested vs Timed Checkpoints (health check)
 
 ```sql
 SELECT 'bad' AS checkpoints
@@ -702,21 +702,21 @@ FROM pg_stat_bgwriter
 WHERE checkpoints_req > checkpoints_timed;
 ```
 
-# 5. Autovacuum & Table Bloat
+## 5. Autovacuum & Table Bloat
 
-## Autovacuum & Track-Counts Enabled?
+### Autovacuum & Track-Counts Enabled?
 
 ```sql
 SELECT name, setting FROM pg_settings WHERE name IN ('autovacuum', 'track_counts');
 ```
 
-## Autovacuum-Related Configuration Parameters
+### Autovacuum-Related Configuration Parameters
 
 ```sql
 SELECT * FROM pg_settings WHERE category LIKE 'Autovacuum%';
 ```
 
-## Dead/Live Tuple Counts & Last Vacuum/Analyze Times
+### Dead/Live Tuple Counts & Last Vacuum/Analyze Times
 
 ```sql
 SELECT schemaname, relname, n_live_tup, n_dead_tup,
@@ -732,7 +732,7 @@ WHERE n_live_tup > 0
 ORDER BY n_dead_tup DESC;
 ```
 
-## Tables With ≥ 50% Dead Tuples (bloat candidates)
+### Tables With ≥ 50% Dead Tuples (bloat candidates)
 
 ```sql
 SELECT * FROM (
@@ -756,7 +756,7 @@ WHERE dead_pct >= 50
 ORDER BY dead_pct DESC;
 ```
 
-## Tables Currently Qualifying for Autovacuum
+### Tables Currently Qualifying for Autovacuum
 
 ```sql
 SELECT *,
@@ -804,25 +804,25 @@ AND N.nspname !~ '^pg_toast'
 ORDER BY av_needed DESC, n_dead_tup DESC;
 ```
 
-## Check Progress of a Running VACUUM
+### Check Progress of a Running VACUUM
 
 ```sql
 SELECT * FROM pg_stat_progress_vacuum;
 ```
 
-## Run VACUUM Manually
+### Run VACUUM Manually
 
 ```sql
 VACUUM (VERBOSE, ANALYZE);
 ```
 
-## Table-Level Autovacuum Overrides
+### Table-Level Autovacuum Overrides
 
 ```sql
 SELECT reloptions FROM pg_class WHERE relname = '<table_name>';
 ```
 
-## Transaction ID Wraparound Monitoring
+### Transaction ID Wraparound Monitoring
 
 ```sql
 WITH max_age AS (
@@ -856,7 +856,7 @@ max(ROUND(100 * (oldest_current_xid / autovacuum_freeze_max_age::float))) AS per
 FROM per_database_stats;
 ```
 
-## Database Age (Transaction ID Age per Database)
+### Database Age (Transaction ID Age per Database)
 
 ```sql
 SELECT datname, age(datfrozenxid), current_setting('autovacuum_freeze_max_age')
@@ -866,7 +866,7 @@ FROM pg_database
 ORDER BY 2 DESC;
 ```
 
-## Object Age per Database (relfrozenxid)
+### Object Age per Database (relfrozenxid)
 
 ```sql
 SELECT c.oid::regclass, age(c.relfrozenxid), pg_size_pretty(pg_total_relation_size(c.oid))
@@ -882,7 +882,7 @@ AND n.nspname NOT IN ('pg_toast')
 ORDER BY 2 DESC;
 ```
 
-## Row Insert / Update / Delete Distribution per Table
+### Row Insert / Update / Delete Distribution per Table
 
 ```sql
 SELECT relname,
@@ -898,7 +898,7 @@ FROM pg_stat_user_tables
 ORDER BY relname;
 ```
 
-## HOT Update Percentage per Table (should be close to 100%)
+### HOT Update Percentage per Table (should be close to 100%)
 
 ```sql
 SELECT relname, n_tup_upd, n_tup_hot_upd,
@@ -912,9 +912,9 @@ WHERE n_tup_upd > 0
 ORDER BY hot_pct;
 ```
 
-# 6. Index Monitoring
+## 6. Index Monitoring
 
-## List All Indexes in a Schema
+### List All Indexes in a Schema
 
 ```sql
 SELECT tablename AS "TableName", indexname AS "Index Name", indexdef AS "Index script"
@@ -926,7 +926,7 @@ WHERE schemaname = '<schema_name>'
 ORDER BY tablename, indexname;
 ```
 
-## Indexes with Primary/Unique Key Flags
+### Indexes with Primary/Unique Key Flags
 
 ```sql
 SELECT
@@ -948,7 +948,7 @@ JOIN pg_class c ON c.oid = i.indrelid
 WHERE c.relname = '<table_name>';
 ```
 
-## Get Indexes with Column Names
+### Get Indexes with Column Names
 
 ```sql
 SELECT t.relname AS table_name, i.relname AS index_name,
@@ -974,13 +974,13 @@ GROUP BY t.relname, i.relname
 ORDER BY t.relname, i.relname;
 ```
 
-## Unused Indexes (idx_scan = 0)
+### Unused Indexes (idx_scan = 0)
 
 ```sql
 SELECT * FROM pg_stat_all_indexes WHERE idx_scan = 0 AND schemaname = '<schema_name>';
 ```
 
-## Rarely-Used Indexes (idx_scan < 100)
+### Rarely-Used Indexes (idx_scan < 100)
 
 ```sql
 SELECT
@@ -998,7 +998,7 @@ WHERE idx_scan < 100
 ORDER BY index_scan_count ASC, pg_relation_size(indexrelid) DESC;
 ```
 
-## Duplicate Indexes
+### Duplicate Indexes
 
 ```sql
 SELECT ni.nspname || '.' || ct.relname AS "table",
@@ -1056,7 +1056,7 @@ AND NOT i.indisprimary
 ORDER BY 1, 2, 3;
 ```
 
-## Index Leaf Fragmentation ≥ 40% (Bloat Check)
+### Index Leaf Fragmentation ≥ 40% (Bloat Check)
 
 ```sql
 SELECT * FROM (
@@ -1098,7 +1098,7 @@ AND index_scan_count >= 100
 ORDER BY leaf_fragmentation DESC, index_size_bytes DESC;
 ```
 
-## Index Usage % vs Sequential Scans
+### Index Usage % vs Sequential Scans
 
 ```sql
 SELECT relname, 100 * idx_scan / (seq_scan + idx_scan) AS percent_of_times_index_used,
@@ -1112,7 +1112,7 @@ WHERE (seq_scan + idx_scan) > 0
 ORDER BY n_live_tup DESC;
 ```
 
-## Index Scan % per Table (alternate)
+### Index Scan % per Table (alternate)
 
 ```sql
 SELECT schemaname, relname, seq_scan, idx_scan,
@@ -1126,7 +1126,7 @@ WHERE (idx_scan + seq_scan) > 0
 ORDER BY idx_scan_pct;
 ```
 
-## Detect Tables Possibly Missing an Index
+### Detect Tables Possibly Missing an Index
 
 ```sql
 SELECT relname, seq_scan - idx_scan AS too_much_seq,
@@ -1144,7 +1144,7 @@ AND pg_relation_size(relname::regclass) > 80000
 ORDER BY too_much_seq DESC;
 ```
 
-## Average Rows Read per Sequential Scan (potential missing index)
+### Average Rows Read per Sequential Scan (potential missing index)
 
 ```sql
 SELECT schemaname, relname, seq_scan, seq_tup_read,
@@ -1160,7 +1160,7 @@ ORDER BY seq_tup_read DESC
 LIMIT 25;
 ```
 
-## Average Tuples Read per Index Scan
+### Average Tuples Read per Index Scan
 
 ```sql
 SELECT indexrelname,
@@ -1174,7 +1174,7 @@ FROM pg_stat_user_indexes
 WHERE idx_scan > 0;
 ```
 
-## How Much Index Data is in Cache
+### How Much Index Data is in Cache
 
 ```sql
 SELECT sum(idx_blks_read) AS idx_read, sum(idx_blks_hit) AS idx_hit
@@ -1182,9 +1182,9 @@ SELECT sum(idx_blks_read) AS idx_read, sum(idx_blks_hit) AS idx_hit
 FROM pg_statio_user_indexes;
 ```
 
-# 7. Object, Table & Schema Sizing
+## 7. Object, Table & Schema Sizing
 
-## Table Size Excluding Indexes (per database)
+### Table Size Excluding Indexes (per database)
 
 ```sql
 SELECT table_name, pg_size_pretty(pg_relation_size(quote_ident(table_name))) AS table_size
@@ -1196,7 +1196,7 @@ WHERE table_schema NOT IN ('pg_catalog', 'information_schema')
 ORDER BY pg_total_relation_size(quote_ident(table_name)) DESC;
 ```
 
-## Table Size Including Indexes (per database)
+### Table Size Including Indexes (per database)
 
 ```sql
 SELECT table_name, pg_size_pretty(pg_total_relation_size(quote_ident(table_name))) AS table_size
@@ -1208,7 +1208,7 @@ WHERE table_schema NOT IN ('pg_catalog', 'information_schema')
 ORDER BY pg_total_relation_size(quote_ident(table_name)) DESC;
 ```
 
-## Single Table Size (excl./incl. index)
+### Single Table Size (excl./incl. index)
 
 ```sql
 SELECT pg_size_pretty(pg_relation_size('<schema>.<table>')) AS table_size_excl_index;
@@ -1216,7 +1216,7 @@ SELECT pg_size_pretty(pg_relation_size('<schema>.<table>')) AS table_size_excl_i
 SELECT pg_size_pretty(pg_total_relation_size('<schema>.<table>')) AS table_size_incl_index;
 ```
 
-## Top Table Sizes with Index Breakdown
+### Top Table Sizes with Index Breakdown
 
 ```sql
 SELECT relname,
@@ -1234,7 +1234,7 @@ ORDER BY pg_total_relation_size(relname::regclass) DESC
 LIMIT 10;
 ```
 
-## Object Sizes with TOAST Info
+### Object Sizes with TOAST Info
 
 ```sql
 WITH toast_map AS (
@@ -1292,7 +1292,7 @@ LEFT JOIN toast_map tm ON tm.toast_oid = c.oid
 ORDER BY pg_total_relation_size(c.oid) DESC;
 ```
 
-## Object Size - All Objects, Simplified
+### Object Size - All Objects, Simplified
 
 ```sql
 SELECT
@@ -1322,7 +1322,7 @@ AND relkind <> 'd'
 ORDER BY pg_total_relation_size(pg_class.oid) DESC;
 ```
 
-## Schema Size (% of Total Database)
+### Schema Size (% of Total Database)
 
 ```sql
 SELECT schemaname,
@@ -1348,7 +1348,7 @@ GROUP BY schemaname
 ORDER BY 3 DESC;
 ```
 
-## Object Counts - Tables
+### Object Counts - Tables
 
 ```sql
 SELECT table_name
@@ -1362,7 +1362,7 @@ AND table_type IN ('FOREIGN', 'BASE TABLE')
 ORDER BY table_name;
 ```
 
-## Object Counts - Primary Keys
+### Object Counts - Primary Keys
 
 ```sql
 SELECT c.table_schema, c.table_name, c.constraint_name
@@ -1376,7 +1376,7 @@ AND c.table_schema IN ('main', 'ginview', 'ginarchive', 'gateway')
 ORDER BY c.table_name;
 ```
 
-## Object Counts - Views
+### Object Counts - Views
 
 ```sql
 SELECT table_name
@@ -1388,7 +1388,7 @@ WHERE table_schema IN ('main', 'ginarchive', 'gateway', 'ginview')
 ORDER BY table_name;
 ```
 
-## Object Counts - Triggers
+### Object Counts - Triggers
 
 ```sql
 SELECT trigger_name, event_manipulation AS event, event_object_table AS table_name,
@@ -1402,7 +1402,7 @@ WHERE trigger_schema IN ('main', 'ginarchive', 'ginview', 'gateway')
 ORDER BY trigger_name;
 ```
 
-## Object Counts - Sequences
+### Object Counts - Sequences
 
 ```sql
 SELECT sequence_name
@@ -1414,7 +1414,7 @@ WHERE sequence_schema IN ('main', 'ginview', 'gateway', 'ginarchive')
 ORDER BY sequence_name;
 ```
 
-## Object Counts - Functions
+### Object Counts - Functions
 
 ```sql
 SELECT routine_name
@@ -1426,7 +1426,7 @@ WHERE routine_type = 'FUNCTION'
 AND routine_schema IN ('main', 'ginview', 'gateway', 'ginarchive');
 ```
 
-## Useful Sizing Functions - Quick Reference
+### Useful Sizing Functions - Quick Reference
 
 ```sql
 -- pg_size_pretty() formats byte sizes as human readable
@@ -1444,9 +1444,9 @@ AND routine_schema IN ('main', 'ginview', 'gateway', 'ginarchive');
 -- pg_column_size() size of a value of a specific column/type
 ```
 
-# 8. Query Performance (pg_stat_statements)
+## 8. Query Performance (pg_stat_statements)
 
-## Top 5 Queries by Mean Execution Time
+### Top 5 Queries by Mean Execution Time
 
 ```sql
 SELECT userid::regrole, dbid, mean_exec_time, query
@@ -1458,7 +1458,7 @@ ORDER BY mean_exec_time DESC
 LIMIT 5;
 ```
 
-## Top 5 Queries by Total Execution Time
+### Top 5 Queries by Total Execution Time
 
 ```sql
 SELECT userid::regrole, dbid, query
@@ -1470,7 +1470,7 @@ ORDER BY total_exec_time DESC
 LIMIT 5;
 ```
 
-## Top 10 Queries by Total Time with % CPU Share
+### Top 10 Queries by Total Time with % CPU Share
 
 ```sql
 SELECT substring(query, 1, 200) AS query,
@@ -1490,7 +1490,7 @@ ORDER BY total_exec_time DESC
 LIMIT 10;
 ```
 
-## Queries with Highest I/O Wait Time
+### Queries with Highest I/O Wait Time
 
 ```sql
 SELECT userid::regrole, dbid, query, queryid, mean_exec_time / 1000 AS mean_time_seconds
@@ -1502,7 +1502,7 @@ ORDER BY (blk_read_time + blk_write_time) DESC
 LIMIT 10;
 ```
 
-## Top Time-Consuming Queries (full breakdown)
+### Top Time-Consuming Queries (full breakdown)
 
 ```sql
 SELECT userid::regrole, dbid, query, calls,
@@ -1522,7 +1522,7 @@ ORDER BY mean_exec_time DESC
 LIMIT 10;
 ```
 
-## Queries with High Memory / Shared Buffer Usage
+### Queries with High Memory / Shared Buffer Usage
 
 ```sql
 SELECT userid::regrole, dbid, queryid, query
@@ -1534,7 +1534,7 @@ ORDER BY (shared_blks_hit + shared_blks_dirtied) DESC
 LIMIT 10;
 ```
 
-## Queries Doing the Most Buffer Writes
+### Queries Doing the Most Buffer Writes
 
 ```sql
 SELECT query, shared_blks_dirtied
@@ -1546,7 +1546,7 @@ WHERE shared_blks_dirtied > 0
 ORDER BY 2 DESC;
 ```
 
-## Queries with the Highest Block Read Time
+### Queries with the Highest Block Read Time
 
 ```sql
 SELECT * FROM pg_stat_statements
@@ -1556,7 +1556,7 @@ WHERE blk_read_time <> 0
 ORDER BY blk_read_time DESC;
 ```
 
-## Average Statement Execution Time (cluster-wide)
+### Average Statement Execution Time (cluster-wide)
 
 ```sql
 SELECT (sum(total_exec_time) / sum(calls))::numeric(6,3)
@@ -1564,7 +1564,7 @@ SELECT (sum(total_exec_time) / sum(calls))::numeric(6,3)
 FROM pg_stat_statements;
 ```
 
-## Reset pg_stat_statements
+### Reset pg_stat_statements
 
 ```sql
 SELECT pg_stat_statements_reset();
@@ -1572,15 +1572,15 @@ SELECT pg_stat_statements_reset();
 SELECT count(*) FROM pg_stat_statements;
 ```
 
-# 9. Replication & WAL
+## 9. Replication & WAL
 
-## Replication Status
+### Replication Status
 
 ```sql
 SELECT * FROM pg_stat_replication;
 ```
 
-## Replication Lag in Seconds
+### Replication Lag in Seconds
 
 ```sql
 SELECT ROUND(EXTRACT(EPOCH FROM replay_lag)) AS lag_seconds
@@ -1590,13 +1590,13 @@ FROM pg_stat_replication
 WHERE application_name = 'walreceiver';
 ```
 
-## Replication Slot Information
+### Replication Slot Information
 
 ```sql
 SELECT * FROM pg_replication_slots;
 ```
 
-## Logical Replication Slot Lag Detail
+### Logical Replication Slot Lag Detail
 
 ```sql
 SELECT
@@ -1622,19 +1622,19 @@ WHERE s.slot_type = 'logical'
 ORDER BY slot_lag_bytes DESC NULLS LAST;
 ```
 
-## WAL Directory Size (MB)
+### WAL Directory Size (MB)
 
 ```sql
 SELECT (sum(size))::BIGINT / 1024 / 1024 AS wal_size_mb FROM pg_ls_waldir();
 ```
 
-## WAL Archiver Status
+### WAL Archiver Status
 
 ```sql
 SELECT * FROM pg_stat_archiver;
 ```
 
-## WAL Archiving Gap (current vs last archived)
+### WAL Archiving Gap (current vs last archived)
 
 ```sql
 SELECT pg_walfile_name(pg_current_wal_lsn()), last_archived_wal, last_failed_wal,
@@ -1650,15 +1650,15 @@ SELECT pg_walfile_name(pg_current_wal_lsn()), last_archived_wal, last_failed_wal
 FROM pg_stat_archiver;
 ```
 
-# 10. pg_cron Jobs
+## 10. pg_cron Jobs
 
-## Cron Job Counts per Database
+### Cron Job Counts per Database
 
 ```sql
 SELECT database, count(jobid) FROM cron.job GROUP BY database;
 ```
 
-## Today's Cron Job Run Status per Database
+### Today's Cron Job Run Status per Database
 
 ```sql
 SELECT database, status, count(status)
@@ -1670,9 +1670,9 @@ WHERE end_time::DATE = CURRENT_DATE::DATE
 GROUP BY database, status;
 ```
 
-# 11. Prepared Transactions
+## 11. Prepared Transactions
 
-## List Prepared/Orphaned Transactions
+### List Prepared/Orphaned Transactions
 
 ```sql
 SELECT gid, prepared, owner, database, transaction
@@ -1682,7 +1682,7 @@ FROM pg_prepared_xacts
 ORDER BY age(transaction) DESC;
 ```
 
-## Find Locks Held by Prepared Transactions
+### Find Locks Held by Prepared Transactions
 
 ```sql
 SELECT px.gid, px.owner, px.prepared, l.locktype, l.mode, l.granted, c.relname AS object_name
@@ -1694,7 +1694,7 @@ JOIN pg_locks l ON px.transaction = l.transactionid
 LEFT JOIN pg_class c ON l.relation = c.oid;
 ```
 
-## Resolve a Prepared Transaction
+### Resolve a Prepared Transaction
 
 ```sql
 COMMIT PREPARED '<gid>';
@@ -1704,21 +1704,21 @@ COMMIT PREPARED '<gid>';
 ROLLBACK PREPARED '<gid>';
 ```
 
-# 12. Maintenance Commands
+## 12. Maintenance Commands
 
-## Reindex a Database
+### Reindex a Database
 
 ```sql
 REINDEX (VERBOSE) DATABASE <database_name>;
 ```
 
-## Reload Configuration (without restart)
+### Reload Configuration (without restart)
 
 ```sql
 SELECT pg_reload_conf();
 ```
 
-## Query Store Views (if enabled)
+### Query Store Views (if enabled)
 
 ```sql
 SELECT * FROM query_store.qs_view;
@@ -1730,9 +1730,9 @@ SELECT * FROM query_store.query_texts_view;
 SELECT * FROM query_store.query_plans_view;
 ```
 
-# 13. psql Meta-Command Quick Reference
+## 13. psql Meta-Command Quick Reference
 
-## Common -Commands
+### Common -Commands
 
 | Command | Description |
 | --- | --- |
@@ -1762,9 +1762,9 @@ SELECT * FROM query_store.query_plans_view;
 | `\!` | clear Clear terminal (Linux) |
 | `\!` | df -h Run an OS-level command (e.g. disk usage) |
 
-# 14. PGGDBA - Historical Trend Queries
+## 14. PGGDBA - Historical Trend Queries
 
-## Historical Database Size (for a given day)
+### Historical Database Size (for a given day)
 
 ```sql
 SELECT INSTANCE_NAME, LOGDATE, DATABASE, SIZE_GB AS SIZE
@@ -1782,7 +1782,7 @@ AND instance_name = '<instance_name>'
 ORDER BY SIZE_GB DESC;
 ```
 
-## Database Growth Comparison (two dates)
+### Database Growth Comparison (two dates)
 
 ```sql
 SELECT
@@ -1830,7 +1830,7 @@ HAVING SUM(t.newsize - t.oldsize) <> 0
 ORDER BY diff DESC;
 ```
 
-## Top Size-Consuming Segments (historical, > 1000 MB)
+### Top Size-Consuming Segments (historical, > 1000 MB)
 
 ```sql
 SELECT instance_name, logdate, database_name, schema_name, object_name, object_type, object_size, size_mb
@@ -1844,7 +1844,7 @@ AND size_mb > 1000
 ORDER BY size_mb DESC;
 ```
 
-## Object Growth Comparison (two dates)
+### Object Growth Comparison (two dates)
 
 ```sql
 SELECT
