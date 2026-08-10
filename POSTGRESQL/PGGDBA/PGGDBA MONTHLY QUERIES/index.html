@@ -1424,6 +1424,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#6-check-wal-generation-data-base-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Check Wal Generation data [Base table]
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-check-wal-generation-data-frequncy-map-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Check Wal Generation data Frequncy Map [View]
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1540,6 +1562,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#6-check-wal-generation-data-base-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Check Wal Generation data [Base table]
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-check-wal-generation-data-frequncy-map-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Check Wal Generation data Frequncy Map [View]
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1563,6 +1607,7 @@
 <ul>
 <li><strong>Database Size</strong>: <code>public.databasesize_information</code></li>
 <li><strong>Objects Size</strong>: <code>public.object_segment_{instance_name}</code></li>
+<li><strong>walsize_monitor</strong>:<code>public.walsize_monitor</code></li>
 </ul>
 <hr />
 <h2 id="1-database-size">1. Database Size<a class="headerlink" href="#1-database-size" title="Permanent link">&para;</a></h2>
@@ -1674,6 +1719,15 @@
 <hr />
 <h2 id="5-check-cleanup-log-of-object_segment_instance_name-previous-month">5. Check Cleanup Log of <code>object_segment_{instance_name}</code> (Previous Month)<a class="headerlink" href="#5-check-cleanup-log-of-object_segment_instance_name-previous-month" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monthly_purge_log</span><span class="p">;</span>
+</code></pre></div>
+<h2 id="6-check-wal-generation-data-base-table">6. Check Wal Generation data [Base table]<a class="headerlink" href="#6-check-wal-generation-data-base-table" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="k">public</span><span class="p">.</span><span class="n">walsize_monitor</span><span class="p">;</span>
+</code></pre></div>
+<h2 id="7-check-wal-generation-data-frequncy-map-view">7. Check Wal Generation data Frequncy Map [View]<a class="headerlink" href="#7-check-wal-generation-data-frequncy-map-view" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">public</span><span class="p">.</span><span class="n">wal_generation_frequency_map</span>
+<span class="k">where</span><span class="w"> </span><span class="n">instance_name</span><span class="o">=</span><span class="s1">&#39;PGPAAS1&#39;</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">log_day</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
 </code></pre></div>
 
 
