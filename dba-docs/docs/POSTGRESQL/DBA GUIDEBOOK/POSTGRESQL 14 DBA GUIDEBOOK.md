@@ -5,8 +5,6 @@
 
 _May 2023_
 
-#
-
 ## 1. Introduction to PostgreSQL
 
 - What is PostgreSQL?

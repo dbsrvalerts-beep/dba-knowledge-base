@@ -1,5 +1,4 @@
 # Performance Tuning Guide
-**
 
 ## 1. SOURCE CODE CUSTOM INSTALLATION
 
