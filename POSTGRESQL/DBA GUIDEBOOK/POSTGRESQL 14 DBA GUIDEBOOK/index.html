@@ -2794,7 +2794,6 @@
 <li><a href="#postgresql-naming-conventions">PostgreSQL Naming Conventions</a></li>
 <li><a href="#postgresql-limits">PostgreSQL Limits</a></li>
 <li><a href="#page-layout">Page Layout</a></li>
-<li>Page Layout</li>
 </ul>
 <h2 id="2-installing-postgresql-on-windowslinux">2. Installing PostgreSQL on Windows/Linux<a class="headerlink" href="#2-installing-postgresql-on-windowslinux" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2802,19 +2801,17 @@
 <li><a href="#installing-postgresql-148-on-windows">Installing PostgreSQL 14.8 On Windows</a></li>
 <li><a href="#setting-up-postgresql-windows-environment">Setting Up PostgreSQL Windows Environment</a></li>
 <li><a href="#installing-postgresql-on-linux-default-directory">Installing PostgreSQL on Linux (Default Directory)</a></li>
-<li>Installing PostgreSQL on Linux (Default Directory)</li>
+<li>Setting Up PostgreSQL Linux Environment</li>
 <li><a href="#installing-postgresql-on-linux-non-default-directory">Installing PostgreSQL on Linux (Non-Default Directory)</a></li>
-<li>Installing PostgreSQL on Linux (Non-Default Directory)</li>
 </ul>
 <h2 id="3-postgresql-architecture">3. PostgreSQL Architecture<a class="headerlink" href="#3-postgresql-architecture" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="#fundamentals-of-postgresql-architecture">Fundamentals of PostgreSQL Architecture</a></li>
 <li><a href="#process-and-memory-architecture">Process and Memory Architecture</a></li>
-<li>Process and Memory Architecture</li>
+<li>Post Master Process</li>
 <li><a href="#utility-processes">Utility Processes</a></li>
 <li><a href="#memory-segments">Memory Segments</a></li>
 <li><a href="#physical-files">Physical Files</a></li>
-<li>Physical Files</li>
 </ul>
 <h2 id="4-database-clusters">4. Database Clusters<a class="headerlink" href="#4-database-clusters" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2825,48 +2822,43 @@
 <li><a href="#how-to-restartreload-cluster">How to Restart\Reload Cluster</a></li>
 <li><a href="#types-of-shutdown">Types of Shutdown</a></li>
 <li><a href="#pg_controldata">Pg_Controldata</a></li>
-<li>Pg_Controldata</li>
 </ul>
 <h2 id="5-database-directory-layout">5. Database Directory Layout<a class="headerlink" href="#5-database-directory-layout" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="#overview-of-installation-directory-layout">Overview of Installation Directory Layout</a></li>
 <li><a href="#overview-of-database-directory-layout">Overview of Database Directory Layout</a></li>
-<li>Overview of Database Directory Layout</li>
 <li>Overview of Base Directory Layout</li>
 </ul>
 <h2 id="6-configuration-files">6. Configuration Files<a class="headerlink" href="#6-configuration-files" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="#postgresqlconf-file">Postgresql.conf File</a></li>
 <li><a href="#pg-catalog-tables-to-view-file-settings">Pg Catalog tables to view File settings</a></li>
-<li>Pg Catalog tables to view File settings</li>
+<li>Changing parameter from Postgresql.conf File</li>
 <li><a href="#postgresqlautoconf">Postgresql.auto.conf</a></li>
-<li>Postgresql.auto.conf</li>
+<li>Pg_ident.conf with sample</li>
 <li><a href="#pg_hbaconf-with-sample">Pg_hba.conf with sample</a></li>
-<li>Pg_hba.conf with sample</li>
 <li>Steps to modify Pg_hba.conf file</li>
 </ul>
 <h2 id="7-database-creation-users-schema-privileges">7. Database Creation / Users / Schema / Privileges<a class="headerlink" href="#7-database-creation-users-schema-privileges" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Create database - Psql / createdb utility</li>
 <li><a href="#drop-database-psql-dropdb-utility">Drop database - Psql/ dropdb utility</a></li>
 <li><a href="#create-user-psql-createuser-utility-interactive">Create user - Psql/ createuser utility/ Interactive</a></li>
 <li><a href="#drop-user-psql-dropuser-utility">Drop user - Psql/ dropuser utility</a></li>
-<li>Drop user - Psql/ dropuser utility</li>
+<li>Create/Drop Schema and Search Schema Path</li>
 <li><a href="#public-schema">Public Schema</a></li>
 <li><a href="#privileges-in-postgresql">Privileges in PostgreSQL</a></li>
 <li><a href="#grants-and-revoke-access">Grants and Revoke Access</a></li>
-<li>Grants and Revoke Access</li>
 </ul>
 <h2 id="8-psql-commands">8. PSQL Commands<a class="headerlink" href="#8-psql-commands" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="#connect-to-psql">Connect to Psql</a></li>
 <li><a href="#psql-commands">Psql Commands</a></li>
 <li><a href="#psql-file-operations">Psql File Operations</a></li>
-<li>Psql File Operations</li>
 </ul>
 <h2 id="9-pg-system-catalogs-and-time-zone">9. Pg System Catalogs and Time Zone<a class="headerlink" href="#9-pg-system-catalogs-and-time-zone" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="#pg-system-catalogs">Pg System Catalogs</a></li>
-<li>Pg System Catalogs</li>
 <li>Date &amp; Time zones in PostgreSQL</li>
 </ul>
 <h2 id="10-postgresql-crud-operations">10. PostgreSQL CRUD Operations<a class="headerlink" href="#10-postgresql-crud-operations" title="Permanent link">&para;</a></h2>
@@ -2875,12 +2867,11 @@
 <li><a href="#create-operations-with-examples">Create operations with examples</a></li>
 <li><a href="#data-types-in-postgresql">Data Types in PostgreSQL</a></li>
 <li><a href="#constraints">Constraints</a></li>
-<li>Constraints</li>
+<li>PostgreSQL Build-in Functions</li>
 <li><a href="#read-operations-and-column-aliases">Read operations and Column Aliases</a></li>
 <li><a href="#update-operations-with-examples">Update operations with examples</a></li>
 <li><a href="#delete-with-examples">Delete with examples</a></li>
 <li><a href="#transaction">Transaction</a></li>
-<li>Transaction</li>
 <li>View, Sequences</li>
 <li>Index and its Types</li>
 </ul>
@@ -2889,7 +2880,6 @@
 <li><a href="#table-inheritance">Table Inheritance</a></li>
 <li><a href="#table-partitioning">Table Partitioning</a></li>
 <li><a href="#copy-table">Copy Table</a></li>
-<li>Copy Table</li>
 </ul>
 <h2 id="12-tablespace">12. Tablespace<a class="headerlink" href="#12-tablespace" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2899,25 +2889,23 @@
 <li><a href="#move-table-from-one-tablespace-to-another">Move table from one tablespace to another</a></li>
 <li><a href="#drop-tablespaces">Drop tablespaces</a></li>
 <li><a href="#temporary-tablespaces">Temporary tablespaces</a></li>
-<li>Temporary tablespaces</li>
 </ul>
 <h2 id="13-backup-and-restore">13. Backup and Restore<a class="headerlink" href="#13-backup-and-restore" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="#back-types-of-backup">Back &amp; Types of Backup</a></li>
 <li><a href="#logical-backup">Logical Backup</a></li>
-<li>Logical Backup</li>
 <li>Pg_dump</li>
 <li>Restore backup of pg_dump using psql</li>
 <li>Restore backup of pg_dump using pg_restore</li>
+<li>Pg_dumpall</li>
 <li><a href="#difference-between-pg_dump-and-pg_dumpall">Difference between pg_dump and pg_dumpall</a></li>
-<li>Difference between pg_dump and pg_dumpall</li>
 <li>Backup and Restore using pg_dumpall</li>
 <li>Compressing and splitting dump files</li>
+<li>File System backup - Offline backup mode</li>
 <li><a href="#continuous-archiving">Continuous Archiving</a></li>
 <li><a href="#steps-to-set-up-continuous-archiving">Steps to set up continuous archiving</a></li>
-<li>Steps to set up continuous archiving</li>
+<li>Online Low Level API Backup ------Pending</li>
 <li><a href="#pg_basebackup-online-backup-mode">Pg_basebackup - Online backup mode</a></li>
-<li>Pg_basebackup - Online backup mode</li>
 <li>Online Backup Restore and Point in Time Recovery</li>
 </ul>
 <h2 id="14-maintenance-in-postgresql">14. Maintenance in PostgreSQL<a class="headerlink" href="#14-maintenance-in-postgresql" title="Permanent link">&para;</a></h2>
@@ -2928,11 +2916,10 @@
 <li><a href="#data-fragmentation">Data Fragmentation</a></li>
 <li><a href="#vacuum-vs-vacuum-full">Vacuum Vs Vacuum full</a></li>
 <li><a href="#auto-vacuum-in-postgresql">Auto-Vacuum in PostgreSQL</a></li>
-<li>Auto-Vacuum in PostgreSQL</li>
+<li>Transaction ID Wrap Around Failure</li>
 <li><a href="#vacuum-freeze">Vacuum Freeze</a></li>
-<li>Vacuum Freeze</li>
+<li>Routine Re-Indexing</li>
 <li><a href="#cluster">Cluster</a></li>
-<li>Cluster</li>
 </ul>
 <h2 id="15-postgresql-upgarde">15. PostgreSQL Upgarde<a class="headerlink" href="#15-postgresql-upgarde" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2940,7 +2927,6 @@
 <li><a href="#ways-to-upgrade">Ways to Upgrade</a></li>
 <li><a href="#pg_upgrade-utility">Pg_upgrade utility</a></li>
 <li><a href="#uninstalling-postgresql">Uninstalling PostgreSQL</a></li>
-<li>Uninstalling PostgreSQL</li>
 </ul>
 <h2 id="16-new-features-and-enhancement-postgresql13">16. New Features and Enhancement (postgreSQL13)<a class="headerlink" href="#16-new-features-and-enhancement-postgresql13" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2949,18 +2935,17 @@
 <li><a href="#parallel-vacuum">Parallel Vacuum</a></li>
 <li><a href="#trusted-extension">Trusted Extension</a></li>
 <li><a href="#drop-database-force">Drop Database (Force)</a></li>
-<li>Drop Database (Force)</li>
+<li>Track Wal_Usage</li>
 <li><a href="#system-views">System Views</a></li>
-<li>System Views</li>
 </ul>
 <h2 id="17-new-features-and-enhancement-postgresql15">17. New Features and Enhancement (postgreSQL15)<a class="headerlink" href="#17-new-features-and-enhancement-postgresql15" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Server Statistics</li>
 <li><a href="#logging-format">Logging Format</a></li>
 <li><a href="#merge">Merge</a></li>
-<li>Merge</li>
 <li>Roles and Setting server parameters</li>
+<li>Psql \Dconfig</li>
 <li><a href="#misc-features">Misc. Features</a></li>
-<li>Misc. Features</li>
 </ul>
 <h2 id="18-postgresql-replication">18. PostgreSQL Replication<a class="headerlink" href="#18-postgresql-replication" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2969,22 +2954,21 @@
 <li><a href="#masterslave-configuration">Master/Slave Configuration</a></li>
 <li><a href="#replication-modes">Replication Modes</a></li>
 <li><a href="#types-of-replication">Types of Replication</a></li>
-<li>Types of Replication</li>
 <li>Physical and Logical Replication</li>
 <li>Physical Replication (Type 1: Log Based replication)</li>
 <li>Physical Replication (Type 2: Streaming Replication)</li>
 <li>Monitoring Primary/Standby Streaming Replication</li>
+<li>Replication Slot in Streaming Replication</li>
 <li><a href="#synchronous-mode-in-streaming-replication">Synchronous mode in Streaming Replication</a></li>
 <li><a href="#setup-primarystandby-streaming-replication-using-repmgr">Setup Primary/Standby Streaming Replication Using Repmgr</a></li>
-<li>Setup Primary/Standby Streaming Replication Using Repmgr</li>
 <li>Automatic failover and Node Rejoin using Repmgr</li>
 <li>Adding New Standby Node and Standby Follow using Repmgr</li>
 <li>Cascading Streaming Replication using Repmgr</li>
 <li>Streaming Replication Switchover using Repmgr</li>
 <li>Uninstall Repmgr</li>
 <li>Introduction to Logical Replication</li>
+<li>Publication Vs Subscription</li>
 <li><a href="#setup-logical-replication">Setup Logical Replication</a></li>
-<li>Setup Logical Replication</li>
 <li>Logical Replication - Test Case 1</li>
 <li>Logical Replication - Test Case 2</li>
 <li>Logical Replication - Test Case 3</li>
@@ -2994,7 +2978,6 @@
 <h2 id="19-server-parameters-tuning">19. Server Parameters Tuning<a class="headerlink" href="#19-server-parameters-tuning" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="#introduction-to-server-parameters">Introduction to Server Parameters</a></li>
-<li>Introduction to Server Parameters</li>
 </ul>
 <p><strong>Introduction to PostgreSQL</strong></p>
 <h3 id="what-is-postgresql">What is PostgreSQL?<a class="headerlink" href="#what-is-postgresql" title="Permanent link">&para;</a></h3>
