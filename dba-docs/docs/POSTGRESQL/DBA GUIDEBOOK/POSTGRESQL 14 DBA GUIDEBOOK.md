@@ -6,31 +6,32 @@
 _May 2023_
 
 ## 1. Introduction to PostgreSQL
+
 - [What is PostgreSQL?](#what-is-postgresql)
 - [PostgreSQL Naming Conventions](#postgresql-naming-conventions)
 - [PostgreSQL Limits](#postgresql-limits)
 - [Page Layout](#page-layout)
-- Page Layout
 
 ## 2. Installing PostgreSQL on Windows/Linux
+
 - [PostgreSQL System Requirement](#postgresql-system-requirement)
 - [Installing PostgreSQL 14.8 On Windows](#installing-postgresql-148-on-windows)
 - [Setting Up PostgreSQL Windows Environment](#setting-up-postgresql-windows-environment)
 - [Installing PostgreSQL on Linux (Default Directory)](#installing-postgresql-on-linux-default-directory)
-- Installing PostgreSQL on Linux (Default Directory)
+- Setting Up PostgreSQL Linux Environment
 - [Installing PostgreSQL on Linux (Non-Default Directory)](#installing-postgresql-on-linux-non-default-directory)
-- Installing PostgreSQL on Linux (Non-Default Directory)
 
 ## 3. PostgreSQL Architecture
+
 - [Fundamentals of PostgreSQL Architecture](#fundamentals-of-postgresql-architecture)
 - [Process and Memory Architecture](#process-and-memory-architecture)
-- Process and Memory Architecture
+- Post Master Process
 - [Utility Processes](#utility-processes)
 - [Memory Segments](#memory-segments)
 - [Physical Files](#physical-files)
-- Physical Files
 
 ## 4. Database Clusters
+
 - [What is Database Cluster?](#what-is-database-cluster)
 - [Initdb](#initdb)
 - [How to Start\\Stop Cluster](#how-to-startstop-cluster)
@@ -38,154 +39,153 @@ _May 2023_
 - [How to Restart\\Reload Cluster](#how-to-restartreload-cluster)
 - [Types of Shutdown](#types-of-shutdown)
 - [Pg_Controldata](#pg_controldata)
-- Pg_Controldata
 
 ## 5. Database Directory Layout
+
 - [Overview of Installation Directory Layout](#overview-of-installation-directory-layout)
 - [Overview of Database Directory Layout](#overview-of-database-directory-layout)
-- Overview of Database Directory Layout
 - Overview of Base Directory Layout
 
 ## 6. Configuration Files
+
 - [Postgresql.conf File](#postgresqlconf-file)
 - [Pg Catalog tables to view File settings](#pg-catalog-tables-to-view-file-settings)
-- Pg Catalog tables to view File settings
+- Changing parameter from Postgresql.conf File
 - [Postgresql.auto.conf](#postgresqlautoconf)
-- Postgresql.auto.conf
+- Pg_ident.conf with sample
 - [Pg_hba.conf with sample](#pg_hbaconf-with-sample)
-- Pg_hba.conf with sample
 - Steps to modify Pg_hba.conf file
 
 ## 7. Database Creation / Users / Schema / Privileges
 
+- Create database - Psql / createdb utility
 - [Drop database - Psql/ dropdb utility](#drop-database-psql-dropdb-utility)
 - [Create user - Psql/ createuser utility/ Interactive](#create-user-psql-createuser-utility-interactive)
 - [Drop user - Psql/ dropuser utility](#drop-user-psql-dropuser-utility)
-- Drop user - Psql/ dropuser utility
+- Create/Drop Schema and Search Schema Path
 - [Public Schema](#public-schema)
 - [Privileges in PostgreSQL](#privileges-in-postgresql)
 - [Grants and Revoke Access](#grants-and-revoke-access)
-- Grants and Revoke Access
 
 ## 8. PSQL Commands
+
 - [Connect to Psql](#connect-to-psql)
 - [Psql Commands](#psql-commands)
 - [Psql File Operations](#psql-file-operations)
-- Psql File Operations
 
 ## 9. Pg System Catalogs and Time Zone
+
 - [Pg System Catalogs](#pg-system-catalogs)
-- Pg System Catalogs
 - Date & Time zones in PostgreSQL
 
 ## 10. PostgreSQL CRUD Operations
+
 - [What is CRUD?](#what-is-crud)
 - [Create operations with examples](#create-operations-with-examples)
 - [Data Types in PostgreSQL](#data-types-in-postgresql)
 - [Constraints](#constraints)
-- Constraints
+- PostgreSQL Build-in Functions
 - [Read operations and Column Aliases](#read-operations-and-column-aliases)
 - [Update operations with examples](#update-operations-with-examples)
 - [Delete with examples](#delete-with-examples)
 - [Transaction](#transaction)
-- Transaction
 - View, Sequences
 - Index and its Types
 
 ## 11. Table Inheritance and Partitioning
+
 - [Table Inheritance](#table-inheritance)
 - [Table Partitioning](#table-partitioning)
 - [Copy Table](#copy-table)
-- Copy Table
 
 ## 12. Tablespace
+
 - [Tablespace & its advantages](#tablespace-its-advantages)
 - [PostgreSQL default tablespaces](#postgresql-default-tablespaces)
 - [Create tablespaces](#create-tablespaces)
 - [Move table from one tablespace to another](#move-table-from-one-tablespace-to-another)
 - [Drop tablespaces](#drop-tablespaces)
 - [Temporary tablespaces](#temporary-tablespaces)
-- Temporary tablespaces
 
 ## 13. Backup and Restore
+
 - [Back & Types of Backup](#back-types-of-backup)
 - [Logical Backup](#logical-backup)
-- Logical Backup
 - Pg_dump
 - Restore backup of pg_dump using psql
 - Restore backup of pg_dump using pg_restore
+- Pg_dumpall
 - [Difference between pg_dump and pg_dumpall](#difference-between-pg_dump-and-pg_dumpall)
-- Difference between pg_dump and pg_dumpall
 - Backup and Restore using pg_dumpall
 - Compressing and splitting dump files
+- File System backup - Offline backup mode
 - [Continuous Archiving](#continuous-archiving)
 - [Steps to set up continuous archiving](#steps-to-set-up-continuous-archiving)
-- Steps to set up continuous archiving
+- Online Low Level API Backup ------Pending
 - [Pg_basebackup - Online backup mode](#pg_basebackup-online-backup-mode)
-- Pg_basebackup - Online backup mode
 - Online Backup Restore and Point in Time Recovery
 
 ## 14. Maintenance in PostgreSQL
+
 - [Introduction to Maintenance](#introduction-to-maintenance)
 - [Updating Planner Statistics\\Analyze](#updating-planner-statisticsanalyze)
 - [Explain plan and Query Execution Cost](#explain-plan-and-query-execution-cost)
 - [Data Fragmentation](#data-fragmentation)
 - [Vacuum Vs Vacuum full](#vacuum-vs-vacuum-full)
 - [Auto-Vacuum in PostgreSQL](#auto-vacuum-in-postgresql)
-- Auto-Vacuum in PostgreSQL
+- Transaction ID Wrap Around Failure
 - [Vacuum Freeze](#vacuum-freeze)
-- Vacuum Freeze
+- Routine Re-Indexing
 - [Cluster](#cluster)
-- Cluster
 
 ## 15. PostgreSQL Upgarde
+
 - [What is Upgrade](#what-is-upgrade)
 - [Ways to Upgrade](#ways-to-upgrade)
 - [Pg_upgrade utility](#pg_upgrade-utility)
 - [Uninstalling PostgreSQL](#uninstalling-postgresql)
-- Uninstalling PostgreSQL
 
 ## 16. New Features and Enhancement (postgreSQL13)
+
 - [B-Tree Deduplication](#b-tree-deduplication)
 - [Incremental Sorting](#incremental-sorting)
 - [Parallel Vacuum](#parallel-vacuum)
 - [Trusted Extension](#trusted-extension)
 - [Drop Database (Force)](#drop-database-force)
-- Drop Database (Force)
+- Track Wal_Usage
 - [System Views](#system-views)
-- System Views
 
 ## 17. New Features and Enhancement (postgreSQL15)
 
+- Server Statistics
 - [Logging Format](#logging-format)
 - [Merge](#merge)
-- Merge
 - Roles and Setting server parameters
+- Psql \\Dconfig
 - [Misc. Features](#misc-features)
-- Misc. Features
 
 ## 18. PostgreSQL Replication
+
 - [Introduction to Replication](#introduction-to-replication)
 - [Reasons for Replication](#reasons-for-replication)
 - [Master/Slave Configuration](#masterslave-configuration)
 - [Replication Modes](#replication-modes)
 - [Types of Replication](#types-of-replication)
-- Types of Replication
 - Physical and Logical Replication
 - Physical Replication (Type 1: Log Based replication)
 - Physical Replication (Type 2: Streaming Replication)
 - Monitoring Primary/Standby Streaming Replication
+- Replication Slot in Streaming Replication
 - [Synchronous mode in Streaming Replication](#synchronous-mode-in-streaming-replication)
 - [Setup Primary/Standby Streaming Replication Using Repmgr](#setup-primarystandby-streaming-replication-using-repmgr)
-- Setup Primary/Standby Streaming Replication Using Repmgr
 - Automatic failover and Node Rejoin using Repmgr
 - Adding New Standby Node and Standby Follow using Repmgr
 - Cascading Streaming Replication using Repmgr
 - Streaming Replication Switchover using Repmgr
 - Uninstall Repmgr
 - Introduction to Logical Replication
+- Publication Vs Subscription
 - [Setup Logical Replication](#setup-logical-replication)
-- Setup Logical Replication
 - Logical Replication - Test Case 1
 - Logical Replication - Test Case 2
 - Logical Replication - Test Case 3
@@ -193,8 +193,8 @@ _May 2023_
 - Logical Replication - Test Case 5
 
 ## 19. Server Parameters Tuning
+
 - [Introduction to Server Parameters](#introduction-to-server-parameters)
-- Introduction to Server Parameters
 
 **Introduction to PostgreSQL**
 
