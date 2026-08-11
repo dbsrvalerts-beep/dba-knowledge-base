@@ -1,27 +1,5 @@
 # Performance Tuning Guide
-**TABLE OF CONTENT**
-
-1. [SOURCE CODE CUSTOM INSTALLATION](#1-source-code-custom-installation)
-2. [INTRODUCTION TO PERFORMANCE TUNING](#2-introduction-to-performance-tuning)
-3. [TUNE CONFIGURATION PARAMETERS](#3-tune-configuration-parameters)
-   1. [SHARED BUFFERS](#31-shared-buffers)
-   2. [WORK_MEM](#32-work_mem)
-   3. [MAINTENANCE WORK_MEM](#33-maintenance-work_mem)
-   4. [AUTOVACUUM WORK_MEM](#34-autovacuum-work_mem)
-   5. [MAX CONNECTIONS](#35-max-connections)
-   6. [IDLE CONNECTIONS](#36-idle-connections)
-   7. [EFFECTIVE_CACHE_SIZE](#37-effective_cache_size)
-   8. [ADDITIONAL INFORMATION: PG_STAT_ACTIVITY](#38-additional-information-pg_stat_activity)
-4. [CHECKPOINT TUNING](#4-checkpoint-tuning)
-5. [MVCC AND AUTO VACUUM](#5-mvcc-and-auto-vacuum)
-6. [TUNING AUTO VACUUM PARAMETERS](#6-tuning-auto-vacuum-parameters)
-7. [QUERY OPTIMIZATION](#7-query-optimization)
-   1. [QUERY STATEMENT PROCESSING](#71-query-statement-processing)
-   2. [COMPONENTS OF EXPLAIN PLAN](#72-components-of-explain-plan)
-   3. [EXPLAIN ACCESS METHODS](#73-explain-access-methods)
-   4. [INDEX OPTIMIZATION](#74-index-optimization)
-   5. [OPTIMIZER AND STATISTICS](#75-optimizer-and-statistics)
-   6. [QUERY TUNING](#76-query-tuning)
+**
 
 ## 1. SOURCE CODE CUSTOM INSTALLATION
 

@@ -5,7 +5,7 @@
 
 _May 2023_
 
-# Table of Contents ![Questions](images/postgresql_14_updated/img_1_Questions.png)
+#
 
 ## 1. Introduction to PostgreSQL
 
