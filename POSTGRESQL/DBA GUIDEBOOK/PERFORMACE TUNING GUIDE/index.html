@@ -11,10 +11,10 @@
       
       
       
-        <link rel="prev" href="../POSTGRESQL%2014_updated/">
+        <link rel="prev" href="../../../ORACLE/ORACLE%20CLOUD/Cloud%20Database%20Management%20Tasks/">
       
       
-        <link rel="next" href="../../PG%20AUTOTUNE/PostgreSQL_AutoTune_Azure_VM_Scale_Implementation/">
+        <link rel="next" href="../POSTGRESQL%2014%20DBA%20GUIDEBOOK/">
       
       
         
@@ -25,7 +25,7 @@
     
     
       
-        <title>PT DOC - DBA Knowledge Base</title>
+        <title>PERFORMACE TUNING GUIDE - DBA Knowledge Base</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#introduction-to-performance-tuningintro_to_pt" class="md-skip">
+        <a href="#performace-tuning-guide" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              PT DOC
+              PERFORMACE TUNING GUIDE
             
           </span>
         </div>
@@ -1187,34 +1187,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../POSTGRESQL%2014_updated/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    POSTGRESQL 14 updated
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -1224,6 +1196,8 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
@@ -1232,7 +1206,7 @@
   <span class="md-ellipsis">
     
   
-    PT DOC
+    PERFORMACE TUNING GUIDE
   
 
     
@@ -1250,7 +1224,7 @@
   <span class="md-ellipsis">
     
   
-    PT DOC
+    PERFORMACE TUNING GUIDE
   
 
     
@@ -1266,6 +1240,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -1274,10 +1250,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#introduction-to-performance-tuningintro_to_pt" class="md-nav__link">
+  <a href="#1-source-code-custom-installation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        INTRODUCTION TO PERFORMANCE TUNING](#INTRO_TO_PT)
+        1. SOURCE CODE CUSTOM INSTALLATION
       
     </span>
   </a>
@@ -1285,10 +1261,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tune-configuration-parameterstune_config_param" class="md-nav__link">
+  <a href="#2-introduction-to-performance-tuning" class="md-nav__link">
     <span class="md-ellipsis">
       
-        TUNE CONFIGURATION PARAMETERS](#TUNE_CONFIG_PARAM)
+        2. INTRODUCTION TO PERFORMANCE TUNING
       
     </span>
   </a>
@@ -1296,10 +1272,193 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#checkpoint-tuningcheckpoint" class="md-nav__link">
+  <a href="#3-tune-configuration-parameters" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CHECKPOINT TUNING](#CHECKPOINT)
+        3. TUNE CONFIGURATION PARAMETERS
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. TUNE CONFIGURATION PARAMETERS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-shared-buffers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 SHARED BUFFERS
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.1 SHARED BUFFERS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#311-understanding-readwrite-path-in-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.1 Understanding Read/Write path in Detail
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#312-inside-shared-buffer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.2 Inside Shared buffer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#313-explain-analyzebuffers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.3 EXPLAIN (ANALYZE,BUFFERS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#314-buffer-ring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.4 BUFFER RING
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-work_mem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 WORK_MEM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-maintenance-work_mem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 MAINTENANCE WORK_MEM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-autovacuum-work_mem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 AUTOVACUUM WORK_MEM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-effective_cache_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 EFFECTIVE_CACHE_SIZE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-max-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 MAX CONNECTIONS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-idle-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 IDLE CONNECTIONS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38-additional-information-pg_stat_activity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8 ADDITIONAL INFORMATION: PG_STAT_ACTIVITY
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-checkpoint-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. CHECKPOINT TUNING
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. CHECKPOINT TUNING">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pg_stat_bgwriter-monitoring-checkpoint-occurance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PG_STAT_BGWRITER: MONITORING CHECKPOINT OCCURANCE
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-mvcc-and-auto-vacuum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. MVCC AND AUTO VACUUM
       
     </span>
   </a>
@@ -1307,10 +1466,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#source-code-custom-installation" class="md-nav__link">
+  <a href="#6-tuning-auto-vacuum-parameters" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SOURCE CODE CUSTOM INSTALLATION
+        6. TUNING AUTO VACUUM PARAMETERS
       
     </span>
   </a>
@@ -1318,90 +1477,146 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#introduction-to-performance-tuning" class="md-nav__link">
+  <a href="#7-query-optimization" class="md-nav__link">
     <span class="md-ellipsis">
       
-        INTRODUCTION TO PERFORMANCE TUNING
+        7. QUERY OPTIMIZATION
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. QUERY OPTIMIZATION">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-query-statement-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 QUERY STATEMENT PROCESSING
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#tune-configuration-parameters" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#72-components-of-explain-plan" class="md-nav__link">
     <span class="md-ellipsis">
       
-        TUNE CONFIGURATION PARAMETERS
+        7.2 COMPONENTS OF EXPLAIN PLAN
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#11-understanding-readwrite-path-in-detail" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#73-explain-access-methods" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.1 Understanding Read/Write path in Detail
+        7.3 EXPLAIN ACCESS METHODS
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#12-inside-shared-buffer" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#731-joins-test-case" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.2 Inside Shared buffer
+        7.3.1 JOINS TEST CASE
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#13-explain-analyzebuffers" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#74-index-optimization" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.3 EXPLAIN (ANALYZE,BUFFERS)
+        7.4 INDEX OPTIMIZATION
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#14-buffer-ring" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#75-optimizer-and-statistics" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.4 BUFFER RING
+        7.5 OPTIMIZER AND STATISTICS
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#2-work_mem" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#76-query-tuning" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2 . WORK_MEM
+        7.6 QUERY TUNING
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.6 QUERY TUNING">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#error-reporting-and-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ERROR REPORTING AND LOGGING
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#checkpoint-tuning" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#pgbadger" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CHECKPOINT TUNING
+        PGBADGER
       
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pg_stat_statements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PG_STAT_STATEMENTS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useful-monitoring-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        USEFUL MONITORING QUERIES
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1409,6 +1624,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../POSTGRESQL%2014%20DBA%20GUIDEBOOK/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    POSTGRESQL 14 DBA GUIDEBOOK
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1862,6 +2105,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -1870,10 +2115,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#introduction-to-performance-tuningintro_to_pt" class="md-nav__link">
+  <a href="#1-source-code-custom-installation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        INTRODUCTION TO PERFORMANCE TUNING](#INTRO_TO_PT)
+        1. SOURCE CODE CUSTOM INSTALLATION
       
     </span>
   </a>
@@ -1881,10 +2126,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tune-configuration-parameterstune_config_param" class="md-nav__link">
+  <a href="#2-introduction-to-performance-tuning" class="md-nav__link">
     <span class="md-ellipsis">
       
-        TUNE CONFIGURATION PARAMETERS](#TUNE_CONFIG_PARAM)
+        2. INTRODUCTION TO PERFORMANCE TUNING
       
     </span>
   </a>
@@ -1892,10 +2137,193 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#checkpoint-tuningcheckpoint" class="md-nav__link">
+  <a href="#3-tune-configuration-parameters" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CHECKPOINT TUNING](#CHECKPOINT)
+        3. TUNE CONFIGURATION PARAMETERS
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. TUNE CONFIGURATION PARAMETERS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-shared-buffers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 SHARED BUFFERS
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.1 SHARED BUFFERS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#311-understanding-readwrite-path-in-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.1 Understanding Read/Write path in Detail
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#312-inside-shared-buffer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.2 Inside Shared buffer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#313-explain-analyzebuffers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.3 EXPLAIN (ANALYZE,BUFFERS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#314-buffer-ring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.4 BUFFER RING
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-work_mem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 WORK_MEM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-maintenance-work_mem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 MAINTENANCE WORK_MEM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-autovacuum-work_mem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 AUTOVACUUM WORK_MEM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-effective_cache_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 EFFECTIVE_CACHE_SIZE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-max-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 MAX CONNECTIONS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-idle-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 IDLE CONNECTIONS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38-additional-information-pg_stat_activity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8 ADDITIONAL INFORMATION: PG_STAT_ACTIVITY
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-checkpoint-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. CHECKPOINT TUNING
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. CHECKPOINT TUNING">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pg_stat_bgwriter-monitoring-checkpoint-occurance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PG_STAT_BGWRITER: MONITORING CHECKPOINT OCCURANCE
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-mvcc-and-auto-vacuum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. MVCC AND AUTO VACUUM
       
     </span>
   </a>
@@ -1903,10 +2331,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#source-code-custom-installation" class="md-nav__link">
+  <a href="#6-tuning-auto-vacuum-parameters" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SOURCE CODE CUSTOM INSTALLATION
+        6. TUNING AUTO VACUUM PARAMETERS
       
     </span>
   </a>
@@ -1914,90 +2342,146 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#introduction-to-performance-tuning" class="md-nav__link">
+  <a href="#7-query-optimization" class="md-nav__link">
     <span class="md-ellipsis">
       
-        INTRODUCTION TO PERFORMANCE TUNING
+        7. QUERY OPTIMIZATION
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. QUERY OPTIMIZATION">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-query-statement-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 QUERY STATEMENT PROCESSING
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#tune-configuration-parameters" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#72-components-of-explain-plan" class="md-nav__link">
     <span class="md-ellipsis">
       
-        TUNE CONFIGURATION PARAMETERS
+        7.2 COMPONENTS OF EXPLAIN PLAN
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#11-understanding-readwrite-path-in-detail" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#73-explain-access-methods" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.1 Understanding Read/Write path in Detail
+        7.3 EXPLAIN ACCESS METHODS
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#12-inside-shared-buffer" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#731-joins-test-case" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.2 Inside Shared buffer
+        7.3.1 JOINS TEST CASE
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#13-explain-analyzebuffers" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#74-index-optimization" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.3 EXPLAIN (ANALYZE,BUFFERS)
+        7.4 INDEX OPTIMIZATION
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#14-buffer-ring" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#75-optimizer-and-statistics" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.4 BUFFER RING
+        7.5 OPTIMIZER AND STATISTICS
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#2-work_mem" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#76-query-tuning" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2 . WORK_MEM
+        7.6 QUERY TUNING
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.6 QUERY TUNING">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#error-reporting-and-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ERROR REPORTING AND LOGGING
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#checkpoint-tuning" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#pgbadger" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CHECKPOINT TUNING
+        PGBADGER
       
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pg_stat_statements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PG_STAT_STATEMENTS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useful-monitoring-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        USEFUL MONITORING QUERIES
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2018,43 +2502,32 @@
 
 
 
-  <h1>PT DOC</h1>
-
+<h1 id="performace-tuning-guide">PERFORMACE TUNING GUIDE<a class="headerlink" href="#performace-tuning-guide" title="Permanent link">&para;</a></h1>
 <p><strong>TABLE OF CONTENT</strong></p>
 <ol>
-<li><a href="#SOURCE_CODE_CSTOM_INSTALLATION"><strong>SOURCE CODE INSTALLATION AND SEGREGATION OF PG FILES</strong></a></li>
-<li>[<a name="INTRO_TO_PT"></a></li>
+<li><a href="#1-source-code-custom-installation">SOURCE CODE CUSTOM INSTALLATION</a></li>
+<li><a href="#2-introduction-to-performance-tuning">INTRODUCTION TO PERFORMANCE TUNING</a></li>
+<li><a href="#3-tune-configuration-parameters">TUNE CONFIGURATION PARAMETERS</a></li>
+<li><a href="#31-shared-buffers">SHARED BUFFERS</a></li>
+<li><a href="#32-work_mem">WORK_MEM</a></li>
+<li><a href="#33-maintenance-work_mem">MAINTENANCE WORK_MEM</a></li>
+<li><a href="#34-autovacuum-work_mem">AUTOVACUUM WORK_MEM</a></li>
+<li><a href="#35-max-connections">MAX CONNECTIONS</a></li>
+<li><a href="#36-idle-connections">IDLE CONNECTIONS</a></li>
+<li><a href="#37-effective_cache_size">EFFECTIVE_CACHE_SIZE</a></li>
+<li><a href="#38-additional-information-pg_stat_activity">ADDITIONAL INFORMATION: PG_STAT_ACTIVITY</a></li>
+<li><a href="#4-checkpoint-tuning">CHECKPOINT TUNING</a></li>
+<li><a href="#5-mvcc-and-auto-vacuum">MVCC AND AUTO VACUUM</a></li>
+<li><a href="#6-tuning-auto-vacuum-parameters">TUNING AUTO VACUUM PARAMETERS</a></li>
+<li><a href="#7-query-optimization">QUERY OPTIMIZATION</a></li>
+<li><a href="#71-query-statement-processing">QUERY STATEMENT PROCESSING</a></li>
+<li><a href="#72-components-of-explain-plan">COMPONENTS OF EXPLAIN PLAN</a></li>
+<li><a href="#73-explain-access-methods">EXPLAIN ACCESS METHODS</a></li>
+<li><a href="#74-index-optimization">INDEX OPTIMIZATION</a></li>
+<li><a href="#75-optimizer-and-statistics">OPTIMIZER AND STATISTICS</a></li>
+<li><a href="#76-query-tuning">QUERY TUNING</a></li>
 </ol>
-<h2 id="introduction-to-performance-tuningintro_to_pt">INTRODUCTION TO PERFORMANCE TUNING](#INTRO_TO_PT)<a class="headerlink" href="#introduction-to-performance-tuningintro_to_pt" title="Permanent link">&para;</a></h2>
-<ol>
-<li>[<a name="TUNE_CONFIG_PARAM"></a></li>
-</ol>
-<h2 id="tune-configuration-parameterstune_config_param">TUNE CONFIGURATION PARAMETERS](#TUNE_CONFIG_PARAM)<a class="headerlink" href="#tune-configuration-parameterstune_config_param" title="Permanent link">&para;</a></h2>
-<ol>
-<li><strong>SHARED BUFFERS</strong></li>
-<li><strong>WORK_MEM</strong></li>
-<li><strong>MAINTENANCE WORK_MEM</strong></li>
-<li><strong>AUTOVACUUM WORK_MEM</strong></li>
-<li><strong>MAX CONNECTIONS</strong></li>
-<li><strong>IDLE CONNECTIONS</strong></li>
-<li><strong>EFFECTIVE_CACHE_SIZE</strong></li>
-<li><strong>ADDITIONAL INFORMATION: PG_STAT_ACTIVITY</strong></li>
-<li>[<a name="CHECKPOINT"></a></li>
-</ol>
-<h2 id="checkpoint-tuningcheckpoint">CHECKPOINT TUNING](#CHECKPOINT)<a class="headerlink" href="#checkpoint-tuningcheckpoint" title="Permanent link">&para;</a></h2>
-<ol>
-<li><strong>MVCC AND AUTO VACUUM</strong></li>
-<li><strong>TUNING AUTO VACUUM PARAMETERS</strong></li>
-<li><strong>QUERY OPTIMIZATION</strong></li>
-<li><strong>QUERY STATEMENT PROCESSING.</strong></li>
-<li><strong>COMPONENTS OF EXPLAIN PLAN.</strong></li>
-<li><strong>EXPLAIN ACCESS METHODS</strong></li>
-<li><strong>INDEX OPTIMIZATION</strong></li>
-<li><strong>OPTIMIZER AND STATISTICS.</strong></li>
-<li><strong>QUERY TUNING.</strong></li>
-</ol>
-<p><a name="SOURCE_CODE_CSTOM_INSTALLATION"></a></p>
-<h2 id="source-code-custom-installation">SOURCE CODE CUSTOM INSTALLATION<a class="headerlink" href="#source-code-custom-installation" title="Permanent link">&para;</a></h2>
+<h2 id="1-source-code-custom-installation">1. SOURCE CODE CUSTOM INSTALLATION<a class="headerlink" href="#1-source-code-custom-installation" title="Permanent link">&para;</a></h2>
 <p>Steps for Postgresql Source Installation 16.2</p>
 <ol>
 <li>Download the source file:</li>
@@ -2252,8 +2725,7 @@
 <li>Alter database &lt;dbname&gt; SET TABLESPACE &lt;tablespace name&gt; (do this for each database).</li>
 <li>move old objects from pg_default to respective tablespaces.</li>
 </ul>
-<p><a name="INTRO_TO_PT"></a></p>
-<h2 id="introduction-to-performance-tuning">INTRODUCTION TO PERFORMANCE TUNING<a class="headerlink" href="#introduction-to-performance-tuning" title="Permanent link">&para;</a></h2>
+<h2 id="2-introduction-to-performance-tuning">2. INTRODUCTION TO PERFORMANCE TUNING<a class="headerlink" href="#2-introduction-to-performance-tuning" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Performance tuning</strong> is the process of making adjustments to various parts of a system to improve its overall speed, efficiency, and responsiveness. It involves identifying and removing bottlenecks, optimizing resource usage, and ensuring that the system operates at its peak potential.</li>
 <li><strong>Database performance tuning</strong> specifically refers to the set of actions that Database Administrators (DBAs) undertake to maintain the smooth and efficient operation of databases. These actions may involve both proactive measures, like routine maintenance, and reactive measures, such as troubleshooting slow queries or resolving unexpected issues.</li>
@@ -2334,12 +2806,11 @@
 </li>
 </ol>
 <p><img alt="" src="../images/pt_doc/img_2.png" /></p>
-<p><a name="TUNE_CONFIG_PARAM"></a></p>
-<h2 id="tune-configuration-parameters">TUNE CONFIGURATION PARAMETERS<a class="headerlink" href="#tune-configuration-parameters" title="Permanent link">&para;</a></h2>
+<h2 id="3-tune-configuration-parameters">3. TUNE CONFIGURATION PARAMETERS<a class="headerlink" href="#3-tune-configuration-parameters" title="Permanent link">&para;</a></h2>
 <p>There are four major memory parameters that requires proper understanding for tuning</p>
 <p><img alt="" src="../images/pt_doc/img_3.png" /></p>
 <p>These four parameters are explained below:</p>
-<p>1. <strong>SHARED_BUFFERS</strong></p>
+<h3 id="31-shared-buffers">3.1 SHARED BUFFERS<a class="headerlink" href="#31-shared-buffers" title="Permanent link">&para;</a></h3>
 <ul>
 <li>It is a parameter that determines how much memory is dedicated to the server for caching data.</li>
 <li>The value for shared_buffers should never be set to reserve all of the system RAM for Postgresql.</li>
@@ -2347,7 +2818,7 @@
 <li>25%- 40% of Ram is considered optimal for Shared_Buffers.</li>
 <li>Clock sweep algorithm controls Buffer Allocation and Eviction.</li>
 </ul>
-<h2 id="11-understanding-readwrite-path-in-detail">1.1 Understanding Read/Write path in Detail<a class="headerlink" href="#11-understanding-readwrite-path-in-detail" title="Permanent link">&para;</a></h2>
+<h4 id="311-understanding-readwrite-path-in-detail">3.1.1 Understanding Read/Write path in Detail<a class="headerlink" href="#311-understanding-readwrite-path-in-detail" title="Permanent link">&para;</a></h4>
 <p><img alt="" src="../images/pt_doc/img_4.png" /></p>
 <p><strong>Read Path</strong>: The <strong>read path</strong> describes the flow of data when a database query or application requests data from storage.</p>
 <ul>
@@ -2366,7 +2837,7 @@
 <p>Read path = Disk -&gt; os cache -&gt; shared buffer</p>
 <p>Write path = shared buffer -&gt; os cache -&gt; Disk</p>
 <p>Note: The data that is present in shared buffers will also be available in os cache</p>
-<h2 id="12-inside-shared-buffer">1.2 Inside Shared buffer<a class="headerlink" href="#12-inside-shared-buffer" title="Permanent link">&para;</a></h2>
+<h4 id="312-inside-shared-buffer">3.1.2 Inside Shared buffer<a class="headerlink" href="#312-inside-shared-buffer" title="Permanent link">&para;</a></h4>
 <p>Imagine a database system with a <strong>128MB shared buffer</strong> that is completely full. The system needs to load a new page (8kb) into memory due to a recent query, but there's no free space left in the shared buffer. How will the new pages be loaded into shared buffer? And what happens to the existing pages in the shared buffer?</p>
 <p>To make room, the system employs the <strong>Clock Sweep Algorithm</strong> to identify which page can be evicted and replaced by the new one.</p>
 <p>What is Clock sweep Algorithm?</p>
@@ -2527,7 +2998,7 @@
 <li>Once a page is no longer actively accessed (i.e., the pin is removed), the clock hand can consider it for eviction if its reference bit is 0, allowing it to free up space for new pages.</li>
 <li><strong>Dirty buffers</strong> require a flush to disk before eviction.</li>
 </ul>
-<h2 id="13-explain-analyzebuffers">1.3 EXPLAIN (ANALYZE,BUFFERS)<a class="headerlink" href="#13-explain-analyzebuffers" title="Permanent link">&para;</a></h2>
+<h4 id="313-explain-analyzebuffers">3.1.3 EXPLAIN (ANALYZE,BUFFERS)<a class="headerlink" href="#313-explain-analyzebuffers" title="Permanent link">&para;</a></h4>
 <p><strong>EXPLAIN (ANALYZE)</strong>: This command displays the execution plan that the PostgreSQL planner generates for the supplied statement. The execution plan shows how the table(s) referenced by the statement will be scanned - by plain sequential scan, index scan, etc. - and if multiple tables are referenced, what join algorithms will be used to bring together the required rows from each input table.</p>
 <p><strong>EXPLAIN (ANALYZE,BUFFERS)</strong>: The BUFFERS option for EXPLAIN (ANALYZE) lets you track what Postgres calls buffer usage. That's telling you what type of data Postgres is reading or writing and which of that data was in cache vs had to be fetched from the operating system, which might be actually from disk or might be from the operating system cache.</p>
 <p>Example usage of Explain with buffers option</p>
@@ -2541,7 +3012,7 @@
 <p>Check Buffers output:</p>
 <p>Buffers: Shared hit=2</p>
 <p>it means data is coming from shared buffer and check the execution time.</p>
-<h2 id="14-buffer-ring">1.4 BUFFER RING<a class="headerlink" href="#14-buffer-ring" title="Permanent link">&para;</a></h2>
+<h4 id="314-buffer-ring">3.1.4 BUFFER RING<a class="headerlink" href="#314-buffer-ring" title="Permanent link">&para;</a></h4>
 <p>In PostgreSQL, large tables or indexes often require <strong>sequential scans</strong> to retrieve all rows or search through data sequentially. However, when these scans load large amounts of data into memory, they can <strong>overwhelm the shared buffer cache</strong> by occupying memory slots that are also used by other queries. This leads to <strong>cache pollution</strong> where frequently accessed pages are evicted to make room for pages from the large scan. As a result, performance for other queries that rely on cached data degrades, increasing disk I/O and slowing down the system.</p>
 <p>To address this issue, PostgreSQL uses a <strong>Buffer Ring</strong> (or Ring Buffer) specifically for large sequential scans. The Buffer Ring limits the number of buffer slots available to a single scan, preventing it from flooding the shared buffer cache.</p>
 <p>Goal of Buffer ring is:</p>
@@ -2672,7 +3143,7 @@
 <p>GROUP BY c.relname, c.oid</p>
 <p>ORDER BY 2 DESC</p>
 <p>LIMIT 10;</p>
-<h2 id="2-work_mem">2 . WORK_MEM<a class="headerlink" href="#2-work_mem" title="Permanent link">&para;</a></h2>
+<h3 id="32-work_mem">3.2 WORK_MEM<a class="headerlink" href="#32-work_mem" title="Permanent link">&para;</a></h3>
 <ul>
 <li>The amount of memory to be used by internal sort operations and hash tables before writing to temporary disk files.</li>
 <li>Sort operations are used for order by, distinct and merge join operations. Hash tables are used in hash joins and hash-based aggregation.</li>
@@ -2722,20 +3193,16 @@
 <p>Worker 1: Sort Method: quicksort memory :98627kb</p>
 <p>exection time : 959.404 ms</p>
 <p>Note: If you find that 1 or 2 queries in your application is still using high disk sort even after increasing work_mem it is advisable to talk with developer and ask them to set work_mem at session level/query level for 1 or 2 query not at cluster level.</p>
-<ol>
-<li>
-<p><strong>MAINTENANCE WORK_MEM</strong></p>
-</li>
-<li>
-<p>Maximum amount of memory to be used by maintenance operations, such as VACUUM, CREATE INDEX, and ALTER TABLE ADD FOREIGN KEY.</p>
-</li>
+<h3 id="33-maintenance-work_mem">3.3 MAINTENANCE WORK_MEM<a class="headerlink" href="#33-maintenance-work_mem" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Maximum amount of memory to be used by maintenance operations, such as VACUUM, CREATE INDEX, and ALTER TABLE ADD FOREIGN KEY.</li>
 <li>The Default value is 64Mb.</li>
 <li>Only one of these operations can be executed at a time by a database session.</li>
 <li>Larger settings might improve performance for vacuuming and for restoring database dumps.</li>
 <li>Each auto vacuum worker process uses maintenance_work_mem for its operation by default.</li>
 <li>Autovacuum_max_workers times the memory may be allocated on each auto vacuum run.</li>
 <li>We can instruct auto vacuum not to use maintenance_work_mem by setting a value for autovacuum_work_mem.</li>
-</ol>
+</ul>
 <p>Recommendations</p>
 <ul>
 <li>Sets the limit for the amount that autovacuum, manual vacuum, bulk index build and other maintenance routines are permitted to use.</li>
@@ -2752,21 +3219,17 @@
 <li>As a rule, vacuuming can utilize up to a maximum of one gig of memory</li>
 </ul>
 <p>Max_worker default value is 3, so total of 3gb memory can be used by auto vacuum (1 gb for each worker)</p>
-<ol>
-<li>
-<p><strong>AUTOVACUUM WORK_MEM</strong></p>
-</li>
-<li>
-<p>Specifies the maximum amount of memory to be used by each autovacuum worker process.</p>
-</li>
+<h3 id="34-autovacuum-work_mem">3.4 AUTOVACUUM WORK_MEM<a class="headerlink" href="#34-autovacuum-work_mem" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Specifies the maximum amount of memory to be used by each autovacuum worker process.</li>
 <li>Default is -1. (-1 implies that autovacuum work_mem will be same as maintenance work_mem)</li>
 <li>autovacuum is only able to utilize up to a maximum of 1GB of memory.</li>
 <li>Setting autovacuum_work_mem to a value higher than that has no effect on the number of dead tuples that autovacuum can collect while scanning a table.</li>
 <li>maintenance_work_mem will be used if autovacuum_work_mem is not configured.</li>
-</ol>
+</ul>
 <p>Recommendations</p>
 <p>Set a limit on this which is based on the number of autovacuum workers you expect to have running.</p>
-<p><strong>EFFECTIVE_CACHE_SIZE</strong></p>
+<h3 id="37-effective_cache_size">3.7 EFFECTIVE_CACHE_SIZE<a class="headerlink" href="#37-effective_cache_size" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Sets the planner's assumption about the effective size of the disk cache that is available to a single query.</li>
 <li>This cache is a combination of PostgreSQL cache and filesystem cache.</li>
@@ -2791,7 +3254,7 @@
 <li>With these settings, the optimizer might not utilize the full memory potential, leading to reliance on Disk IOPS for query execution. This results in suboptimal query performance due to unnecessary disk reads.</li>
 </ul>
 <p>Some additional parameters / configuration / monitoring view which is essentially important for tuning of better performance.</p>
-<p><strong>MAX CONNECTIONS</strong></p>
+<h3 id="35-max-connections">3.5 MAX CONNECTIONS<a class="headerlink" href="#35-max-connections" title="Permanent link">&para;</a></h3>
 <ul>
 <li>The maximum number of concurrent connections to the database server.</li>
 <li>The default is typically 100 connections.</li>
@@ -2810,7 +3273,7 @@
 <p>Answer: use connection pooling</p>
 <p>5. what happens if the parameter is poorly managed?</p>
 <p>Answer: system will crash, out of memory error and run out of available connection</p>
-<p><strong>IDLE CONNECTIONS</strong></p>
+<h3 id="36-idle-connections">3.6 IDLE CONNECTIONS<a class="headerlink" href="#36-idle-connections" title="Permanent link">&para;</a></h3>
 <ul>
 <li>A Connection can be active and doing some work or it can be idle.</li>
 <li>Idle connection refers to a connection that has been established between a client application and the database server but is not currently executing any queries or transactions.</li>
@@ -2889,7 +3352,7 @@
 <p>tcp_keepalives_interval = 20 seconds - Tcp keepalive messge transmitted to client</p>
 <p>tcp_keepalives_count=5</p>
 <p>client_connection_check_interval= 5 seconds</p>
-<p><strong>ADDITIONAL INFORMATION: PG_STAT_ACTIVITY</strong></p>
+<h3 id="38-additional-information-pg_stat_activity">3.8 ADDITIONAL INFORMATION: PG_STAT_ACTIVITY<a class="headerlink" href="#38-additional-information-pg_stat_activity" title="Permanent link">&para;</a></h3>
 <p><strong>pg_stat_activity</strong> is a system view in PostgreSQL that provides real-time information about active and recently active sessions (connections) to the database. It is extremely useful for monitoring database activity, diagnosing performance issues, and identifying slow or problematic queries.</p>
 <p>Purpose of pg_stat_activity</p>
 <ul>
@@ -3027,8 +3490,7 @@
 </ol>
 <p>select pid, query from pg_stat_activity where datname = current_database();</p>
 <p>select pg_terminate_backend(123);</p>
-<p><a name="CHECKPOINT"></a></p>
-<h2 id="checkpoint-tuning">CHECKPOINT TUNING<a class="headerlink" href="#checkpoint-tuning" title="Permanent link">&para;</a></h2>
+<h2 id="4-checkpoint-tuning">4. CHECKPOINT TUNING<a class="headerlink" href="#4-checkpoint-tuning" title="Permanent link">&para;</a></h2>
 <ul>
 <li>It is a point in the write-ahead log sequence at which all data files have been updated to reflect the information in the log.</li>
 <li>Checkpoint ensure that all the dirty buffers created up to a certain point are sent to disk so that the WAL up to that point can be recycled.</li>
@@ -3066,7 +3528,7 @@
 <ul>
 <li>Example: If checkpoint_timeout is set to 10 minutes and checkpoint_completion_target is set to 0.9, PostgreSQL will distribute workload and aim to complete the checkpoint within 9 minutes (90% of 10 minutes). This leaves the final 1 minute (10% of the interval) as a buffer before the next checkpoint starts.</li>
 </ul>
-<p><strong>PG_STAT_BGWRITER: MONITORING CHECKPOINT OCCURANCE</strong></p>
+<h4 id="pg_stat_bgwriter-monitoring-checkpoint-occurance">PG_STAT_BGWRITER: MONITORING CHECKPOINT OCCURANCE<a class="headerlink" href="#pg_stat_bgwriter-monitoring-checkpoint-occurance" title="Permanent link">&para;</a></h4>
 <p>pg_stat_bgwriter is a view which provides metrics about how PostgreSQL flushes dirty buffers to the disk.</p>
 <p>There are 3 ways how the dirty buffers are flushed.</p>
 <p>(a) Checkpoint (buffer_checkpoint)</p>
@@ -3185,7 +3647,7 @@
 <p>) as sub;</p>
 <p>reset statistics</p>
 <p>select pg_stat_reset_shared('bgwriter');</p>
-<p><strong>MVCC AND AUTO VACUUM</strong></p>
+<h2 id="5-mvcc-and-auto-vacuum">5. MVCC AND AUTO VACUUM<a class="headerlink" href="#5-mvcc-and-auto-vacuum" title="Permanent link">&para;</a></h2>
 <p>Implementation of MVCC (Multi-Version Concurrency Control) in PostgreSQL is different and special when compared with other RDBMS. MVCC in PostgreSQL controls which tuples can be visible to transactions via versioning.</p>
 <p><strong>What is versioning in PostgreSQL?</strong></p>
 <p>Let's consider the case of an Oracle or a MySQL Database. What happens when you perform a DELETE or an UPDATE of a row? You see an UNDO record maintained in a global UNDO Segment. This UNDO segment contains the past image of a row, to help database achieve consistency. (the "C" in A.C.I.D). For example, if there is an old transaction that depends on the row that got deleted, the row may still be visible to it because the past image is still maintained in the UNDO. If you are an Oracle DBA reading this blog post, you may quickly recollect the error ORA-01555 snapshot too old. What this error means is-you may have a smaller undo retention or not a huge UNDO segment that could retain all the past images (versions) needed by the existing or old transactions.</p>
@@ -3320,7 +3782,7 @@
 <li>When we execute vacuum (verbose,analyze) it does not automatically include freeze in it, either run vacuum (verbose,freeze) if auto vacuuming is off.</li>
 <li>or let the parameter decide (vacuum_freeze_min_age and autovacuum_freeze_max_age) so that whenever vacuum or auto vacuum runs it will freeze older xids.</li>
 </ul>
-<p><strong>TUNING AUTO VACUUM PARAMETERS</strong></p>
+<h2 id="6-tuning-auto-vacuum-parameters">6. TUNING AUTO VACUUM PARAMETERS<a class="headerlink" href="#6-tuning-auto-vacuum-parameters" title="Permanent link">&para;</a></h2>
 <p>Parameters for auto vacuum process</p>
 <p><strong>autovacuum_max_workers</strong></p>
 <ul>
@@ -3581,15 +4043,15 @@
 <p>AND N.nspname !~ '^pg_toast'</p>
 <p>) AS av</p>
 <p>ORDER BY av_needed DESC ,n_dead_tup DESC;</p>
-<p><strong>QUERY OPTIMIZATION</strong></p>
-<p><strong>Statement Processing</strong></p>
+<h2 id="7-query-optimization">7. QUERY OPTIMIZATION<a class="headerlink" href="#7-query-optimization" title="Permanent link">&para;</a></h2>
+<h3 id="71-query-statement-processing">7.1 QUERY STATEMENT PROCESSING<a class="headerlink" href="#71-query-statement-processing" title="Permanent link">&para;</a></h3>
 <p><strong><img alt="" src="../images/pt_doc/img_21.png" /></strong></p>
 <ul>
 <li>Parse: Check Syntax, Break query in tokens, Generate Parse Tree and Identify Query type.</li>
 <li>Optimizer/Planner: Generates optimal plan, Uses Database Statistics, Calculate Query cost, Choose best Plan.</li>
 <li>Execute: Execute Query based on execution plan.</li>
 </ul>
-<p><strong>EXPLAIN PLAN</strong></p>
+<h3 id="72-components-of-explain-plan">7.2 COMPONENTS OF EXPLAIN PLAN<a class="headerlink" href="#72-components-of-explain-plan" title="Permanent link">&para;</a></h3>
 <p><img alt="" src="../images/pt_doc/img_22.png" /></p>
 <p>--new addition 29-04-2026</p>
 <p>Full syntax for EXPLAIN: EXPLAIN (analyze, verbose, costs, settings, buffers, wal, timing, summary, format text)</p>
@@ -3633,7 +4095,7 @@
 <li><strong>Execution Time</strong>: The total time it took to execute the query and return results.</li>
 </ul>
 <p>These details help in performance tuning by showing the disparity between estimated and actual values, which could indicate areas where optimization is needed.</p>
-<p><strong>SCANS</strong></p>
+<h3 id="73-explain-access-methods">7.3 EXPLAIN ACCESS METHODS<a class="headerlink" href="#73-explain-access-methods" title="Permanent link">&para;</a></h3>
 <p>There are four types of scans in database:</p>
 <p>Sequential scans (seq scan)</p>
 <p>Index scans</p>
@@ -3749,7 +4211,7 @@ So, index scan is very efficient if you are looking for a specific data or a sma
 <p><img alt="" src="../images/pt_doc/img_31.png" /></p>
 <p><img alt="" src="../images/pt_doc/img_32.png" /></p>
 <p>Heap fetches mean at the time of selecting record someone has changed the page(block). That pages come under the heap fetches.</p>
-<p><strong>JOINS TEST CASE</strong></p>
+<h3 id="731-joins-test-case">7.3.1 JOINS TEST CASE<a class="headerlink" href="#731-joins-test-case" title="Permanent link">&para;</a></h3>
 <p>Sample Data:</p>
 <p>create table emp (deptid int,empid int);</p>
 <p>create table dept (deptid int, salary int);</p>
@@ -3931,7 +4393,7 @@ So, index scan is very efficient if you are looking for a specific data or a sma
 <p>It will just discard them.</p>
 <p><strong>Sort/order by in Explain</strong></p>
 <p>You also have Sort order by and all those other clauses, which also will be displayed here.</p>
-<p><strong>INDEX OPTIMIZATION</strong></p>
+<h3 id="74-index-optimization">7.4 INDEX OPTIMIZATION<a class="headerlink" href="#74-index-optimization" title="Permanent link">&para;</a></h3>
 <p>In this section we will discuss about the following:</p>
 <ul>
 <li>Types of indexes</li>
@@ -4202,7 +4664,7 @@ So, index scan is very efficient if you are looking for a specific data or a sma
 <p>pg_total_index_size() function to get the size of all indexes on a table.</p>
 <p>pg_tablespace_size() function to get the size of a tablespace.</p>
 <p>pg_column_size() function to obtain the size of a column of a specific type.</p>
-<p><strong>DATABASE STATISTICS</strong></p>
+<h3 id="75-optimizer-and-statistics">7.5 OPTIMIZER AND STATISTICS<a class="headerlink" href="#75-optimizer-and-statistics" title="Permanent link">&para;</a></h3>
 <ul>
 <li>PostgreSQL Optimizer and Planner use table statistics for generating optimal query plans.</li>
 <li>Statistics generally provide information about the most common values in each column in a relation, average width of the column, number of distinct values in the column, etc.</li>
@@ -4257,7 +4719,7 @@ So, index scan is very efficient if you are looking for a specific data or a sma
 </li>
 </ol>
 <p><img alt="" src="../images/pt_doc/img_62.png" /></p>
-<p><strong>Query Tuning (Scenario Examples)</strong></p>
+<h3 id="76-query-tuning">7.6 QUERY TUNING<a class="headerlink" href="#76-query-tuning" title="Permanent link">&para;</a></h3>
 <p><strong>Example 1:</strong> (Joins Instead of IN).</p>
 <p>Explain analyze select * from emp where deptid IN (SELECT deptid from dept where salary&gt;800);</p>
 <p><img alt="" src="../images/pt_doc/img_63.png" /></p>
@@ -4312,7 +4774,7 @@ So, index scan is very efficient if you are looking for a specific data or a sma
 <p>There are 50,000 records.</p>
 <p>It's going to try to pull all the records which once again is causing a disk IO.</p>
 <p>It will be good optimization technique to only fetch 5 or 10 records or records as per your requirement only without fetching all records.</p>
-<p><strong>ERROR REPORTING AND LOGGING</strong></p>
+<h4 id="error-reporting-and-logging">ERROR REPORTING AND LOGGING<a class="headerlink" href="#error-reporting-and-logging" title="Permanent link">&para;</a></h4>
 <p><strong>Where to Log:</strong></p>
 <ul>
 <li>Logging_collector: This parameter enables the logging collector, which is a background process that captures log messages sent to stderr and redirects them into log files.</li>
@@ -4355,7 +4817,7 @@ So, index scan is very efficient if you are looking for a specific data or a sma
 </ul>
 <p>This is a printf-style string that is output at the beginning of each log line.</p>
 <p>Example:'time=%t, pid=%p %q db=%d, usr=%u, client=%h , app=%a, line=%l'</p>
-<p><strong>PGBADGER</strong></p>
+<h4 id="pgbadger">PGBADGER<a class="headerlink" href="#pgbadger" title="Permanent link">&para;</a></h4>
 <ul>
 <li>pgBadger is a PostgreSQL log analyzer built for speed providing fully detailed reports based on your PostgreSQL log files.</li>
 <li>pgBadger is able to autodetect your log file format (syslog, stderr, csvlog or jsonlog).</li>
@@ -4514,7 +4976,7 @@ So, index scan is very efficient if you are looking for a specific data or a sma
 <p>0 4 * * * /var/lib/pgsql/16/pgbadger/pgbadger-12.4/pgbadger -I -q /var/lib/pgsql/16/data/log/postgresql*.log -O /var/lib/pgsql/16/reports/</p>
 <p>By default, PgBadger will generate an HTML report. However, you can also choose from other output formats (like CSV or JSON) using the --format option.</p>
 <p>pgbadger /path/to/postgresql.log -o report.csv --format csv</p>
-<p><strong>PG_STAT_STATEMENTS</strong></p>
+<h4 id="pg_stat_statements">PG_STAT_STATEMENTS<a class="headerlink" href="#pg_stat_statements" title="Permanent link">&para;</a></h4>
 <ul>
 <li>pg_stat_statements module provides a means for tracking planning and execution statistics of all SQL statements.</li>
 <li>This extension is not available globally but can be enabled for a specific database with CREATE EXTENSION pg_stat_statements.</li>
@@ -4538,7 +5000,7 @@ So, index scan is very efficient if you are looking for a specific data or a sma
 <p>parameter sets the number of characters to display when reporting a SQL query. The default value is 1024 bytes.</p>
 <p>PG_STAT_STATEMENT_RESET:</p>
 <p>Discards all statistics gathered so far by pg_stat_statements. By default, this function can only be executed by superusers.</p>
-<p><strong>USEFUL MONITORING QUERIES</strong></p>
+<h4 id="useful-monitoring-queries">USEFUL MONITORING QUERIES<a class="headerlink" href="#useful-monitoring-queries" title="Permanent link">&para;</a></h4>
 <p>Query to Find Bloated Tables</p>
 <p>select</p>
 <p>schemaname,</p>

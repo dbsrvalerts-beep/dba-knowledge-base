@@ -11,10 +11,10 @@
       
       
       
-        <link rel="prev" href="../../../ORACLE/ORACLE%20CLOUD/Cloud%20Database%20Management%20Tasks/">
+        <link rel="prev" href="../PERFORMACE%20TUNING%20GUIDE/">
       
       
-        <link rel="next" href="../PT_DOC/">
+        <link rel="next" href="../../PG%20AUTOTUNE/PostgreSQL_AutoTune_Azure_VM_Scale_Implementation/">
       
       
         
@@ -25,7 +25,7 @@
     
     
       
-        <title>POSTGRESQL 14 updated - DBA Knowledge Base</title>
+        <title>POSTGRESQL 14 DBA GUIDEBOOK - DBA Knowledge Base</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#1-introduction-to-postgresql" class="md-skip">
+        <a href="#postgresql-14-dba-guidebook" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              POSTGRESQL 14 updated
+              POSTGRESQL 14 DBA GUIDEBOOK
             
           </span>
         </div>
@@ -1187,42 +1187,17 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    POSTGRESQL 14 updated
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../PERFORMACE%20TUNING%20GUIDE/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    POSTGRESQL 14 updated
+    PERFORMACE TUNING GUIDE
   
 
     
@@ -1231,289 +1206,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#1-introduction-to-postgresql" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1 . Introduction to PostgreSQL
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-installing-postgresql-on-windowslinux" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2 . Installing PostgreSQL on Windows/Linux
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-postgresql-architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3 . PostgreSQL Architecture
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-database-clusters" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4 . Database Clusters
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-database-directory-layout" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5 . Database Directory Layout
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6-configuration-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6 . Configuration Files
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#7-database-creation-users-schema-privileges" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7 . Database Creation / Users / Schema / Privileges
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#8-psql-commands" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8 . PSQL Commands
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#9-pg-system-catalogs-and-time-zone" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9 . Pg System Catalogs and Time Zone
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#10-postgresql-crud-operations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10 . PostgreSQL CRUD Operations
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#11-table-inheritance-and-partitioning" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        11 . Table Inheritance and Partitioning
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#12-tablespace" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12 . Tablespace
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#13-backup-and-restore" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        13 . Backup and Restore
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#14-maintenance-in-postgresql" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        14 . Maintenance in PostgreSQL
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#15-postgresql-upgarde" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        15 . PostgreSQL Upgarde
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#16-new-features-and-enhancement-postgresql13" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        16 . New Features and Enhancement (postgreSQL13)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#17-new-features-and-enhancement-postgresql15" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        17 . New Features and Enhancement (postgreSQL15)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#18-postgresql-replication" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        18 . PostgreSQL Replication
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#19-server-parameters-tuning" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        19 . Server Parameters Tuning
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#allow-replication-connections-from-localhost-by-a-user-with-the" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Allow replication connections from localhost, by a user with the
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#replication-privilege" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        replication privilege.
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="replication privilege.">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#there-are-multiple-archive-recovery-method-use-as-per-need" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        There are multiple archive recovery method. Use as per need.
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="There are multiple archive recovery method. Use as per need.">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#total-connections" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        ############## Total Connections
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1523,17 +1215,26 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../PT_DOC/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
     
   
-    PT DOC
+    POSTGRESQL 14 DBA GUIDEBOOK
   
 
     
@@ -1542,6 +1243,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -1995,279 +1697,8 @@
   
   
   
+    
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#1-introduction-to-postgresql" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1 . Introduction to PostgreSQL
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-installing-postgresql-on-windowslinux" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2 . Installing PostgreSQL on Windows/Linux
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-postgresql-architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3 . PostgreSQL Architecture
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-database-clusters" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4 . Database Clusters
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-database-directory-layout" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5 . Database Directory Layout
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6-configuration-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6 . Configuration Files
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#7-database-creation-users-schema-privileges" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7 . Database Creation / Users / Schema / Privileges
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#8-psql-commands" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8 . PSQL Commands
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#9-pg-system-catalogs-and-time-zone" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9 . Pg System Catalogs and Time Zone
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#10-postgresql-crud-operations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10 . PostgreSQL CRUD Operations
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#11-table-inheritance-and-partitioning" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        11 . Table Inheritance and Partitioning
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#12-tablespace" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        12 . Tablespace
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#13-backup-and-restore" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        13 . Backup and Restore
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#14-maintenance-in-postgresql" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        14 . Maintenance in PostgreSQL
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#15-postgresql-upgarde" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        15 . PostgreSQL Upgarde
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#16-new-features-and-enhancement-postgresql13" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        16 . New Features and Enhancement (postgreSQL13)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#17-new-features-and-enhancement-postgresql15" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        17 . New Features and Enhancement (postgreSQL15)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#18-postgresql-replication" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        18 . PostgreSQL Replication
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#19-server-parameters-tuning" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        19 . Server Parameters Tuning
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#allow-replication-connections-from-localhost-by-a-user-with-the" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Allow replication connections from localhost, by a user with the
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#replication-privilege" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        replication privilege.
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="replication privilege.">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#there-are-multiple-archive-recovery-method-use-as-per-need" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        There are multiple archive recovery method. Use as per need.
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="There are multiple archive recovery method. Use as per need.">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#total-connections" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        ############## Total Connections
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
   
 </nav>
                   </div>
@@ -2284,18 +1715,19 @@
 
 
 
+<h1 id="postgresql-14-dba-guidebook">POSTGRESQL 14 DBA GUIDEBOOK<a class="headerlink" href="#postgresql-14-dba-guidebook" title="Permanent link">&para;</a></h1>
 <p><strong>­­POSTGRESQL 14.8</strong></p>
-<p>Documentation Guide</p>
+<p><em>Documentation Guide</em></p>
 <p><em>May 2023</em></p>
-<p><strong>Table Of Content</strong> <img alt="Questions" src="../images/postgresql_14_updated/img_1_Questions.png" /></p>
-<h2 id="1-introduction-to-postgresql">1 . Introduction to PostgreSQL<a class="headerlink" href="#1-introduction-to-postgresql" title="Permanent link">&para;</a></h2>
+<h1 id="table-of-contents">Table of Contents <img alt="Questions" src="../images/postgresql_14_updated/img_1_Questions.png" /><a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h1>
+<h2 id="1-introduction-to-postgresql">1. Introduction to PostgreSQL<a class="headerlink" href="#1-introduction-to-postgresql" title="Permanent link">&para;</a></h2>
 <ul>
 <li>What is PostgreSQL?</li>
 <li>PostgreSQL Naming Conventions</li>
 <li>PostgreSQL Limits</li>
 <li>Page Layout</li>
 </ul>
-<h2 id="2-installing-postgresql-on-windowslinux">2 . Installing PostgreSQL on Windows/Linux<a class="headerlink" href="#2-installing-postgresql-on-windowslinux" title="Permanent link">&para;</a></h2>
+<h2 id="2-installing-postgresql-on-windowslinux">2. Installing PostgreSQL on Windows/Linux<a class="headerlink" href="#2-installing-postgresql-on-windowslinux" title="Permanent link">&para;</a></h2>
 <ul>
 <li>PostgreSQL System Requirement</li>
 <li>Installing PostgreSQL 14.8 On Windows</li>
@@ -2304,7 +1736,7 @@
 <li>Setting Up PostgreSQL Linux Environment</li>
 <li>Installing PostgreSQL on Linux (Non-Default Directory)</li>
 </ul>
-<h2 id="3-postgresql-architecture">3 . PostgreSQL Architecture<a class="headerlink" href="#3-postgresql-architecture" title="Permanent link">&para;</a></h2>
+<h2 id="3-postgresql-architecture">3. PostgreSQL Architecture<a class="headerlink" href="#3-postgresql-architecture" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Fundamentals of PostgreSQL Architecture</li>
 <li>Process and Memory Architecture</li>
@@ -2313,7 +1745,7 @@
 <li>Memory Segments</li>
 <li>Physical Files</li>
 </ul>
-<h2 id="4-database-clusters">4 . Database Clusters<a class="headerlink" href="#4-database-clusters" title="Permanent link">&para;</a></h2>
+<h2 id="4-database-clusters">4. Database Clusters<a class="headerlink" href="#4-database-clusters" title="Permanent link">&para;</a></h2>
 <ul>
 <li>What is Database Cluster?</li>
 <li>Initdb</li>
@@ -2323,13 +1755,13 @@
 <li>Types of Shutdown</li>
 <li>Pg_Controldata</li>
 </ul>
-<h2 id="5-database-directory-layout">5 . Database Directory Layout<a class="headerlink" href="#5-database-directory-layout" title="Permanent link">&para;</a></h2>
+<h2 id="5-database-directory-layout">5. Database Directory Layout<a class="headerlink" href="#5-database-directory-layout" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Overview of Installation Directory Layout</li>
 <li>Overview of Database Directory Layout</li>
 <li>Overview of Base Directory Layout</li>
 </ul>
-<h2 id="6-configuration-files">6 . Configuration Files<a class="headerlink" href="#6-configuration-files" title="Permanent link">&para;</a></h2>
+<h2 id="6-configuration-files">6. Configuration Files<a class="headerlink" href="#6-configuration-files" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Postgresql.conf File</li>
 <li>Pg Catalog tables to view File settings</li>
@@ -2339,7 +1771,7 @@
 <li>Pg_hba.conf with sample</li>
 <li>Steps to modify Pg_hba.conf file</li>
 </ul>
-<h2 id="7-database-creation-users-schema-privileges">7 . Database Creation / Users / Schema / Privileges<a class="headerlink" href="#7-database-creation-users-schema-privileges" title="Permanent link">&para;</a></h2>
+<h2 id="7-database-creation-users-schema-privileges">7. Database Creation / Users / Schema / Privileges<a class="headerlink" href="#7-database-creation-users-schema-privileges" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Create database - Psql / createdb utility</li>
 <li>Drop database - Psql/ dropdb utility</li>
@@ -2350,18 +1782,18 @@
 <li>Privileges in PostgreSQL</li>
 <li>Grants and Revoke Access</li>
 </ul>
-<h2 id="8-psql-commands">8 . PSQL Commands<a class="headerlink" href="#8-psql-commands" title="Permanent link">&para;</a></h2>
+<h2 id="8-psql-commands">8. PSQL Commands<a class="headerlink" href="#8-psql-commands" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Connect to Psql</li>
 <li>Psql Commands</li>
 <li>Psql File Operations</li>
 </ul>
-<h2 id="9-pg-system-catalogs-and-time-zone">9 . Pg System Catalogs and Time Zone<a class="headerlink" href="#9-pg-system-catalogs-and-time-zone" title="Permanent link">&para;</a></h2>
+<h2 id="9-pg-system-catalogs-and-time-zone">9. Pg System Catalogs and Time Zone<a class="headerlink" href="#9-pg-system-catalogs-and-time-zone" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Pg System Catalogs</li>
 <li>Date &amp; Time zones in PostgreSQL</li>
 </ul>
-<h2 id="10-postgresql-crud-operations">10 . PostgreSQL CRUD Operations<a class="headerlink" href="#10-postgresql-crud-operations" title="Permanent link">&para;</a></h2>
+<h2 id="10-postgresql-crud-operations">10. PostgreSQL CRUD Operations<a class="headerlink" href="#10-postgresql-crud-operations" title="Permanent link">&para;</a></h2>
 <ul>
 <li>What is CRUD?</li>
 <li>Create operations with examples</li>
@@ -2375,13 +1807,13 @@
 <li>View, Sequences</li>
 <li>Index and its Types</li>
 </ul>
-<h2 id="11-table-inheritance-and-partitioning">11 . Table Inheritance and Partitioning<a class="headerlink" href="#11-table-inheritance-and-partitioning" title="Permanent link">&para;</a></h2>
+<h2 id="11-table-inheritance-and-partitioning">11. Table Inheritance and Partitioning<a class="headerlink" href="#11-table-inheritance-and-partitioning" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Table Inheritance</li>
 <li>Table Partitioning</li>
 <li>Copy Table</li>
 </ul>
-<h2 id="12-tablespace">12 . Tablespace<a class="headerlink" href="#12-tablespace" title="Permanent link">&para;</a></h2>
+<h2 id="12-tablespace">12. Tablespace<a class="headerlink" href="#12-tablespace" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Tablespace &amp; its advantages</li>
 <li>PostgreSQL default tablespaces</li>
@@ -2390,7 +1822,7 @@
 <li>Drop tablespaces</li>
 <li>Temporary tablespaces</li>
 </ul>
-<h2 id="13-backup-and-restore">13 . Backup and Restore<a class="headerlink" href="#13-backup-and-restore" title="Permanent link">&para;</a></h2>
+<h2 id="13-backup-and-restore">13. Backup and Restore<a class="headerlink" href="#13-backup-and-restore" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Back &amp; Types of Backup</li>
 <li>Logical Backup</li>
@@ -2408,7 +1840,7 @@
 <li>Pg_basebackup - Online backup mode</li>
 <li>Online Backup Restore and Point in Time Recovery</li>
 </ul>
-<h2 id="14-maintenance-in-postgresql">14 . Maintenance in PostgreSQL<a class="headerlink" href="#14-maintenance-in-postgresql" title="Permanent link">&para;</a></h2>
+<h2 id="14-maintenance-in-postgresql">14. Maintenance in PostgreSQL<a class="headerlink" href="#14-maintenance-in-postgresql" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Introduction to Maintenance</li>
 <li>Updating Planner Statistics\Analyze</li>
@@ -2421,14 +1853,14 @@
 <li>Routine Re-Indexing</li>
 <li>Cluster</li>
 </ul>
-<h2 id="15-postgresql-upgarde">15 . PostgreSQL Upgarde<a class="headerlink" href="#15-postgresql-upgarde" title="Permanent link">&para;</a></h2>
+<h2 id="15-postgresql-upgarde">15. PostgreSQL Upgarde<a class="headerlink" href="#15-postgresql-upgarde" title="Permanent link">&para;</a></h2>
 <ul>
 <li>What is Upgrade</li>
 <li>Ways to Upgrade</li>
 <li>Pg_upgrade utility</li>
 <li>Uninstalling PostgreSQL</li>
 </ul>
-<h2 id="16-new-features-and-enhancement-postgresql13">16 . New Features and Enhancement (postgreSQL13)<a class="headerlink" href="#16-new-features-and-enhancement-postgresql13" title="Permanent link">&para;</a></h2>
+<h2 id="16-new-features-and-enhancement-postgresql13">16. New Features and Enhancement (postgreSQL13)<a class="headerlink" href="#16-new-features-and-enhancement-postgresql13" title="Permanent link">&para;</a></h2>
 <ul>
 <li>B-Tree Deduplication</li>
 <li>Incremental Sorting</li>
@@ -2438,7 +1870,7 @@
 <li>Track Wal_Usage</li>
 <li>System Views</li>
 </ul>
-<h2 id="17-new-features-and-enhancement-postgresql15">17 . New Features and Enhancement (postgreSQL15)<a class="headerlink" href="#17-new-features-and-enhancement-postgresql15" title="Permanent link">&para;</a></h2>
+<h2 id="17-new-features-and-enhancement-postgresql15">17. New Features and Enhancement (postgreSQL15)<a class="headerlink" href="#17-new-features-and-enhancement-postgresql15" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Server Statistics</li>
 <li>Logging Format</li>
@@ -2447,7 +1879,7 @@
 <li>Psql \Dconfig</li>
 <li>Misc. Features</li>
 </ul>
-<h2 id="18-postgresql-replication">18 . PostgreSQL Replication<a class="headerlink" href="#18-postgresql-replication" title="Permanent link">&para;</a></h2>
+<h2 id="18-postgresql-replication">18. PostgreSQL Replication<a class="headerlink" href="#18-postgresql-replication" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Introduction to Replication</li>
 <li>Reasons for Replication</li>
@@ -2475,7 +1907,7 @@
 <li>Logical Replication - Test Case 4</li>
 <li>Logical Replication - Test Case 5</li>
 </ul>
-<h2 id="19-server-parameters-tuning">19 . Server Parameters Tuning<a class="headerlink" href="#19-server-parameters-tuning" title="Permanent link">&para;</a></h2>
+<h2 id="19-server-parameters-tuning">19. Server Parameters Tuning<a class="headerlink" href="#19-server-parameters-tuning" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Introduction to Server Parameters</li>
 </ul>
