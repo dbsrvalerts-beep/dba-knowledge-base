@@ -171,26 +171,26 @@ _May 2023_
 - [Master/Slave Configuration](#masterslave-configuration)
 - [Replication Modes](#replication-modes)
 - [Types of Replication](#types-of-replication)
-- Physical and Logical Replication
-- Physical Replication (Type 1: Log Based replication)
-- Physical Replication (Type 2: Streaming Replication)
-- Monitoring Primary/Standby Streaming Replication
-- Replication Slot in Streaming Replication
+- [Physical and Logical Replication](#types-of-replication)
+- [Physical Replication (Type 1: Log Based replication)](#log-based-shipping-replication)
+- [Physical Replication (Type 2: Streaming Replication)](#streaming-replication)
+- [Monitoring Primary/Standby Streaming Replication](#monitoring-primary-and-standby-streaming-replication)
+- [Replication Slot in Streaming Replication](#replication-slots-in-streaming-replication)
 - [Synchronous mode in Streaming Replication](#synchronous-mode-in-streaming-replication)
 - [Setup Primary/Standby Streaming Replication Using Repmgr](#setup-primarystandby-streaming-replication-using-repmgr)
-- Automatic failover and Node Rejoin using Repmgr
-- Adding New Standby Node and Standby Follow using Repmgr
-- Cascading Streaming Replication using Repmgr
-- Streaming Replication Switchover using Repmgr
-- Uninstall Repmgr
-- Introduction to Logical Replication
-- Publication Vs Subscription
+- [Automatic failover and Node Rejoin using Repmgr](#automatic-failover-and-node-rejoin)
+- [Adding New Standby Node and Standby Follow using Repmgr](#adding-new-standby-node-and-standby-follow)
+- [Cascading Streaming Replication using Repmgr](#cascading-streaming-replication)
+- [Streaming Replication Switchover using Repmgr](#streaming-replication-switchover)
+- [Uninstall Repmgr](#uninstall-replication-manager)
+- [Introduction to Logical Replication](#logical-replication)
+- [Publication Vs Subscription](#logical-replication)
 - [Setup Logical Replication](#setup-logical-replication)
-- Logical Replication - Test Case 1
-- Logical Replication - Test Case 2
-- Logical Replication - Test Case 3
-- Logical Replication - Test Case 4
-- Logical Replication - Test Case 5
+- [Logical Replication - Test Case 1](#setup-logical-replication)
+- [Logical Replication - Test Case 2](#setup-logical-replication)
+- [Logical Replication - Test Case 3](#setup-logical-replication)
+- [Logical Replication - Test Case 4](#setup-logical-replication)
+- [Logical Replication - Test Case 5](#setup-logical-replication)
 
 ## 19. Server Parameters Tuning
 
@@ -3517,7 +3517,7 @@ There are two types of physical replication
 1. Log Based Shipping Replication
 2. Streaming Replication
 
-Example Illustrating Log Based Shipping Replication {Windows}
+### Log Based Shipping Replication
 
 Master server: 192.168.4.46
 
@@ -3691,7 +3691,7 @@ tail -300f postgresql-wed.log -- latest log file
 
 Failover is same on both platforms.
 
-**Streaming Replication**
+### Streaming Replication
 
 - WAL record chunks are streamed by database servers to keep data in sync.
 - The standby server connects to the master to receive the WAL chunks.
@@ -3764,7 +3764,7 @@ Step 8: start the pgsql from service
 
 Step 9: Test replication by creating table in primary and checking standby.
 
-**Monitoring Primary and Standby Streaming Replication**
+### Monitoring Primary and Standby Streaming Replication
 
 On Primary
 
@@ -3816,7 +3816,7 @@ lsn with physical file name
 
 select pg_walfile_name('0/C019918');
 
-**Replication Slots in Streaming Replication**
+### Replication Slots in Streaming Replication
 
 - In primary, slot is created at time of streaming replication, also can be created later.
 - To create a replication slot, you can use the pg_create_physical_replication_slot or pg_create_logical_replication_slot functions, depending on whether you are using physical or logical replication.
@@ -4063,7 +4063,7 @@ Both nodes are in running state.
 
 Step 19: Start repmgrd service on primary and standby ![](images/postgresql_14_updated/img_173.png)
 
-**Automatic Failover and Node Rejoin**
+### Automatic Failover and Node Rejoin
 
 Primary:192.168.4.237
 
@@ -4121,7 +4121,7 @@ Streaming has been reversed. Now primary has a role of standby and upstreaming t
 
 ![](images/postgresql_14_updated/img_178.png)
 
-**Adding New Standby Node and Standby Follow**
+### Adding New Standby Node and Standby Follow
 
 **Objective:**
 
@@ -4179,7 +4179,7 @@ Step 5: Ensure repmgrd is running on all the servers
 
 repmgrd -f /var/lib/pgsql/14/repmgr.conf
 
-**Cascading Streaming Replication**
+### Cascading Streaming Replication
 
 Objective:
 
@@ -4225,7 +4225,7 @@ repmgr -f /var/lib/pgsql/14/repmgr.conf cluster show
 
 Standby 1 is following or upstreaming to standby instead of primary
 
-**Streaming Replication Switchover**
+### Streaming Replication Switchover
 
 Objective: To Switch over from primary to second
 
@@ -4257,7 +4257,7 @@ Step 5: Check cluster status.
 
 Repeat the same steps on primary to make this process reversible
 
-**Uninstall Replication Manager**
+### Uninstall Replication Manager
 
 Step 1: first go to Standby
 
@@ -4283,7 +4283,7 @@ repmgr -f /var/lib/pgsql/14/repmgr.conf primary unregister
 
 Yum remove repmgr-14
 
-**Logical Replication**
+### Logical Replication
 
 - Logical replication is a method of replicating data objects and their changes, based upon their replication identity (usually a primary key).
 - Logical replication allows fine-grained control over both data replication and security.
@@ -4478,7 +4478,7 @@ The major difference when performing logical replication between two different P
      - The subscription automatically creates a replication slot on the source.
      - You do not need to run pg_create_logical_replication_slot() manually.
 
-**Logical Replication**
+### Logical Replication
 
 **Test Case 1: How to add a table to existing publication.**
 
@@ -4524,7 +4524,7 @@ ALTER PUBLICATION mypub SET (publish='insert,update');
 
 Note: With the given ALTER PUBLICATION command, you can delete records in the publication (the source table), but those deletions will not be propagated to the subscription (the target table on subscribers). Only INSERT and UPDATE operations will be replicated to the subscribers.
 
-**Logical Replication**
+### Logical Replication
 
 **Test Case 2: Add Table Without Primary Key to Publication**
 
@@ -4580,7 +4580,7 @@ Step 8: Try updating table records after modifying replica identity
 
 ![](images/postgresql_14_updated/img_201.png)
 
-**Logical Replication**
+### Logical Replication
 
 **Test Case 3: How to alter a column of an existing publication and subscription.**
 
@@ -4620,7 +4620,7 @@ ALTER SUBSCRIPTION mysub ENABLE;
 
 Step 6: Check data on both publication and subscription.
 
-**Logical Replication**
+### Logical Replication
 
 **Test Case 4: How to setup cascading replication**
 
@@ -4698,7 +4698,7 @@ insert into reptab2 values(3,'IT',Montreal','ITBULD');
 
 Select * from reptab2;
 
-**Logical Replication**
+### Logical Replication
 
 **Test Case 5: How to remove subscription and publication.**
 
