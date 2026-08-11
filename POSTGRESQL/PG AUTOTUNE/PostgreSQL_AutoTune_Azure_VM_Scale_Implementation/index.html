@@ -1,0 +1,2805 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Central repository for Oracle/PostgreSQL DBA documentation">
+      
+      
+      
+      
+        <link rel="prev" href="../../../ORACLE/ORACLE%20CLOUD/Cloud%20Database%20Management%20Tasks/">
+      
+      
+        <link rel="next" href="../../PG%20LOAD%20ANALYSIS%20SETUP/PG%20LOAD%20ANALYSIS%20SETUP%20%5BPaaS%5D/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>PostgreSQL AutoTune: Azure VM Scale Implementation - DBA Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#postgresql-autotune-azure-vm-scale-implementation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="DBA Knowledge Base" class="md-header__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DBA Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              PostgreSQL AutoTune: Azure VM Scale Implementation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="DBA Knowledge Base" class="md-nav__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    DBA Knowledge Base
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DBA Knowledge Base
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEPARTMENT
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    DEPARTMENT
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../DEPARTMENT/Cloud%20Database%20Objective/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Database Objective
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../DEPARTMENT/Oracle%20Database%20Solutions%20and%20Service%28Standard%20Version%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Solutions and Service(Standard Version)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LINUX
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LINUX/LINUX%20BASICS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX BASICS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LINUX/LINUX%20FIREWALL%20PERMISSIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Firewall Permissions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LINUX/LINUX%20PERMISSIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX PERMISSIONS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LINUX/LVM%20PARTITION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVM Partition Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MYSQL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    MYSQL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../MYSQL/MySQL_Migration_Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MySQL Migration Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORACLE
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ORACLE
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DBA QUERIES GUIDE
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    DBA QUERIES GUIDE
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/DBA%20QUERIES%20GUIDE/ORACLE%20QUERIES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle DBA Query Reference Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KNOWN ISSUES
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    KNOWN ISSUES
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Incarnation%20%28ORA-19909%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Incarnation (ORA-19909)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Lost%20Write%20Recovery%20%28ORA-00742%2CORA-00312%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Lost Write Recovery (ORA-00742,ORA-00312)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Open%20Issue%28Ora-10873%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Open Issue (ORA-10873)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Datafile%20Corruption%20Issue%20%28ORA-00600%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Datafile Corruption Issue (ORA-00600)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Datapump%20Slowness%28Scenario%201%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Datapump Slowness(Scenario 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Datapump%20Slowness%28Scenario%202%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Datapump Slowness (Scenario 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Moving%20Datafiles%20To%20Another%20Location/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Moving Datafiles To Another Location
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Ora-01012%20Not%20Logged%20On%20Error/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Ora-01012: Not Logged On Error
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORACLE CLOUD
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ORACLE CLOUD
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ORACLE/ORACLE%20CLOUD/Cloud%20Database%20Management%20Tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Cloud Database Management Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    POSTGRESQL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    POSTGRESQL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG AUTOTUNE
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PG AUTOTUNE
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL AutoTune: Azure VM Scale Implementation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL AutoTune: Azure VM Scale Implementation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-architecture-process-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Architecture &amp; Process Workflow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Architecture &amp; Process Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-systemd-execstartpre-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Systemd ExecStartPre Hook
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-execution-flow-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Execution Flow Summary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-zero-double-restart-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Zero Double-Restart Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-version-detection-no-running-service-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Version Detection (No Running Service Required)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-v4-memory-and-cpu-formulas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. V4 Memory and CPU Formulas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. V4 Memory and CPU Formulas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-parameter-reference-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Parameter Reference Table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-ram-integer-division-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 RAM Integer Division Note
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-parallel-workers-per-gather-fallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Parallel Workers per Gather Fallback
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-deployment-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Deployment Steps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Deployment Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-upload-the-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Upload the Script
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-configure-user-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Configure User Variables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-make-executable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Make Executable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-create-log-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Create Log Directory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-fix-selinux-context-critical" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Fix SELinux Context (CRITICAL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-edit-the-systemd-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: Edit the Systemd Service
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-reload-systemd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7: Reload Systemd
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-8-test-the-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 8: Test the Hook
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-user-configuration-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. User Configuration Variables
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-post-deployment-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Post-Deployment Validation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-shell-script-source-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Shell Script Source Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-project-file-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Project File Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG LOAD ANALYSIS SETUP
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PG LOAD ANALYSIS SETUP
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PG%20LOAD%20ANALYSIS%20SETUP/PG%20LOAD%20ANALYSIS%20SETUP%20%5BPaaS%5D/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG LOAD ANALYSIS SETUP [PaaS]
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PG%20LOAD%20ANALYSIS%20SETUP/PG%20LOAD%20ANALYSIS%20SETUP%20%5BSH%5D/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG LOAD ANALYSIS SETUP [SH]
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG SELFHOSTED DEPLOYMENT RUNBOOK
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PG SELFHOSTED DEPLOYMENT RUNBOOK
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Management%20Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL Selfhosted Deployment Management Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Technical%20Deployment%20Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL Selfhosted Technical Deployment Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PGGDBA
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PGGDBA
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PGGDBA/PGGDBA%20MONTHLY%20QUERIES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PGGDBA MONTHLY QUERIES
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PGGDBA/POSTGRESQL%20QUERIES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    POSTGRESQL DBA QUERY GUIDE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-architecture-process-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Architecture &amp; Process Workflow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Architecture &amp; Process Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-systemd-execstartpre-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Systemd ExecStartPre Hook
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-execution-flow-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Execution Flow Summary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-zero-double-restart-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Zero Double-Restart Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-version-detection-no-running-service-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Version Detection (No Running Service Required)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-v4-memory-and-cpu-formulas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. V4 Memory and CPU Formulas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. V4 Memory and CPU Formulas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-parameter-reference-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Parameter Reference Table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-ram-integer-division-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 RAM Integer Division Note
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-parallel-workers-per-gather-fallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Parallel Workers per Gather Fallback
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-deployment-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Deployment Steps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Deployment Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-upload-the-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Upload the Script
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-configure-user-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Configure User Variables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-make-executable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Make Executable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-create-log-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Create Log Directory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-fix-selinux-context-critical" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Fix SELinux Context (CRITICAL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-edit-the-systemd-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: Edit the Systemd Service
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-reload-systemd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7: Reload Systemd
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-8-test-the-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 8: Test the Hook
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-user-configuration-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. User Configuration Variables
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-post-deployment-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Post-Deployment Validation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-shell-script-source-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Shell Script Source Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-project-file-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Project File Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="postgresql-autotune-azure-vm-scale-implementation">PostgreSQL AutoTune: Azure VM Scale Implementation<a class="headerlink" href="#postgresql-autotune-azure-vm-scale-implementation" title="Permanent link">&para;</a></h1>
+<p><em>Version 4.0 - Systemd ExecStartPre Architecture</em></p>
+<ul>
+<li><strong>Script:</strong> <code>pg_autotune_systemd.sh</code> &rarr; Deploy to <code>/u01/Gsl/pg_autotune_systemd.sh</code></li>
+<li><strong>Log Directory:</strong> <code>/u01/backup/logs/autotune/</code></li>
+</ul>
+<hr />
+<h2 id="1-overview">1. Overview<a class="headerlink" href="#1-overview" title="Permanent link">&para;</a></h2>
+<p>This document describes the design, workflow, and implementation of the Version 4 PostgreSQL Auto-Tuning solution for self-hosted PostgreSQL 16/17 on Azure Linux VMs (RHEL 8). When an Azure VM is scaled up or down, the script automatically detects the new hardware profile and applies optimized PostgreSQL parameters on startup - with zero manual intervention and zero double restarts.</p>
+<p>The memory allocation formulas calculate <code>shared_buffers</code> at 26% and <code>effective_cache_size</code> at 76% of OS-visible physical RAM (<code>MemTotal</code>). It also uses the dynamically detected <code>PG_VERSION</code> for service restarts. In V4, the email functionality has been entirely removed to focus on reliable log tracing, and the CPU fallback formula for <code>max_parallel_workers_per_gather</code> was updated.</p>
+<hr />
+<h2 id="2-architecture-process-workflow">2. Architecture &amp; Process Workflow<a class="headerlink" href="#2-architecture-process-workflow" title="Permanent link">&para;</a></h2>
+<h3 id="21-systemd-execstartpre-hook">2.1 Systemd ExecStartPre Hook<a class="headerlink" href="#21-systemd-execstartpre-hook" title="Permanent link">&para;</a></h3>
+<p>The script is registered as a privileged <code>ExecStartPre</code> hook on the PostgreSQL systemd unit. Systemd guarantees the hook completes before <code>ExecStart</code> launches the database engine. This means the script runs after the new hardware is visible to the OS, but before PostgreSQL starts - the database always boots with parameters matched to the current VM size.</p>
+<div class="highlight"><pre><span></span><code>flowchart TD
+    VMStart([&quot;VM Boots Up or\nsystemctl start postgresql-PG_VERSION&quot;]) --&gt; Systemd[&quot;Systemd prepares to start PostgreSQL&quot;]
+    Systemd --&gt; ExecStartPre[&quot;Systemd intercepts startup\nExecutes ExecStartPre hook as root\n(+ prefix in main service file)&quot;]
+    ExecStartPre --&gt; InitLogging[&quot;Initialize Global Logging\nAll output &amp;rarr; /u01/backup/logs/autotune/pg_autotune_[TIMESTAMP].log&quot;]
+    InitLogging --&gt; LocatePGData{{&quot;Is $PGDATA set\nand postgresql.conf present?&quot;}}
+    LocatePGData -- Yes --&gt; SetConfPath[&quot;Set PG_CONF and PGDATA_DIR&quot;]
+    LocatePGData -- No --&gt; FallbackPGData[&quot;Execute su - postgres -c &#39;echo $PGDATA&#39;&quot;]
+    FallbackPGData --&gt; LocatePGDataFallback{{&quot;Did fallback find PGDATA\nand postgresql.conf?&quot;}}
+    LocatePGDataFallback -- Yes --&gt; SetConfPath
+    LocatePGDataFallback -- No --&gt; ExitError([&quot;Exit 1 with Critical Error\nBlocks PostgreSQL startup&quot;])
+    SetConfPath --&gt; DetectVersion[&quot;Detect PG_VERSION via postgres -V binary\n(No service required — binary-only call)&quot;]
+    DetectVersion --&gt; DetectHardware[&quot;Detect Hardware:\nRAM via /proc/meminfo MemTotal\nCPU via nproc&quot;]
+    DetectHardware --&gt; ConstructState[&quot;Build CURRENT_STATE string\ne.g., &#39;32768MB_RAM-8_CPUS&#39;&quot;]
+    ConstructState --&gt; CheckState{{&quot;CURRENT_STATE == LAST_KNOWN_STATE?&quot;}}
+    CheckState -- Yes --&gt; ExitSuccess([&quot;Hardware unchanged\nExit 0 — No changes\nPostgreSQL starts normally&quot;])
+    CheckState -- No --&gt; LogHardwareBlock[&quot;Log HARDWARE CHANGE DETECTED\nshowing Previous vs New specs&quot;]
+    LogHardwareBlock --&gt; CalcMem[&quot;Calculate Memory Parameters locally:\nshared_buffers      = RAM * 26 / 100  (26%)\neffective_cache_size= RAM * 76 / 100  (76%)\nmaintenance_work_mem= max(RAM_GB/20, 1) GB\nwork_mem            = static 500MB\nwal_buffers         = static 32MB&quot;]
+    CalcMem --&gt; CallAPI[&quot;Call pgconfig.org API\n(OLTP, SSD, 5s timeout)&quot;]
+    CallAPI --&gt; CheckAPI{{&quot;API returned\nmax_parallel_workers?&quot;}}
+    CheckAPI -- Yes --&gt; ParseAPI[&quot;Parse CPU params from API:\nmax_worker_processes\nmax_parallel_workers\nmax_parallel_workers_per_gather&quot;]
+    CheckAPI -- No --&gt; LocalCPUFallback[&quot;Local fallback math:\nmax_worker_processes = CPU_CORES\nmax_parallel_workers = CPU_CORES\nper_gather = min(4, CPU/2)&quot;]
+    ParseAPI --&gt; Backup[&quot;Backup postgresql.conf\nto /u01/backup/logs/autotune/config_backup/postgresql.conf.backup.[TIMESTAMP]&quot;]
+    LocalCPUFallback --&gt; Backup
+    Backup --&gt; ApplyParams[&quot;set_pg_param() for each of 8 parameters:\n- Read original line from postgresql.conf\n- Replace via sed (handles commented lines)\n- Log: [old line] ---&amp;gt; [new line]&quot;]
+    ApplyParams --&gt; UpdateState[&quot;sed self-edit: update LAST_KNOWN_STATE\ninside script file to CURRENT_STATE&quot;]
+    UpdateState --&gt; TestSleep{{&quot;TEST_SLEEP_SECONDS &amp;gt; 0?&quot;}}
+    TestSleep -- Yes --&gt; ExecSleep[&quot;Sleep N seconds\nLog: check &#39;systemctl status postgresql-PG_VERSION&#39;\n(visible in systemctl status during gap)&quot;]
+    TestSleep -- No --&gt; ScriptExit
+    ExecSleep --&gt; ScriptExit([&quot;Script exits 0&quot;])
+    ScriptExit --&gt; NativeStart[&quot;Systemd executes ExecStart\nPostgreSQL starts natively\nwith the freshly tuned postgresql.conf&quot;]
+    ExitSuccess --&gt; NativeStart
+</code></pre></div>
+<h3 id="22-execution-flow-summary">2.2 Execution Flow Summary<a class="headerlink" href="#22-execution-flow-summary" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Step</th>
+<th style="text-align: left;">Flow Step</th>
+<th style="text-align: left;">What Happens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;"><strong>VM boots or systemctl start</strong></td>
+<td style="text-align: left;">Systemd reads the main service file and finds ExecStartPre.</td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;"><strong>Script runs as root</strong></td>
+<td style="text-align: left;">The <code>+</code> prefix grants root. Script redirects all output to <code>/u01/backup/logs/autotune/</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;"><strong>Hardware check</strong></td>
+<td style="text-align: left;">Compares current state to <code>LAST_KNOWN_STATE</code> - exits silently if unchanged.</td>
+</tr>
+<tr>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;"><strong>Parameter calculation</strong></td>
+<td style="text-align: left;">Memory: local math (26%/76%). CPU: pgconfig.org API with fallback.</td>
+</tr>
+<tr>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;"><strong>Config applied</strong></td>
+<td style="text-align: left;"><code>postgresql.conf</code> updated via <code>sed</code> with before&rarr;after trace logged.</td>
+</tr>
+<tr>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;"><strong>State saved</strong></td>
+<td style="text-align: left;"><code>LAST_KNOWN_STATE</code> rewritten inside script via <code>sed</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;"><strong>Script exits 0</strong></td>
+<td style="text-align: left;">Systemd proceeds to <code>ExecStart</code> - PostgreSQL starts natively.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23-zero-double-restart-design">2.3 Zero Double-Restart Design<a class="headerlink" href="#23-zero-double-restart-design" title="Permanent link">&para;</a></h3>
+<p>The script does <strong>NOT</strong> call <code>pg_ctl stop/start</code>. The single PostgreSQL startup is performed natively by Systemd after the script exits. This eliminates the double-restart problem seen with cron-based V1 deployments.</p>
+<h3 id="24-version-detection-no-running-service-required">2.4 Version Detection (No Running Service Required)<a class="headerlink" href="#24-version-detection-no-running-service-required" title="Permanent link">&para;</a></h3>
+<p><code>PG_VERSION</code> is detected by calling the postgres binary with the <code>-V</code> flag. This reads the version string compiled into the binary - it does not require the PostgreSQL service to be running. This is safe in an <code>ExecStartPre</code> context where the database engine has not yet started.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">PG_VERSION</span><span class="o">=</span><span class="k">$(</span>postgres<span class="w"> </span>-V<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $NF}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d.<span class="w"> </span>-f1<span class="k">)</span>
+<span class="c1"># Fallback 1: psql -V | Fallback 2: hardcoded &quot;17&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="3-v4-memory-and-cpu-formulas">3. V4 Memory and CPU Formulas<a class="headerlink" href="#3-v4-memory-and-cpu-formulas" title="Permanent link">&para;</a></h2>
+<p>All memory parameters are calculated from <code>MemTotal</code> in <code>/proc/meminfo</code> - the total physical RAM visible to the OS kernel. This is slightly less than the Azure VM SKU spec (due to kernel reservations and hypervisor overhead) but is the correct value for PostgreSQL tuning.</p>
+<blockquote>
+<p>[!IMPORTANT]
+<code>MemTotal</code> is the right source. Do not use the Azure portal RAM spec - it includes overhead the OS cannot use. <code>MemTotal</code> reflects exactly what PostgreSQL can work with.</p>
+</blockquote>
+<h3 id="31-parameter-reference-table">3.1 Parameter Reference Table<a class="headerlink" href="#31-parameter-reference-table" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Formula / Source</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">64 GB RAM, 16 CPU Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>shared_buffers</code></td>
+<td style="text-align: left;"><code>(RAM_MB * 26) / 100</code></td>
+<td style="text-align: left;">Calculated</td>
+<td style="text-align: left;">17039 MB (~16.6 GB)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>effective_cache_size</code></td>
+<td style="text-align: left;"><code>(RAM_MB * 76) / 100</code></td>
+<td style="text-align: left;">Calculated</td>
+<td style="text-align: left;">49807 MB (~48.6 GB)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>maintenance_work_mem</code></td>
+<td style="text-align: left;"><code>max(RAM_GB / 20, 1) * 1024 MB</code></td>
+<td style="text-align: left;">Calculated</td>
+<td style="text-align: left;">3072 MB (3 GB)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>work_mem</code></td>
+<td style="text-align: left;">Static: <code>WORK_MEM_MB</code></td>
+<td style="text-align: left;">User config</td>
+<td style="text-align: left;">500 MB</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>wal_buffers</code></td>
+<td style="text-align: left;">Static: <code>WAL_BUFFERS_MB</code></td>
+<td style="text-align: left;">User config</td>
+<td style="text-align: left;">32 MB</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>max_worker_processes</code></td>
+<td style="text-align: left;">API or <code>CPU_CORES</code></td>
+<td style="text-align: left;">API/Fallback</td>
+<td style="text-align: left;">16</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>max_parallel_workers</code></td>
+<td style="text-align: left;">API or <code>CPU_CORES</code></td>
+<td style="text-align: left;">API/Fallback</td>
+<td style="text-align: left;">16</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>max_parallel_workers_per_gather</code></td>
+<td style="text-align: left;">API or <code>min(4, CPU/2)</code></td>
+<td style="text-align: left;">API/Fallback</td>
+<td style="text-align: left;">4</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-ram-integer-division-note">3.2 RAM Integer Division Note<a class="headerlink" href="#32-ram-integer-division-note" title="Permanent link">&para;</a></h3>
+<p>The shell variable <code>TOTAL_RAM_GB</code> is computed by integer division (<code>TOTAL_RAM_MB / 1024</code>). On a 32 GB VM this produces 31 (truncated), not 32. This affects <code>maintenance_work_mem</code> and the value passed to the <code>pgconfig.org</code> API. Memory parameters (<code>shared_buffers</code>, <code>effective_cache_size</code>) are calculated from <code>TOTAL_RAM_MB</code> which is accurate to the MB level.</p>
+<h3 id="33-parallel-workers-per-gather-fallback">3.3 Parallel Workers per Gather Fallback<a class="headerlink" href="#33-parallel-workers-per-gather-fallback" title="Permanent link">&para;</a></h3>
+<p>If the <code>pgconfig.org</code> API is unreachable, the script uses local math to determine CPU-related parameters. For <code>max_parallel_workers_per_gather</code>, V4 updates the formula to <code>min(4, Total CPU Cores / 2)</code>. This safely limits parallel coordination overhead on large VMs while allowing up to 4 parallel workers.</p>
+<hr />
+<h2 id="4-deployment-steps">4. Deployment Steps<a class="headerlink" href="#4-deployment-steps" title="Permanent link">&para;</a></h2>
+<p>Follow these steps exactly to deploy and integrate the tuner on your PostgreSQL instance:</p>
+<h3 id="step-1-upload-the-script">Step 1: Upload the Script<a class="headerlink" href="#step-1-upload-the-script" title="Permanent link">&para;</a></h3>
+<p>Copy <code>pg_autotune_systemd.sh</code> to the <code>/u01/Gsl/</code> directory on your server:
+<div class="highlight"><pre><span></span><code>cp<span class="w"> </span>pg_autotune_systemd.sh<span class="w"> </span>/u01/Gsl/pg_autotune_systemd.sh
+</code></pre></div></p>
+<h3 id="step-2-configure-user-variables">Step 2: Configure User Variables<a class="headerlink" href="#step-2-configure-user-variables" title="Permanent link">&para;</a></h3>
+<p>Edit the <code>USER CONFIGURATION</code> block at the top of <code>/u01/Gsl/pg_autotune_systemd.sh</code>:
+<div class="highlight"><pre><span></span><code><span class="nv">MAX_CONNECTIONS</span><span class="o">=</span><span class="m">5000</span><span class="w">  </span>
+<span class="nv">WORK_MEM_MB</span><span class="o">=</span><span class="m">500</span><span class="w">  </span>
+<span class="nv">WAL_BUFFERS_MB</span><span class="o">=</span><span class="m">32</span><span class="w">  </span>
+<span class="nv">TEST_SLEEP_SECONDS</span><span class="o">=</span><span class="m">30</span><span class="w"> </span><span class="c1"># Set to 0 in production!</span>
+</code></pre></div></p>
+<h3 id="step-3-make-executable">Step 3: Make Executable<a class="headerlink" href="#step-3-make-executable" title="Permanent link">&para;</a></h3>
+<p>Grant execute permission to the script:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>chmod<span class="w"> </span>+x<span class="w"> </span>/u01/Gsl/pg_autotune_systemd.sh
+</code></pre></div></p>
+<h3 id="step-4-create-log-directory">Step 4: Create Log Directory<a class="headerlink" href="#step-4-create-log-directory" title="Permanent link">&para;</a></h3>
+<p>The script writes logs and config backups to <code>/u01/backup/logs/autotune/</code>:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/u01/backup/logs/autotune/config_backup
+</code></pre></div></p>
+<h3 id="step-5-fix-selinux-context-critical">Step 5: Fix SELinux Context (CRITICAL)<a class="headerlink" href="#step-5-fix-selinux-context-critical" title="Permanent link">&para;</a></h3>
+<p>Systemd refuses to execute files without the official <code>bin_t</code> binary label. Re-label the script:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>chcon<span class="w"> </span>-t<span class="w"> </span>bin_t<span class="w"> </span>/u01/Gsl/pg_autotune_systemd.sh<span class="w">  </span>
+
+<span class="c1"># Verify context:  </span>
+ls<span class="w"> </span>-Z<span class="w"> </span>/u01/Gsl/pg_autotune_systemd.sh
+<span class="c1"># Should output: system_u:object_r:bin_t:s0</span>
+</code></pre></div></p>
+<h3 id="step-6-edit-the-systemd-service">Step 6: Edit the Systemd Service<a class="headerlink" href="#step-6-edit-the-systemd-service" title="Permanent link">&para;</a></h3>
+<p>Open the main PostgreSQL service file:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>vi<span class="w"> </span>/usr/lib/systemd/system/postgresql-16.service<span class="w">  </span><span class="c1"># or postgresql-17.service</span>
+</code></pre></div>
+Insert the <code>ExecStartPre</code> hook inside the <code>[Service]</code> block:
+<div class="highlight"><pre><span></span><code><span class="k">[Service]</span>
+<span class="na">ExecStartPre</span><span class="o">=</span><span class="s">+/u01/Gsl/pg_autotune_systemd.sh</span>
+</code></pre></div></p>
+<blockquote>
+<p>[!IMPORTANT]
+The <code>+</code> prefix in <code>ExecStartPre=+/u01/Gsl/pg_autotune_systemd.sh</code> is mandatory. It grants root-level execution. Without it, the script runs as the postgresql service user and will fail to write logs or modify <code>postgresql.conf</code>.</p>
+</blockquote>
+<h3 id="step-7-reload-systemd">Step 7: Reload Systemd<a class="headerlink" href="#step-7-reload-systemd" title="Permanent link">&para;</a></h3>
+<p>Apply the systemd change:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>systemctl<span class="w"> </span>daemon-reload
+</code></pre></div></p>
+<h3 id="step-8-test-the-hook">Step 8: Test the Hook<a class="headerlink" href="#step-8-test-the-hook" title="Permanent link">&para;</a></h3>
+<p>Trigger the hook by restarting PostgreSQL:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span>postgresql-16<span class="w">  </span>
+sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>postgresql-16<span class="w">  </span>
+
+<span class="c1"># Check the autotuning trace log:  </span>
+cat<span class="w"> </span>/u01/backup/logs/autotune/pg_autotune_*.log
+</code></pre></div></p>
+<hr />
+<h2 id="5-user-configuration-variables">5. User Configuration Variables<a class="headerlink" href="#5-user-configuration-variables" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Variable</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>MAX_CONNECTIONS</code></td>
+<td style="text-align: left;"><code>5000</code></td>
+<td style="text-align: left;">Passed to pgconfig.org API for connection-aware CPU tuning.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>WORK_MEM_MB</code></td>
+<td style="text-align: left;"><code>500</code></td>
+<td style="text-align: left;">Static work_mem in MB - not auto-scaled (set deliberately per workload).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>WAL_BUFFERS_MB</code></td>
+<td style="text-align: left;"><code>32</code></td>
+<td style="text-align: left;">Static wal_buffers in MB.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>TEST_SLEEP_SECONDS</code></td>
+<td style="text-align: left;"><code>30</code></td>
+<td style="text-align: left;">Startup pause for testing ExecStartPre gap. Set to 0 in production.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-post-deployment-validation">6. Post-Deployment Validation<a class="headerlink" href="#6-post-deployment-validation" title="Permanent link">&para;</a></h2>
+<p>After the first restart with the hook active, verify the following checks:</p>
+<ol>
+<li><strong>Log file created:</strong>
+   <div class="highlight"><pre><span></span><code>ls<span class="w"> </span>/u01/backup/logs/autotune/pg_autotune_*.log
+</code></pre></div></li>
+<li><strong>Hardware detected:</strong>
+   <div class="highlight"><pre><span></span><code>grep<span class="w"> </span><span class="s2">&quot;Detected Hardware&quot;</span><span class="w"> </span>/u01/backup/logs/autotune/pg_autotune_*.log
+</code></pre></div></li>
+<li><strong>Change detected:</strong>
+   <div class="highlight"><pre><span></span><code>grep<span class="w"> </span><span class="s2">&quot;HARDWARE CHANGE DETECTED&quot;</span><span class="w"> </span>/u01/backup/logs/autotune/pg_autotune_*.log
+</code></pre></div></li>
+<li><strong>Parameters applied:</strong>
+   <div class="highlight"><pre><span></span><code>grep<span class="w"> </span>-E<span class="w"> </span><span class="s2">&quot;Updated parameter|Added NEW&quot;</span><span class="w"> </span>/u01/backup/logs/autotune/pg_autotune_*.log
+</code></pre></div></li>
+<li><strong>State saved:</strong>
+   <div class="highlight"><pre><span></span><code>grep<span class="w"> </span><span class="s2">&quot;Process complete&quot;</span><span class="w"> </span>/u01/backup/logs/autotune/pg_autotune_*.log
+</code></pre></div></li>
+<li><strong>Live values in PG:</strong>
+   <div class="highlight"><pre><span></span><code><span class="n">psql</span><span class="w"> </span><span class="o">-</span><span class="k">c</span><span class="w"> </span><span class="ss">&quot;SELECT name, setting, unit FROM pg_settings WHERE name IN (&#39;shared_buffers&#39;,&#39;effective_cache_size&#39;,&#39;maintenance_work_mem&#39;);&quot;</span>
+</code></pre></div></li>
+</ol>
+<hr />
+<h2 id="7-troubleshooting">7. Troubleshooting<a class="headerlink" href="#7-troubleshooting" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Issue: PostgreSQL fails to start after adding hook</strong></li>
+<li><em>Resolution:</em> The SELinux chcon step was skipped or the context was reset. Run:<br />
+<code>sudo chcon -t bin_t /u01/Gsl/pg_autotune_systemd.sh</code><br />
+    Verify: <code>ls -Z /u01/Gsl/pg_autotune_systemd.sh</code> (should show <code>bin_t</code>).</li>
+<li><strong>Issue: No log file in /u01/backup/logs/autotune/</strong></li>
+<li><em>Resolution:</em> Log directory does not exist or has incorrect permissions. Run:<br />
+<code>sudo mkdir -p /u01/backup/logs/autotune/config_backup</code><br />
+    Also check: <code>journalctl -xe</code> for Systemd-level errors.</li>
+<li><strong>Issue: No tuning happens (parameters not changed)</strong></li>
+<li><em>Resolution:</em> <code>LAST_KNOWN_STATE</code> already matches the current hardware.<br />
+    Edit the script and set: <code>LAST_KNOWN_STATE="First Run"</code>, then restart PostgreSQL.</li>
+<li><strong>Issue: API fallback math used every time</strong></li>
+<li><em>Resolution:</em> Normal if the server has no outbound internet access.<br />
+    Fallback math is intentional and safe. Check log for <code>"API call failed or timed out"</code>.</li>
+<li><strong>Issue: Test sleep blocking production</strong></li>
+<li><em>Resolution:</em> Set <code>TEST_SLEEP_SECONDS=0</code> in the <code>USER CONFIGURATION</code> block of the script, then run:<br />
+<code>sudo systemctl daemon-reload</code></li>
+</ul>
+<hr />
+<h2 id="8-shell-script-source-code">8. Shell Script Source Code<a class="headerlink" href="#8-shell-script-source-code" title="Permanent link">&para;</a></h2>
+<p>Below is the complete <code>pg_autotune_systemd.sh</code> script for your deployment reference:</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+<span class="c1"># pg_autotune_systemd.sh — Version 4</span>
+<span class="c1"># Detects hardware changes, modifies postgresql.conf.</span>
+<span class="c1"># Designed exclusively to be run via Systemd ExecStartPre hook.</span>
+<span class="c1">#</span>
+<span class="c1"># V4 Changes:</span>
+<span class="c1">#   - max_parallel_workers_per_gather fallback formula updated to: min(4, CPU/2)</span>
+<span class="c1">#   - Email functionality removed entirely</span>
+<span class="c1"># V3 Changes from V2:</span>
+<span class="c1">#   - shared_buffers      : 25% → 26% of RAM</span>
+<span class="c1">#   - effective_cache_size: 75% → 76% of RAM</span>
+<span class="c1">#   - systemctl log message now uses dynamic PG_VERSION (no hardcoded &#39;16&#39;)</span>
+
+<span class="c1"># --- USER CONFIGURATION ---</span>
+<span class="nv">MAX_CONNECTIONS</span><span class="o">=</span><span class="m">5000</span>
+<span class="nv">WORK_MEM_MB</span><span class="o">=</span><span class="m">500</span>
+<span class="nv">WAL_BUFFERS_MB</span><span class="o">=</span><span class="m">32</span>
+<span class="nv">TEST_SLEEP_SECONDS</span><span class="o">=</span><span class="m">30</span>
+<span class="c1"># --------------------------</span>
+
+<span class="c1"># --- LOGGING CONFIGURATION ---</span>
+<span class="nv">LOG_DIR</span><span class="o">=</span><span class="s2">&quot;/u01/backup/logs/autotune&quot;</span>
+<span class="nv">LOG_FILE</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">LOG_DIR</span><span class="si">}</span><span class="s2">/pg_autotune_</span><span class="k">$(</span>date<span class="w"> </span>+<span class="s1">&#39;%Y%m%d_%H%M%S&#39;</span><span class="k">)</span><span class="s2">.log&quot;</span>
+
+<span class="c1"># Auto-create log directory if it does not exist</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>!<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$LOG_DIR</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$LOG_DIR</span><span class="s2">&quot;</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null
+<span class="k">fi</span>
+
+<span class="c1"># Redirect all output to the log file</span>
+<span class="nb">exec</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$LOG_FILE</span><span class="s2">&quot;</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+
+<span class="c1"># Verify the log file was actually created (exec fails silently if dir is unwritable)</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>!<span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$LOG_FILE</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="c1"># Fall back to stderr — visible via: journalctl -u postgresql-PG_VERSION</span>
+<span class="w">    </span><span class="nb">exec</span><span class="w"> </span>&gt;<span class="p">&amp;</span><span class="m">2</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[</span><span class="k">$(</span>date<span class="w"> </span><span class="s1">&#39;+%Y-%m-%d %H:%M:%S&#39;</span><span class="k">)</span><span class="s2">] CRITICAL: Cannot write to log file: </span><span class="nv">$LOG_FILE</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[</span><span class="k">$(</span>date<span class="w"> </span><span class="s1">&#39;+%Y-%m-%d %H:%M:%S&#39;</span><span class="k">)</span><span class="s2">] CRITICAL: Check that </span><span class="nv">$LOG_DIR</span><span class="s2"> exists and is writable by root.&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[</span><span class="k">$(</span>date<span class="w"> </span><span class="s1">&#39;+%Y-%m-%d %H:%M:%S&#39;</span><span class="k">)</span><span class="s2">] CRITICAL: Continuing — all output will appear in journalctl.&quot;</span>
+<span class="k">fi</span>
+
+log<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[</span><span class="k">$(</span>date<span class="w"> </span><span class="s1">&#39;+%Y-%m-%d %H:%M:%S&#39;</span><span class="k">)</span><span class="s2">] </span><span class="nv">$*</span><span class="s2">&quot;</span>
+<span class="o">}</span>
+
+log<span class="w"> </span><span class="s2">&quot;=================================================================&quot;</span>
+log<span class="w"> </span><span class="s2">&quot;Executing PostgreSQL Auto-Tune Hook  (v4)&quot;</span>
+<span class="c1"># -----------------------------</span>
+
+<span class="c1"># --- INTERNAL STATE (Do not modify manually) ---</span>
+<span class="nv">LAST_KNOWN_STATE</span><span class="o">=</span><span class="s2">&quot;First Run&quot;</span>
+<span class="c1"># -----------------------------------------------</span>
+
+<span class="c1"># 1. Dynamically Locate postgresql.conf</span>
+log<span class="w"> </span><span class="s2">&quot;Locating postgresql.conf dynamically using PGDATA...&quot;</span>
+
+<span class="c1"># Check if PGDATA is available in the current environment</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PGDATA</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PGDATA</span><span class="s2">/postgresql.conf&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nv">PG_CONF</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PGDATA</span><span class="s2">/postgresql.conf&quot;</span>
+<span class="w">    </span><span class="nv">PGDATA_DIR</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PGDATA</span><span class="s2">&quot;</span>
+<span class="k">else</span>
+<span class="w">    </span><span class="c1"># Attempt to load the postgres user&#39;s environment variables (useful if running from root crontab)</span>
+<span class="w">    </span><span class="nv">PGDATA_ENV</span><span class="o">=</span><span class="k">$(</span>su<span class="w"> </span>-<span class="w"> </span>postgres<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;echo $PGDATA&#39;</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span><span class="s1">&#39;^\s*$&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="k">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PGDATA_ENV</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PGDATA_ENV</span><span class="s2">/postgresql.conf&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nv">PG_CONF</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PGDATA_ENV</span><span class="s2">/postgresql.conf&quot;</span>
+<span class="w">        </span><span class="nv">PGDATA_DIR</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PGDATA_ENV</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span>log<span class="w"> </span><span class="s2">&quot;CRITICAL: \$PGDATA environment variable is not set or postgresql.conf not found inside it.&quot;</span>
+<span class="w">        </span>log<span class="w"> </span><span class="s2">&quot;Please ensure \$PGDATA is exported, or set PG_CONF manually.&quot;</span>
+<span class="w">        </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="w">    </span><span class="k">fi</span>
+<span class="k">fi</span>
+log<span class="w"> </span><span class="s2">&quot;Found PostgreSQL Configuration: </span><span class="nv">$PG_CONF</span><span class="s2">&quot;</span>
+
+<span class="c1"># Dynamically Detect PostgreSQL Version</span>
+<span class="c1"># Note: postgres -V reads the installed binary — does NOT require the service to be running.</span>
+<span class="nv">PG_VERSION</span><span class="o">=</span><span class="k">$(</span>postgres<span class="w"> </span>-V<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $NF}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d.<span class="w"> </span>-f1<span class="k">)</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-z<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PG_VERSION</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nv">PG_VERSION</span><span class="o">=</span><span class="k">$(</span>psql<span class="w"> </span>-V<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $3}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d.<span class="w"> </span>-f1<span class="k">)</span>
+<span class="k">fi</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-z<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PG_VERSION</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nv">PG_VERSION</span><span class="o">=</span><span class="s2">&quot;17&quot;</span><span class="w"> </span><span class="c1"># Fallback</span>
+<span class="k">fi</span>
+log<span class="w"> </span><span class="s2">&quot;Detected PostgreSQL Version: </span><span class="nv">$PG_VERSION</span><span class="s2">&quot;</span>
+
+<span class="c1"># 2. Detect Hardware</span>
+<span class="nv">TOTAL_RAM_KB</span><span class="o">=</span><span class="k">$(</span>grep<span class="w"> </span>MemTotal<span class="w"> </span>/proc/meminfo<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $2}&#39;</span><span class="k">)</span>
+<span class="nv">TOTAL_RAM_MB</span><span class="o">=</span><span class="k">$((</span><span class="nv">TOTAL_RAM_KB</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="m">1024</span><span class="k">))</span>
+<span class="nv">TOTAL_RAM_GB</span><span class="o">=</span><span class="k">$((</span><span class="nv">TOTAL_RAM_MB</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="m">1024</span><span class="k">))</span>
+<span class="nv">CPU_CORES</span><span class="o">=</span><span class="k">$(</span>nproc<span class="k">)</span>
+
+log<span class="w"> </span><span class="s2">&quot;Detected Hardware: </span><span class="si">${</span><span class="nv">TOTAL_RAM_MB</span><span class="si">}</span><span class="s2">MB RAM  |  </span><span class="si">${</span><span class="nv">CPU_CORES</span><span class="si">}</span><span class="s2"> CPU Cores&quot;</span>
+
+<span class="nv">CURRENT_STATE</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">TOTAL_RAM_MB</span><span class="si">}</span><span class="s2">MB_RAM-</span><span class="si">${</span><span class="nv">CPU_CORES</span><span class="si">}</span><span class="s2">_CPUS&quot;</span>
+
+<span class="c1"># 3. Hardware Change Validation (Self-contained)</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CURRENT_STATE</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$LAST_KNOWN_STATE</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span>log<span class="w"> </span><span class="s2">&quot;Hardware unchanged (</span><span class="nv">$CURRENT_STATE</span><span class="s2">). Skipping auto-tune process.&quot;</span>
+<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
+<span class="k">fi</span>
+
+log<span class="w"> </span><span class="s2">&quot;=================================================================&quot;</span>
+log<span class="w"> </span><span class="s2">&quot;HARDWARE CHANGE DETECTED!&quot;</span>
+log<span class="w"> </span><span class="s2">&quot;Previous Hardware: </span><span class="nv">$LAST_KNOWN_STATE</span><span class="s2">&quot;</span>
+log<span class="w"> </span><span class="s2">&quot;New Hardware:      </span><span class="nv">$CURRENT_STATE</span><span class="s2">&quot;</span>
+log<span class="w"> </span><span class="s2">&quot;=================================================================&quot;</span>
+
+<span class="c1"># 4. Memory Parameters (Local Math)</span>
+<span class="c1"># shared_buffers      = 26% of OS-visible physical RAM (MemTotal)</span>
+<span class="c1"># effective_cache_size= 76% of OS-visible physical RAM (MemTotal)  [planner hint only]</span>
+<span class="c1"># maintenance_work_mem= 5% of RAM (RAM_GB / 20), minimum 1 GB</span>
+<span class="nv">SHARED_BUFFERS_MB</span><span class="o">=</span><span class="k">$((</span><span class="w"> </span><span class="o">(</span><span class="nv">TOTAL_RAM_MB</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">26</span><span class="o">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="k">))</span>
+<span class="nv">EFFECTIVE_CACHE_MB</span><span class="o">=</span><span class="k">$((</span><span class="w"> </span><span class="o">(</span><span class="nv">TOTAL_RAM_MB</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">76</span><span class="o">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="k">))</span>
+
+<span class="nv">MAINT_WORK_MEM_GB</span><span class="o">=</span><span class="k">$((</span><span class="nv">TOTAL_RAM_GB</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="m">20</span><span class="k">))</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$MAINT_WORK_MEM_GB</span><span class="s2">&quot;</span><span class="w"> </span>-lt<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nv">MAINT_WORK_MEM_GB</span><span class="o">=</span><span class="m">1</span><span class="p">;</span><span class="w"> </span><span class="k">fi</span>
+<span class="nv">MAINT_WORK_MEM_MB</span><span class="o">=</span><span class="k">$((</span><span class="nv">MAINT_WORK_MEM_GB</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">1024</span><span class="k">))</span>
+
+<span class="c1"># work_mem and wal_buffers are static — set via USER CONFIGURATION block above</span>
+
+<span class="c1"># 5. CPU/Parallel Parameters (API with Local Fallback)</span>
+<span class="nv">API_URL</span><span class="o">=</span><span class="s2">&quot;https://api.pgconfig.org/v1/tuning/get-config?format=conf&amp;max_connections=</span><span class="si">${</span><span class="nv">MAX_CONNECTIONS</span><span class="si">}</span><span class="s2">&amp;pg_version=</span><span class="si">${</span><span class="nv">PG_VERSION</span><span class="si">}</span><span class="s2">&amp;environment_name=OLTP&amp;total_ram=</span><span class="si">${</span><span class="nv">TOTAL_RAM_GB</span><span class="si">}</span><span class="s2">&amp;cpus=</span><span class="si">${</span><span class="nv">CPU_CORES</span><span class="si">}</span><span class="s2">&amp;drive_type=SSD&amp;arch=x86-64&amp;os_type=linux&quot;</span>
+log<span class="w"> </span><span class="s2">&quot;Calling pgconfig.org API for CPU/parallel parameters...&quot;</span>
+<span class="nv">API_CONF</span><span class="o">=</span><span class="k">$(</span>curl<span class="w"> </span>-s<span class="w"> </span>--max-time<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$API_URL</span><span class="s2">&quot;</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="k">)</span>
+
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$API_CONF</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$API_CONF</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-q<span class="w"> </span><span class="s2">&quot;max_parallel_workers&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span>log<span class="w"> </span><span class="s2">&quot;API call succeeded. Parsing CPU parameters from response.&quot;</span>
+<span class="w">    </span><span class="nv">MAX_WORKER_PROCESSES</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$API_CONF</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;^max_worker_processes&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $3}&#39;</span><span class="k">)</span>
+<span class="w">    </span><span class="nv">MAX_PARALLEL_WORKERS</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$API_CONF</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;^max_parallel_workers &quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $3}&#39;</span><span class="k">)</span>
+<span class="w">    </span><span class="nv">MAX_PARALLEL_WORKERS_PER_GATHER</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$API_CONF</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;^max_parallel_workers_per_gather&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $3}&#39;</span><span class="k">)</span>
+<span class="k">else</span>
+<span class="w">    </span>log<span class="w"> </span><span class="s2">&quot;API call failed or timed out. Using local fallback math for CPU parameters.&quot;</span>
+<span class="w">    </span><span class="nv">MAX_WORKER_PROCESSES</span><span class="o">=</span><span class="nv">$CPU_CORES</span>
+<span class="w">    </span><span class="nv">MAX_PARALLEL_WORKERS</span><span class="o">=</span><span class="nv">$CPU_CORES</span>
+<span class="w">    </span><span class="c1"># Formula: min(4, Total CPU Cores / 2)</span>
+<span class="w">    </span><span class="nv">MAX_PARALLEL_WORKERS_PER_GATHER</span><span class="o">=</span><span class="k">$((</span><span class="w"> </span><span class="o">(</span><span class="nv">CPU_CORES</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="m">2</span><span class="o">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="m">4</span><span class="w"> </span>?<span class="w"> </span><span class="o">(</span><span class="nv">CPU_CORES</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="m">2</span><span class="o">)</span><span class="w"> </span>:<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="k">))</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$MAX_PARALLEL_WORKERS_PER_GATHER</span><span class="s2">&quot;</span><span class="w"> </span>-eq<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nv">MAX_PARALLEL_WORKERS_PER_GATHER</span><span class="o">=</span><span class="m">1</span><span class="p">;</span><span class="w"> </span><span class="k">fi</span>
+<span class="k">fi</span>
+
+<span class="c1"># 6. Backup the Configuration</span>
+<span class="nv">TIMESTAMP</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span>+<span class="s2">&quot;%Y%m%d_%H%M%S&quot;</span><span class="k">)</span>
+<span class="nv">BACKUP_PATH</span><span class="o">=</span><span class="s2">&quot;/u01/backup/logs/autotune/config_backup/postgresql.conf.backup.</span><span class="si">${</span><span class="nv">TIMESTAMP</span><span class="si">}</span><span class="s2">&quot;</span>
+cp<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PG_CONF</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$BACKUP_PATH</span><span class="s2">&quot;</span>
+log<span class="w"> </span><span class="s2">&quot;Backed up </span><span class="nv">$PG_CONF</span><span class="s2"> to </span><span class="nv">$BACKUP_PATH</span><span class="s2">&quot;</span>
+
+<span class="c1"># 7. Direct File Modification Function</span>
+<span class="c1"># Logs a before-and-after trace for every parameter change.</span>
+set_pg_param<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">key</span><span class="o">=</span><span class="nv">$1</span>
+<span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">val</span><span class="o">=</span><span class="nv">$2</span>
+<span class="w">    </span><span class="nb">local</span><span class="w"> </span>prev_val
+<span class="w">    </span><span class="k">if</span><span class="w"> </span>grep<span class="w"> </span>-qE<span class="w"> </span><span class="s2">&quot;^\s*#?\s*</span><span class="si">${</span><span class="nv">key</span><span class="si">}</span><span class="s2">\s*=&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PG_CONF</span><span class="s2">&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nv">prev_val</span><span class="o">=</span><span class="k">$(</span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s2">&quot;^\s*#?\s*</span><span class="si">${</span><span class="nv">key</span><span class="si">}</span><span class="s2">\s*=&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PG_CONF</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="k">)</span>
+<span class="w">        </span>sed<span class="w"> </span>-i<span class="w"> </span>-E<span class="w"> </span><span class="s2">&quot;s/^\s*#?\s*</span><span class="si">${</span><span class="nv">key</span><span class="si">}</span><span class="s2">\s*=.*/</span><span class="si">${</span><span class="nv">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">${</span><span class="nv">val</span><span class="si">}</span><span class="s2">/g&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PG_CONF</span><span class="s2">&quot;</span>
+<span class="w">        </span>log<span class="w"> </span><span class="s2">&quot;Updated parameter:  [</span><span class="si">${</span><span class="nv">prev_val</span><span class="si">}</span><span class="s2">]   ---&gt;   [</span><span class="si">${</span><span class="nv">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">${</span><span class="nv">val</span><span class="si">}</span><span class="s2">]&quot;</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">${</span><span class="nv">val</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PG_CONF</span><span class="s2">&quot;</span>
+<span class="w">        </span>log<span class="w"> </span><span class="s2">&quot;Added NEW parameter:   [</span><span class="si">${</span><span class="nv">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">${</span><span class="nv">val</span><span class="si">}</span><span class="s2">]&quot;</span>
+<span class="w">    </span><span class="k">fi</span>
+<span class="o">}</span>
+
+<span class="c1"># Apply parameters</span>
+log<span class="w"> </span><span class="s2">&quot;Applying optimized configurations to postgresql.conf...&quot;</span>
+set_pg_param<span class="w"> </span><span class="s2">&quot;shared_buffers&quot;</span><span class="w">               </span><span class="s2">&quot;&#39;</span><span class="si">${</span><span class="nv">SHARED_BUFFERS_MB</span><span class="si">}</span><span class="s2">MB&#39;&quot;</span>
+set_pg_param<span class="w"> </span><span class="s2">&quot;effective_cache_size&quot;</span><span class="w">         </span><span class="s2">&quot;&#39;</span><span class="si">${</span><span class="nv">EFFECTIVE_CACHE_MB</span><span class="si">}</span><span class="s2">MB&#39;&quot;</span>
+set_pg_param<span class="w"> </span><span class="s2">&quot;maintenance_work_mem&quot;</span><span class="w">         </span><span class="s2">&quot;&#39;</span><span class="si">${</span><span class="nv">MAINT_WORK_MEM_MB</span><span class="si">}</span><span class="s2">MB&#39;&quot;</span>
+set_pg_param<span class="w"> </span><span class="s2">&quot;work_mem&quot;</span><span class="w">                     </span><span class="s2">&quot;&#39;</span><span class="si">${</span><span class="nv">WORK_MEM_MB</span><span class="si">}</span><span class="s2">MB&#39;&quot;</span>
+set_pg_param<span class="w"> </span><span class="s2">&quot;wal_buffers&quot;</span><span class="w">                  </span><span class="s2">&quot;&#39;</span><span class="si">${</span><span class="nv">WAL_BUFFERS_MB</span><span class="si">}</span><span class="s2">MB&#39;&quot;</span>
+set_pg_param<span class="w"> </span><span class="s2">&quot;max_worker_processes&quot;</span><span class="w">         </span><span class="s2">&quot;</span><span class="nv">$MAX_WORKER_PROCESSES</span><span class="s2">&quot;</span>
+set_pg_param<span class="w"> </span><span class="s2">&quot;max_parallel_workers&quot;</span><span class="w">         </span><span class="s2">&quot;</span><span class="nv">$MAX_PARALLEL_WORKERS</span><span class="s2">&quot;</span>
+set_pg_param<span class="w"> </span><span class="s2">&quot;max_parallel_workers_per_gather&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$MAX_PARALLEL_WORKERS_PER_GATHER</span><span class="s2">&quot;</span>
+
+<span class="c1"># 8. (Restart logic removed - handled natively by systemd)</span>
+
+<span class="c1"># 9. Update Self-Contained State</span>
+<span class="nv">SCRIPT_PATH</span><span class="o">=</span><span class="k">$(</span>readlink<span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$0</span><span class="s2">&quot;</span><span class="k">)</span>
+sed<span class="w"> </span>-i<span class="w"> </span>-E<span class="w"> </span><span class="s2">&quot;s/^LAST_KNOWN_STATE=.*/LAST_KNOWN_STATE=\&quot;</span><span class="nv">$CURRENT_STATE</span><span class="s2">\&quot;/&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$SCRIPT_PATH</span><span class="s2">&quot;</span>
+log<span class="w"> </span><span class="s2">&quot;Process complete. State saved inside script.&quot;</span>
+
+<span class="c1"># 10. Testing Gap (set TEST_SLEEP_SECONDS=0 in production)</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$TEST_SLEEP_SECONDS</span><span class="s2">&quot;</span><span class="w"> </span>-gt<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span>log<span class="w"> </span><span class="s2">&quot;TESTING MODE: Sleeping for </span><span class="si">${</span><span class="nv">TEST_SLEEP_SECONDS</span><span class="si">}</span><span class="s2"> seconds to demonstrate ExecStartPre gap.&quot;</span>
+<span class="w">    </span>log<span class="w"> </span><span class="s2">&quot;You can check &#39;systemctl status postgresql-</span><span class="si">${</span><span class="nv">PG_VERSION</span><span class="si">}</span><span class="s2">&#39; in another terminal now.&quot;</span>
+<span class="w">    </span>log<span class="w"> </span><span class="s2">&quot;The database engine will not start until this sleep finishes.&quot;</span>
+<span class="w">    </span>sleep<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$TEST_SLEEP_SECONDS</span><span class="s2">&quot;</span>
+<span class="w">    </span>log<span class="w"> </span><span class="s2">&quot;Sleep finished. Handing control back to systemd native auto-startup...&quot;</span>
+<span class="k">fi</span>
+</code></pre></div>
+<hr />
+<h2 id="9-project-file-reference">9. Project File Reference<a class="headerlink" href="#9-project-file-reference" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">File</th>
+<th style="text-align: left;">Status</th>
+<th style="text-align: left;">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>pg_autotune_systemd.sh</code></td>
+<td style="text-align: left;"><strong>CURRENT - deploy this</strong></td>
+<td style="text-align: left;">V4 script. Deploy to <code>/u01/Gsl/pg_autotune_systemd.sh</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>PostgreSQL_AutoTune_Azure_VM_Scale_Implementation.md</code></td>
+<td style="text-align: left;"><strong>CURRENT</strong></td>
+<td style="text-align: left;">This document - V4 specification &amp; deployment guide.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>pgautotune_v3.sh</code></td>
+<td style="text-align: left;">Superseded by V4</td>
+<td style="text-align: left;">V3 script - retained for reference.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>pgautotune_v2.sh</code></td>
+<td style="text-align: left;">Superseded by V4</td>
+<td style="text-align: left;">V2 script - retained for reference.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
