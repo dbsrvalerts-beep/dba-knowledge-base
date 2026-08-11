@@ -18,14 +18,14 @@ _May 2023_
 - [Installing PostgreSQL 14.8 On Windows](#installing-postgresql-148-on-windows)
 - [Setting Up PostgreSQL Windows Environment](#setting-up-postgresql-windows-environment)
 - [Installing PostgreSQL on Linux (Default Directory)](#installing-postgresql-on-linux-default-directory)
-- Setting Up PostgreSQL Linux Environment
+- [Setting Up PostgreSQL Linux Environment](#setting-up-postgresql-linux-environment-default-directory)
 - [Installing PostgreSQL on Linux (Non-Default Directory)](#installing-postgresql-on-linux-non-default-directory)
 
 ## 3. PostgreSQL Architecture
 
 - [Fundamentals of PostgreSQL Architecture](#fundamentals-of-postgresql-architecture)
 - [Process and Memory Architecture](#process-and-memory-architecture)
-- Post Master Process
+- [Post Master Process](#postmaster-process-supervisor-process)
 - [Utility Processes](#utility-processes)
 - [Memory Segments](#memory-segments)
 - [Physical Files](#physical-files)
@@ -44,25 +44,25 @@ _May 2023_
 
 - [Overview of Installation Directory Layout](#overview-of-installation-directory-layout)
 - [Overview of Database Directory Layout](#overview-of-database-directory-layout)
-- Overview of Base Directory Layout
+- [Overview of Base Directory Layout](#overview-of-base-directory-layout)
 
 ## 6. Configuration Files
 
 - [Postgresql.conf File](#postgresqlconf-file)
 - [Pg Catalog tables to view File settings](#pg-catalog-tables-to-view-file-settings)
-- Changing parameter from Postgresql.conf File
+- [Changing parameter from Postgresql.conf File](#postgresqlconf-file)
 - [Postgresql.auto.conf](#postgresqlautoconf)
-- Pg_ident.conf with sample
+- [Pg_ident.conf with sample](#pg_identconf-with-sample)
 - [Pg_hba.conf with sample](#pg_hbaconf-with-sample)
-- Steps to modify Pg_hba.conf file
+- [Steps to modify Pg_hba.conf file](#steps-to-modify-pg_hbaconf-file)
 
 ## 7. Database Creation / Users / Schema / Privileges
 
-- Create database - Psql / createdb utility
+- [Create database - Psql / createdb utility](#create-database-psql-createdb-utility)
 - [Drop database - Psql/ dropdb utility](#drop-database-psql-dropdb-utility)
 - [Create user - Psql/ createuser utility/ Interactive](#create-user-psql-createuser-utility-interactive)
 - [Drop user - Psql/ dropuser utility](#drop-user-psql-dropuser-utility)
-- Create/Drop Schema and Search Schema Path
+- [Create/Drop Schema and Search Schema Path](#createdrop-schema-and-search-schema-path)
 - [Public Schema](#public-schema)
 - [Privileges in PostgreSQL](#privileges-in-postgresql)
 - [Grants and Revoke Access](#grants-and-revoke-access)
@@ -76,7 +76,7 @@ _May 2023_
 ## 9. Pg System Catalogs and Time Zone
 
 - [Pg System Catalogs](#pg-system-catalogs)
-- Date & Time zones in PostgreSQL
+- [Date & Time zones in PostgreSQL](#date-time-zone-in-postgresql)
 
 ## 10. PostgreSQL CRUD Operations
 
@@ -84,13 +84,13 @@ _May 2023_
 - [Create operations with examples](#create-operations-with-examples)
 - [Data Types in PostgreSQL](#data-types-in-postgresql)
 - [Constraints](#constraints)
-- PostgreSQL Build-in Functions
+- [PostgreSQL Build-in Functions](#postgresql-build-in-functions)
 - [Read operations and Column Aliases](#read-operations-and-column-aliases)
 - [Update operations with examples](#update-operations-with-examples)
 - [Delete with examples](#delete-with-examples)
 - [Transaction](#transaction)
-- View, Sequences
-- Index and its Types
+- [View, Sequences](#view-sequences)
+- [Index and its Types](#index-and-its-types)
 
 ## 11. Table Inheritance and Partitioning
 
@@ -111,19 +111,19 @@ _May 2023_
 
 - [Back & Types of Backup](#back-types-of-backup)
 - [Logical Backup](#logical-backup)
-- Pg_dump
-- Restore backup of pg_dump using psql
-- Restore backup of pg_dump using pg_restore
-- Pg_dumpall
+- [Pg_dump](#pg_dump)
+- [Restore backup of pg_dump using psql](#restore-backup-from-pg_dump-using-psql)
+- [Restore backup of pg_dump using pg_restore](#restore-backup-from-pg_dump-using-pg_restore)
+- [Pg_dumpall](#pg_dumpall)
 - [Difference between pg_dump and pg_dumpall](#difference-between-pg_dump-and-pg_dumpall)
-- Backup and Restore using pg_dumpall
-- Compressing and splitting dump files
-- File System backup - Offline backup mode
+- [Backup and Restore using pg_dumpall](#backup-and-restore)
+- [Compressing and splitting dump files](#compressing-and-splitting-dump-files)
+- [File System backup - Offline backup mode](#file-system-backup-offline-backup-mode)
 - [Continuous Archiving](#continuous-archiving)
 - [Steps to set up continuous archiving](#steps-to-set-up-continuous-archiving)
-- Online Low Level API Backup ------Pending
+- [Online Low Level API Backup](#pg_basebackup-online-backup-mode)
 - [Pg_basebackup - Online backup mode](#pg_basebackup-online-backup-mode)
-- Online Backup Restore and Point in Time Recovery
+- [Online Backup Restore and Point in Time Recovery](#online-backup-restore-and-pitr-point-in-time-recovery)
 
 ## 14. Maintenance in PostgreSQL
 
@@ -133,9 +133,9 @@ _May 2023_
 - [Data Fragmentation](#data-fragmentation)
 - [Vacuum Vs Vacuum full](#vacuum-vs-vacuum-full)
 - [Auto-Vacuum in PostgreSQL](#auto-vacuum-in-postgresql)
-- Transaction ID Wrap Around Failure
+- [Transaction ID Wrap Around Failure](#transaction-id-wrap-around-failure)
 - [Vacuum Freeze](#vacuum-freeze)
-- Routine Re-Indexing
+- [Routine Re-Indexing](#routine-re-indexing)
 - [Cluster](#cluster)
 
 ## 15. PostgreSQL Upgarde
@@ -152,16 +152,16 @@ _May 2023_
 - [Parallel Vacuum](#parallel-vacuum)
 - [Trusted Extension](#trusted-extension)
 - [Drop Database (Force)](#drop-database-force)
-- Track Wal_Usage
+- [Track Wal_Usage](#track-wal_usage)
 - [System Views](#system-views)
 
 ## 17. New Features and Enhancement (postgreSQL15)
 
-- Server Statistics
+- [Server Statistics](#server-statistics)
 - [Logging Format](#logging-format)
 - [Merge](#merge)
-- Roles and Setting server parameters
-- Psql \\Dconfig
+- [Roles and Setting server parameters](#roles-and-setting-server-parameters)
+- [Psql \\Dconfig](#psql-dconfig-and-other-features)
 - [Misc. Features](#misc-features)
 
 ## 18. PostgreSQL Replication
@@ -362,7 +362,7 @@ sudo systemctl status postgresql-14
 
 Note: Above mentioned steps will download and install PostgreSQL at default directory on Linux Operating System.
 
-**Setting Up PostgreSQL Linux Environment (Default Directory)**
+### Setting Up PostgreSQL Linux Environment (Default Directory)
 
 Step 1: The user "postgres" is created automatically during the installation. Set up a password for the "postgres" user using the following command:
 
@@ -537,7 +537,7 @@ dnf remove postgresql16-server-16.6-1PGDG.rhel8.x86_64
 
 ![](images/postgresql_14_updated/img_14.png)
 
-**Postmaster Process - Supervisor process**
+### Postmaster Process - Supervisor process
 
 - Postmaster is the first process which gets started in PostgreSQL
 - Postmaster acts as supervisor process, whose job is to monitor, start, restart some processes if they die.
@@ -793,7 +793,7 @@ C:\\> pg_controldata -D "D:\\PostgreSQL\\data" {Windows}
 | postmaster.pid       | A lock file recording the current postmaster process ID (PID), cluster data directory path, postmaster start timestamp, port number, Unix-domain socket directory path (empty on Windows), first valid listen_address (IP address or *, or empty if not listening on TCP), and shared memory segment ID (this file is not present after server shutdown) |
 | PG_VERSION           | A file containing the major version number of PostgreSQL                                                                                                                                                                                                                                                                                                  |
 
-**Base_Directory**
+### Overview of Base Directory Layout
 
 - Contains databases, that represented as directories named after their object identifier (OID).
 - Template 1 always has oid 1.
@@ -928,7 +928,7 @@ Alter system reset all;
 
 Note: If both files have the same parameter defined, PostgreSQL reads the value from postgresql.auto.conf instead of postgresql.conf. This behaviour ensures that dynamically set configuration changes are prioritized over the static configuration in postgresql.conf.
 
-**Pg_ident.conf file**
+### Pg_ident.conf with Sample
 
 This file controls PostgreSQL user name mapping. It maps external user names to their corresponding PostgreSQL user names. Configuration to indicate which map to use for each individual connection.
 
@@ -1033,7 +1033,7 @@ Note: Database and user names containing spaces, commas, quotes and other specia
 
 Note: "password" sends passwords in clear text; "md5" or "scram-sha-256" are preferred since they send encrypted passwords
 
-**Steps to modify pg_hba.conf**
+### Steps to Modify Pg_hba.conf file
 
 - Stop postgresql on the source machine.
 - Edit pg_hba.conf file and add the entry of client.
@@ -1044,7 +1044,7 @@ Note: "password" sends passwords in clear text; "md5" or "scram-sha-256" are pre
 
 Depending on the authentication method choosen the client may or maynot prompt for password.
 
-**Database Creation / Users / Schema / Privileges**
+### Create Database - Psql / createdb Utility
 
 - Database is an organized collection of structured information, or data, typically stored and accessed electronically from a computer system.
 - When you install PostgreSQL, the bin folder contains various command-line utilities for managing and interacting with the database server.
@@ -1163,7 +1163,7 @@ Drop role username;
 - One Database can be used by multiple users without interfering with each other.
 - Schema are created at database level rather than cluster level. Therefore, schema with same name can be created in a cluster but should be created within different database.
 
-**Create/Drop Schema**
+### Create/Drop Schema and Search Schema Path
 
 - To create a schema in PostgreSQL, you can use the CREATE SCHEMA statement. Here's an example of how to create a schema:
 
@@ -1483,7 +1483,7 @@ postgres=# rollback;
 - select version (); --PostgreSql version
 - select pg_is_in_backup(); --If backup is running or not
 
-**Date & Time zone in PostgreSQL**
+### Date & Time zone in PostgreSQL
 
 - Current Date and time with timezone
 
@@ -1565,7 +1565,7 @@ CONSTRAINT constraint_name UNIQUE (col1, col2, ... col_n)
 | FOREIGN         | Constrains data based on columns in other tables.                                    |
 | CHECK           | The CHECK constraint ensures that all values in a column satisfy certain conditions. |
 
-**PostgreSQL Functions & Operators**
+### PostgreSQL Build-in Functions
 
 | Build In Functions      | Examples                                                                                                  |
 | ----------------------- | --------------------------------------------------------------------------------------------------------- |
@@ -1632,7 +1632,7 @@ WHERE producer_id IN (SELECT id FROM producers WHERE name = 'foo');
 - The COMMIT command is the transactional command used to save changes invoked by a transaction to the database.
 - ROLLBACK command is the transactional command used to undo transactions that have not already been saved to the database.
 
-**Views in PostgreSQL**
+### View, Sequences
 
 - View is a logical table that represents data of one or more underlying tables through a Select statement.
 - view helps simplify the complexity of a query because you can query a view, which is based on a complex query, using a simple SELECT statement.
@@ -1649,7 +1649,7 @@ CREATE VIEW view_name AS query;
 - Functions like nextval, currval, and setval to operate on the sequence.
 - Syntax: CREATE SEQUENCE serial START number;
 
-**Index and types of index**
+### Index and Its Types
 
 - Indexes are primarily used to enhance database performance.
 - CREATE INDEX constructs an index on the specified column(s) of the specified table.
@@ -1934,7 +1934,7 @@ Syntax : CREATE TABLESPACE temp01 OWNER ownername LOCATION '\\opt\\app\\hrd\\'
 - PG will automatically create a subfolder in the above location when a temp table is created.
 - When we shutdown the database the temp files will be delete automatically.
 
-**Backup and Restore**
+### Backup and Restore
 
 ### Back & Types of Backup
 
@@ -1955,7 +1955,7 @@ Physical backups are further divided as online backup and offline backup.
 - pg_dump and pg_dumpall utilities are used to perform logical dumps.
 - pg_dump --help displays the options which can be used to customize of dumps.
 
-**Logical Backup -- pg_dump**
+### Pg_dump
 
 - Backup single database from postgres instance
 
@@ -1979,7 +1979,7 @@ t = tar
 
 p = plain text
 
-**Logical Backup --Restore backup from pg_dump using psql**
+### Restore Backup from pg_dump Using Psql
 
 - To restore backup from pg_dump you must create same empty database manually.
 - You can use psql interface to restore plain text pg_dump backup
@@ -2009,7 +2009,7 @@ Syntax: psql -U postgres -d dvdrental < D:\\user_backup\\dvdrental
 
 ![](images/postgresql_14_updated/img_56.png)
 
-**Logical Backup --Restore backup from pg_dump using pg_restore**
+### Restore Backup from pg_dump Using pg_restore
 
 - pg_dump supports multiple output formats such as plain-text SQL (-Fp), custom binary (-Fc), directory format (-Fd), or tar archive (-Ft)
 - Pg_dump backup in plain text can be restored using psql interface.
@@ -2046,7 +2046,7 @@ Syntax:
 
 pg_restore -t august -d dvdrental test1.dump
 
-**Logical Backup -- pg_dumpall**
+### Pg_dumpall
 
 - Pg_dumpall -- extract a PostgreSQL database cluster into a script file
 - This backup includes all databases in a cluster
@@ -2097,7 +2097,7 @@ psql -U postgres < D:\\user_backup\\ cluster_backup
 
 **Compression and splitting Dump Files**
 
-**Compression**
+### Compressing and Splitting Dump Files
 
 - Dumps grows exponentially when dealing with large databases
 - We can use any standard compression utility to compress the dump like gz
@@ -2116,7 +2116,7 @@ Syntax: pg_dumpall |split -b 1k - /backup/all_database_backup_split
 - split: The split command is a Unix/Linux utility used to split a file into smaller parts. In this case, it is used to split the output from pg_dumpall into smaller files.
 - \-b 1k: This option specifies the maximum size for each split file. In this example, -b 1k indicates that each split file will have a maximum size of 1 kilobyte. You can adjust this value as per your requirements like 1M , 1G
 
-**File System backup - Offline mode**
+### File System Backup - Offline Backup Mode
 
 - The database server must be shut down in order to get a usable backup.
 - The database server must be shutdown before restoring the data.
@@ -2284,7 +2284,7 @@ pg_basebackup -p 5432 -D /backup/bkp2 -Ft -z -P -Xs
 
 pg_basebackup -U postgres -D /backup/bkp -Fp -P -Xs
 
-**Online Backup Restore and PITR (Point in Time Recovery)**
+### Online Backup Restore and PITR (Point in Time Recovery)
 
 - Database must be in archive mode
 - Specify archive command parameter in postgresql.conf file to enable archive location.
@@ -2750,7 +2750,7 @@ vacuumdb -f -U postgres -d postgres
 
 select * from pg_settings where name like '%autovacuum%'
 
-**Transaction ID Wraparound Failures**
+### Transaction ID Wrap Around Failure
 
 - Multiversion concurrency control (MCC or MVCC), is a Concurrency Control method commonly used by dbms to provide concurrent access to the database
 - MVCC depends on transaction ID numbers.
@@ -2775,7 +2775,7 @@ select datname,age(datfrozenxid),current_setting('autovacuum_freeze_max_age') fr
 - vacuum_freeze_table_age ensure all old XIDs have been replaced by FrozenXID, a scan of the whole table is needed.
 - vacuumdb -F table or database
 
-**Routine Reindexing**
+### Routine Re-Indexing
 
 - Insert, updates and delete operations fragments the index over a period of time.
 - A Fragmented index will have pages where logical order based on key value differs from the physical ordering inside the data file.
@@ -3099,7 +3099,7 @@ DROP DATABASE DBNAME WITH (FORCE);
 
 select datid,datname,pid,usename,application_name from pg_stat_activity;
 
-**Tracks wal_usage**
+### Track Wal_Usage
 
 EXPLAIN (ANALYZE, WAL, COSTS OFF) UPDATE testv3 SET b = 123;
 
@@ -3114,7 +3114,7 @@ EXPLAIN (ANALYZE, WAL, COSTS OFF) UPDATE testv3 SET b = 123;
 
 **New Features and Enhancement (PostgreSQL 15)**
 
-**Server statistics in shared memory­­­­­­**
+### Server Statistics
 
 - Stats Collector process has been effectively removed from the architecture.
 - Statistics are now stored in dynamic shared memory.
@@ -3164,14 +3164,14 @@ INSERT (customer_id, last_order_id, order_center, order_count, last_order)
 
 VALUES (customer_id, d.order_id, d.order_center, 1, d.order_time);
 
-**Predefined role and setting server parameters**
+### Roles and Setting Server Parameters
 
 - New Roles like pg_read_all_data and pg_write_all_data has been provided.
 - pg_read_all_data can read all data (tables, views, sequences), as if having SELECT rights on those objects, and USAGE rights on all schemas, even without having it explicitly.
 - Pg_write_all_data can write all data (tables, views, sequences), as if having INSERT, UPDATE, and DELETE rights on those objects, and USAGE rights on all schemas, even without having it explicitly.
 - Pg_read_all_settings allows a user to view all configuration visible only to super users.
 
-**Psql \\Dconfig and Other Features**
+### Psql \\Dconfig and Other Features
 
 - Psql client includes a \\dconfig command for inspecting and finding the values of configuration parameters.
 - UNIQUE NULLS NOT DISTINCT feature has been introduced. Nulls on unique indexes / constraints will cause NULL values to be treated distinctly.
