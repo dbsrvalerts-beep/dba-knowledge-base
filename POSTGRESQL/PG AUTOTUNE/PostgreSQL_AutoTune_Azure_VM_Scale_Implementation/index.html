@@ -14,7 +14,7 @@
         <link rel="prev" href="../../../ORACLE/ORACLE%20CLOUD/Cloud%20Database%20Management%20Tasks/">
       
       
-        <link rel="next" href="../pgautotune_implementation_steps/">
+        <link rel="next" href="../../PG%20LOAD%20ANALYSIS%20SETUP/PG%20LOAD%20ANALYSIS%20SETUP%20%5BPaaS%5D/">
       
       
         
@@ -1261,22 +1261,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-key-architecture-design" class="md-nav__link">
+  <a href="#2-process-flowchart-logic-breakdown" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Key Architecture Design
+        2. Process Flowchart &amp; Logic Breakdown
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2. Key Architecture Design">
+    <nav class="md-nav" aria-label="2. Process Flowchart &amp; Logic Breakdown">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#21-systemd-execstartpre-hook" class="md-nav__link">
+  <a href="#21-visual-execution-flow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.1 Systemd ExecStartPre Hook
+        2.1 Visual Execution Flow
       
     </span>
   </a>
@@ -1284,21 +1284,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#22-zero-double-restart-design" class="md-nav__link">
+  <a href="#22-step-by-step-logic" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.2 Zero Double-Restart Design
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#23-version-detection-no-running-service-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.3 Version Detection (No Running Service Required)
+        2.2 Step-by-Step Logic
       
     </span>
   </a>
@@ -1319,14 +1308,25 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="3. V4 Memory and CPU Formulas">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-deployment-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Deployment Steps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Deployment Steps">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#31-parameter-reference-table" class="md-nav__link">
+  <a href="#step-1-place-the-script" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.1 Parameter Reference Table
+        Step 1: Place the Script
       
     </span>
   </a>
@@ -1334,10 +1334,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#32-ram-integer-division-note" class="md-nav__link">
+  <a href="#step-2-configure-script-variables" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.2 RAM Integer Division Note
+        Step 2: Configure Script Variables
       
     </span>
   </a>
@@ -1345,10 +1345,43 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#33-parallel-workers-per-gather-fallback" class="md-nav__link">
+  <a href="#step-3-create-log-directories" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.3 Parallel Workers per Gather Fallback
+        Step 3: Create Log Directories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-configure-selinux-context-critical" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Configure SELinux Context (CRITICAL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-edit-the-systemd-unit-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Edit the Systemd unit file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-reload-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: Reload &amp; Test
       
     </span>
   </a>
@@ -1361,10 +1394,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-user-configuration-variables" class="md-nav__link">
+  <a href="#5-troubleshooting-verification" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. User Configuration Variables
+        5. Troubleshooting &amp; Verification
       
     </span>
   </a>
@@ -1372,10 +1405,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-project-file-reference" class="md-nav__link">
+  <a href="#6-tuning-script-source-code" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Project File Reference
+        6. Tuning Script Source Code
       
     </span>
   </a>
@@ -1386,62 +1419,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../pgautotune_implementation_steps/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    PostgreSQL AutoTune: Implementation Steps
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../pgautotune_workflow/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    PostgreSQL Auto-Tuner Process Workflow
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1833,22 +1810,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-key-architecture-design" class="md-nav__link">
+  <a href="#2-process-flowchart-logic-breakdown" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Key Architecture Design
+        2. Process Flowchart &amp; Logic Breakdown
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2. Key Architecture Design">
+    <nav class="md-nav" aria-label="2. Process Flowchart &amp; Logic Breakdown">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#21-systemd-execstartpre-hook" class="md-nav__link">
+  <a href="#21-visual-execution-flow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.1 Systemd ExecStartPre Hook
+        2.1 Visual Execution Flow
       
     </span>
   </a>
@@ -1856,21 +1833,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#22-zero-double-restart-design" class="md-nav__link">
+  <a href="#22-step-by-step-logic" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.2 Zero Double-Restart Design
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#23-version-detection-no-running-service-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2.3 Version Detection (No Running Service Required)
+        2.2 Step-by-Step Logic
       
     </span>
   </a>
@@ -1891,14 +1857,25 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="3. V4 Memory and CPU Formulas">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-deployment-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Deployment Steps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Deployment Steps">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#31-parameter-reference-table" class="md-nav__link">
+  <a href="#step-1-place-the-script" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.1 Parameter Reference Table
+        Step 1: Place the Script
       
     </span>
   </a>
@@ -1906,10 +1883,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#32-ram-integer-division-note" class="md-nav__link">
+  <a href="#step-2-configure-script-variables" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.2 RAM Integer Division Note
+        Step 2: Configure Script Variables
       
     </span>
   </a>
@@ -1917,10 +1894,43 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#33-parallel-workers-per-gather-fallback" class="md-nav__link">
+  <a href="#step-3-create-log-directories" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.3 Parallel Workers per Gather Fallback
+        Step 3: Create Log Directories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-configure-selinux-context-critical" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Configure SELinux Context (CRITICAL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-edit-the-systemd-unit-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Edit the Systemd unit file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-reload-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: Reload &amp; Test
       
     </span>
   </a>
@@ -1933,10 +1943,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-user-configuration-variables" class="md-nav__link">
+  <a href="#5-troubleshooting-verification" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. User Configuration Variables
+        5. Troubleshooting &amp; Verification
       
     </span>
   </a>
@@ -1944,10 +1954,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-project-file-reference" class="md-nav__link">
+  <a href="#6-tuning-script-source-code" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Project File Reference
+        6. Tuning Script Source Code
       
     </span>
   </a>
@@ -1982,24 +1992,60 @@
 <p>This document describes the design, workflow, and implementation of the Version 4 PostgreSQL Auto-Tuning solution for self-hosted PostgreSQL 16/17 on Azure Linux VMs (RHEL 8). When an Azure VM is scaled up or down, the script automatically detects the new hardware profile and applies optimized PostgreSQL parameters on startup - with zero manual intervention and zero double restarts.</p>
 <p>The memory allocation formulas calculate <code>shared_buffers</code> at 26% and <code>effective_cache_size</code> at 76% of OS-visible physical RAM (<code>MemTotal</code>). It also uses the dynamically detected <code>PG_VERSION</code> for service restarts. In V4, the email functionality has been entirely removed to focus on reliable log tracing, and the CPU fallback formula for <code>max_parallel_workers_per_gather</code> was updated.</p>
 <hr />
-<h2 id="2-key-architecture-design">2. Key Architecture Design<a class="headerlink" href="#2-key-architecture-design" title="Permanent link">&para;</a></h2>
-<h3 id="21-systemd-execstartpre-hook">2.1 Systemd ExecStartPre Hook<a class="headerlink" href="#21-systemd-execstartpre-hook" title="Permanent link">&para;</a></h3>
-<p>The script is registered as a privileged <code>ExecStartPre</code> hook on the PostgreSQL systemd unit. Systemd guarantees the hook completes before <code>ExecStart</code> launches the database engine. This means the script runs after the new hardware is visible to the OS, but before PostgreSQL starts - the database always boots with parameters matched to the current VM size.</p>
-<h3 id="22-zero-double-restart-design">2.2 Zero Double-Restart Design<a class="headerlink" href="#22-zero-double-restart-design" title="Permanent link">&para;</a></h3>
-<p>The script does <strong>NOT</strong> call <code>pg_ctl stop/start</code>. The single PostgreSQL startup is performed natively by Systemd after the script exits. This eliminates the double-restart problem seen with cron-based V1 deployments.</p>
-<h3 id="23-version-detection-no-running-service-required">2.3 Version Detection (No Running Service Required)<a class="headerlink" href="#23-version-detection-no-running-service-required" title="Permanent link">&para;</a></h3>
-<p><code>PG_VERSION</code> is detected by calling the postgres binary with the <code>-V</code> flag. This reads the version string compiled into the binary - it does not require the PostgreSQL service to be running. This is safe in an <code>ExecStartPre</code> context where the database engine has not yet started.</p>
-<div class="highlight"><pre><span></span><code><span class="nv">PG_VERSION</span><span class="o">=</span><span class="k">$(</span>postgres<span class="w"> </span>-V<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $NF}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d.<span class="w"> </span>-f1<span class="k">)</span>
-<span class="c1"># Fallback 1: psql -V | Fallback 2: hardcoded &quot;17&quot;</span>
-</code></pre></div>
+<h2 id="2-process-flowchart-logic-breakdown">2. Process Flowchart &amp; Logic Breakdown<a class="headerlink" href="#2-process-flowchart-logic-breakdown" title="Permanent link">&para;</a></h2>
+<h3 id="21-visual-execution-flow">2.1 Visual Execution Flow<a class="headerlink" href="#21-visual-execution-flow" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart TD
+    VMStart["VM Boots / systemctl start"] --&gt; Systemd["Systemd prepares to start PostgreSQL"]
+    Systemd --&gt; ExecStartPre["Execute ExecStartPre Hook as root (+ prefix)"]
+    ExecStartPre --&gt; InitLogging["Initialize Log File in /u01/backup/logs/autotune/"]
+    InitLogging --&gt; LocatePGData{"Is $PGDATA set &amp; postgresql.conf present?"}
+
+    LocatePGData -- Yes --&gt; SetConfPath["Set PG_CONF and PGDATA_DIR"]
+    LocatePGData -- No --&gt; FallbackPGData["Read PGDATA via su - postgres"]
+
+    FallbackPGData --&gt; LocatePGDataFallback{"Did fallback find PGDATA?"}
+    LocatePGDataFallback -- Yes --&gt; SetConfPath
+    LocatePGDataFallback -- No --&gt; ExitError["Exit 1 with Critical Error (Blocks startup)"]
+
+    SetConfPath --&gt; DetectVersion["Detect PG_VERSION via postgres -V binary"]
+    DetectVersion --&gt; DetectHardware["Detect RAM from /proc/meminfo &amp; CPU from nproc"]
+    DetectHardware --&gt; ConstructState["Build CURRENT_STATE spec string"]
+
+    ConstructState --&gt; CheckState{"CURRENT_STATE == LAST_KNOWN_STATE?"}
+    CheckState -- Yes --&gt; ExitSuccess["Hardware unchanged: Exit 0 (No changes)"]
+    CheckState -- No --&gt; LogHardwareBlock["Log HARDWARE CHANGE DETECTED details"]
+
+    LogHardwareBlock --&gt; CalcMem["Calculate Memory Params: 26% shared, 76% cache, 5% maint"]
+    CalcMem --&gt; CallAPI["Call pgconfig.org API (5s timeout)"]
+
+    CallAPI --&gt; CheckAPI{"Did API return CPU parameters?"}
+    CheckAPI -- Yes --&gt; ParseAPI["Parse CPU params from API response"]
+    CheckAPI -- No --&gt; LocalCPUFallback["Apply local CPU fallback: min(4, CPU/2)"]
+
+    ParseAPI --&gt; Backup["Backup postgresql.conf with timestamp"]
+    LocalCPUFallback --&gt; Backup
+
+    Backup --&gt; ApplyParams["Apply 8 parameters via sed &amp; log changes"]
+    ApplyParams --&gt; UpdateState["Rewrite LAST_KNOWN_STATE inside script file"]
+    UpdateState --&gt; TestSleep{"TEST_SLEEP_SECONDS &gt; 0?"}
+
+    TestSleep -- Yes --&gt; ExecSleep["Sleep N seconds for testing"]
+    TestSleep -- No --&gt; ScriptExit
+
+    ExecSleep --&gt; ScriptExit["Script Exits 0"]
+    ScriptExit --&gt; NativeStart["Systemd ExecStart: PostgreSQL starts natively"]
+    ExitSuccess --&gt; NativeStart</code></pre>
+<h3 id="22-step-by-step-logic">2.2 Step-by-Step Logic<a class="headerlink" href="#22-step-by-step-logic" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Logging Initialization:</strong> Redirects stdout and stderr into <code>/u01/backup/logs/autotune/pg_autotune_[TIMESTAMP].log</code>.</li>
+<li><strong>Configuration Discovery:</strong> Locates <code>postgresql.conf</code> using <code>$PGDATA</code> or falls back to querying the <code>postgres</code> user profile environment.</li>
+<li><strong>Version &amp; Hardware Detection:</strong> Checks the version by running <code>postgres -V</code> and reads CPU cores (<code>nproc</code>) and memory (<code>/proc/meminfo</code>).</li>
+<li><strong>State Validation:</strong> Compares the new hardware profile string against the <code>LAST_KNOWN_STATE</code> stored in the script. If they match, the script exits silently (<code>exit 0</code>).</li>
+<li><strong>Memory &amp; CPU Tuning:</strong> If hardware changed, memory params are calculated locally. CPU parallel params are fetched from <code>pgconfig.org</code> API with a local fallback of <code>min(4, CPU_CORES/2)</code> if offline.</li>
+<li><strong>State Save &amp; Boot:</strong> Backs up <code>postgresql.conf</code>, applies changes via <code>sed</code>, updates its own <code>LAST_KNOWN_STATE</code> variable, and hands control back to Systemd.</li>
+</ol>
 <hr />
 <h2 id="3-v4-memory-and-cpu-formulas">3. V4 Memory and CPU Formulas<a class="headerlink" href="#3-v4-memory-and-cpu-formulas" title="Permanent link">&para;</a></h2>
-<p>All memory parameters are calculated from <code>MemTotal</code> in <code>/proc/meminfo</code> - the total physical RAM visible to the OS kernel. This is slightly less than the Azure VM SKU spec (due to kernel reservations and hypervisor overhead) but is the correct value for PostgreSQL tuning.</p>
-<blockquote>
-<p>[!IMPORTANT]
-<code>MemTotal</code> is the right source. Do not use the Azure portal RAM spec - it includes overhead the OS cannot use. <code>MemTotal</code> reflects exactly what PostgreSQL can work with.</p>
-</blockquote>
-<h3 id="31-parameter-reference-table">3.1 Parameter Reference Table<a class="headerlink" href="#31-parameter-reference-table" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -2060,76 +2106,247 @@
 </tr>
 </tbody>
 </table>
-<h3 id="32-ram-integer-division-note">3.2 RAM Integer Division Note<a class="headerlink" href="#32-ram-integer-division-note" title="Permanent link">&para;</a></h3>
-<p>The shell variable <code>TOTAL_RAM_GB</code> is computed by integer division (<code>TOTAL_RAM_MB / 1024</code>). On a 32 GB VM this produces 31 (truncated), not 32. This affects <code>maintenance_work_mem</code> and the value passed to the <code>pgconfig.org</code> API. Memory parameters (<code>shared_buffers</code>, <code>effective_cache_size</code>) are calculated from <code>TOTAL_RAM_MB</code> which is accurate to the MB level.</p>
-<h3 id="33-parallel-workers-per-gather-fallback">3.3 Parallel Workers per Gather Fallback<a class="headerlink" href="#33-parallel-workers-per-gather-fallback" title="Permanent link">&para;</a></h3>
-<p>If the <code>pgconfig.org</code> API is unreachable, the script uses local math to determine CPU-related parameters. For <code>max_parallel_workers_per_gather</code>, V4 updates the formula to <code>min(4, Total CPU Cores / 2)</code>. This safely limits parallel coordination overhead on large VMs while allowing up to 4 parallel workers.</p>
 <hr />
-<h2 id="4-user-configuration-variables">4. User Configuration Variables<a class="headerlink" href="#4-user-configuration-variables" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Variable</th>
-<th style="text-align: left;">Default</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><code>MAX_CONNECTIONS</code></td>
-<td style="text-align: left;"><code>5000</code></td>
-<td style="text-align: left;">Passed to pgconfig.org API for connection-aware CPU tuning.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>WORK_MEM_MB</code></td>
-<td style="text-align: left;"><code>500</code></td>
-<td style="text-align: left;">Static work_mem in MB - not auto-scaled (set deliberately per workload).</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>WAL_BUFFERS_MB</code></td>
-<td style="text-align: left;"><code>32</code></td>
-<td style="text-align: left;">Static wal_buffers in MB.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>TEST_SLEEP_SECONDS</code></td>
-<td style="text-align: left;"><code>30</code></td>
-<td style="text-align: left;">Startup pause for testing ExecStartPre gap. Set to 0 in production.</td>
-</tr>
-</tbody>
-</table>
+<h2 id="4-deployment-steps">4. Deployment Steps<a class="headerlink" href="#4-deployment-steps" title="Permanent link">&para;</a></h2>
+<h3 id="step-1-place-the-script">Step 1: Place the Script<a class="headerlink" href="#step-1-place-the-script" title="Permanent link">&para;</a></h3>
+<p>Copy <code>pg_autotune_systemd.sh</code> to <code>/u01/Gsl/pg_autotune_systemd.sh</code> and make it executable:
+<div class="highlight"><pre><span></span><code>cp<span class="w"> </span>pg_autotune_systemd.sh<span class="w"> </span>/u01/Gsl/pg_autotune_systemd.sh
+sudo<span class="w"> </span>chmod<span class="w"> </span>+x<span class="w"> </span>/u01/Gsl/pg_autotune_systemd.sh
+</code></pre></div></p>
+<h3 id="step-2-configure-script-variables">Step 2: Configure Script Variables<a class="headerlink" href="#step-2-configure-script-variables" title="Permanent link">&para;</a></h3>
+<p>Edit the <code>USER CONFIGURATION</code> block in the script to match your environment:
+<div class="highlight"><pre><span></span><code><span class="nv">MAX_CONNECTIONS</span><span class="o">=</span><span class="m">5000</span><span class="w">               </span><span class="c1"># Passed to pgconfig.org API</span>
+<span class="nv">WORK_MEM_MB</span><span class="o">=</span><span class="m">500</span><span class="w">                    </span><span class="c1"># Static work_mem (MB)</span>
+<span class="nv">WAL_BUFFERS_MB</span><span class="o">=</span><span class="m">32</span><span class="w">                  </span><span class="c1"># Static wal_buffers (MB)</span>
+<span class="nv">TEST_SLEEP_SECONDS</span><span class="o">=</span><span class="m">0</span><span class="w">               </span><span class="c1"># Set to 0 for production!</span>
+</code></pre></div></p>
+<h3 id="step-3-create-log-directories">Step 3: Create Log Directories<a class="headerlink" href="#step-3-create-log-directories" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/u01/backup/logs/autotune/config_backup
+</code></pre></div>
+<h3 id="step-4-configure-selinux-context-critical">Step 4: Configure SELinux Context (CRITICAL)<a class="headerlink" href="#step-4-configure-selinux-context-critical" title="Permanent link">&para;</a></h3>
+<p>Systemd will block scripts in <code>/u01/</code> from starting unless they carry the official <code>bin_t</code> context:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>chcon<span class="w"> </span>-t<span class="w"> </span>bin_t<span class="w"> </span>/u01/Gsl/pg_autotune_systemd.sh
+
+<span class="c1"># Verify context:</span>
+ls<span class="w"> </span>-Z<span class="w"> </span>/u01/Gsl/pg_autotune_systemd.sh
+<span class="c1"># output should contain bin_t</span>
+</code></pre></div></p>
+<h3 id="step-5-edit-the-systemd-unit-file">Step 5: Edit the Systemd unit file<a class="headerlink" href="#step-5-edit-the-systemd-unit-file" title="Permanent link">&para;</a></h3>
+<p>Open the PostgreSQL unit file (e.g., <code>/usr/lib/systemd/system/postgresql-16.service</code> or <code>postgresql-17.service</code>) and insert the hook below <code>[Service]</code>:
+<div class="highlight"><pre><span></span><code><span class="k">[Service]</span>
+<span class="na">ExecStartPre</span><span class="o">=</span><span class="s">+/u01/Gsl/pg_autotune_systemd.sh</span>
+</code></pre></div></p>
+<blockquote>
+<p>[!IMPORTANT]
+The <code>+</code> prefix is mandatory. It grants root privileges to the script during execution.</p>
+</blockquote>
+<h3 id="step-6-reload-test">Step 6: Reload &amp; Test<a class="headerlink" href="#step-6-reload-test" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>systemctl<span class="w"> </span>daemon-reload
+sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span>postgresql-16
+sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>postgresql-16
+
+<span class="c1"># Verify logs:</span>
+cat<span class="w"> </span>/u01/backup/logs/autotune/pg_autotune_*.log
+</code></pre></div>
 <hr />
-<h2 id="5-project-file-reference">5. Project File Reference<a class="headerlink" href="#5-project-file-reference" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">File</th>
-<th style="text-align: left;">Status</th>
-<th style="text-align: left;">Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><code>pg_autotune_systemd.sh</code></td>
-<td style="text-align: left;"><strong>CURRENT - deploy this</strong></td>
-<td style="text-align: left;">V4 script. Deploy to <code>/u01/Gsl/pg_autotune_systemd.sh</code>.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>PostgreSQL_AutoTune_Azure_VM_Scale_Implementation.md</code></td>
-<td style="text-align: left;"><strong>CURRENT</strong></td>
-<td style="text-align: left;">This document - V4 specification &amp; overview.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>pgautotune_workflow.md</code></td>
-<td style="text-align: left;"><strong>CURRENT</strong></td>
-<td style="text-align: left;">Mermaid process flowchart and logic breakdown.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>pgautotune_implementation_steps.md</code></td>
-<td style="text-align: left;"><strong>CURRENT</strong></td>
-<td style="text-align: left;">Step-by-step deployment guide.</td>
-</tr>
-</tbody>
-</table>
+<h2 id="5-troubleshooting-verification">5. Troubleshooting &amp; Verification<a class="headerlink" href="#5-troubleshooting-verification" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Verify active PG settings:</strong>
+  <div class="highlight"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="n">shared_buffers</span><span class="p">;</span>
+<span class="k">SHOW</span><span class="w"> </span><span class="n">effective_cache_size</span><span class="p">;</span>
+</code></pre></div></li>
+<li><strong>SELinux execution block:</strong> If PostgreSQL fails to start, verify context using <code>ls -Z /u01/Gsl/pg_autotune_systemd.sh</code> and ensure the <code>+</code> prefix is added in the systemd service file.</li>
+</ul>
+<hr />
+<h2 id="6-tuning-script-source-code">6. Tuning Script Source Code<a class="headerlink" href="#6-tuning-script-source-code" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+<span class="c1"># pg_autotune_systemd.sh — Version 4</span>
+<span class="c1"># Detects hardware changes, modifies postgresql.conf.</span>
+<span class="c1"># Designed exclusively to be run via Systemd ExecStartPre hook.</span>
+<span class="c1">#</span>
+<span class="c1"># V4 Changes:</span>
+<span class="c1">#   - max_parallel_workers_per_gather fallback formula updated to: min(4, CPU/2)</span>
+<span class="c1">#   - Email functionality removed entirely</span>
+<span class="c1"># V3 Changes from V2:</span>
+<span class="c1">#   - shared_buffers      : 25% → 26% of RAM</span>
+<span class="c1">#   - effective_cache_size: 75% → 76% of RAM</span>
+<span class="c1">#   - systemctl log message now uses dynamic PG_VERSION (no hardcoded &#39;16&#39;)</span>
+
+<span class="c1"># --- USER CONFIGURATION ---</span>
+<span class="nv">MAX_CONNECTIONS</span><span class="o">=</span><span class="m">5000</span>
+<span class="nv">WORK_MEM_MB</span><span class="o">=</span><span class="m">500</span>
+<span class="nv">WAL_BUFFERS_MB</span><span class="o">=</span><span class="m">32</span>
+<span class="nv">TEST_SLEEP_SECONDS</span><span class="o">=</span><span class="m">30</span>
+<span class="c1"># --------------------------</span>
+
+<span class="c1"># --- LOGGING CONFIGURATION ---</span>
+<span class="nv">LOG_DIR</span><span class="o">=</span><span class="s2">&quot;/u01/backup/logs/autotune&quot;</span>
+<span class="nv">LOG_FILE</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">LOG_DIR</span><span class="si">}</span><span class="s2">/pg_autotune_</span><span class="k">$(</span>date<span class="w"> </span>+<span class="s1">&#39;%Y%m%d_%H%M%S&#39;</span><span class="k">)</span><span class="s2">.log&quot;</span>
+
+<span class="c1"># Auto-create log directory if it does not exist</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>!<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$LOG_DIR</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$LOG_DIR</span><span class="s2">&quot;</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null
+<span class="k">fi</span>
+
+<span class="c1"># Redirect all output to the log file</span>
+<span class="nb">exec</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$LOG_FILE</span><span class="s2">&quot;</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+
+<span class="c1"># Verify the log file was actually created (exec fails silently if dir is unwritable)</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>!<span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$LOG_FILE</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="c1"># Fall back to stderr — visible via: journalctl -u postgresql-PG_VERSION</span>
+<span class="w">    </span><span class="nb">exec</span><span class="w"> </span>&gt;<span class="p">&amp;</span><span class="m">2</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[</span><span class="k">$(</span>date<span class="w"> </span><span class="s1">&#39;+%Y-%m-%d %H:%M:%S&#39;</span><span class="k">)</span><span class="s2">] CRITICAL: Cannot write to log file: </span><span class="nv">$LOG_FILE</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[</span><span class="k">$(</span>date<span class="w"> </span><span class="s1">&#39;+%Y-%m-%d %H:%M:%S&#39;</span><span class="k">)</span><span class="s2">] CRITICAL: Check that </span><span class="nv">$LOG_DIR</span><span class="s2"> exists and is writable by root.&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[</span><span class="k">$(</span>date<span class="w"> </span><span class="s1">&#39;+%Y-%m-%d %H:%M:%S&#39;</span><span class="k">)</span><span class="s2">] CRITICAL: Continuing — all output will appear in journalctl.&quot;</span>
+<span class="k">fi</span>
+
+log<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[</span><span class="k">$(</span>date<span class="w"> </span><span class="s1">&#39;+%Y-%m-%d %H:%M:%S&#39;</span><span class="k">)</span><span class="s2">] </span><span class="nv">$*</span><span class="s2">&quot;</span>
+<span class="o">}</span>
+
+log<span class="w"> </span><span class="s2">&quot;=================================================================&quot;</span>
+log<span class="w"> </span><span class="s2">&quot;Executing PostgreSQL Auto-Tune Hook  (v4)&quot;</span>
+<span class="c1"># -----------------------------</span>
+
+<span class="c1"># --- INTERNAL STATE (Do not modify manually) ---</span>
+<span class="nv">LAST_KNOWN_STATE</span><span class="o">=</span><span class="s2">&quot;First Run&quot;</span>
+<span class="c1"># -----------------------------------------------</span>
+
+<span class="c1"># 1. Dynamically Locate postgresql.conf</span>
+log<span class="w"> </span><span class="s2">&quot;Locating postgresql.conf dynamically using PGDATA...&quot;</span>
+
+<span class="c1"># Check if PGDATA is available in the current environment</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PGDATA</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PGDATA</span><span class="s2">/postgresql.conf&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nv">PG_CONF</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PGDATA</span><span class="s2">/postgresql.conf&quot;</span>
+<span class="w">    </span><span class="nv">PGDATA_DIR</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PGDATA</span><span class="s2">&quot;</span>
+<span class="k">else</span>
+<span class="w">    </span><span class="c1"># Attempt to load the postgres user&#39;s environment variables (useful if running from root crontab)</span>
+<span class="w">    </span><span class="nv">PGDATA_ENV</span><span class="o">=</span><span class="k">$(</span>su<span class="w"> </span>-<span class="w"> </span>postgres<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;echo $PGDATA&#39;</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span><span class="s1">&#39;^\s*$&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="k">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PGDATA_ENV</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PGDATA_ENV</span><span class="s2">/postgresql.conf&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nv">PG_CONF</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PGDATA_ENV</span><span class="s2">/postgresql.conf&quot;</span>
+<span class="w">        </span><span class="nv">PGDATA_DIR</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PGDATA_ENV</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span>log<span class="w"> </span><span class="s2">&quot;CRITICAL: \$PGDATA environment variable is not set or postgresql.conf not found inside it.&quot;</span>
+<span class="w">        </span>log<span class="w"> </span><span class="s2">&quot;Please ensure \$PGDATA is exported, or set PG_CONF manually.&quot;</span>
+<span class="w">        </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="w">    </span><span class="k">fi</span>
+<span class="k">fi</span>
+log<span class="w"> </span><span class="s2">&quot;Found PostgreSQL Configuration: </span><span class="nv">$PG_CONF</span><span class="s2">&quot;</span>
+
+<span class="c1"># Dynamically Detect PostgreSQL Version</span>
+<span class="c1"># Note: postgres -V reads the installed binary — does NOT require the service to be running.</span>
+<span class="nv">PG_VERSION</span><span class="o">=</span><span class="k">$(</span>postgres<span class="w"> </span>-V<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $NF}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d.<span class="w"> </span>-f1<span class="k">)</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-z<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PG_VERSION</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nv">PG_VERSION</span><span class="o">=</span><span class="k">$(</span>psql<span class="w"> </span>-V<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $3}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d.<span class="w"> </span>-f1<span class="k">)</span>
+<span class="k">fi</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-z<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PG_VERSION</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nv">PG_VERSION</span><span class="o">=</span><span class="s2">&quot;17&quot;</span><span class="w"> </span><span class="c1"># Fallback</span>
+<span class="k">fi</span>
+log<span class="w"> </span><span class="s2">&quot;Detected PostgreSQL Version: </span><span class="nv">$PG_VERSION</span><span class="s2">&quot;</span>
+
+<span class="c1"># 2. Detect Hardware</span>
+<span class="nv">TOTAL_RAM_KB</span><span class="o">=</span><span class="k">$(</span>grep<span class="w"> </span>MemTotal<span class="w"> </span>/proc/meminfo<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $2}&#39;</span><span class="k">)</span>
+<span class="nv">TOTAL_RAM_MB</span><span class="o">=</span><span class="k">$((</span><span class="nv">TOTAL_RAM_KB</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="m">1024</span><span class="k">))</span>
+<span class="nv">TOTAL_RAM_GB</span><span class="o">=</span><span class="k">$((</span><span class="nv">TOTAL_RAM_MB</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="m">1024</span><span class="k">))</span>
+<span class="nv">CPU_CORES</span><span class="o">=</span><span class="k">$(</span>nproc<span class="k">)</span>
+
+log<span class="w"> </span><span class="s2">&quot;Detected Hardware: </span><span class="si">${</span><span class="nv">TOTAL_RAM_MB</span><span class="si">}</span><span class="s2">MB RAM  |  </span><span class="si">${</span><span class="nv">CPU_CORES</span><span class="si">}</span><span class="s2"> CPU Cores&quot;</span>
+
+<span class="nv">CURRENT_STATE</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">TOTAL_RAM_MB</span><span class="si">}</span><span class="s2">MB_RAM-</span><span class="si">${</span><span class="nv">CPU_CORES</span><span class="si">}</span><span class="s2">_CPUS&quot;</span>
+
+<span class="c1"># 3. Hardware Change Validation (Self-contained)</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CURRENT_STATE</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$LAST_KNOWN_STATE</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span>log<span class="w"> </span><span class="s2">&quot;Hardware unchanged (</span><span class="nv">$CURRENT_STATE</span><span class="s2">). Skipping auto-tune process.&quot;</span>
+<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
+<span class="k">fi</span>
+
+log<span class="w"> </span><span class="s2">&quot;=================================================================&quot;</span>
+log<span class="w"> </span><span class="s2">&quot;HARDWARE CHANGE DETECTED!&quot;</span>
+log<span class="w"> </span><span class="s2">&quot;Previous Hardware: </span><span class="nv">$LAST_KNOWN_STATE</span><span class="s2">&quot;</span>
+log<span class="w"> </span><span class="s2">&quot;New Hardware:      </span><span class="nv">$CURRENT_STATE</span><span class="s2">&quot;</span>
+log<span class="w"> </span><span class="s2">&quot;=================================================================&quot;</span>
+
+<span class="c1"># 4. Memory Parameters (Local Math)</span>
+<span class="c1"># shared_buffers      = 26% of OS-visible physical RAM (MemTotal)</span>
+<span class="c1"># effective_cache_size= 76% of OS-visible physical RAM (MemTotal)  [planner hint only]</span>
+<span class="c1"># maintenance_work_mem= 5% of RAM (RAM_GB / 20), minimum 1 GB</span>
+<span class="nv">SHARED_BUFFERS_MB</span><span class="o">=</span><span class="k">$((</span><span class="w"> </span><span class="o">(</span><span class="nv">TOTAL_RAM_MB</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">26</span><span class="o">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="k">))</span>
+<span class="nv">EFFECTIVE_CACHE_MB</span><span class="o">=</span><span class="k">$((</span><span class="w"> </span><span class="o">(</span><span class="nv">TOTAL_RAM_MB</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">76</span><span class="o">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="k">))</span>
+
+<span class="nv">MAINT_WORK_MEM_GB</span><span class="o">=</span><span class="k">$((</span><span class="nv">TOTAL_RAM_GB</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="m">20</span><span class="k">))</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$MAINT_WORK_MEM_GB</span><span class="s2">&quot;</span><span class="w"> </span>-lt<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nv">MAINT_WORK_MEM_GB</span><span class="o">=</span><span class="m">1</span><span class="p">;</span><span class="w"> </span><span class="k">fi</span>
+<span class="nv">MAINT_WORK_MEM_MB</span><span class="o">=</span><span class="k">$((</span><span class="nv">MAINT_WORK_MEM_GB</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">1024</span><span class="k">))</span>
+
+<span class="c1"># work_mem and wal_buffers are static — set via USER CONFIGURATION block above</span>
+
+<span class="c1"># 5. CPU/Parallel Parameters (API with Local Fallback)</span>
+<span class="nv">API_URL</span><span class="o">=</span><span class="s2">&quot;https://api.pgconfig.org/v1/tuning/get-config?format=conf&amp;max_connections=</span><span class="si">${</span><span class="nv">MAX_CONNECTIONS</span><span class="si">}</span><span class="s2">&amp;pg_version=</span><span class="si">${</span><span class="nv">PG_VERSION</span><span class="si">}</span><span class="s2">&amp;environment_name=OLTP&amp;total_ram=</span><span class="si">${</span><span class="nv">TOTAL_RAM_GB</span><span class="si">}</span><span class="s2">&amp;cpus=</span><span class="si">${</span><span class="nv">CPU_CORES</span><span class="si">}</span><span class="s2">&amp;drive_type=SSD&amp;arch=x86-64&amp;os_type=linux&quot;</span>
+log<span class="w"> </span><span class="s2">&quot;Calling pgconfig.org API for CPU/parallel parameters...&quot;</span>
+<span class="nv">API_CONF</span><span class="o">=</span><span class="k">$(</span>curl<span class="w"> </span>-s<span class="w"> </span>--max-time<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$API_URL</span><span class="s2">&quot;</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="k">)</span>
+
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$API_CONF</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$API_CONF</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-q<span class="w"> </span><span class="s2">&quot;max_parallel_workers&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span>log<span class="w"> </span><span class="s2">&quot;API call succeeded. Parsing CPU parameters from response.&quot;</span>
+<span class="w">    </span><span class="nv">MAX_WORKER_PROCESSES</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$API_CONF</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;^max_worker_processes&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $3}&#39;</span><span class="k">)</span>
+<span class="w">    </span><span class="nv">MAX_PARALLEL_WORKERS</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$API_CONF</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;^max_parallel_workers &quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $3}&#39;</span><span class="k">)</span>
+<span class="w">    </span><span class="nv">MAX_PARALLEL_WORKERS_PER_GATHER</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$API_CONF</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;^max_parallel_workers_per_gather&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $3}&#39;</span><span class="k">)</span>
+<span class="k">else</span>
+<span class="w">    </span>log<span class="w"> </span><span class="s2">&quot;API call failed or timed out. Using local fallback math for CPU parameters.&quot;</span>
+<span class="w">    </span><span class="nv">MAX_WORKER_PROCESSES</span><span class="o">=</span><span class="nv">$CPU_CORES</span>
+<span class="w">    </span><span class="nv">MAX_PARALLEL_WORKERS</span><span class="o">=</span><span class="nv">$CPU_CORES</span>
+<span class="w">    </span><span class="c1"># Formula: min(4, Total CPU Cores / 2)</span>
+<span class="w">    </span><span class="nv">MAX_PARALLEL_WORKERS_PER_GATHER</span><span class="o">=</span><span class="k">$((</span><span class="w"> </span><span class="o">(</span><span class="nv">CPU_CORES</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="m">2</span><span class="o">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="m">4</span><span class="w"> </span>?<span class="w"> </span><span class="o">(</span><span class="nv">CPU_CORES</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="m">2</span><span class="o">)</span><span class="w"> </span>:<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="k">))</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$MAX_PARALLEL_WORKERS_PER_GATHER</span><span class="s2">&quot;</span><span class="w"> </span>-eq<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nv">MAX_PARALLEL_WORKERS_PER_GATHER</span><span class="o">=</span><span class="m">1</span><span class="p">;</span><span class="w"> </span><span class="k">fi</span>
+<span class="k">fi</span>
+
+<span class="c1"># 6. Backup the Configuration</span>
+<span class="nv">TIMESTAMP</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span>+<span class="s2">&quot;%Y%m%d_%H%M%S&quot;</span><span class="k">)</span>
+<span class="nv">BACKUP_PATH</span><span class="o">=</span><span class="s2">&quot;/u01/backup/logs/autotune/config_backup/postgresql.conf.backup.</span><span class="si">${</span><span class="nv">TIMESTAMP</span><span class="si">}</span><span class="s2">&quot;</span>
+cp<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PG_CONF</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$BACKUP_PATH</span><span class="s2">&quot;</span>
+log<span class="w"> </span><span class="s2">&quot;Backed up </span><span class="nv">$PG_CONF</span><span class="s2"> to </span><span class="nv">$BACKUP_PATH</span><span class="s2">&quot;</span>
+
+<span class="c1"># 7. Direct File Modification Function</span>
+<span class="c1"># Logs a before-and-after trace for every parameter change.</span>
+set_pg_param<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">key</span><span class="o">=</span><span class="nv">$1</span>
+<span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">val</span><span class="o">=</span><span class="nv">$2</span>
+<span class="w">    </span><span class="nb">local</span><span class="w"> </span>prev_val
+<span class="w">    </span><span class="k">if</span><span class="w"> </span>grep<span class="w"> </span>-qE<span class="w"> </span><span class="s2">&quot;^\s*#?\s*</span><span class="si">${</span><span class="nv">key</span><span class="si">}</span><span class="s2">\s*=&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PG_CONF</span><span class="s2">&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nv">prev_val</span><span class="o">=</span><span class="k">$(</span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s2">&quot;^\s*#?\s*</span><span class="si">${</span><span class="nv">key</span><span class="si">}</span><span class="s2">\s*=&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PG_CONF</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="k">)</span>
+<span class="w">        </span>sed<span class="w"> </span>-i<span class="w"> </span>-E<span class="w"> </span><span class="s2">&quot;s/^\s*#?\s*</span><span class="si">${</span><span class="nv">key</span><span class="si">}</span><span class="s2">\s*=.*/</span><span class="si">${</span><span class="nv">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">${</span><span class="nv">val</span><span class="si">}</span><span class="s2">/g&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PG_CONF</span><span class="s2">&quot;</span>
+<span class="w">        </span>log<span class="w"> </span><span class="s2">&quot;Updated parameter:  [</span><span class="si">${</span><span class="nv">prev_val</span><span class="si">}</span><span class="s2">]   ---&gt;   [</span><span class="si">${</span><span class="nv">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">${</span><span class="nv">val</span><span class="si">}</span><span class="s2">]&quot;</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">${</span><span class="nv">val</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PG_CONF</span><span class="s2">&quot;</span>
+<span class="w">        </span>log<span class="w"> </span><span class="s2">&quot;Added NEW parameter:   [</span><span class="si">${</span><span class="nv">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">${</span><span class="nv">val</span><span class="si">}</span><span class="s2">]&quot;</span>
+<span class="w">    </span><span class="k">fi</span>
+<span class="o">}</span>
+
+<span class="c1"># Apply parameters</span>
+log<span class="w"> </span><span class="s2">&quot;Applying optimized configurations to postgresql.conf...&quot;</span>
+set_pg_param<span class="w"> </span><span class="s2">&quot;shared_buffers&quot;</span><span class="w">               </span><span class="s2">&quot;&#39;</span><span class="si">${</span><span class="nv">SHARED_BUFFERS_MB</span><span class="si">}</span><span class="s2">MB&#39;&quot;</span>
+set_pg_param<span class="w"> </span><span class="s2">&quot;effective_cache_size&quot;</span><span class="w">         </span><span class="s2">&quot;&#39;</span><span class="si">${</span><span class="nv">EFFECTIVE_CACHE_MB</span><span class="si">}</span><span class="s2">MB&#39;&quot;</span>
+set_pg_param<span class="w"> </span><span class="s2">&quot;maintenance_work_mem&quot;</span><span class="w">         </span><span class="s2">&quot;&#39;</span><span class="si">${</span><span class="nv">MAINT_WORK_MEM_MB</span><span class="si">}</span><span class="s2">MB&#39;&quot;</span>
+set_pg_param<span class="w"> </span><span class="s2">&quot;work_mem&quot;</span><span class="w">                     </span><span class="s2">&quot;&#39;</span><span class="si">${</span><span class="nv">WORK_MEM_MB</span><span class="si">}</span><span class="s2">MB&#39;&quot;</span>
+set_pg_param<span class="w"> </span><span class="s2">&quot;wal_buffers&quot;</span><span class="w">                  </span><span class="s2">&quot;&#39;</span><span class="si">${</span><span class="nv">WAL_BUFFERS_MB</span><span class="si">}</span><span class="s2">MB&#39;&quot;</span>
+set_pg_param<span class="w"> </span><span class="s2">&quot;max_worker_processes&quot;</span><span class="w">         </span><span class="s2">&quot;</span><span class="nv">$MAX_WORKER_PROCESSES</span><span class="s2">&quot;</span>
+set_pg_param<span class="w"> </span><span class="s2">&quot;max_parallel_workers&quot;</span><span class="w">         </span><span class="s2">&quot;</span><span class="nv">$MAX_PARALLEL_WORKERS</span><span class="s2">&quot;</span>
+set_pg_param<span class="w"> </span><span class="s2">&quot;max_parallel_workers_per_gather&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$MAX_PARALLEL_WORKERS_PER_GATHER</span><span class="s2">&quot;</span>
+
+<span class="c1"># 8. (Restart logic removed - handled natively by systemd)</span>
+
+<span class="c1"># 9. Update Self-Contained State</span>
+<span class="nv">SCRIPT_PATH</span><span class="o">=</span><span class="k">$(</span>readlink<span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$0</span><span class="s2">&quot;</span><span class="k">)</span>
+sed<span class="w"> </span>-i<span class="w"> </span>-E<span class="w"> </span><span class="s2">&quot;s/^LAST_KNOWN_STATE=.*/LAST_KNOWN_STATE=\&quot;</span><span class="nv">$CURRENT_STATE</span><span class="s2">\&quot;/&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$SCRIPT_PATH</span><span class="s2">&quot;</span>
+log<span class="w"> </span><span class="s2">&quot;Process complete. State saved inside script.&quot;</span>
+
+<span class="c1"># 10. Testing Gap (set TEST_SLEEP_SECONDS=0 in production)</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$TEST_SLEEP_SECONDS</span><span class="s2">&quot;</span><span class="w"> </span>-gt<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span>log<span class="w"> </span><span class="s2">&quot;TESTING MODE: Sleeping for </span><span class="si">${</span><span class="nv">TEST_SLEEP_SECONDS</span><span class="si">}</span><span class="s2"> seconds to demonstrate ExecStartPre gap.&quot;</span>
+<span class="w">    </span>log<span class="w"> </span><span class="s2">&quot;You can check &#39;systemctl status postgresql-</span><span class="si">${</span><span class="nv">PG_VERSION</span><span class="si">}</span><span class="s2">&#39; in another terminal now.&quot;</span>
+<span class="w">    </span>log<span class="w"> </span><span class="s2">&quot;The database engine will not start until this sleep finishes.&quot;</span>
+<span class="w">    </span>sleep<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$TEST_SLEEP_SECONDS</span><span class="s2">&quot;</span>
+<span class="w">    </span>log<span class="w"> </span><span class="s2">&quot;Sleep finished. Handing control back to systemd native auto-startup...&quot;</span>
+<span class="k">fi</span>
+</code></pre></div>
 
 
 
