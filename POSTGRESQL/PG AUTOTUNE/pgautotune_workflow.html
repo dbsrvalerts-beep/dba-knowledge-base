@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostgreSQL Auto-Tuner Process Workflow — Version 4</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1, h2, h3 {
+            color: #1a5c8c;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #1a5c8c;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: Consolas, Monaco, 'Andale Mono', monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            background-color: #1e2a35;
+            color: #9cdcfe;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .mermaid-container {
+            background: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow-x: auto;
+            display: flex;
+            justify-content: center;
+        }
+        .note {
+            background-color: #e7f3fe;
+            border-left: 6px solid #2196F3;
+            margin-bottom: 15px;
+            padding: 10px 20px;
+        }
+    </style>
+    <!-- Load Mermaid -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <h1>PostgreSQL Auto-Tuner Process Workflow — Version 4</h1>
+    <p>This document outlines the complete execution flow of the <code>pg_autotune_systemd.sh</code> (v4) script, detailing all decision branches and execution steps when running via Systemd <code>ExecStartPre</code>.</p>
+
+
+
+    <h2>Process Flowchart</h2>
+    
+    <div class="mermaid-container">
+        <div class="mermaid">
+flowchart TD
+    VMStart(["VM Boots Up or\nsystemctl start postgresql-PG_VERSION"]) --> Systemd["Systemd prepares to start PostgreSQL"]
+
+    Systemd --> ExecStartPre["Systemd intercepts startup\nExecutes ExecStartPre hook as root\n(+ prefix in main service file)"]
+
+    ExecStartPre --> InitLogging["Initialize Global Logging\nAll output → /u01/backup/logs/autotune/pg_autotune_[TIMESTAMP].log"]
+
+    InitLogging --> LocatePGData{"Is $PGDATA set\nand postgresql.conf present?"}
+
+    LocatePGData -- Yes --> SetConfPath["Set PG_CONF and PGDATA_DIR"]
+    LocatePGData -- No --> FallbackPGData["Execute su - postgres -c 'echo $PGDATA'"]
+
+    FallbackPGData --> LocatePGDataFallback{"Did fallback find PGDATA\nand postgresql.conf?"}
+    LocatePGDataFallback -- Yes --> SetConfPath
+    LocatePGDataFallback -- No --> ExitError(["Exit 1 with Critical Error\nBlocks PostgreSQL startup"])
+
+    SetConfPath --> DetectVersion["Detect PG_VERSION via postgres -V binary\n(No service required — binary-only call)"]
+    DetectVersion --> DetectHardware["Detect Hardware:\nRAM via /proc/meminfo MemTotal\nCPU via nproc"]
+    DetectHardware --> ConstructState["Build CURRENT_STATE string\ne.g., '32768MB_RAM-8_CPUS'"]
+
+    ConstructState --> CheckState{"CURRENT_STATE == LAST_KNOWN_STATE?"}
+
+    CheckState -- Yes --> ExitSuccess(["Hardware unchanged\nExit 0 — No changes\nPostgreSQL starts normally"])
+    CheckState -- No --> LogHardwareBlock["Log HARDWARE CHANGE DETECTED\nshowing Previous vs New specs"]
+
+    LogHardwareBlock --> CalcMem["Calculate Memory Parameters locally:\nshared_buffers      = RAM * 26 / 100  (26%)\neffective_cache_size= RAM * 76 / 100  (76%)\nmaintenance_work_mem= max(RAM_GB/20, 1) GB\nwork_mem            = static 500MB\nwal_buffers         = static 32MB"]
+
+    CalcMem --> CallAPI["Call pgconfig.org API\n(OLTP, SSD, 5s timeout)"]
+    CallAPI --> CheckAPI{"API returned\nmax_parallel_workers?"}
+
+    CheckAPI -- Yes --> ParseAPI["Parse CPU params from API:\nmax_worker_processes\nmax_parallel_workers\nmax_parallel_workers_per_gather"]
+    CheckAPI -- No --> LocalCPUFallback["Local fallback math:\nmax_worker_processes = CPU_CORES\nmax_parallel_workers = CPU_CORES\nper_gather = min(4, CPU/2)"]
+
+    ParseAPI --> Backup["Backup postgresql.conf\nto /u01/backup/logs/autotune/config_backup/postgresql.conf.backup.[TIMESTAMP]"]
+    LocalCPUFallback --> Backup
+
+    Backup --> ApplyParams["set_pg_param() for each of 8 parameters:\n- Read original line from postgresql.conf\n- Replace via sed (handles commented lines)\n- Log: [old line] ---> [new line]"]
+
+    ApplyParams --> UpdateState["sed self-edit: update LAST_KNOWN_STATE\ninside script file to CURRENT_STATE"]
+
+    UpdateState --> TestSleep{"TEST_SLEEP_SECONDS > 0?"}
+
+    TestSleep -- Yes --> ExecSleep["Sleep N seconds\nLog: check 'systemctl status postgresql-PG_VERSION'\n(visible in systemctl status during gap)"]
+    TestSleep -- No --> ScriptExit
+
+    ExecSleep --> ScriptExit(["Script exits 0"])
+
+    ScriptExit --> NativeStart["Systemd executes ExecStart\nPostgreSQL starts natively\nwith the freshly tuned postgresql.conf"]
+
+    ExitSuccess --> NativeStart
+        </div>
+    </div>
+
+    <hr>
+
+    <h2>Step-by-Step Logic Breakdown</h2>
+
+    <h3>1. Logging Initialization</h3>
+    <p>All stdout and stderr are immediately redirected via <code>exec >> "$LOG_FILE" 2>&1</code> into:</p>
+<pre>
+/u01/backup/logs/autotune/pg_autotune_YYYYMMDD_HHMMSS.log
+</pre>
+    <p>Every subsequent log line is stamped with <code>[YYYY-MM-DD HH:MM:SS]</code> via the <code>log()</code> function.</p>
+
+    <h3>2. Configuration Discovery</h3>
+    <ul>
+        <li><strong>IF</strong> <code>$PGDATA</code> is set AND <code>postgresql.conf</code> exists inside it → use directly.</li>
+        <li><strong>ELSE</strong> → run <code>su - postgres -c 'echo $PGDATA'</code> to read postgres user profile.</li>
+        <li><strong>ELSE</strong> → log CRITICAL error and <code>exit 1</code> (blocks PostgreSQL startup).</li>
+    </ul>
+
+    <h3>3. PostgreSQL Version Detection</h3>
+    <p>Reads the <strong>binary version</strong> — no running service required:</p>
+<pre>
+PG_VERSION=$(postgres -V | awk '{print $NF}' | cut -d. -f1)
+# Fallback: psql -V
+# Fallback: hardcoded "17"
+</pre>
+
+    <h3>4. Hardware Detection</h3>
+<pre>
+TOTAL_RAM_KB  = grep MemTotal /proc/meminfo   # OS-visible physical RAM
+TOTAL_RAM_MB  = TOTAL_RAM_KB / 1024
+TOTAL_RAM_GB  = TOTAL_RAM_MB / 1024           # integer division
+CPU_CORES     = nproc
+CURRENT_STATE = "${TOTAL_RAM_MB}MB_RAM-${CPU_CORES}_CPUS"
+</pre>
+
+    <h3>5. Hardware Change Validation</h3>
+    <ul>
+        <li><strong>IF</strong> <code>CURRENT_STATE == LAST_KNOWN_STATE</code> → <code>exit 0</code>. No changes. Silent.</li>
+        <li><strong>ELSE</strong> → continue with tuning.</li>
+    </ul>
+
+    <h3>6. Memory Parameter Calculation</h3>
+    <table>
+        <tr>
+            <th>Parameter</th>
+            <th>Formula</th>
+            <th>Notes</th>
+        </tr>
+        <tr>
+            <td><code>shared_buffers</code></td>
+            <td><code>RAM_MB * 26 / 100</code></td>
+            <td><strong>26% of MemTotal</strong></td>
+        </tr>
+        <tr>
+            <td><code>effective_cache_size</code></td>
+            <td><code>RAM_MB * 76 / 100</code></td>
+            <td><strong>76% of MemTotal</strong> — planner hint only</td>
+        </tr>
+        <tr>
+            <td><code>maintenance_work_mem</code></td>
+            <td><code>max(RAM_GB / 20, 1) * 1024 MB</code></td>
+            <td>5% of RAM, min 1 GB</td>
+        </tr>
+        <tr>
+            <td><code>work_mem</code></td>
+            <td>Static <code>WORK_MEM_MB</code></td>
+            <td>User config, default 500 MB</td>
+        </tr>
+        <tr>
+            <td><code>wal_buffers</code></td>
+            <td>Static <code>WAL_BUFFERS_MB</code></td>
+            <td>User config, default 32 MB</td>
+        </tr>
+    </table>
+
+    <h3>7. CPU/Parallel Parameter Calculation</h3>
+    <p><strong>Path A — pgconfig.org API (preferred):</strong></p>
+<pre>
+GET https://api.pgconfig.org/v1/tuning/get-config
+    ?environment_name=OLTP &pg_version=PG_VERSION
+    &total_ram=TOTAL_RAM_GB &cpus=CPU_CORES
+    &drive_type=SSD &max_connections=5000
+    &arch=x86-64 &os_type=linux
+    (5-second timeout)
+</pre>
+    <p>Parses: <code>max_worker_processes</code>, <code>max_parallel_workers</code>, <code>max_parallel_workers_per_gather</code></p>
+
+    <p><strong>Path B — Local fallback (API unavailable):</strong></p>
+<pre>
+max_worker_processes         = CPU_CORES
+max_parallel_workers         = CPU_CORES
+max_parallel_workers_per_gather = min(4, CPU_CORES / 2)
+</pre>
+
+    <h3>8. Configuration Backup</h3>
+<pre>
+cp postgresql.conf → /u01/backup/logs/autotune/config_backup/postgresql.conf.backup.TIMESTAMP
+</pre>
+
+    <h3>9. Parameter Application — <code>set_pg_param()</code></h3>
+    <ol>
+        <li>Search for existing line (active or commented <code>#</code>)</li>
+        <li>If found → <code>sed</code> replace in-place + log <code>[old] ---> [new]</code></li>
+        <li>If not found → append to end of file + log <code>Added NEW parameter</code></li>
+    </ol>
+
+    <h3>10. State Update</h3>
+<pre>
+sed -i "s/^LAST_KNOWN_STATE=.*/LAST_KNOWN_STATE=\"$CURRENT_STATE\"/" "$SCRIPT_PATH"
+</pre>
+    <p>Script edits its own <code>LAST_KNOWN_STATE</code> variable so next execution compares correctly.</p>
+
+    <h3>11. Test Sleep (production: set to 0)</h3>
+<pre>
+if [ "$TEST_SLEEP_SECONDS" > 0 ]; then
+    sleep "$TEST_SLEEP_SECONDS"
+    # log: "systemctl status postgresql-${PG_VERSION}"
+fi
+</pre>
+
+    <hr>
+
+    <h2>Architecture Summary</h2>
+<pre>
+VM Boot / systemctl start
+         │
+         ▼
+  Systemd ExecStartPre (root)
+         │
+         ├─ Log to /u01/backup/logs/autotune/
+         ├─ Locate postgresql.conf
+         ├─ Detect version (binary, no service needed)
+         ├─ Detect RAM + CPU
+         ├─ Hardware changed? ──No──► exit 0 (silent, fast)
+         │         │
+         │        Yes
+         │         ▼
+         ├─ Calculate params (26% / 76% / 5%)
+         ├─ API call (CPU params) with fallback
+         ├─ Backup conf
+         ├─ Apply 8 params via sed (with before→after log)
+         ├─ Update LAST_KNOWN_STATE in self
+         └─ exit 0
+         │
+         ▼
+  Systemd ExecStart
+  PostgreSQL starts natively with new config ✓
+</pre>
+
+</div>
+
+</body>
+</html>
