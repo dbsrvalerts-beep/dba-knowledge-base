@@ -6,177 +6,177 @@
 _May 2023_
 
 ## 1. Introduction to PostgreSQL
-
-- What is PostgreSQL?
-- PostgreSQL Naming Conventions
-- PostgreSQL Limits
+- [What is PostgreSQL?](#what-is-postgresql)
+- [PostgreSQL Naming Conventions](#postgresql-naming-conventions)
+- [PostgreSQL Limits](#postgresql-limits)
+- [Page Layout](#page-layout)
 - Page Layout
 
 ## 2. Installing PostgreSQL on Windows/Linux
-
-- PostgreSQL System Requirement
-- Installing PostgreSQL 14.8 On Windows
-- Setting Up PostgreSQL Windows Environment
+- [PostgreSQL System Requirement](#postgresql-system-requirement)
+- [Installing PostgreSQL 14.8 On Windows](#installing-postgresql-148-on-windows)
+- [Setting Up PostgreSQL Windows Environment](#setting-up-postgresql-windows-environment)
+- [Installing PostgreSQL on Linux (Default Directory)](#installing-postgresql-on-linux-default-directory)
 - Installing PostgreSQL on Linux (Default Directory)
-- Setting Up PostgreSQL Linux Environment
+- [Installing PostgreSQL on Linux (Non-Default Directory)](#installing-postgresql-on-linux-non-default-directory)
 - Installing PostgreSQL on Linux (Non-Default Directory)
 
 ## 3. PostgreSQL Architecture
-
-- Fundamentals of PostgreSQL Architecture
+- [Fundamentals of PostgreSQL Architecture](#fundamentals-of-postgresql-architecture)
+- [Process and Memory Architecture](#process-and-memory-architecture)
 - Process and Memory Architecture
-- Post Master Process
-- Utility Processes
-- Memory Segments
+- [Utility Processes](#utility-processes)
+- [Memory Segments](#memory-segments)
+- [Physical Files](#physical-files)
 - Physical Files
 
 ## 4. Database Clusters
-
-- What is Database Cluster?
-- Initdb
-- How to Start\\Stop Cluster
-- Difference between Reload and Restart
-- How to Restart\\Reload Cluster
-- Types of Shutdown
+- [What is Database Cluster?](#what-is-database-cluster)
+- [Initdb](#initdb)
+- [How to Start\\Stop Cluster](#how-to-startstop-cluster)
+- [Difference between Reload and Restart](#difference-between-reload-and-restart)
+- [How to Restart\\Reload Cluster](#how-to-restartreload-cluster)
+- [Types of Shutdown](#types-of-shutdown)
+- [Pg_Controldata](#pg_controldata)
 - Pg_Controldata
 
 ## 5. Database Directory Layout
-
-- Overview of Installation Directory Layout
+- [Overview of Installation Directory Layout](#overview-of-installation-directory-layout)
+- [Overview of Database Directory Layout](#overview-of-database-directory-layout)
 - Overview of Database Directory Layout
 - Overview of Base Directory Layout
 
 ## 6. Configuration Files
-
-- Postgresql.conf File
+- [Postgresql.conf File](#postgresqlconf-file)
+- [Pg Catalog tables to view File settings](#pg-catalog-tables-to-view-file-settings)
 - Pg Catalog tables to view File settings
-- Changing parameter from Postgresql.conf File
+- [Postgresql.auto.conf](#postgresqlautoconf)
 - Postgresql.auto.conf
-- Pg_ident.conf with sample
+- [Pg_hba.conf with sample](#pg_hbaconf-with-sample)
 - Pg_hba.conf with sample
 - Steps to modify Pg_hba.conf file
 
 ## 7. Database Creation / Users / Schema / Privileges
 
-- Create database - Psql / createdb utility
-- Drop database - Psql/ dropdb utility
-- Create user - Psql/ createuser utility/ Interactive
+- [Drop database - Psql/ dropdb utility](#drop-database-psql-dropdb-utility)
+- [Create user - Psql/ createuser utility/ Interactive](#create-user-psql-createuser-utility-interactive)
+- [Drop user - Psql/ dropuser utility](#drop-user-psql-dropuser-utility)
 - Drop user - Psql/ dropuser utility
-- Create/Drop Schema and Search Schema Path
-- Public Schema
-- Privileges in PostgreSQL
+- [Public Schema](#public-schema)
+- [Privileges in PostgreSQL](#privileges-in-postgresql)
+- [Grants and Revoke Access](#grants-and-revoke-access)
 - Grants and Revoke Access
 
 ## 8. PSQL Commands
-
-- Connect to Psql
-- Psql Commands
+- [Connect to Psql](#connect-to-psql)
+- [Psql Commands](#psql-commands)
+- [Psql File Operations](#psql-file-operations)
 - Psql File Operations
 
 ## 9. Pg System Catalogs and Time Zone
-
+- [Pg System Catalogs](#pg-system-catalogs)
 - Pg System Catalogs
 - Date & Time zones in PostgreSQL
 
 ## 10. PostgreSQL CRUD Operations
-
-- What is CRUD?
-- Create operations with examples
-- Data Types in PostgreSQL
+- [What is CRUD?](#what-is-crud)
+- [Create operations with examples](#create-operations-with-examples)
+- [Data Types in PostgreSQL](#data-types-in-postgresql)
+- [Constraints](#constraints)
 - Constraints
-- PostgreSQL Build-in Functions
-- Read operations and Column Aliases
-- Update operations with examples
-- Delete with examples
+- [Read operations and Column Aliases](#read-operations-and-column-aliases)
+- [Update operations with examples](#update-operations-with-examples)
+- [Delete with examples](#delete-with-examples)
+- [Transaction](#transaction)
 - Transaction
 - View, Sequences
 - Index and its Types
 
 ## 11. Table Inheritance and Partitioning
-
-- Table Inheritance
-- Table Partitioning
+- [Table Inheritance](#table-inheritance)
+- [Table Partitioning](#table-partitioning)
+- [Copy Table](#copy-table)
 - Copy Table
 
 ## 12. Tablespace
-
-- Tablespace & its advantages
-- PostgreSQL default tablespaces
-- Create tablespaces
-- Move table from one tablespace to another
-- Drop tablespaces
+- [Tablespace & its advantages](#tablespace-its-advantages)
+- [PostgreSQL default tablespaces](#postgresql-default-tablespaces)
+- [Create tablespaces](#create-tablespaces)
+- [Move table from one tablespace to another](#move-table-from-one-tablespace-to-another)
+- [Drop tablespaces](#drop-tablespaces)
+- [Temporary tablespaces](#temporary-tablespaces)
 - Temporary tablespaces
 
 ## 13. Backup and Restore
-
-- Back & Types of Backup
+- [Back & Types of Backup](#back-types-of-backup)
+- [Logical Backup](#logical-backup)
 - Logical Backup
 - Pg_dump
 - Restore backup of pg_dump using psql
 - Restore backup of pg_dump using pg_restore
-- Pg_dumpall
+- [Difference between pg_dump and pg_dumpall](#difference-between-pg_dump-and-pg_dumpall)
 - Difference between pg_dump and pg_dumpall
 - Backup and Restore using pg_dumpall
 - Compressing and splitting dump files
-- File System backup - Offline backup mode
-- Continuous Archiving
+- [Continuous Archiving](#continuous-archiving)
+- [Steps to set up continuous archiving](#steps-to-set-up-continuous-archiving)
 - Steps to set up continuous archiving
-- Online Low Level API Backup ------Pending
+- [Pg_basebackup - Online backup mode](#pg_basebackup-online-backup-mode)
 - Pg_basebackup - Online backup mode
 - Online Backup Restore and Point in Time Recovery
 
 ## 14. Maintenance in PostgreSQL
-
-- Introduction to Maintenance
-- Updating Planner Statistics\\Analyze
-- Explain plan and Query Execution Cost
-- Data Fragmentation
-- Vacuum Vs Vacuum full
+- [Introduction to Maintenance](#introduction-to-maintenance)
+- [Updating Planner Statistics\\Analyze](#updating-planner-statisticsanalyze)
+- [Explain plan and Query Execution Cost](#explain-plan-and-query-execution-cost)
+- [Data Fragmentation](#data-fragmentation)
+- [Vacuum Vs Vacuum full](#vacuum-vs-vacuum-full)
+- [Auto-Vacuum in PostgreSQL](#auto-vacuum-in-postgresql)
 - Auto-Vacuum in PostgreSQL
-- Transaction ID Wrap Around Failure
+- [Vacuum Freeze](#vacuum-freeze)
 - Vacuum Freeze
-- Routine Re-Indexing
+- [Cluster](#cluster)
 - Cluster
 
 ## 15. PostgreSQL Upgarde
-
-- What is Upgrade
-- Ways to Upgrade
-- Pg_upgrade utility
+- [What is Upgrade](#what-is-upgrade)
+- [Ways to Upgrade](#ways-to-upgrade)
+- [Pg_upgrade utility](#pg_upgrade-utility)
+- [Uninstalling PostgreSQL](#uninstalling-postgresql)
 - Uninstalling PostgreSQL
 
 ## 16. New Features and Enhancement (postgreSQL13)
-
-- B-Tree Deduplication
-- Incremental Sorting
-- Parallel Vacuum
-- Trusted Extension
+- [B-Tree Deduplication](#b-tree-deduplication)
+- [Incremental Sorting](#incremental-sorting)
+- [Parallel Vacuum](#parallel-vacuum)
+- [Trusted Extension](#trusted-extension)
+- [Drop Database (Force)](#drop-database-force)
 - Drop Database (Force)
-- Track Wal_Usage
+- [System Views](#system-views)
 - System Views
 
 ## 17. New Features and Enhancement (postgreSQL15)
 
-- Server Statistics
-- Logging Format
+- [Logging Format](#logging-format)
+- [Merge](#merge)
 - Merge
 - Roles and Setting server parameters
-- Psql \\Dconfig
+- [Misc. Features](#misc-features)
 - Misc. Features
 
 ## 18. PostgreSQL Replication
-
-- Introduction to Replication
-- Reasons for Replication
-- Master/Slave Configuration
-- Replication Modes
+- [Introduction to Replication](#introduction-to-replication)
+- [Reasons for Replication](#reasons-for-replication)
+- [Master/Slave Configuration](#masterslave-configuration)
+- [Replication Modes](#replication-modes)
+- [Types of Replication](#types-of-replication)
 - Types of Replication
 - Physical and Logical Replication
 - Physical Replication (Type 1: Log Based replication)
 - Physical Replication (Type 2: Streaming Replication)
 - Monitoring Primary/Standby Streaming Replication
-- Replication Slot in Streaming Replication
-- Synchronous mode in Streaming Replication
+- [Synchronous mode in Streaming Replication](#synchronous-mode-in-streaming-replication)
+- [Setup Primary/Standby Streaming Replication Using Repmgr](#setup-primarystandby-streaming-replication-using-repmgr)
 - Setup Primary/Standby Streaming Replication Using Repmgr
 - Automatic failover and Node Rejoin using Repmgr
 - Adding New Standby Node and Standby Follow using Repmgr
@@ -184,7 +184,7 @@ _May 2023_
 - Streaming Replication Switchover using Repmgr
 - Uninstall Repmgr
 - Introduction to Logical Replication
-- Publication Vs Subscription
+- [Setup Logical Replication](#setup-logical-replication)
 - Setup Logical Replication
 - Logical Replication - Test Case 1
 - Logical Replication - Test Case 2
@@ -193,12 +193,12 @@ _May 2023_
 - Logical Replication - Test Case 5
 
 ## 19. Server Parameters Tuning
-
+- [Introduction to Server Parameters](#introduction-to-server-parameters)
 - Introduction to Server Parameters
 
 **Introduction to PostgreSQL**
 
-**What is PostgreSQL?**
+### What is PostgreSQL?
 
 - PostgreSQL is a free and open source object-relational database management system(ORDBMS).
 - PostgreSQL began its journey in 1986 as POSTGRES, a research project of the University of California at Berkeley.
@@ -207,7 +207,7 @@ _May 2023_
 - PostgreSQL features transactions with Atomicity, Consistency, Isolation, Durability (ACID) properties.
 - PostgreSQL manages concurrency through multisession concurrency control (MVCC).
 
-**PostgreSQL Naming Conventions:**
+### PostgreSQL Naming Conventions
 
 When working with PostgreSQL, it is recommended to follow naming conventions to ensure consistency and clarity in your database schema. Here are some common conventions:
 
@@ -219,7 +219,7 @@ When working with PostgreSQL, it is recommended to follow naming conventions to 
 | Data Block       | Page( on the disk)               |
 | Page             | Buffer( when block is in memory) |
 
-**PostgreSQL Limits**
+### PostgreSQL Limits
 
 | **Items**              | **Upper Limit**                                                       | **Description**                               |
 | ---------------------- | --------------------------------------------------------------------- | --------------------------------------------- |
@@ -235,7 +235,7 @@ When working with PostgreSQL, it is recommended to follow naming conventions to 
 | Columns per index      | 32                                                                    |                                               |
 | Partition keys         | 32                                                                    |                                               |
 
-**Page Layout**
+### Page Layout
 
 - Page is a smallest unit of data storage.
 - Every table and index is stored as an array of pages of fixed size.
@@ -255,7 +255,7 @@ When working with PostgreSQL, it is recommended to follow naming conventions to 
 
 **Installing PostgreSQL on Windows/Linux**
 
-**PostgreSQL System Requirement**
+### PostgreSQL System Requirement
 
 1. Hardware Requirements:
 
@@ -268,7 +268,7 @@ When working with PostgreSQL, it is recommended to follow naming conventions to 
 - User must have administrator privileges on Windows System
 - Root or Super user access is required on Linux System
 
-**Installing PostgreSQL 14.8 On Windows**
+### Installing PostgreSQL 14.8 On Windows
 
 Step 1: Go to the official PostgreSQL website by navigating to [www.postgresql.org/downloads](http://www.postgresql.org/downloads).
 
@@ -290,7 +290,7 @@ Step 9: use command psql -U "username" -d "database_name" -p "port_number"
 
 To access database from command prompt.
 
-**Setting Up PostgreSQL Windows Environment**
+### Setting Up PostgreSQL Windows Environment
 
 Step 1: Click on the Start button, search for "This PC" or "My PC," and right-click on it. Select "Properties" from the context menu.
 
@@ -314,7 +314,7 @@ Step 7: Enter "PGDATA" as the variable name (without quotes), and provide the lo
 
 Step 8: Click "OK" to save the changes and close all open windows.
 
-**Installing PostgreSQL on Linux (Default Directory)**
+### Installing PostgreSQL on Linux (Default Directory)
 
 Step 1: Open your Linux GUI as the root user.
 
@@ -404,7 +404,7 @@ export PATH=/usr/pgsql-14/bin:$PATH
 
 Step 6: Save and quit the bash_profile file.
 
-**Installing PostgreSQL on Linux (Non-Default Directory)**
+### Installing PostgreSQL on Linux (Non-Default Directory)
 
 Step 1: Open your Linux GUI as the root user.
 
@@ -525,7 +525,7 @@ dnf remove postgresql16-server-16.6-1PGDG.rhel8.x86_64
 
 **PostgreSQL Architecture**
 
-**Fundamentals of PostgreSQL Architecture**
+### Fundamentals of PostgreSQL Architecture
 
 - PostgreSQL is a relational database management system with a client-server architecture.
 - PostgreSQL uses "process per-user" client/server model.
@@ -533,7 +533,7 @@ dnf remove postgresql16-server-16.6-1PGDG.rhel8.x86_64
 - Programs run by clients connect to the server instance and request read and write operations.
 - Default port of PostgreSQL is 5432.
 
-**Process and Memory Architecture**
+### Process and Memory Architecture
 
 ![](images/postgresql_14_updated/img_14.png)
 
@@ -545,7 +545,7 @@ dnf remove postgresql16-server-16.6-1PGDG.rhel8.x86_64
 - Postmaster is responsible for Authentication and Authorization of all incoming request.
 - Postmaster spawns a new process call Postgres for each new connection.
 
-**Utility Processes**
+### Utility Processes
 
 - Bgwriter\\Writer: Periodically writes the dirty buffer to a data file.
 - Wal Writer: Write the WAL(write ahead logs) buffer to the WAL file.
@@ -555,7 +555,7 @@ dnf remove postgresql16-server-16.6-1PGDG.rhel8.x86_64
 - Logwriter\\Logger: Write the error message to the log file.
 - Archiver (Optional): When in Archive.log mode, copy the WAL file to the specified directory.
 
-**Memory Segments**
+### Memory Segments
 
 Memory Segments of PostgreSQL are:
 
@@ -590,7 +590,7 @@ Clog and Other Buffers
 - Maintenance Work Memory is allocated for Maintenance work (Parameter: maintenance_work_mem).
 - Temp Buffers are used for access to temporary tables in a user session during large sort and hash table. (Parameter: temp_buffers).
 
-**Physical Files**
+### Physical Files
 
 - Data Files: It is a file which is use to store data. It does not contain any instructions or code to be executed.
 - Wal Files: Write ahead log file, where all transactions are written first before commit happens.
@@ -647,7 +647,7 @@ select * from pg_settings where name like '%autovacuum%';
 
 **Database Clusters**
 
-**What is Database Cluster?**
+### What is Database Cluster?
 
 - Database cluster is a collection of databases that is managed by a single instance on a server.
 - Initdb creates a new PostgreSQL database cluster.
@@ -659,7 +659,7 @@ Linux: /var/lib/pgsql/data (Default Installation location, Not mandatory)
 
 Windows: C:\\Program Files\\PostgreSQL\\12\\data (Default location, Not mandatory)
 
-**Initdb**
+### Initdb
 
 - initdb is a command-line utility in PostgreSQL used to initialize a new database cluster. When you initialize a database cluster, you are essentially creating the necessary directory structure and files required to store and manage the data for a PostgreSQL database.
 - We have to be logged in as PostgreSQL user to execute the below commands.
@@ -673,7 +673,7 @@ Windows: C:\\Program Files\\PostgreSQL\\12\\data (Default location, Not mandator
 - \-U= refers to the super user assigned to this cluster.
 - \-W = we can use this option to force the super user to provide password before initialize db
 
-**How to Start\\Stop Cluster**
+### How to Start\\Stop Cluster
 
 - Start Cluster Syntax:
 
@@ -703,14 +703,14 @@ Fast -(quit directly, with proper shutdown (default))
 
 Immediate- (quit without complete shutdown; will lead to recovery on restart)
 
-**Difference between Reload and Restart**
+### Difference between Reload and Restart
 
 - When we make changes to server parameters, we need to reload the configuration for them to take effect.
 - Reload will just reload the new configurations, without restarting the service.
 - Few configuration changes in server parameters, do not get reflected until we restart the service.
 - Restart gracefully shutdown all activity, relinquishes the resource, close all open files and start again with new configuration.
 
-**How to Restart\\Reload Cluster**
+### How to Restart\\Reload Cluster
 
 - Syntax for Restart of Cluster:
 
@@ -728,13 +728,13 @@ On Windows: pg_ctl restart
 
 SQL:> SELECT pg_reload_conf(); (Irrespective of Environment)
 
-**Types of Shutdown**
+### Types of Shutdown
 
 - Smart: the server disallows new connections, but let's existing sessions end their work normally. It shuts down only after all of the sessions terminate
 - Fast :( Default): The server disallows new connections and abort their current transactions and exits gracefully.
 - Immediate: Quits/aborts without proper shutdown which lead to recovery on next startup.
 
-**Pg_Controldata**
+### Pg_Controldata
 
 - Pg_controldata - Information about cluster.
 
@@ -748,7 +748,7 @@ C:\\> pg_controldata -D "D:\\PostgreSQL\\data" {Windows}
 
 **Database Directory Layout**
 
-**Overview of Installation Directory Layout**
+### Overview of Installation Directory Layout
 
 - PostgreSQL is typically installed to /usr/local/pgsql or /var/lib/pgsql on linux.
 - C:\\Program Files\\PostgreSQL\\&lt;version number&gt; on windows.(default location)
@@ -764,7 +764,7 @@ C:\\> pg_controldata -D "D:\\PostgreSQL\\data" {Windows}
 - Share -> Sample configuration files
 - pgadmin - pgadmin files.
 
-**Overview of Database Directory Layout**
+### Overview of Database Directory Layout
 
 | Directory Name       | Description                                                                                                                                                                                                                                                                                                                                               |
 | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -805,7 +805,7 @@ Select oid,datname from pg_database;
 
 **Configuration Files**
 
-**postgresql.conf File**
+### Postgresql.conf File
 
 - Postgresql.conf file contains parameters to help configure and manage performance of the database server.
 - Initdb installs a default copy of postgresql.conf and is usually located in data directory.
@@ -813,7 +813,7 @@ Select oid,datname from pg_database;
 - Parameters which requires restart are clearly marked in the file.
 - Many parameter needs a server restart to take effect.
 
-**Pg Catalog tables to view File settings**
+### Pg Catalog tables to view File settings
 
 - Pg_settings table provides access to run-time parameters of the server.
 - It is a alternate interface to SHOW command.
@@ -883,7 +883,7 @@ Pg_ctl restart
 
 ![](images/postgresql_14_updated/img_24.png)
 
-**Postgresql.auto.conf**
+### Postgresql.auto.conf
 
 - This file hold settings provided through Alter system command.
 - Settings in postgresql.auto.conf overrides the settings in postgresql.conf.
@@ -968,7 +968,7 @@ PG-USERNAME.
 - PostgreSQL rejects a connection if an entry is not found in pg_hba.conf file.
 - This file controls which hosts are allowed to connect, how clients are authenticated, which PostgreSQL user names they can use, which databases they can access.
 
-**Pg_hba.conf with sample**
+### Pg_hba.conf with sample
 
 TYPE DATABASE USER ADDRESS METHOD
 
@@ -1071,7 +1071,7 @@ createdb -O postgres -U postgres samson
 - \\l or \\l+ psql command is used to list all database
 - pg_database table also provides information about database.
 
-**Drop database - Psql/ dropdb utility**
+### Drop database - Psql/ dropdb utility
 
 - We can't drop the database which we are connected.
 - Only superuser and user with proper privileges can drop database
@@ -1090,7 +1090,7 @@ ERROR: cannot drop the currently open database
 
 - Syntax for dropdb help : dropdb -help
 
-**Create user - Psql/ createuser utility/ Interactive**
+### Create user - Psql/ createuser utility/ Interactive
 
 - Db users and Operating users are completely separate
 - Users name should be unique and should not start with pg_.
@@ -1133,7 +1133,7 @@ Shall the new role be allowed to create more new roles? (y/n) y
 
 - Syntax for createuser help : createuser -help
 
-**Drop user - Psql/ dropuser utility**
+### Drop user - Psql/ dropuser utility
 
 - Syntax from psql : drop user &lt;username&gt;
 - Syntax from command line : dropuser &lt;username&gt;
@@ -1196,7 +1196,7 @@ Test1=# SET search_path TO test1,public;
 
 main, ginssot, ginview, ginarchive, gateway, public
 
-**Public Schema**
+### Public Schema
 
 - The "public" schema is a default schema that is created when you initialize a new database.
 - It is the default location where tables, views, functions, and other objects are created if no specific schema is specified.
@@ -1210,7 +1210,7 @@ To create employee table in another schema(nano) use command:
 
 Create table nano.table_name
 
-**Privileges in PostgreSQL**
+### Privileges in PostgreSQL
 
 - Privilege is a right to execute a particular type of SQL statement, or a right to access another user's object.
 - There are two types of privileges - Cluster level and Object level
@@ -1219,7 +1219,7 @@ Create table nano.table_name
 - Object Level Privileges are granted by super user or the owner of the object or someone with grant privileges.
 - Privileges allow a user to perform particular actions on a database object, such as tables, view or sequence.
 
-**Grants and Revoke Access**
+### Grants and Revoke Access
 
 The following example illustrates different types of database level and object level Grants:
 
@@ -1275,9 +1275,9 @@ REVOKE ALL ON products FROM user;
 
 REVOKE SELECT ON products FROM PUBLIC;
 
-**PSQL Commands**
+### Psql Commands
 
-**Connect to Psql**
+### Connect to Psql
 
 - Psql is a terminal-based front-end to PostgreSQL.
 - It enables the users to query postgreSQL interactively and see the query results.
@@ -1401,7 +1401,7 @@ postgres=# _\\db_
 
 postgres=# _\\x_
 
-**Psql File Operations**
+### Psql File Operations
 
 - Run sql statements from operating system file.
 
@@ -1438,7 +1438,7 @@ postgres=# rollback;
 
 **Pg System Catalogs and Time Zone**
 
-**Pg System Catalogs**
+### Pg System Catalogs
 
 | Name                    | Description                            |
 | ----------------------- | -------------------------------------- |
@@ -1507,7 +1507,7 @@ SELECT now() - interval '2 hours 30 minutes' AS two_hour_30_min_ago;
 
 **PostgreSQL CRUD Operations**
 
-**What is CRUD?**
+### What is CRUD?
 
 - **CRUD** is an acronym for the below mentioned database operations:
 - **C**reate or add new entries.
@@ -1515,7 +1515,7 @@ SELECT now() - interval '2 hours 30 minutes' AS two_hour_30_min_ago;
 - **U**pdate or edit existing entries.
 - **D**elete, deactivate, or remove existing entries.
 
-**Create operations with examples**
+### Create operations with examples
 
 Create command can be used to create various types of objects in the database.
 
@@ -1535,7 +1535,7 @@ CONSTRAINT constraint_name UNIQUE (col1, col2, ... col_n)
 
 );
 
-**Data Types in PostgreSQL**
+### Data Types in PostgreSQL
 
 - PostgreSQL offers a rich set of native data types for users
 - Character types such as char, varchar, and text.
@@ -1546,7 +1546,7 @@ CONSTRAINT constraint_name UNIQUE (col1, col2, ... col_n)
 - JSON stores JSON data.
 - Special types such as network address and geometric data.
 
-**Constraints**
+### Constraints
 
 - Constraints are the rules enforced on data columns on table. These are used to prevent invalid data from being entered into the database.
 - This ensures the accuracy and reliability of the data in the database.
@@ -1575,7 +1575,7 @@ CONSTRAINT constraint_name UNIQUE (col1, col2, ... col_n)
 | Comparison Operators    | &lt;,&gt;,&lt;=.&gt;=,=, !=                                                                               |
 | Mathematical Operators  | +,-,*,/,abs(X), ceil(),floor(),mod(y,x),round(numeric)                                                   |
 
-**Read operations and Column Aliases**
+### Read operations and Column Aliases
 
 - Retrieving data from all columns in the table.
 - Retrieve data from single column in the table.
@@ -1588,7 +1588,7 @@ CONSTRAINT constraint_name UNIQUE (col1, col2, ... col_n)
 
 **SELECT** column_name **AS** alias_name **FROM** table_name conditions... ;
 
-**Update operations with examples**
+### Update operations with examples
 
 - UPDATE changes the values of the specified columns in all rows that satisfy the condition.
 - Only the columns to be modified need be mentioned in the SET clause.
@@ -1604,7 +1604,7 @@ WHERE city = 'San Francisco' AND date = '2003-07-03';
 - Note: If where condition is eliminated then all rows in the table is modified
 - You must have the UPDATE privilege on the table, or at least on the column(s) that are listed to be updated
 
-**Delete with examples**
+### Delete with examples
 
 - DELETE deletes rows that satisfy the WHERE clause from the specified table.
 - If the WHERE clause is absent, the effect is to delete all rows in the table.
@@ -1622,7 +1622,7 @@ DELETE FROM film
 
 WHERE producer_id IN (SELECT id FROM producers WHERE name = 'foo');
 
-**Transactions**
+### Transaction
 
 - Transactions are units or sequences of work accomplished in a logical order.
 - It is performed either manually or automated by some program.
@@ -1670,7 +1670,7 @@ CREATE VIEW view_name AS query;
 
 **Table Inheritance and Partitioning**
 
-**Table Inheritance**
+### Table Inheritance
 
 - Table inheritance allows child table to inherit all the columns of the parent master table.
 - A child table can have extra fields of its own in addition to the inherited columns.
@@ -1732,7 +1732,7 @@ Use the query instead: update only orders set status 'offline';
 
 **![](images/postgresql_14_updated/img_47.png)**
 
-**Table Partitioning**
+### Table Partitioning
 
 - Table Partitioning means splitting a table into smaller pieces.
 - Table Partitioning holds many performance benefits for tables that hold
@@ -1835,7 +1835,7 @@ Entry 5 will raise error because date is of March and is not defined in function
 
 <sub>![](images/postgresql_14_updated/img_52.png)</sub>
 
-**Copy Table**
+### Copy Table
 
 - Copy Table is used to copy the structure of a table along with data.
 - Unlike Inheritance table , copy table does not have any relationship with the base table.
@@ -1851,7 +1851,7 @@ CREATE TABLE new_table AS TABLE existing_table WITH NO DATA;
 
 **Tablespace**
 
-**Tablespace & its advantages**
+### Tablespace & its advantages
 
 - PostgreSQL stores data logically in tablespaces and physically in datafiles.
 - PostgreSQL uses a tablespace to map a logical name to a physical location on disk.
@@ -1860,7 +1860,7 @@ CREATE TABLE new_table AS TABLE existing_table WITH NO DATA;
 - Allocate data storage across devices to improve performance.
 - WAL files object on fast media and archive data on slow media.
 
-**PostgreSQL default tablespaces**
+### PostgreSQL default tablespaces
 
 - Default comes with two out of the box tablespaces namely pg_default and pg_global
 - pg_default tablespace stores all user data.
@@ -1870,7 +1870,7 @@ CREATE TABLE new_table AS TABLE existing_table WITH NO DATA;
 
 Location of Default Tablespaces is data directory.
 
-**Create tablespaces**
+### Create tablespaces
 
 - Syntax for creating tablespace: (ensure the location exist)
 
@@ -1888,7 +1888,7 @@ or
 
 select * from pg_tables where tablename='test1';
 
-**Move table from one tablespace to another**
+### Move table from one tablespace to another
 
 - Syntax :
 
@@ -1906,7 +1906,7 @@ Syntax : select pg_relation_filepath('test1');
 
 Syntax : select spcname ,pg_tablespace_location(oid) from pg_tablespace;
 
-**Drop tablespaces**
+### Drop tablespaces
 
 - Dropping a tablespace all the reference from the system automatically.
 - We cannot drop a tablespace which is not empty.
@@ -1922,7 +1922,7 @@ Syntax : drop tablespace hrd;
 
 Syntax : select * from pg_tablespace;
 
-**Temporary tablespaces**
+### Temporary tablespaces
 
 - Temporary tables and indexes are created by PostgreSQL when it needs to hold large datasets temporarily for completing a query. EX: Sorting
 - Temporary tablespace does not store any data and their no persistent file left when we shutdown database.
@@ -1936,7 +1936,7 @@ Syntax : CREATE TABLESPACE temp01 OWNER ownername LOCATION '\\opt\\app\\hrd\\'
 
 **Backup and Restore**
 
-**Back & Types of Backups**
+### Back & Types of Backup
 
 - Backup is a copy of data taken from the database and can be used to reconstruct in case of a failure.
 - Backups can be divided into Logical backups and Physical backups.
@@ -1946,7 +1946,7 @@ Syntax : CREATE TABLESPACE temp01 OWNER ownername LOCATION '\\opt\\app\\hrd\\'
 
 Physical backups are further divided as online backup and offline backup.
 
-**Logical Backup**
+### Logical Backup
 
 - Logical Backups are simple and the textual representation of the data in the databases.
 - It supports various output forms like plain text(default),tar and custom binary format.
@@ -2059,7 +2059,7 @@ Syntax: pg_dumpall -U postgres > "D:\\user_backup\\allbackup" {windows}
 - pg_dumpall --help displays the options which can be used to customize of dumps.
 - You cannot restore a single database from backup of pg_dumpall
 
-**Difference between pg_dump and pg_dumpall**
+### Difference between pg_dump and pg_dumpall
 
 | Pg_dump                                                                                                                                                                                                     | Pg_dumpall                                                                                                                                                                          |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -2206,14 +2206,14 @@ Performing Offline Restore
 4. Rearrange folder placement according to environment path from OS
 5. pg_ctl start
 
-**Continuous Archiving**
+### Continuous Archiving
 
 - Continuous Archiving is the process of archiving Write Ahead Log (WAL) files.
 - Archived WAL files are copied to some other location.
 - Useful in performing PITR (Point in time recovery).
 - To set up archiving change archive mode and archive command parameters from postgresql.conf file.
 
-**Steps to Set up Continuous Archiving**
+### Steps to set up continuous archiving
 
 Step 1: Check If Postgresql cluster is in archive mode or not.
 
@@ -2249,7 +2249,7 @@ show archive_mode;
 
 Note: If you want to stop archival then just comment all three parameter in config file wal_level,archive_mode,archive_command and restart the PostgreSQL server.
 
-**Pg_basebackup - Online backup mode**
+### Pg_basebackup - Online backup mode
 
 - pg_basebackup is used to take base backups of a running PostgreSQL database cluster. (Online)
 - This backup can be used for PITR or Replication.
@@ -2574,7 +2574,7 @@ Step 10: Check how many rows are there in table test1.
 
 **Maintenance in PostgreSQL**
 
-**Introduction to Maintenance**
+### Introduction to Maintenance
 
 - All databases require some kind of maintenance tasks be performed regularly to achieve optimum performance.
 - Maintenance task are ongoing and repetitive which are ideally automated and schedule from cronjob scripts(linux) and task scheduler(windows).
@@ -2588,7 +2588,7 @@ Routine Reindexing
 
 Cluster
 
-**Updating Planner Statistics\\Analyze**
+### Updating Planner Statistics\\Analyze
 
 - PostgreSQL query planner relies on statistical information about the contents of tables in order to generate good plans for queries.
 - These stats are gathered by Analyze command, which keeps the stats up- to-date about the current state of the table.
@@ -2657,7 +2657,7 @@ Step 3: Check explain plan for same query now.
 
 ![](images/postgresql_14_updated/img_111.png)
 
-**Explain plan and Query Execution Cost**
+### Explain plan and Query Execution Cost
 
 - EXPLAIN PLAN statement displays execution plans chosen by the optimizer for SELECT, UPDATE, INSERT, and DELETE statements.
 
@@ -2681,7 +2681,7 @@ Cost=32*1+5000*0.01=82 { for tel_directory table }
 
 ![](images/postgresql_14_updated/img_113.png)
 
-**Data Fragmentation**
+### Data Fragmentation
 
 - Fragmentation is often called bloat in **PostgreSQL.**
 - PostgreSQL in line with **Multiversion concurrency control** (MVCC) does not UPDATE or DELETE a row directly from the disk
@@ -2690,7 +2690,7 @@ Cost=32*1+5000*0.01=82 { for tel_directory table }
 - As the old version become obsolete and keep piling up. This causes fragmentation and bloating in the table.
 - Tables or Indexes become bigger than their actual size.
 
-**Vacuum Vs Vacuum full**
+### Vacuum Vs Vacuum full
 
 | Vacuum                                                                                                                                                | Vacuum full                                                                                                                                   |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -2739,7 +2739,7 @@ To perform vacuum full on database using vacuumdb utility
 
 vacuumdb -f -U postgres -d postgres
 
-**Auto-Vacuum in PostgreSQL**
+### Auto-Vacuum in PostgreSQL
 
 - Autovacuum feature is used to automate the execution of VACUUM and ANALYZE commands.
 - autovacuum checks for tables that have had a large number of inserted, updated or deleted tuples based on statistics collection.
@@ -2764,7 +2764,7 @@ select datname,age(datfrozenxid),current_setting('autovacuum_freeze_max_age') fr
 
 ![](images/postgresql_14_updated/img_119.png)
 
-**Vacuum Freeze**
+### Vacuum Freeze
 
 - Vacuum freeze is a special kind of vaccum, which marks rows as frozen.
 - Vacuum Freeze marks a table's contents with a very special transaction timestamp that tells postgres that it does not need to be vacuumed, ever.
@@ -2801,7 +2801,7 @@ select * from pgstatindex('id_comp');
 
 reindex index id_comp;
 
-**Cluster**
+### Cluster
 
 - CLUSTER instructs PostgreSQL to cluster the table specified by table_name based on the index specified by index_name.
 - When a table is clustered, it is physically reordered based on the index information.
@@ -2853,7 +2853,7 @@ Cluster only works for existing data, newly added data after clustering a table 
 
 **PostgreSQL Upgarde**
 
-**What is Upgrade**
+### What is Upgrade
 
 - Upgrading database from one PostgreSQL release to a newer one.
 - PostgreSQL version numbers consist of a major and a minor version number. Ex: 10.1.
@@ -2872,13 +2872,13 @@ Reduced Costs
 
 End of Support
 
-**Ways to Upgrade**
+### Ways to Upgrade
 
 - Upgrading Data via pg_dumpall
 - Upgrading Data via pg_upgrade
 - Upgrading Data via Replication
 
-**Pg_upgrade utility**
+### Pg_upgrade utility
 
 - Pg_Upgrade (formerly called pg_migrator) allows data stored in PostgreSQL data files to be upgraded to a later PostgreSQL major version without the data dump/reload.
 - Primary used for major PostgreSQL version upgrades.
@@ -3013,7 +3013,7 @@ Select version();
 
 Step 17: Uninstall old PostgreSQL 13 - (Purely your choice if you want to drop it right away or want to keep it for some time) software and old postgresql-13 data directory.
 
-**Uninstalling PostgreSQL**
+### Uninstalling PostgreSQL
 
 - Open PostgreSQL installation location.
 
@@ -3030,7 +3030,7 @@ PGDATA environment variable
 
 **New Features and Enhancement (PostgreSQL 13)**
 
-**B-Tree Deduplication**
+### B-Tree Deduplication
 
 - Merging of duplicate values together and forming a single list for each value. So, key value appears only once.
 - Ex: Before: 'Key A' ,(1,1), 'Key A',(1,2) ,'Key A', (1,3)
@@ -3055,7 +3055,7 @@ create index testv13_idx on testv13(b);
 
 check the index size
 
-**Incremental Sorting**
+### Incremental Sorting
 
 **I**ncremental sorting, which accelerates sorting data when data that is sorted from earlier parts of a query are already sorted.
 
@@ -3077,7 +3077,7 @@ explain select * from testv3 order by a;
 
 explain select * from testv3 order by a,b;
 
-**Parallel Vacuum**
+### Parallel Vacuum
 
 - VACUUM reclaims storage occupied by dead tuples
 - Tuples that are deleted or obsoleted by an update are not physically removed from their table; they remain present until a VACUUM is done.
@@ -3087,13 +3087,13 @@ explain select * from testv3 order by a,b;
 
 Syntax : VACUUM (PARALLEL 2, VERBOSE) &lt;TableName&gt;
 
-**Trusted Extensions**
+### Trusted Extension
 
 - Can install extensions without super user privileges if we have create privilege on database.
 
 Ex : plperl,pgcrypto and ltree.
 
-**Drop Database (Force)**
+### Drop Database (Force)
 
 DROP DATABASE DBNAME WITH (FORCE);
 
@@ -3105,7 +3105,7 @@ EXPLAIN (ANALYZE, WAL, COSTS OFF) UPDATE testv3 SET b = 123;
 
 ![](images/postgresql_14_updated/img_140.png)
 
-**System Views**
+### System Views
 
 - Pg_stat_activity to report a parallel worker's leader process.
 - Pg_stat_progress_basebackup to report the progress of streaming base backups.
@@ -3127,7 +3127,7 @@ the pg_backend_memory_contexts view.
 
 Syntax: SELECT name, total_bytes, free_bytes, used_bytes FROM pg_backend_memory_contexts WHERE name LIKE 'PgStat%' ;
 
-**"Jsonlog" logging format**
+### Logging Format
 
 - Log_Destination parameter has a new supported value called "json log".
 - Postgresql logs can be logged in json format using the jsonlog value.
@@ -3136,7 +3136,7 @@ Syntax: SELECT name, total_bytes, free_bytes, used_bytes FROM pg_backend_memory_
 - We can set more than one value in log_destination using comma separation.
 - We can set the parameter value the postgresql.conf file or on the server command line using ALTER SYSTEM.
 
-**MERGE**
+### Merge
 
 - MERGE provides a single SQL statement that can conditionally INSERT, UPDATE or DELETE rows, a task that would otherwise require multiple procedural language statements.
 - It performs actions that modify rows in the target_table_name, using the data_source.
@@ -3183,7 +3183,7 @@ pg_basebackup --compress=none --format=tar -D back.1
 
 pg_basebackup --compress=zstd:level=9,workers=2 --format=tar -D back.2
 
-**Misc Features**
+### Misc. Features
 
 - Exclusive backup function name used to start/end online backup has changed.
 
@@ -3430,21 +3430,21 @@ group by state;
 
 **PostgreSQL Replication**
 
-**Introduction to Replication**
+### Introduction to Replication
 
 - The Process of copying data from a PostgreSQL database server to another server is called PostgreSQL Replication.
 - The intent is to make one or more standby servers ready to take over operations if the primary server fails.
 - The Source database server which sends the data is usually called the Master server.
 - The Server receiving the copied data is called the Replica/Standby server.
 
-**Reasons for Replication**
+### Reasons for Replication
 
 - High availability: refers to the ability of having an up to date copy of your database at all times. This means that in the event of a failure of your main database, the standby copy can be promoted to main and you can start receiving traffic.
 - Load balancing: practice of distributing incoming requests to your application in a way that is balanced so that no particular database experiences an uneven workload. With replication, this is possible since multiple copies of the data exist at any point in time.
 - Disaster recovery: is the need for effective disaster recovery in the event of a systemic failure.
 - Data Migration: To upgrade database server hardware or patches
 
-**Master/Slave Configuration**
+### Master/Slave Configuration
 
 **![Users icon PNG, ICO or ICNS | Free vector icons](images/postgresql_14_updated/img_141_Users_icon_PNG__ICO_or_ICNS___.png)** **![Users icon PNG, ICO or ICNS | Free vector icons](images/postgresql_14_updated/img_142_Users_icon_PNG__ICO_or_ICNS___.png)**
 
@@ -3464,7 +3464,7 @@ Master Server: Production /Current Working server.
 
 Slave Server: Backup/Standby Server
 
-**Replication Modes**
+### Replication Modes
 
 Asynchronous Mode of Replication
 
@@ -3494,7 +3494,7 @@ Multi-Master Replication
 - In this model conflict resolution schemes are often employed to avoid problems like duplicate primary keys.
 - Multi-Master Replication is also called bidirectional, Since replication data flows in both the directions.
 
-**Types of Replication**
+### Types of Replication
 
 1. Physical Replication:
 
@@ -3832,7 +3832,7 @@ SELECT pg_create_logical_replication_slot('slot_name', 'pgoutput');
 
 SELECT pg_drop_replication_slot('slot_name');
 
-**Synchronous Mode in Streaming Replication**
+### Synchronous mode in Streaming Replication
 
 - On Primary query
 
@@ -3893,7 +3893,7 @@ Repmgr Terminologies
 - Switchover: a suitable situation in which standby is promoted and the existing primary server is removed from the replication cluster in a controlled manner.
 - Witness server**:** repmgr provides functionality to set up a so-called "witness server" to assist in determining a new primary server in a failover situation with more than one standby. The witness server itself is not part of the replication cluster, although it does contain a copy of the repmgr metadata schema.
 
-**Setup Primary/Standby Streaming Replication Using Repmgr**
+### Setup Primary/Standby Streaming Replication Using Repmgr
 
 Primary cluster data location /var/lib/pgsql/14/data (192.168.4.237)
 
@@ -4314,7 +4314,7 @@ Yum remove repmgr-14
 | Multiple tables can be added to a single publication and a table can be in multiple publications.                                            | Once a subscription is created, Logical replication copies a snapshot of the data on the publisher database                                                      |
 | If we choose the "ALL TABLES" option which needs a super user privilege**.**                                                                 | Subscription is added using CREATE SUBSCRIPTION and can be stopped/resumed at any time using the ALTER SUBSCRIPTION command and removed using DROP SUBSCRIPTION. |
 
-**Setup Logical Replication**
+### Setup Logical Replication
 
 Step 1: On Master/Publication server modify the following parameters in postgresql.conf file
 
@@ -4730,7 +4730,7 @@ drop publication mystd1;
 
 **Server Parameters Tuning**
 
-**Introduction to Server Parameters**
+### Introduction to Server Parameters
 
 - Parameter tuning is a process.
 - Server configuration parameters affect the behavior of the database system.
