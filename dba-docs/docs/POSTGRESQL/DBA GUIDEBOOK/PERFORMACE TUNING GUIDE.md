@@ -1,4 +1,4 @@
-#PERFORMACE TUNING GUIDE
+# Performance Tuning Guide
 **TABLE OF CONTENT**
 
 1. [SOURCE CODE CUSTOM INSTALLATION](#1-source-code-custom-installation)
