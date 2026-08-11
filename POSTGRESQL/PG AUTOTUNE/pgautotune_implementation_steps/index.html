@@ -11,24 +11,28 @@
       
       
       
+        <link rel="prev" href="../PostgreSQL_AutoTune_Azure_VM_Scale_Implementation/">
+      
+      
+        <link rel="next" href="../pgautotune_workflow/">
       
       
         
       
       
-      <link rel="icon" href="/assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>DBA Knowledge Base</title>
+        <title>PostgreSQL AutoTune: Implementation Steps - DBA Knowledge Base</title>
       
     
     
-      <link rel="stylesheet" href="/assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="/assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -47,7 +51,7 @@
       
     
     
-    <script>__md_scope=new URL("/",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -69,6 +73,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#postgresql-autotune-implementation-steps" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -81,7 +90,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/." title="DBA Knowledge Base" class="md-header__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+    <a href="../../.." title="DBA Knowledge Base" class="md-header__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -101,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              PostgreSQL AutoTune: Implementation Steps
             
           </span>
         </div>
@@ -181,7 +190,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/." title="DBA Knowledge Base" class="md-nav__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+    <a href="../../.." title="DBA Knowledge Base" class="md-nav__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -199,7 +208,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -273,7 +282,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/DEPARTMENT/Cloud%20Database%20Objective/" class="md-nav__link">
+      <a href="../../../DEPARTMENT/Cloud%20Database%20Objective/" class="md-nav__link">
         
   
   
@@ -301,7 +310,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/DEPARTMENT/Oracle%20Database%20Solutions%20and%20Service%28Standard%20Version%29/" class="md-nav__link">
+      <a href="../../../DEPARTMENT/Oracle%20Database%20Solutions%20and%20Service%28Standard%20Version%29/" class="md-nav__link">
         
   
   
@@ -383,7 +392,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/LINUX/LINUX%20BASICS/" class="md-nav__link">
+      <a href="../../../LINUX/LINUX%20BASICS/" class="md-nav__link">
         
   
   
@@ -411,7 +420,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/LINUX/LINUX%20FIREWALL%20PERMISSIONS/" class="md-nav__link">
+      <a href="../../../LINUX/LINUX%20FIREWALL%20PERMISSIONS/" class="md-nav__link">
         
   
   
@@ -439,7 +448,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/LINUX/LINUX%20PERMISSIONS/" class="md-nav__link">
+      <a href="../../../LINUX/LINUX%20PERMISSIONS/" class="md-nav__link">
         
   
   
@@ -467,7 +476,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/LINUX/LVM%20PARTITION/" class="md-nav__link">
+      <a href="../../../LINUX/LVM%20PARTITION/" class="md-nav__link">
         
   
   
@@ -549,7 +558,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/MYSQL/MySQL_Migration_Runbook/" class="md-nav__link">
+      <a href="../../../MYSQL/MySQL_Migration_Runbook/" class="md-nav__link">
         
   
   
@@ -678,7 +687,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ORACLE/DBA%20QUERIES%20GUIDE/ORACLE%20QUERIES/" class="md-nav__link">
+      <a href="../../../ORACLE/DBA%20QUERIES%20GUIDE/ORACLE%20QUERIES/" class="md-nav__link">
         
   
   
@@ -761,7 +770,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Incarnation%20%28ORA-19909%29/" class="md-nav__link">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Incarnation%20%28ORA-19909%29/" class="md-nav__link">
         
   
   
@@ -789,7 +798,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Lost%20Write%20Recovery%20%28ORA-00742%2CORA-00312%29/" class="md-nav__link">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Lost%20Write%20Recovery%20%28ORA-00742%2CORA-00312%29/" class="md-nav__link">
         
   
   
@@ -817,7 +826,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Open%20Issue%28Ora-10873%29/" class="md-nav__link">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Open%20Issue%28Ora-10873%29/" class="md-nav__link">
         
   
   
@@ -845,7 +854,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ORACLE/KNOWN%20ISSUES/Oracle%20Datafile%20Corruption%20Issue%20%28ORA-00600%29/" class="md-nav__link">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Datafile%20Corruption%20Issue%20%28ORA-00600%29/" class="md-nav__link">
         
   
   
@@ -873,7 +882,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ORACLE/KNOWN%20ISSUES/Oracle%20Datapump%20Slowness%28Scenario%201%29/" class="md-nav__link">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Datapump%20Slowness%28Scenario%201%29/" class="md-nav__link">
         
   
   
@@ -901,7 +910,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ORACLE/KNOWN%20ISSUES/Oracle%20Datapump%20Slowness%28Scenario%202%29/" class="md-nav__link">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Datapump%20Slowness%28Scenario%202%29/" class="md-nav__link">
         
   
   
@@ -929,7 +938,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ORACLE/KNOWN%20ISSUES/Oracle%20Moving%20Datafiles%20To%20Another%20Location/" class="md-nav__link">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Moving%20Datafiles%20To%20Another%20Location/" class="md-nav__link">
         
   
   
@@ -957,7 +966,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ORACLE/KNOWN%20ISSUES/Oracle%20Ora-01012%20Not%20Logged%20On%20Error/" class="md-nav__link">
+      <a href="../../../ORACLE/KNOWN%20ISSUES/Oracle%20Ora-01012%20Not%20Logged%20On%20Error/" class="md-nav__link">
         
   
   
@@ -1040,7 +1049,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ORACLE/ORACLE%20CLOUD/Cloud%20Database%20Management%20Tasks/" class="md-nav__link">
+      <a href="../../../ORACLE/ORACLE%20CLOUD/Cloud%20Database%20Management%20Tasks/" class="md-nav__link">
         
   
   
@@ -1080,18 +1089,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
           <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
@@ -1112,7 +1123,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1127,18 +1138,20 @@
                 
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" checked>
         
           
           <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
@@ -1159,7 +1172,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6_1">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1177,7 +1190,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/POSTGRESQL/PG%20AUTOTUNE/PostgreSQL_AutoTune_Azure_VM_Scale_Implementation/" class="md-nav__link">
+      <a href="../PostgreSQL_AutoTune_Azure_VM_Scale_Implementation/" class="md-nav__link">
         
   
   
@@ -1202,10 +1215,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/POSTGRESQL/PG%20AUTOTUNE/pgautotune_implementation_steps/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL AutoTune: Implementation Steps
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1221,6 +1261,136 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-copy-the-script-to-the-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 1: Copy the Script to the Server
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-configure-user-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 2: Configure User Variables
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-make-the-script-executable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 3: Make the Script Executable
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-create-the-log-directories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 4: Create the Log Directories
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-fix-selinux-context-critical-do-not-skip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 5: Fix SELinux Context (CRITICAL — Do NOT skip)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-6-add-the-hook-to-the-systemd-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 6: Add the Hook to the Systemd Service
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-7-apply-the-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 7: Apply the Changes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-8-test-the-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 8: Test the Integration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-9-go-to-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 9: Go to Production
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1233,7 +1403,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/POSTGRESQL/PG%20AUTOTUNE/pgautotune_workflow/" class="md-nav__link">
+      <a href="../pgautotune_workflow/" class="md-nav__link">
         
   
   
@@ -1316,7 +1486,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/POSTGRESQL/PG%20LOAD%20ANALYSIS%20SETUP/PG%20LOAD%20ANALYSIS%20SETUP%20%5BPaaS%5D/" class="md-nav__link">
+      <a href="../../PG%20LOAD%20ANALYSIS%20SETUP/PG%20LOAD%20ANALYSIS%20SETUP%20%5BPaaS%5D/" class="md-nav__link">
         
   
   
@@ -1344,7 +1514,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/POSTGRESQL/PG%20LOAD%20ANALYSIS%20SETUP/PG%20LOAD%20ANALYSIS%20SETUP%20%5BSH%5D/" class="md-nav__link">
+      <a href="../../PG%20LOAD%20ANALYSIS%20SETUP/PG%20LOAD%20ANALYSIS%20SETUP%20%5BSH%5D/" class="md-nav__link">
         
   
   
@@ -1427,7 +1597,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Management%20Runbook/" class="md-nav__link">
+      <a href="../../PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Management%20Runbook/" class="md-nav__link">
         
   
   
@@ -1455,7 +1625,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Technical%20Deployment%20Runbook/" class="md-nav__link">
+      <a href="../../PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Technical%20Deployment%20Runbook/" class="md-nav__link">
         
   
   
@@ -1538,7 +1708,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/POSTGRESQL/PGGDBA/PGGDBA%20MONTHLY%20QUERIES/" class="md-nav__link">
+      <a href="../../PGGDBA/PGGDBA%20MONTHLY%20QUERIES/" class="md-nav__link">
         
   
   
@@ -1566,7 +1736,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/POSTGRESQL/PGGDBA/POSTGRESQL%20QUERIES/" class="md-nav__link">
+      <a href="../../PGGDBA/POSTGRESQL%20QUERIES/" class="md-nav__link">
         
   
   
@@ -1619,6 +1789,126 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-copy-the-script-to-the-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 1: Copy the Script to the Server
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-configure-user-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 2: Configure User Variables
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-make-the-script-executable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 3: Make the Script Executable
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-create-the-log-directories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 4: Create the Log Directories
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-fix-selinux-context-critical-do-not-skip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 5: Fix SELinux Context (CRITICAL — Do NOT skip)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-6-add-the-hook-to-the-systemd-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 6: Add the Hook to the Systemd Service
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-7-apply-the-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 7: Apply the Changes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-8-test-the-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 8: Test the Integration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-9-go-to-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 9: Go to Production
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1631,8 +1921,105 @@
               
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+
+
+<h1 id="postgresql-autotune-implementation-steps">PostgreSQL AutoTune: Implementation Steps<a class="headerlink" href="#postgresql-autotune-implementation-steps" title="Permanent link">&para;</a></h1>
+<p>Follow these steps exactly to deploy and integrate the PostgreSQL systemd auto-tuner hook (v4) on your self-hosted RHEL 8 Linux VM:</p>
+<hr />
+<h3 id="step-1-copy-the-script-to-the-server">STEP 1: Copy the Script to the Server<a class="headerlink" href="#step-1-copy-the-script-to-the-server" title="Permanent link">&para;</a></h3>
+<p>Upload <code>pg_autotune_systemd.sh</code> to your server and place it in the <code>/u01/Gsl/</code> directory:
+<div class="highlight"><pre><span></span><code>cp<span class="w"> </span>pg_autotune_systemd.sh<span class="w"> </span>/u01/Gsl/pg_autotune_systemd.sh
+</code></pre></div></p>
+<h3 id="step-2-configure-user-variables">STEP 2: Configure User Variables<a class="headerlink" href="#step-2-configure-user-variables" title="Permanent link">&para;</a></h3>
+<p>Open the script and update the <code>USER CONFIGURATION</code> block at the top of the file:
+<div class="highlight"><pre><span></span><code><span class="nv">MAX_CONNECTIONS</span><span class="o">=</span><span class="m">5000</span><span class="w">               </span><span class="c1"># Passed to pgconfig.org API</span>
+<span class="nv">WORK_MEM_MB</span><span class="o">=</span><span class="m">500</span><span class="w">                    </span><span class="c1"># Static work_mem (MB)</span>
+<span class="nv">WAL_BUFFERS_MB</span><span class="o">=</span><span class="m">32</span><span class="w">                  </span><span class="c1"># Static wal_buffers (MB)</span>
+<span class="nv">TEST_SLEEP_SECONDS</span><span class="o">=</span><span class="m">30</span><span class="w">              </span><span class="c1"># Set to 0 in production!</span>
+</code></pre></div></p>
+<h3 id="step-3-make-the-script-executable">STEP 3: Make the Script Executable<a class="headerlink" href="#step-3-make-the-script-executable" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>chmod<span class="w"> </span>+x<span class="w"> </span>/u01/Gsl/pg_autotune_systemd.sh
+</code></pre></div>
+<h3 id="step-4-create-the-log-directories">STEP 4: Create the Log Directories<a class="headerlink" href="#step-4-create-the-log-directories" title="Permanent link">&para;</a></h3>
+<p>The script writes timestamped logs and config backups to <code>/u01/backup/logs/autotune/</code>:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/u01/backup/logs/autotune/config_backup
+</code></pre></div></p>
+<h3 id="step-5-fix-selinux-context-critical-do-not-skip">STEP 5: Fix SELinux Context (CRITICAL — Do NOT skip)<a class="headerlink" href="#step-5-fix-selinux-context-critical-do-not-skip" title="Permanent link">&para;</a></h3>
+<p>SELinux assigns a generic data label to files in <code>/u01/</code>. Systemd refuses to execute files without the official <code>bin_t</code> binary label.</p>
+<p><strong>Command:</strong>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>chcon<span class="w"> </span>-t<span class="w"> </span>bin_t<span class="w"> </span>/u01/Gsl/pg_autotune_systemd.sh
+</code></pre></div></p>
+<p><strong>Verify:</strong>
+<div class="highlight"><pre><span></span><code>ls<span class="w"> </span>-Z<span class="w"> </span>/u01/Gsl/pg_autotune_systemd.sh
+<span class="c1"># Should show: system_u:object_r:bin_t:s0</span>
+</code></pre></div>
+<em>Skipping this step causes "Permission denied" errors during ExecStartPre execution, even if chmod +x is set correctly.</em></p>
+<h3 id="step-6-add-the-hook-to-the-systemd-service">STEP 6: Add the Hook to the Systemd Service<a class="headerlink" href="#step-6-add-the-hook-to-the-systemd-service" title="Permanent link">&para;</a></h3>
+<p>Open the main PostgreSQL systemd service file directly using a text editor (like vi):
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>vi<span class="w"> </span>/usr/lib/systemd/system/postgresql-16.service<span class="w">   </span><span class="c1"># or postgresql-17.service</span>
+</code></pre></div></p>
+<p>Find the <code>[Service]</code> block and insert this line right below it:
+<div class="highlight"><pre><span></span><code><span class="k">[Service]</span>
+<span class="na">ExecStartPre</span><span class="o">=</span><span class="s">+/u01/Gsl/pg_autotune_systemd.sh</span>
+</code></pre></div></p>
+<blockquote>
+<p>[!IMPORTANT]
+The <code>+</code> prefix is mandatory. It grants the script root execution privilege. Without <code>+</code>, the script runs as the postgresql service user and will fail.</p>
+</blockquote>
+<h3 id="step-7-apply-the-changes">STEP 7: Apply the Changes<a class="headerlink" href="#step-7-apply-the-changes" title="Permanent link">&para;</a></h3>
+<p>Reload systemd daemon to pick up the service file modification:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>systemctl<span class="w"> </span>daemon-reload
+</code></pre></div></p>
+<h3 id="step-8-test-the-integration">STEP 8: Test the Integration<a class="headerlink" href="#step-8-test-the-integration" title="Permanent link">&para;</a></h3>
+<p>Stop and start PostgreSQL to trigger the hook:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span>postgresql-16
+sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>postgresql-16
+</code></pre></div></p>
+<p>During startup, open a second terminal and watch the status. If <code>TEST_SLEEP_SECONDS=30</code>, you will see the service pause for 30 seconds:
+<div class="highlight"><pre><span></span><code>systemctl<span class="w"> </span>status<span class="w"> </span>postgresql-16
+</code></pre></div></p>
+<p>After startup completes, check the log:
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/u01/backup/logs/autotune/pg_autotune_*.log
+</code></pre></div>
+You should see the tuning trace including:
+- Hardware detection output
+- "HARDWARE CHANGE DETECTED" block (first run always triggers)
+- Before &rarr; After trace for each of the 8 parameters
+- "Process complete. State saved inside script."</p>
+<h3 id="step-9-go-to-production">STEP 9: Go to Production<a class="headerlink" href="#step-9-go-to-production" title="Permanent link">&para;</a></h3>
+<p>After successful validation, disable the test sleep. Edit <code>/u01/Gsl/pg_autotune_systemd.sh</code> and set:
+<div class="highlight"><pre><span></span><code><span class="nv">TEST_SLEEP_SECONDS</span><span class="o">=</span><span class="m">0</span>
+</code></pre></div>
+Then reload systemd daemon:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>systemctl<span class="w"> </span>daemon-reload
+</code></pre></div></p>
+<hr />
+<h3 id="troubleshooting-checklist">Troubleshooting Checklist<a class="headerlink" href="#troubleshooting-checklist" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Problem: PostgreSQL fails to start after hook is added</strong></li>
+<li><em>Fix:</em> Run: <code>sudo chcon -t bin_t /u01/Gsl/pg_autotune_systemd.sh</code> and verify context with <code>ls -Z</code>.</li>
+<li><strong>Problem: No log file in /u01/backup/logs/autotune/</strong></li>
+<li><em>Fix:</em> Run: <code>sudo mkdir -p /u01/backup/logs/autotune/config_backup</code> and check <code>journalctl -xe</code> for errors.</li>
+<li><strong>Problem: Script runs but no tuning happens (no parameter changes)</strong></li>
+<li><em>Fix:</em> <code>LAST_KNOWN_STATE</code> inside the script may already match. Edit <code>/u01/Gsl/pg_autotune_systemd.sh</code>, set <code>LAST_KNOWN_STATE="First Run"</code>, and restart.</li>
+<li><strong>Problem: API fallback math used every time</strong></li>
+<li><em>Fix:</em> Normal if the server has no outbound internet access. Fallback math is intentional.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -1675,10 +2062,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "/", "features": ["navigation.instant", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "/assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="/assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
