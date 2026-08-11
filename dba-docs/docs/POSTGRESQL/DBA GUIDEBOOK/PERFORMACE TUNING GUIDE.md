@@ -1,36 +1,29 @@
+#PERFORMACE TUNING GUIDE
 **TABLE OF CONTENT**
 
-1. [**SOURCE CODE INSTALLATION AND SEGREGATION OF PG FILES**](#SOURCE_CODE_CSTOM_INSTALLATION)
-2. [<a name="INTRO_TO_PT"></a>
+1. [SOURCE CODE CUSTOM INSTALLATION](#1-source-code-custom-installation)
+2. [INTRODUCTION TO PERFORMANCE TUNING](#2-introduction-to-performance-tuning)
+3. [TUNE CONFIGURATION PARAMETERS](#3-tune-configuration-parameters)
+   1. [SHARED BUFFERS](#31-shared-buffers)
+   2. [WORK_MEM](#32-work_mem)
+   3. [MAINTENANCE WORK_MEM](#33-maintenance-work_mem)
+   4. [AUTOVACUUM WORK_MEM](#34-autovacuum-work_mem)
+   5. [MAX CONNECTIONS](#35-max-connections)
+   6. [IDLE CONNECTIONS](#36-idle-connections)
+   7. [EFFECTIVE_CACHE_SIZE](#37-effective_cache_size)
+   8. [ADDITIONAL INFORMATION: PG_STAT_ACTIVITY](#38-additional-information-pg_stat_activity)
+4. [CHECKPOINT TUNING](#4-checkpoint-tuning)
+5. [MVCC AND AUTO VACUUM](#5-mvcc-and-auto-vacuum)
+6. [TUNING AUTO VACUUM PARAMETERS](#6-tuning-auto-vacuum-parameters)
+7. [QUERY OPTIMIZATION](#7-query-optimization)
+   1. [QUERY STATEMENT PROCESSING](#71-query-statement-processing)
+   2. [COMPONENTS OF EXPLAIN PLAN](#72-components-of-explain-plan)
+   3. [EXPLAIN ACCESS METHODS](#73-explain-access-methods)
+   4. [INDEX OPTIMIZATION](#74-index-optimization)
+   5. [OPTIMIZER AND STATISTICS](#75-optimizer-and-statistics)
+   6. [QUERY TUNING](#76-query-tuning)
 
-## INTRODUCTION TO PERFORMANCE TUNING](#INTRO_TO_PT)
-3. [<a name="TUNE_CONFIG_PARAM"></a>
-
-## TUNE CONFIGURATION PARAMETERS](#TUNE_CONFIG_PARAM)
-   1. **SHARED BUFFERS**
-   2. **WORK_MEM**
-   3. **MAINTENANCE WORK_MEM**
-   4. **AUTOVACUUM WORK_MEM**
-   5. **MAX CONNECTIONS**
-   6. **IDLE CONNECTIONS**
-   7. **EFFECTIVE_CACHE_SIZE**
-   8. **ADDITIONAL INFORMATION: PG_STAT_ACTIVITY**
-4. [<a name="CHECKPOINT"></a>
-
-## CHECKPOINT TUNING](#CHECKPOINT)
-5. **MVCC AND AUTO VACUUM**
-6. **TUNING AUTO VACUUM PARAMETERS**
-7. **QUERY OPTIMIZATION**
-   1. **QUERY STATEMENT PROCESSING.**
-   2. **COMPONENTS OF EXPLAIN PLAN.**
-   3. **EXPLAIN ACCESS METHODS**
-   4. **INDEX OPTIMIZATION**
-   5. **OPTIMIZER AND STATISTICS.**
-   6. **QUERY TUNING.**
-
-<a name="SOURCE_CODE_CSTOM_INSTALLATION"></a>
-
-## SOURCE CODE CUSTOM INSTALLATION
+## 1. SOURCE CODE CUSTOM INSTALLATION
 
 Steps for Postgresql Source Installation 16.2
 
@@ -283,9 +276,7 @@ _Scenario 3:_ I Already have multiple databases storing objects on pg_default. I
 - Alter database &lt;dbname&gt; SET TABLESPACE &lt;tablespace name&gt; (do this for each database).
 - move old objects from pg_default to respective tablespaces.
 
-<a name="INTRO_TO_PT"></a>
-
-## INTRODUCTION TO PERFORMANCE TUNING
+## 2. INTRODUCTION TO PERFORMANCE TUNING
 
 - **Performance tuning** is the process of making adjustments to various parts of a system to improve its overall speed, efficiency, and responsiveness. It involves identifying and removing bottlenecks, optimizing resource usage, and ensuring that the system operates at its peak potential.
 - **Database performance tuning** specifically refers to the set of actions that Database Administrators (DBAs) undertake to maintain the smooth and efficient operation of databases. These actions may involve both proactive measures, like routine maintenance, and reactive measures, such as troubleshooting slow queries or resolving unexpected issues.
@@ -355,9 +346,7 @@ _Scenario 3:_ I Already have multiple databases storing objects on pg_default. I
 
 ![](images/pt_doc/img_2.png)
 
-<a name="TUNE_CONFIG_PARAM"></a>
-
-## TUNE CONFIGURATION PARAMETERS
+## 3. TUNE CONFIGURATION PARAMETERS
 
 There are four major memory parameters that requires proper understanding for tuning
 
@@ -365,15 +354,14 @@ There are four major memory parameters that requires proper understanding for tu
 
 These four parameters are explained below:
 
-1\. **SHARED_BUFFERS**
-
+### 3.1 SHARED BUFFERS
 - It is a parameter that determines how much memory is dedicated to the server for caching data.
 - The value for shared_buffers should never be set to reserve all of the system RAM for Postgresql.
 - The Default Value is 128MB.
 - 25%- 40% of Ram is considered optimal for Shared_Buffers.
 - Clock sweep algorithm controls Buffer Allocation and Eviction.
 
-## 1.1 Understanding Read/Write path in Detail
+#### 3.1.1 Understanding Read/Write path in Detail
 
 ![](images/pt_doc/img_4.png)
 
@@ -399,7 +387,7 @@ Write path = shared buffer -> os cache -> Disk
 
 Note: The data that is present in shared buffers will also be available in os cache
 
-## 1.2 Inside Shared buffer
+#### 3.1.2 Inside Shared buffer
 
 Imagine a database system with a **128MB shared buffer** that is completely full. The system needs to load a new page (8kb) into memory due to a recent query, but there's no free space left in the shared buffer. How will the new pages be loaded into shared buffer? And what happens to the existing pages in the shared buffer?
 
@@ -511,7 +499,7 @@ Let's go through a detailed example with a Clock Sweep algorithm using a multi-b
 - Once a page is no longer actively accessed (i.e., the pin is removed), the clock hand can consider it for eviction if its reference bit is 0, allowing it to free up space for new pages.
 - **Dirty buffers** require a flush to disk before eviction.
 
-## 1.3 EXPLAIN (ANALYZE,BUFFERS)
+#### 3.1.3 EXPLAIN (ANALYZE,BUFFERS)
 
 **EXPLAIN (ANALYZE)**: This command displays the execution plan that the PostgreSQL planner generates for the supplied statement. The execution plan shows how the table(s) referenced by the statement will be scanned - by plain sequential scan, index scan, etc. - and if multiple tables are referenced, what join algorithms will be used to bring together the required rows from each input table.
 
@@ -539,7 +527,7 @@ Buffers: Shared hit=2
 
 it means data is coming from shared buffer and check the execution time.
 
-## 1.4 BUFFER RING
+#### 3.1.4 BUFFER RING
 
 In PostgreSQL, large tables or indexes often require **sequential scans** to retrieve all rows or search through data sequentially. However, when these scans load large amounts of data into memory, they can **overwhelm the shared buffer cache** by occupying memory slots that are also used by other queries. This leads to **cache pollution** where frequently accessed pages are evicted to make room for pages from the large scan. As a result, performance for other queries that rely on cached data degrades, increasing disk I/O and slowing down the system.
 
@@ -785,7 +773,7 @@ ORDER BY 2 DESC
 
 LIMIT 10;
 
-## 2 \. WORK_MEM
+### 3.2 WORK_MEM
 
 - The amount of memory to be used by internal sort operations and hash tables before writing to temporary disk files.
 - Sort operations are used for order by, distinct and merge join operations. Hash tables are used in hash joins and hash-based aggregation.
@@ -862,8 +850,7 @@ exection time : 959.404 ms
 
 Note: If you find that 1 or 2 queries in your application is still using high disk sort even after increasing work_mem it is advisable to talk with developer and ask them to set work_mem at session level/query level for 1 or 2 query not at cluster level.
 
-1. **MAINTENANCE WORK_MEM**
-
+### 3.3 MAINTENANCE WORK_MEM
 - Maximum amount of memory to be used by maintenance operations, such as VACUUM, CREATE INDEX, and ALTER TABLE ADD FOREIGN KEY.
 - The Default value is 64Mb.
 - Only one of these operations can be executed at a time by a database session.
@@ -890,8 +877,7 @@ Recommendations
 
 Max_worker default value is 3, so total of 3gb memory can be used by auto vacuum (1 gb for each worker)
 
-1. **AUTOVACUUM WORK_MEM**
-
+### 3.4 AUTOVACUUM WORK_MEM
 - Specifies the maximum amount of memory to be used by each autovacuum worker process.
 - Default is -1. (-1 implies that autovacuum work_mem will be same as maintenance work_mem)
 - autovacuum is only able to utilize up to a maximum of 1GB of memory.
@@ -902,7 +888,7 @@ Recommendations
 
 Set a limit on this which is based on the number of autovacuum workers you expect to have running.
 
-**EFFECTIVE_CACHE_SIZE**
+### 3.7 EFFECTIVE_CACHE_SIZE
 
 - Sets the planner's assumption about the effective size of the disk cache that is available to a single query.
 - This cache is a combination of PostgreSQL cache and filesystem cache.
@@ -930,7 +916,7 @@ Current Settings (Based on the Diagram):
 
 Some additional parameters / configuration / monitoring view which is essentially important for tuning of better performance.
 
-**MAX CONNECTIONS**
+### 3.5 MAX CONNECTIONS
 
 - The maximum number of concurrent connections to the database server.
 - The default is typically 100 connections.
@@ -960,7 +946,7 @@ Answer: use connection pooling
 
 Answer: system will crash, out of memory error and run out of available connection
 
-**IDLE CONNECTIONS**
+### 3.6 IDLE CONNECTIONS
 
 - A Connection can be active and doing some work or it can be idle.
 - Idle connection refers to a connection that has been established between a client application and the database server but is not currently executing any queries or transactions.
@@ -1022,7 +1008,7 @@ tcp_keepalives_count=5
 
 client_connection_check_interval= 5 seconds
 
-**ADDITIONAL INFORMATION: PG_STAT_ACTIVITY**
+### 3.8 ADDITIONAL INFORMATION: PG_STAT_ACTIVITY
 
 **pg_stat_activity** is a system view in PostgreSQL that provides real-time information about active and recently active sessions (connections) to the database. It is extremely useful for monitoring database activity, diagnosing performance issues, and identifying slow or problematic queries.
 
@@ -1236,9 +1222,7 @@ select pid, query from pg_stat_activity where datname = current_database();
 
 select pg_terminate_backend(123);
 
-<a name="CHECKPOINT"></a>
-
-## CHECKPOINT TUNING
+## 4. CHECKPOINT TUNING
 
 - It is a point in the write-ahead log sequence at which all data files have been updated to reflect the information in the log.
 - Checkpoint ensure that all the dirty buffers created up to a certain point are sent to disk so that the WAL up to that point can be recycled.
@@ -1284,7 +1268,7 @@ _(c)_ **_Checkpoint_completion_target_**: Specifies the target of checkpoint com
 
 - Example: If checkpoint_timeout is set to 10 minutes and checkpoint_completion_target is set to 0.9, PostgreSQL will distribute workload and aim to complete the checkpoint within 9 minutes (90% of 10 minutes). This leaves the final 1 minute (10% of the interval) as a buffer before the next checkpoint starts.
 
-**PG_STAT_BGWRITER: MONITORING CHECKPOINT OCCURANCE**
+#### PG_STAT_BGWRITER: MONITORING CHECKPOINT OCCURANCE
 
 pg_stat_bgwriter is a view which provides metrics about how PostgreSQL flushes dirty buffers to the disk.
 
@@ -1397,7 +1381,7 @@ reset statistics
 
 select pg_stat_reset_shared('bgwriter');
 
-**MVCC AND AUTO VACUUM**
+## 5. MVCC AND AUTO VACUUM
 
 Implementation of MVCC (Multi-Version Concurrency Control) in PostgreSQL is different and special when compared with other RDBMS. MVCC in PostgreSQL controls which tuples can be visible to transactions via versioning.
 
@@ -1628,7 +1612,7 @@ Note:
 - When we execute vacuum (verbose,analyze) it does not automatically include freeze in it, either run vacuum (verbose,freeze) if auto vacuuming is off.
 - or let the parameter decide (vacuum_freeze_min_age and autovacuum_freeze_max_age) so that whenever vacuum or auto vacuum runs it will freeze older xids.
 
-**TUNING AUTO VACUUM PARAMETERS**
+## 6. TUNING AUTO VACUUM PARAMETERS
 
 Parameters for auto vacuum process
 
@@ -1991,17 +1975,16 @@ AND N.nspname !~ '^pg_toast'
 
 ORDER BY av_needed DESC ,n_dead_tup DESC;
 
-**QUERY OPTIMIZATION**
+## 7. QUERY OPTIMIZATION
 
-**Statement Processing**
-
+### 7.1 QUERY STATEMENT PROCESSING
 **![](images/pt_doc/img_21.png)**
 
 - Parse: Check Syntax, Break query in tokens, Generate Parse Tree and Identify Query type.
 - Optimizer/Planner: Generates optimal plan, Uses Database Statistics, Calculate Query cost, Choose best Plan.
 - Execute: Execute Query based on execution plan.
 
-**EXPLAIN PLAN**
+### 7.2 COMPONENTS OF EXPLAIN PLAN
 
 ![](images/pt_doc/img_22.png)
 
@@ -2048,7 +2031,7 @@ This diagram explains how to interpret the output of an EXPLAIN ANALYZE query in
 
 These details help in performance tuning by showing the disparity between estimated and actual values, which could indicate areas where optimization is needed.
 
-**SCANS**
+### 7.3 EXPLAIN ACCESS METHODS
 
 There are four types of scans in database:
 
@@ -2146,7 +2129,7 @@ Explain analyze select count (*) from pgbench_tellers where tid< 300;
 
 Heap fetches mean at the time of selecting record someone has changed the page(block). That pages come under the heap fetches.
 
-**JOINS TEST CASE**
+### 7.3.1 JOINS TEST CASE
 
 Sample Data:
 
@@ -2383,7 +2366,7 @@ It will just discard them.
 
 You also have Sort order by and all those other clauses, which also will be displayed here.
 
-**INDEX OPTIMIZATION**
+### 7.4 INDEX OPTIMIZATION
 
 In this section we will discuss about the following:
 
@@ -2801,7 +2784,7 @@ pg_tablespace_size() function to get the size of a tablespace.
 
 pg_column_size() function to obtain the size of a column of a specific type.
 
-**DATABASE STATISTICS**
+### 7.5 OPTIMIZER AND STATISTICS
 
 - PostgreSQL Optimizer and Planner use table statistics for generating optimal query plans.
 - Statistics generally provide information about the most common values in each column in a relation, average width of the column, number of distinct values in the column, etc.
@@ -2857,8 +2840,7 @@ pg_column_size() function to obtain the size of a column of a specific type.
 
 ![](images/pt_doc/img_62.png)
 
-**Query Tuning (Scenario Examples)**
-
+### 7.6 QUERY TUNING
 **Example 1:** (Joins Instead of IN).
 
 Explain analyze select * from emp where deptid IN (SELECT deptid from dept where salary>800);
@@ -2967,7 +2949,7 @@ It's going to try to pull all the records which once again is causing a disk IO.
 
 It will be good optimization technique to only fetch 5 or 10 records or records as per your requirement only without fetching all records.
 
-**ERROR REPORTING AND LOGGING**
+#### ERROR REPORTING AND LOGGING
 
 **Where to Log:**
 
@@ -3019,7 +3001,7 @@ This is a printf-style string that is output at the beginning of each log line.
 
 Example:'time=%t, pid=%p %q db=%d, usr=%u, client=%h , app=%a, line=%l'
 
-**PGBADGER**
+#### PGBADGER
 
 - pgBadger is a PostgreSQL log analyzer built for speed providing fully detailed reports based on your PostgreSQL log files.
 - pgBadger is able to autodetect your log file format (syslog, stderr, csvlog or jsonlog).
@@ -3233,7 +3215,7 @@ By default, PgBadger will generate an HTML report. However, you can also choose 
 
 pgbadger /path/to/postgresql.log -o report.csv --format csv
 
-**PG_STAT_STATEMENTS**
+#### PG_STAT_STATEMENTS
 
 - pg_stat_statements module provides a means for tracking planning and execution statistics of all SQL statements.
 - This extension is not available globally but can be enabled for a specific database with CREATE EXTENSION pg_stat_statements.
@@ -3276,7 +3258,7 @@ PG_STAT_STATEMENT_RESET:
 
 Discards all statistics gathered so far by pg_stat_statements. By default, this function can only be executed by superusers.
 
-**USEFUL MONITORING QUERIES**
+#### USEFUL MONITORING QUERIES
 
 Query to Find Bloated Tables
 

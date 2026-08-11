@@ -1,19 +1,20 @@
+#POSTGRESQL 14 DBA GUIDEBOOK 
 **­­POSTGRESQL 14.8**
 
-Documentation Guide
+*Documentation Guide*
 
 _May 2023_
 
-**Table Of Content** ![Questions](images/postgresql_14_updated/img_1_Questions.png)
+# Table of Contents ![Questions](images/postgresql_14_updated/img_1_Questions.png)
 
-## 1 \. Introduction to PostgreSQL
+## 1. Introduction to PostgreSQL
 
 - What is PostgreSQL?
 - PostgreSQL Naming Conventions
 - PostgreSQL Limits
 - Page Layout
 
-## 2 \. Installing PostgreSQL on Windows/Linux
+## 2. Installing PostgreSQL on Windows/Linux
 
 - PostgreSQL System Requirement
 - Installing PostgreSQL 14.8 On Windows
@@ -22,7 +23,7 @@ _May 2023_
 - Setting Up PostgreSQL Linux Environment
 - Installing PostgreSQL on Linux (Non-Default Directory)
 
-## 3 \. PostgreSQL Architecture
+## 3. PostgreSQL Architecture
 
 - Fundamentals of PostgreSQL Architecture
 - Process and Memory Architecture
@@ -31,7 +32,7 @@ _May 2023_
 - Memory Segments
 - Physical Files
 
-## 4 \. Database Clusters
+## 4. Database Clusters
 
 - What is Database Cluster?
 - Initdb
@@ -41,13 +42,13 @@ _May 2023_
 - Types of Shutdown
 - Pg_Controldata
 
-## 5 \. Database Directory Layout
+## 5. Database Directory Layout
 
 - Overview of Installation Directory Layout
 - Overview of Database Directory Layout
 - Overview of Base Directory Layout
 
-## 6 \. Configuration Files
+## 6. Configuration Files
 
 - Postgresql.conf File
 - Pg Catalog tables to view File settings
@@ -57,7 +58,7 @@ _May 2023_
 - Pg_hba.conf with sample
 - Steps to modify Pg_hba.conf file
 
-## 7 \. Database Creation / Users / Schema / Privileges
+## 7. Database Creation / Users / Schema / Privileges
 
 - Create database - Psql / createdb utility
 - Drop database - Psql/ dropdb utility
@@ -68,18 +69,18 @@ _May 2023_
 - Privileges in PostgreSQL
 - Grants and Revoke Access
 
-## 8 \. PSQL Commands
+## 8. PSQL Commands
 
 - Connect to Psql
 - Psql Commands
 - Psql File Operations
 
-## 9 \. Pg System Catalogs and Time Zone
+## 9. Pg System Catalogs and Time Zone
 
 - Pg System Catalogs
 - Date & Time zones in PostgreSQL
 
-## 10 \. PostgreSQL CRUD Operations
+## 10. PostgreSQL CRUD Operations
 
 - What is CRUD?
 - Create operations with examples
@@ -93,13 +94,13 @@ _May 2023_
 - View, Sequences
 - Index and its Types
 
-## 11 \. Table Inheritance and Partitioning
+## 11. Table Inheritance and Partitioning
 
 - Table Inheritance
 - Table Partitioning
 - Copy Table
 
-## 12 \. Tablespace
+## 12. Tablespace
 
 - Tablespace & its advantages
 - PostgreSQL default tablespaces
@@ -108,7 +109,7 @@ _May 2023_
 - Drop tablespaces
 - Temporary tablespaces
 
-## 13 \. Backup and Restore
+## 13. Backup and Restore
 
 - Back & Types of Backup
 - Logical Backup
@@ -126,7 +127,7 @@ _May 2023_
 - Pg_basebackup - Online backup mode
 - Online Backup Restore and Point in Time Recovery
 
-## 14 \. Maintenance in PostgreSQL
+## 14. Maintenance in PostgreSQL
 
 - Introduction to Maintenance
 - Updating Planner Statistics\\Analyze
@@ -139,14 +140,14 @@ _May 2023_
 - Routine Re-Indexing
 - Cluster
 
-## 15 \. PostgreSQL Upgarde
+## 15. PostgreSQL Upgarde
 
 - What is Upgrade
 - Ways to Upgrade
 - Pg_upgrade utility
 - Uninstalling PostgreSQL
 
-## 16 \. New Features and Enhancement (postgreSQL13)
+## 16. New Features and Enhancement (postgreSQL13)
 
 - B-Tree Deduplication
 - Incremental Sorting
@@ -156,7 +157,7 @@ _May 2023_
 - Track Wal_Usage
 - System Views
 
-## 17 \. New Features and Enhancement (postgreSQL15)
+## 17. New Features and Enhancement (postgreSQL15)
 
 - Server Statistics
 - Logging Format
@@ -165,7 +166,7 @@ _May 2023_
 - Psql \\Dconfig
 - Misc. Features
 
-## 18 \. PostgreSQL Replication
+## 18. PostgreSQL Replication
 
 - Introduction to Replication
 - Reasons for Replication
@@ -193,7 +194,7 @@ _May 2023_
 - Logical Replication - Test Case 4
 - Logical Replication - Test Case 5
 
-## 19 \. Server Parameters Tuning
+## 19. Server Parameters Tuning
 
 - Introduction to Server Parameters
 
