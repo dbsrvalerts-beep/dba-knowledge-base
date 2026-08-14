@@ -1,4 +1,4 @@
-# PGGDBA Monthly Queries
+# PGGDBA MONTHLY QUERIES
 
 This document contains PostgreSQL queries used for monthly database size, growth analysis, and segment monitoring.
 
@@ -6,6 +6,8 @@ This document contains PostgreSQL queries used for monthly database size, growth
 
 * **Database Size**: `public.databasesize_information`
 * **Objects Size**: `public.object_segment_{instance_name}`
+* **monthly purge**: `public.monthly_purge_log`
+* **walsize_monitor**: `public.walsize_monitor`
 
 ---
 
@@ -137,3 +139,19 @@ ORDER BY diff DESC;
 ```sql
 SELECT * FROM monthly_purge_log;
 ```
+
+## 6. Check Wal Generation data [Base table]
+
+```sql
+select * from public.walsize_monitor;
+```
+
+## 7. Check Wal Generation data Frequncy Map [View]
+```sql
+SELECT * 
+FROM public.wal_generation_frequency_map
+where instance_name='PGPAAS1'
+ORDER BY log_day DESC;
+```
+
+

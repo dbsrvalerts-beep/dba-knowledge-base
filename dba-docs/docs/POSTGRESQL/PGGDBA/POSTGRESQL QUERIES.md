@@ -1,4 +1,4 @@
-# PostgreSQL DBA Query Reference Guide
+# POSTGRESQL DBA QUERY GUIDE
 
 *Daily Monitoring, Performance & Maintenance Queries*
 
