@@ -11,8 +11,10 @@
       
       
       
-        <link rel="prev" href="../../PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Technical%20Deployment%20Runbook/">
+        <link rel="prev" href="../POSTGRESQL%20QUERIES/">
       
+      
+        <link rel="next" href="../../PG%20AUTOTUNE/PostgreSQL_AutoTune_Azure_VM_Scale_Implementation/">
       
       
         
@@ -23,7 +25,7 @@
     
     
       
-        <title>PGGDBA MONTHLY QUERIES - DBA Knowledge Base</title>
+        <title>PostgreSQL Emergency Runbook: Resolving pg_wal Disk Space Exhaustion - DBA Knowledge Base</title>
       
     
     
@@ -72,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#pggdba-monthly-queries" class="md-skip">
+        <a href="#postgresql-emergency-runbook-resolving-pg_wal-disk-space-exhaustion" class="md-skip">
           Skip to content
         </a>
       
@@ -108,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              PGGDBA MONTHLY QUERIES
+              PostgreSQL Emergency Runbook: Resolving pg_wal Disk Space Exhaustion
             
           </span>
         </div>
@@ -1192,18 +1194,20 @@
                 
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" checked>
         
           
           <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
@@ -1224,7 +1228,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6_1">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1242,7 +1246,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../DBA%20GUIDEBOOK/PERFORMACE%20TUNING%20GUIDE/" class="md-nav__link">
+      <a href="../PERFORMACE%20TUNING%20GUIDE/" class="md-nav__link">
         
   
   
@@ -1270,7 +1274,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../DBA%20GUIDEBOOK/POSTGRESQL%2014%20DBA%20GUIDEBOOK/" class="md-nav__link">
+      <a href="../POSTGRESQL%2014%20DBA%20GUIDEBOOK/" class="md-nav__link">
         
   
   
@@ -1298,7 +1302,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../DBA%20GUIDEBOOK/POSTGRESQL%20QUERIES/" class="md-nav__link">
+      <a href="../POSTGRESQL%20QUERIES/" class="md-nav__link">
         
   
   
@@ -1323,10 +1327,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../DBA%20GUIDEBOOK/PostgreSQL_WAL_Full_Emergency_Runbook/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL Emergency Runbook: Resolving pg_wal Disk Space Exhaustion
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1342,6 +1373,237 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-symptoms-of-a-full-pg_wal-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Symptoms of a Full pg_wal Directory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Symptoms of a Full pg_wal Directory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connection-failure-messages-when-attempting-to-reconnect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connection Failure Messages (When attempting to reconnect):
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postgresql-system-log-messages-critical-indicators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PostgreSQL System Log Messages (Critical Indicators):
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-most-common-causes-of-pg_wal-accumulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Most Common Causes of pg_wal Accumulation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Most Common Causes of pg_wal Accumulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#replication-bottlenecks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Replication Bottlenecks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#archiving-and-maintenance-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Archiving and Maintenance Failures
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#workload-spikes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workload Spikes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-troubleshooting-resolution-steps-reactive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Troubleshooting &amp; Resolution Steps (Reactive)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Troubleshooting &amp; Resolution Steps (Reactive)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-a-resolve-wal-archiving-failures-if-applicable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Method A: Resolve WAL Archiving Failures (If Applicable)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-b-temporary-relocation-of-pg_wal-symlinking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Method B: Temporary Relocation of pg_wal (Symlinking)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-c-delete-the-emergency-dummy-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Method C: Delete the Emergency Dummy File
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-configure-method-c-pre-allocation-in-healthy-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to Configure Method C (Pre-allocation in Healthy State)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-d-safe-manual-wal-cleanup-using-pg_archivecleanup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Method D: Safe Manual WAL Cleanup using pg_archivecleanup
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-proactive-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Proactive Best Practices
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Proactive Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-monitor-disk-space-and-alert-early" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Monitor Disk Space and Alert Early
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-compress-archived-wal-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Compress Archived WAL Logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-pre-allocate-an-emergency-space-reserve-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Pre-Allocate an Emergency Space-Reserve File
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1664,20 +1926,18 @@
                 
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_5" >
         
           
           <label class="md-nav__link" for="__nav_6_5" id="__nav_6_5_label" tabindex="0">
@@ -1698,7 +1958,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1713,37 +1973,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    PGGDBA MONTHLY QUERIES
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../PGGDBA/PGGDBA%20MONTHLY%20QUERIES/" class="md-nav__link">
         
   
   
@@ -1759,114 +1992,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#table-structures" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Table Structures
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#1-database-size" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Database Size
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-database-growth-comparison" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Database Growth Comparison
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-pg-top-size-consuming-segments" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. PG Top Size Consuming Segments
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-object-growth-comparison" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Object Growth Comparison
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-check-cleanup-log-of-object_segment_instance_name-previous-month" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Check Cleanup Log of object_segment_{instance_name} (Previous Month)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6-check-wal-generation-data-base-table" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. Check Wal Generation data [Base table]
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#7-check-wal-generation-data-frequncy-map-view" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7. Check Wal Generation data Frequncy Map [View]
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1914,90 +2039,213 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#table-structures" class="md-nav__link">
+  <a href="#1-symptoms-of-a-full-pg_wal-directory" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Table Structures
+        1. Symptoms of a Full pg_wal Directory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Symptoms of a Full pg_wal Directory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connection-failure-messages-when-attempting-to-reconnect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connection Failure Messages (When attempting to reconnect):
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#1-database-size" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#postgresql-system-log-messages-critical-indicators" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Database Size
+        PostgreSQL System Log Messages (Critical Indicators):
       
     </span>
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#2-database-growth-comparison" class="md-nav__link">
+  <a href="#2-most-common-causes-of-pg_wal-accumulation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Database Growth Comparison
+        2. Most Common Causes of pg_wal Accumulation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Most Common Causes of pg_wal Accumulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#replication-bottlenecks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Replication Bottlenecks
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#3-pg-top-size-consuming-segments" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#archiving-and-maintenance-failures" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. PG Top Size Consuming Segments
+        Archiving and Maintenance Failures
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#4-object-growth-comparison" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#workload-spikes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Object Growth Comparison
+        Workload Spikes
       
     </span>
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#5-check-cleanup-log-of-object_segment_instance_name-previous-month" class="md-nav__link">
+  <a href="#3-troubleshooting-resolution-steps-reactive" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Check Cleanup Log of object_segment_{instance_name} (Previous Month)
+        3. Troubleshooting &amp; Resolution Steps (Reactive)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Troubleshooting &amp; Resolution Steps (Reactive)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-a-resolve-wal-archiving-failures-if-applicable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Method A: Resolve WAL Archiving Failures (If Applicable)
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#6-check-wal-generation-data-base-table" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#method-b-temporary-relocation-of-pg_wal-symlinking" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Check Wal Generation data [Base table]
+        Method B: Temporary Relocation of pg_wal (Symlinking)
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#7-check-wal-generation-data-frequncy-map-view" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#method-c-delete-the-emergency-dummy-file" class="md-nav__link">
     <span class="md-ellipsis">
       
-        7. Check Wal Generation data Frequncy Map [View]
+        Method C: Delete the Emergency Dummy File
       
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-configure-method-c-pre-allocation-in-healthy-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to Configure Method C (Pre-allocation in Healthy State)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-d-safe-manual-wal-cleanup-using-pg_archivecleanup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Method D: Safe Manual WAL Cleanup using pg_archivecleanup
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-proactive-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Proactive Best Practices
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Proactive Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-monitor-disk-space-and-alert-early" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Monitor Disk Space and Alert Early
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-compress-archived-wal-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Compress Archived WAL Logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-pre-allocate-an-emergency-space-reserve-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Pre-Allocate an Emergency Space-Reserve File
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2018,135 +2266,160 @@
 
 
 
-<h1 id="pggdba-monthly-queries">PGGDBA MONTHLY QUERIES<a class="headerlink" href="#pggdba-monthly-queries" title="Permanent link">&para;</a></h1>
-<p>This document contains PostgreSQL queries used for monthly database size, growth analysis, and segment monitoring.</p>
-<h2 id="table-structures">Table Structures<a class="headerlink" href="#table-structures" title="Permanent link">&para;</a></h2>
+<h1 id="postgresql-emergency-runbook-resolving-pg_wal-disk-space-exhaustion">PostgreSQL Emergency Runbook: Resolving pg_wal Disk Space Exhaustion<a class="headerlink" href="#postgresql-emergency-runbook-resolving-pg_wal-disk-space-exhaustion" title="Permanent link">&para;</a></h1>
+<p>This runbook outlines the immediate diagnostics and mitigation steps when the PostgreSQL Write-Ahead Log (<code>pg_wal</code>) directory (formerly known as <code>pg_xlog</code> in PostgreSQL 9.6 and older) runs out of disk space, causing the database to crash and fail to start.</p>
+<hr />
+<h2 id="1-symptoms-of-a-full-pg_wal-directory">1. Symptoms of a Full pg_wal Directory<a class="headerlink" href="#1-symptoms-of-a-full-pg_wal-directory" title="Permanent link">&para;</a></h2>
+<p>When the storage partition hosting <code>pg_wal</code> becomes 100% full, the PostgreSQL engine cannot write new WAL records and will automatically trigger a panic shutdown to prevent data corruption.</p>
+<h3 id="connection-failure-messages-when-attempting-to-reconnect">Connection Failure Messages (When attempting to reconnect):<a class="headerlink" href="#connection-failure-messages-when-attempting-to-reconnect" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>psql: could not connect to server: No such file or directory
+  Is the server running locally and accepting connections on Unix domain socket &quot;/var/run/postgresql/.s.PGSQL.5432&quot;?
+</code></pre></div>
+<h3 id="postgresql-system-log-messages-critical-indicators">PostgreSQL System Log Messages (Critical Indicators):<a class="headerlink" href="#postgresql-system-log-messages-critical-indicators" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>LOG: archiver process (PID 4103) exited with exit code 1
+PANIC: could not write to file &quot;pg_wal/waltemp.4111&quot;: No space left on device
+LOG: server process (PID 4111) was terminated by signal 6: Aborted
+FATAL: the database system is in recovery mode
+LOG: database system was not properly shut down; automatic recovery in progress
+LOG: redo starts at 29/8D242168
+PANIC: could not write to file &quot;pg_wal/waltemp.4920&quot;: No space left on device
+LOG: startup process (PID 4920) was terminated by signal 6: Aborted
+LOG: aborting startup due to startup process failure
+</code></pre></div>
+<hr />
+<h2 id="2-most-common-causes-of-pg_wal-accumulation">2. Most Common Causes of pg_wal Accumulation<a class="headerlink" href="#2-most-common-causes-of-pg_wal-accumulation" title="Permanent link">&para;</a></h2>
+<p>PostgreSQL accumulates <code>pg_wal</code> files when write-ahead log generation outpaces the database's ability to recycle or delete them. The most common causes are:</p>
+<h3 id="replication-bottlenecks">Replication Bottlenecks<a class="headerlink" href="#replication-bottlenecks" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>Database Size</strong>: <code>public.databasesize_information</code></li>
-<li><strong>Objects Size</strong>: <code>public.object_segment_{instance_name}</code></li>
-<li><strong>monthly purge</strong>: <code>public.monthly_purge_log</code></li>
-<li><strong>walsize_monitor</strong>: <code>public.walsize_monitor</code></li>
+<li><strong>Stalled Replication Slots</strong>: A standby server or a CDC tool (like Debezium) drops offline, but the replication slot remains active on the primary database. PostgreSQL will indefinitely retain all new WAL segments generated since the consumer went offline, waiting for it to reconnect and catch up.</li>
+<li><strong>Replication Lag</strong>: High network latency, heavy read traffic bottlenecks on hot standbys, or underpowered replica hardware can cause the standby to fall too far behind the primary, delaying WAL recycling.</li>
+<li><strong>Excessive <code>wal_keep_size</code></strong>: Setting this parameter (or the older <code>wal_keep_segments</code>) too high forces the primary server to retain large amounts of WAL history for non-slot replicas, even if they are caught up.</li>
+</ul>
+<h3 id="archiving-and-maintenance-failures">Archiving and Maintenance Failures<a class="headerlink" href="#archiving-and-maintenance-failures" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Failing <code>archive_command</code></strong>: If external archiving scripts fail (due to incorrect paths, network/VPN issues, or target storage exhaustion), Postgres blocks WAL deletion/recycling until files are safely archived.</li>
+<li><strong>Infrequent Checkpoints</strong>: High <code>checkpoint_timeout</code> settings or large <code>max_wal_size</code> configurations cause PostgreSQL to wait longer before triggering checkpoints and recycling older WAL blocks.</li>
+</ul>
+<h3 id="workload-spikes">Workload Spikes<a class="headerlink" href="#workload-spikes" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Heavy Write Activity</strong>: Massive data loads, bulk inserts, or unoptimized batch jobs generate gigabytes of logs faster than background writers can process and clean them.</li>
+<li><strong><code>full_page_writes</code> Overhead</strong>: Heavy updates immediately following a checkpoint force Postgres to write full disk pages to the WAL, causing rapid volume expansion.</li>
 </ul>
 <hr />
-<h2 id="1-database-size">1. Database Size<a class="headerlink" href="#1-database-size" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">INSTANCE_NAME</span><span class="p">,</span>
-<span class="w">       </span><span class="n">LOGDATE</span><span class="p">,</span>
-<span class="w">       </span><span class="k">DATABASE</span><span class="p">,</span>
-<span class="w">       </span><span class="n">SIZE_GB</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">SIZE</span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">DATABASESIZE_INFORMATION</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">LOGDATE</span><span class="p">::</span><span class="nb">date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">CURRENT_DATE</span><span class="p">::</span><span class="nb">date</span>
-<span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;%-PROD&#39;</span>
-<span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;ZZZ%&#39;</span>
-<span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">instance_name</span><span class="o">=</span><span class="s1">&#39;SELFHOSTED4&#39;</span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">SIZE_MB</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
-</code></pre></div>
+<h2 id="3-troubleshooting-resolution-steps-reactive">3. Troubleshooting &amp; Resolution Steps (Reactive)<a class="headerlink" href="#3-troubleshooting-resolution-steps-reactive" title="Permanent link">&para;</a></h2>
+<p>If your database has crashed and refuses to start due to a full disk, choose the most appropriate resolution strategy below.</p>
+<blockquote>
+<p>[!CAUTION]
+<strong>NEVER delete active WAL files directly using <code>rm</code>.</strong>
+Deleting arbitrary WAL files will cause data inconsistency and make the database unrecoverable. Follow the validated methods below.</p>
+</blockquote>
 <hr />
-<h2 id="2-database-growth-comparison">2. Database Growth Comparison<a class="headerlink" href="#2-database-growth-comparison" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span>
-<span class="w">    </span><span class="n">t</span><span class="p">.</span><span class="ss">&quot;Instance_Name&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="n">t</span><span class="p">.</span><span class="k">database</span><span class="p">,</span>
-<span class="w">    </span><span class="k">MAX</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="ss">&quot;NEWDATE&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;NEWDATE&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="n">round</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">newsize</span><span class="p">)</span><span class="o">/</span><span class="mi">1024</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">newsize</span><span class="p">,</span><span class="w"> </span>
-<span class="w">    </span><span class="k">MAX</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="ss">&quot;OLDDATE&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;OLDDATE&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="n">round</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">oldsize</span><span class="p">)</span><span class="o">/</span><span class="mi">1024</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">oldsize</span><span class="p">,</span><span class="w"> </span>
-<span class="w">    </span><span class="n">round</span><span class="p">(</span><span class="k">SUM</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">newsize</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">oldsize</span><span class="p">)</span><span class="o">/</span><span class="mi">1024</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">diff</span>
-<span class="k">FROM</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span>
-<span class="w">        </span><span class="n">n</span><span class="p">.</span><span class="n">instance_name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;Instance_Name&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="n">n</span><span class="p">.</span><span class="k">database</span><span class="p">,</span>
-<span class="w">        </span><span class="n">n</span><span class="p">.</span><span class="n">logdate</span><span class="p">::</span><span class="nb">date</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;NEWDATE&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="k">NULL</span><span class="p">::</span><span class="nb">date</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;OLDDATE&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="k">COALESCE</span><span class="p">(</span><span class="n">n</span><span class="p">.</span><span class="n">size_mb</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">newsize</span><span class="p">,</span>
-<span class="w">        </span><span class="mi">0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">oldsize</span>
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="k">public</span><span class="p">.</span><span class="n">databasesize_information</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">n</span>
-<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">logdate</span><span class="p">::</span><span class="nb">date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;2026-02-09&#39;</span>
-<span class="w">      </span><span class="k">AND</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">instance_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;EDB1&#39;</span>
-<span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
-<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span>
-<span class="w">        </span><span class="n">o</span><span class="p">.</span><span class="n">Instance_Name</span><span class="p">,</span>
-<span class="w">        </span><span class="n">o</span><span class="p">.</span><span class="k">database</span><span class="p">,</span>
-<span class="w">        </span><span class="k">NULL</span><span class="p">::</span><span class="nb">date</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;NEWDATE&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="n">o</span><span class="p">.</span><span class="n">logdate</span><span class="p">::</span><span class="nb">date</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;OLDDATE&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="mi">0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">newsize</span><span class="p">,</span>
-<span class="w">        </span><span class="k">COALESCE</span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="n">size_mb</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">oldsize</span>
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="k">public</span><span class="p">.</span><span class="n">databasesize_information</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">o</span>
-<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">logdate</span><span class="p">::</span><span class="nb">date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;2025-12-19&#39;</span>
-<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">instance_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;EDB1&#39;</span>
-<span class="p">)</span><span class="w"> </span><span class="n">t</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="k">database</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;XPOSE-PROD&#39;</span>
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="k">database</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="ss">&quot;Instance_Name&quot;</span>
-<span class="k">HAVING</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">newsize</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">oldsize</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="mi">0</span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">diff</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+<h3 id="method-a-resolve-wal-archiving-failures-if-applicable">Method A: Resolve WAL Archiving Failures (If Applicable)<a class="headerlink" href="#method-a-resolve-wal-archiving-failures-if-applicable" title="Permanent link">&para;</a></h3>
+<p>If WAL archiving (<code>archive_mode = on</code>) is configured, PostgreSQL will <strong>not</strong> remove or recycle WAL segments from <code>pg_wal</code> until they are successfully processed by the <code>archive_command</code>. If archiving fails or lags behind, WAL files will pile up indefinitely.</p>
+<h4 id="1-identify-the-archiving-issue">1. Identify the Archiving Issue<a class="headerlink" href="#1-identify-the-archiving-issue" title="Permanent link">&para;</a></h4>
+<p>Review the recent PostgreSQL log files for failed archive commands:
+<div class="highlight"><pre><span></span><code>LOG: archive command failed with exit code 1
+DETAIL: The failed archive command was: gzip &lt; pg_wal/0000000400000028000000CD &gt; /archive/arc/0000000400000028000000CD
+</code></pre></div></p>
+<h4 id="2-troubleshoot-and-fix">2. Troubleshoot and Fix<a class="headerlink" href="#2-troubleshoot-and-fix" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Check if the destination archive directory has run out of space.</li>
+<li>Verify that the <code>postgres</code> system user has proper write permissions on the archive path.</li>
+<li>Ensure the target mount point is active and accessible.</li>
+</ul>
+<h4 id="3-start-the-database">3. Start the Database<a class="headerlink" href="#3-start-the-database" title="Permanent link">&para;</a></h4>
+<p>Once the archiving path or command issue is fixed, start the PostgreSQL service:
+<div class="highlight"><pre><span></span><code>pg_ctl<span class="w"> </span>start<span class="w"> </span>-D<span class="w"> </span>/path/to/pg_data
 </code></pre></div>
+The database will recover, process the archived WAL logs, and automatically delete/recycle the obsolete files, reclaiming disk space.</p>
 <hr />
-<h2 id="3-pg-top-size-consuming-segments">3. PG Top Size Consuming Segments<a class="headerlink" href="#3-pg-top-size-consuming-segments" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">instance_name</span><span class="p">,</span>
-<span class="w">       </span><span class="n">logdate</span><span class="p">,</span>
-<span class="w">       </span><span class="ss">&quot;database_name&quot;</span><span class="p">,</span>
-<span class="w">       </span><span class="ss">&quot;schema_name&quot;</span><span class="p">,</span>
-<span class="w">       </span><span class="ss">&quot;object_name&quot;</span><span class="p">,</span>
-<span class="w">       </span><span class="ss">&quot;object_type&quot;</span><span class="p">,</span>
-<span class="w">       </span><span class="ss">&quot;object_size&quot;</span><span class="p">,</span>
-<span class="w">       </span><span class="ss">&quot;size_mb&quot;</span><span class="w"> </span>
-<span class="k">FROM</span><span class="w"> </span><span class="k">public</span><span class="p">.</span><span class="n">object_segment_selfhosted4</span><span class="w"> </span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">logdate</span><span class="p">::</span><span class="nb">date</span><span class="o">=</span><span class="s1">&#39;2025-11-30&#39;</span><span class="w"> </span>
-<span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="ss">&quot;size_mb&quot;</span><span class="o">&gt;</span><span class="mi">1000</span><span class="w"> </span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="ss">&quot;size_mb&quot;</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+<h3 id="method-b-temporary-relocation-of-pg_wal-symlinking">Method B: Temporary Relocation of <code>pg_wal</code> (Symlinking)<a class="headerlink" href="#method-b-temporary-relocation-of-pg_wal-symlinking" title="Permanent link">&para;</a></h3>
+<p>If you cannot add space to the partition immediately, you can move the entire WAL directory to a separate partition that has free space.</p>
+<h4 id="1-restrict-connections-maintenance-mode">1. Restrict Connections (Maintenance Mode)<a class="headerlink" href="#1-restrict-connections-maintenance-mode" title="Permanent link">&para;</a></h4>
+<p>Modify <code>pg_hba.conf</code> temporarily to prevent application connections while database maintenance is in progress:
+<div class="highlight"><pre><span></span><code># Temporarily reject or restrict user connections
+local   all             all                                     reject
+host    all             all             0.0.0.0/0               reject
+</code></pre></div></p>
+<h4 id="2-copy-the-wal-logs-to-the-new-location">2. Copy the WAL logs to the new location<a class="headerlink" href="#2-copy-the-wal-logs-to-the-new-location" title="Permanent link">&para;</a></h4>
+<p>Create a new directory on a partition with sufficient free space and copy the contents of <code>pg_wal</code> to it:
+<div class="highlight"><pre><span></span><code>cp<span class="w"> </span>-rf<span class="w"> </span>/database/pgdata/pg_wal/*<span class="w"> </span>/mnt/new_disk/postgres/pg_wal/
+</code></pre></div></p>
+<h4 id="3-backup-and-remove-the-original-directory">3. Backup and Remove the Original Directory<a class="headerlink" href="#3-backup-and-remove-the-original-directory" title="Permanent link">&para;</a></h4>
+<p>Rename the original directory:
+<div class="highlight"><pre><span></span><code>mv<span class="w"> </span>/database/pgdata/pg_wal<span class="w"> </span>/database/pgdata/pg_wal_bkp
+</code></pre></div></p>
+<h4 id="4-create-the-symbolic-link">4. Create the Symbolic Link<a class="headerlink" href="#4-create-the-symbolic-link" title="Permanent link">&para;</a></h4>
+<p>Create a symlink in the data directory pointing to the new WAL location:
+<div class="highlight"><pre><span></span><code>ln<span class="w"> </span>-s<span class="w"> </span>/mnt/new_disk/postgres/pg_wal/<span class="w"> </span>/database/pgdata/pg_wal
+</code></pre></div></p>
+<h4 id="5-start-the-database-verify">5. Start the Database &amp; Verify<a class="headerlink" href="#5-start-the-database-verify" title="Permanent link">&para;</a></h4>
+<p>Start the database service and verify that new WAL logs are being created in the new location:
+<div class="highlight"><pre><span></span><code>pg_ctl<span class="w"> </span>start<span class="w"> </span>-D<span class="w"> </span>/database/pgdata
 </code></pre></div>
+If PostgreSQL starts successfully and runs without errors, you can safely delete the backup:
+<div class="highlight"><pre><span></span><code>rm<span class="w"> </span>-rf<span class="w"> </span>/database/pgdata/pg_wal_bkp
+</code></pre></div></p>
+<h4 id="6-revert-maintenance-mode">6. Revert Maintenance Mode<a class="headerlink" href="#6-revert-maintenance-mode" title="Permanent link">&para;</a></h4>
+<p>Restore the original rules in <code>pg_hba.conf</code> and reload the configuration.</p>
 <hr />
-<h2 id="4-object-growth-comparison">4. Object Growth Comparison<a class="headerlink" href="#4-object-growth-comparison" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span>
-<span class="w">    </span><span class="n">t</span><span class="p">.</span><span class="ss">&quot;Instance_Name&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="n">t</span><span class="p">.</span><span class="ss">&quot;database_name&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="n">t</span><span class="p">.</span><span class="ss">&quot;object_name&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="k">MAX</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="ss">&quot;NEWDATE&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;NEWDATE&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="k">SUM</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">newsize</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">newsize</span><span class="p">,</span><span class="w"> </span>
-<span class="w">    </span><span class="k">MAX</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="ss">&quot;OLDDATE&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;OLDDATE&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="k">SUM</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">oldsize</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">oldsize</span><span class="p">,</span><span class="w"> </span>
-<span class="w">    </span><span class="k">SUM</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">newsize</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">oldsize</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">diff</span>
-<span class="k">FROM</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span>
-<span class="w">        </span><span class="n">n</span><span class="p">.</span><span class="n">instance_name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;Instance_Name&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="n">n</span><span class="p">.</span><span class="n">database_name</span><span class="p">,</span>
-<span class="w">        </span><span class="n">n</span><span class="p">.</span><span class="n">object_name</span><span class="p">,</span>
-<span class="w">        </span><span class="n">n</span><span class="p">.</span><span class="n">logdate</span><span class="p">::</span><span class="nb">date</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;NEWDATE&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="k">NULL</span><span class="p">::</span><span class="nb">date</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;OLDDATE&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="k">COALESCE</span><span class="p">(</span><span class="n">n</span><span class="p">.</span><span class="n">size_mb</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">newsize</span><span class="p">,</span>
-<span class="w">        </span><span class="mi">0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">oldsize</span>
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="k">public</span><span class="p">.</span><span class="n">object_segment_edb1</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">n</span>
-<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">logdate</span><span class="p">::</span><span class="nb">date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;2026-02-09&#39;</span>
-<span class="w">      </span><span class="k">AND</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">instance_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;EDB1&#39;</span>
-<span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
-<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span>
-<span class="w">        </span><span class="n">o</span><span class="p">.</span><span class="n">Instance_Name</span><span class="p">,</span>
-<span class="w">        </span><span class="n">o</span><span class="p">.</span><span class="n">database_name</span><span class="p">,</span>
-<span class="w">        </span><span class="n">o</span><span class="p">.</span><span class="n">object_name</span><span class="p">,</span>
-<span class="w">        </span><span class="k">NULL</span><span class="p">::</span><span class="nb">date</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;NEWDATE&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="n">o</span><span class="p">.</span><span class="n">logdate</span><span class="p">::</span><span class="nb">date</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;OLDDATE&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="mi">0</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">newsize</span><span class="p">,</span>
-<span class="w">        </span><span class="k">COALESCE</span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="n">size_mb</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">oldsize</span>
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="k">public</span><span class="p">.</span><span class="n">object_segment_edb1</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">o</span>
-<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">logdate</span><span class="p">::</span><span class="nb">date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;2025-12-21&#39;</span>
-<span class="w">     </span><span class="k">AND</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">instance_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;EDB1&#39;</span>
-<span class="p">)</span><span class="w"> </span><span class="n">t</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">database_name</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;XPOSE-PROD&#39;</span>
-<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">object_name</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="ss">&quot;Instance_Name&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="ss">&quot;database_name&quot;</span>
-<span class="k">HAVING</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">newsize</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">oldsize</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="mi">0</span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">diff</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+<h3 id="method-c-delete-the-emergency-dummy-file">Method C: Delete the Emergency Dummy File<a class="headerlink" href="#method-c-delete-the-emergency-dummy-file" title="Permanent link">&para;</a></h3>
+<p>If you previously followed proactive guidelines and pre-allocated an emergency space-reserve dummy file inside <code>pg_wal</code> (or on the same mount point), you can delete it to quickly reclaim space, start the database, and trigger a cleanup checkpoint.</p>
+<h4 id="1-delete-the-reserve-file">1. Delete the Reserve File<a class="headerlink" href="#1-delete-the-reserve-file" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>rm<span class="w"> </span>/database/pgdata/pg_wal/ONLY_DELETE_THIS_DUMMY_FILE_IN_A_POSTGRES_EMERGENCY
 </code></pre></div>
+<h4 id="2-start-postgresql">2. Start PostgreSQL<a class="headerlink" href="#2-start-postgresql" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>pg_ctl<span class="w"> </span>start<span class="w"> </span>-D<span class="w"> </span>/database/pgdata
+</code></pre></div>
+<h4 id="3-run-a-checkpoint">3. Run a Checkpoint<a class="headerlink" href="#3-run-a-checkpoint" title="Permanent link">&para;</a></h4>
+<p>Connect to the database and trigger a checkpoint to force PostgreSQL to immediately recycle unused WAL segments and free up space:
+<div class="highlight"><pre><span></span><code>psql<span class="w"> </span>-d<span class="w"> </span>postgres<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;CHECKPOINT;&quot;</span>
+</code></pre></div></p>
+<h3 id="how-to-configure-method-c-pre-allocation-in-healthy-state">How to Configure Method C (Pre-allocation in Healthy State)<a class="headerlink" href="#how-to-configure-method-c-pre-allocation-in-healthy-state" title="Permanent link">&para;</a></h3>
+<p>To configure this safeguard during a healthy database state (or to recreate it after recovering from an emergency), execute the following commands as the <code>postgres</code> user:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Navigate to the pg_wal directory</span>
+<span class="nb">cd</span><span class="w"> </span>/database/pgdata/pg_wal
+
+<span class="c1"># Pre-allocate a 300MB reserve file (block size 1MB, count 300)</span>
+dd<span class="w"> </span><span class="k">if</span><span class="o">=</span>/dev/zero<span class="w"> </span><span class="nv">of</span><span class="o">=</span>ONLY_DELETE_THIS_DUMMY_FILE_IN_A_POSTGRES_EMERGENCY<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1M<span class="w"> </span><span class="nv">count</span><span class="o">=</span><span class="m">300</span>
+</code></pre></div>
+<p>This pre-allocates contiguous physical blocks on disk. If the database volume hits 100% usage and PostgreSQL halts, deleting this file instantly frees up 300MB of space, providing enough headroom for PostgreSQL to boot up and run a checkpoint to clean up the actual WAL files.</p>
 <hr />
-<h2 id="5-check-cleanup-log-of-object_segment_instance_name-previous-month">5. Check Cleanup Log of <code>object_segment_{instance_name}</code> (Previous Month)<a class="headerlink" href="#5-check-cleanup-log-of-object_segment_instance_name-previous-month" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monthly_purge_log</span><span class="p">;</span>
+<h3 id="method-d-safe-manual-wal-cleanup-using-pg_archivecleanup">Method D: Safe Manual WAL Cleanup using <code>pg_archivecleanup</code><a class="headerlink" href="#method-d-safe-manual-wal-cleanup-using-pg_archivecleanup" title="Permanent link">&para;</a></h3>
+<p>If you cannot start the database to perform a checkpoint, you must find which WAL files are older than the active checkpoint and delete only those.</p>
+<h4 id="1-identify-the-latest-checkpoint-redo-wal-file">1. Identify the Latest Checkpoint REDO WAL File<a class="headerlink" href="#1-identify-the-latest-checkpoint-redo-wal-file" title="Permanent link">&para;</a></h4>
+<p>Execute <code>pg_controldata</code> pointing to your data directory and locate the REDO WAL file name:
+<div class="highlight"><pre><span></span><code>pg_controldata<span class="w"> </span>-D<span class="w"> </span>/database/pgdata
 </code></pre></div>
-<h2 id="6-check-wal-generation-data-base-table">6. Check Wal Generation data [Base table]<a class="headerlink" href="#6-check-wal-generation-data-base-table" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="k">public</span><span class="p">.</span><span class="n">walsize_monitor</span><span class="p">;</span>
+Look for this line in the output:
+<div class="highlight"><pre><span></span><code>Latest checkpoint&#39;s REDO WAL file:   000000010000000F00000026
+</code></pre></div></p>
+<h4 id="2-run-a-dry-run-of-the-cleanup">2. Run a Dry Run of the Cleanup<a class="headerlink" href="#2-run-a-dry-run-of-the-cleanup" title="Permanent link">&para;</a></h4>
+<p>Use <code>pg_archivecleanup</code> with the <code>-n</code> flag to preview which files are older than the REDO WAL file and will be safely deleted:
+<div class="highlight"><pre><span></span><code>pg_archivecleanup<span class="w"> </span>-n<span class="w"> </span>/database/pgdata/pg_wal<span class="w"> </span>000000010000000F00000026
+</code></pre></div></p>
+<h4 id="3-perform-the-deletion">3. Perform the Deletion<a class="headerlink" href="#3-perform-the-deletion" title="Permanent link">&para;</a></h4>
+<p>Once verified, execute the command with the <code>-d</code> (delete) flag to clean up the files:
+<div class="highlight"><pre><span></span><code>pg_archivecleanup<span class="w"> </span>-d<span class="w"> </span>/database/pgdata/pg_wal<span class="w"> </span>000000010000000F00000026
+</code></pre></div></p>
+<h4 id="4-start-the-database-and-take-a-backup">4. Start the Database and Take a Backup<a class="headerlink" href="#4-start-the-database-and-take-a-backup" title="Permanent link">&para;</a></h4>
+<p>Start the PostgreSQL server. Once running, <strong>take a fresh cluster backup</strong> immediately to establish a clean recovery baseline.</p>
+<hr />
+<h2 id="4-proactive-best-practices">4. Proactive Best Practices<a class="headerlink" href="#4-proactive-best-practices" title="Permanent link">&para;</a></h2>
+<p>To prevent <code>pg_wal</code> exhaustion in production, implement the following guardrails:</p>
+<h3 id="1-monitor-disk-space-and-alert-early">1. Monitor Disk Space and Alert Early<a class="headerlink" href="#1-monitor-disk-space-and-alert-early" title="Permanent link">&para;</a></h3>
+<p>Set up disk usage monitoring for the PostgreSQL partitions. Configure email/SMS alerts to fire when disk usage hits <strong>70%</strong> (Warning) and <strong>90%</strong> (Critical).</p>
+<h3 id="2-compress-archived-wal-logs">2. Compress Archived WAL Logs<a class="headerlink" href="#2-compress-archived-wal-logs" title="Permanent link">&para;</a></h3>
+<p>Reduce archive storage requirements by compressing WAL files inside your <code>archive_command</code>:
+<div class="highlight"><pre><span></span><code><span class="na">archive_command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;gzip &lt; %p &gt; /archive_dir/%f&#39;</span>
 </code></pre></div>
-<h2 id="7-check-wal-generation-data-frequncy-map-view">7. Check Wal Generation data Frequncy Map [View]<a class="headerlink" href="#7-check-wal-generation-data-frequncy-map-view" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span>
-<span class="k">FROM</span><span class="w"> </span><span class="k">public</span><span class="p">.</span><span class="n">wal_generation_frequency_map</span>
-<span class="k">where</span><span class="w"> </span><span class="n">instance_name</span><span class="o">=</span><span class="s1">&#39;PGPAAS1&#39;</span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">log_day</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
-</code></pre></div>
+<em>Note: If you compress files, your <code>restore_command</code> during recovery must decompress them:</em>
+<div class="highlight"><pre><span></span><code><span class="na">restore_command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;gunzip &lt; /archive_dir/%f &gt; %p&#39;</span>
+</code></pre></div></p>
+<h3 id="3-pre-allocate-an-emergency-space-reserve-file">3. Pre-Allocate an Emergency Space-Reserve File<a class="headerlink" href="#3-pre-allocate-an-emergency-space-reserve-file" title="Permanent link">&para;</a></h3>
+<p>Create a <code>300MB</code> (or larger) dummy file in the <code>pg_wal</code> directory. This file does not serve any transactional purpose but acts as a space buffer that can be deleted to recover from a <code>disk full</code> shutdown scenario:
+<div class="highlight"><pre><span></span><code>dd<span class="w"> </span><span class="k">if</span><span class="o">=</span>/dev/zero<span class="w"> </span><span class="nv">of</span><span class="o">=</span>/database/pgdata/pg_wal/ONLY_DELETE_THIS_DUMMY_FILE_IN_A_POSTGRES_EMERGENCY<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1MB<span class="w"> </span><span class="nv">count</span><span class="o">=</span><span class="m">300</span>
+</code></pre></div></p>
 
 
 
