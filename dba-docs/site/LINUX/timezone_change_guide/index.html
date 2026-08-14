@@ -11,28 +11,28 @@
       
       
       
-        <link rel="prev" href="../Oracle%20Database%20Lost%20Write%20Recovery%20%28ORA-00742%2CORA-00312%29/">
+        <link rel="prev" href="../LVM%20PARTITION/">
       
       
-        <link rel="next" href="../Oracle%20Datafile%20Corruption%20Issue%20%28ORA-00600%29/">
+        <link rel="next" href="../../MYSQL/MySQL_Migration_Runbook/">
       
       
         
       
       
-      <link rel="icon" href="../../../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>Oracle Database Open Issue (ORA-10873) - DBA Knowledge Base</title>
+        <title>Azure Linux VM Timezone Configuration Guide - DBA Knowledge Base</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -51,7 +51,7 @@
       
     
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#oracle-database-open-issue-ora-10873" class="md-skip">
+        <a href="#azure-linux-vm-timezone-configuration-guide" class="md-skip">
           Skip to content
         </a>
       
@@ -90,7 +90,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="DBA Knowledge Base" class="md-header__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+    <a href="../.." title="DBA Knowledge Base" class="md-header__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Oracle Database Open Issue (ORA-10873)
+              Azure Linux VM Timezone Configuration Guide
             
           </span>
         </div>
@@ -190,7 +190,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="DBA Knowledge Base" class="md-nav__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+    <a href="../.." title="DBA Knowledge Base" class="md-nav__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -208,7 +208,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -282,7 +282,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../DEPARTMENT/Cloud%20Database%20Objective/" class="md-nav__link">
+      <a href="../../DEPARTMENT/Cloud%20Database%20Objective/" class="md-nav__link">
         
   
   
@@ -310,7 +310,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../DEPARTMENT/Oracle%20Database%20Solutions%20and%20Service%28Standard%20Version%29/" class="md-nav__link">
+      <a href="../../DEPARTMENT/Oracle%20Database%20Solutions%20and%20Service%28Standard%20Version%29/" class="md-nav__link">
         
   
   
@@ -342,18 +342,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -374,7 +376,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -392,7 +394,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../LINUX/LINUX%20BASICS/" class="md-nav__link">
+      <a href="../LINUX%20BASICS/" class="md-nav__link">
         
   
   
@@ -420,7 +422,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../LINUX/LINUX%20FIREWALL%20PERMISSIONS/" class="md-nav__link">
+      <a href="../LINUX%20FIREWALL%20PERMISSIONS/" class="md-nav__link">
         
   
   
@@ -448,7 +450,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../LINUX/LINUX%20PERMISSIONS/" class="md-nav__link">
+      <a href="../LINUX%20PERMISSIONS/" class="md-nav__link">
         
   
   
@@ -476,7 +478,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../LINUX/LVM%20PARTITION/" class="md-nav__link">
+      <a href="../LVM%20PARTITION/" class="md-nav__link">
         
   
   
@@ -501,10 +503,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../LINUX/timezone_change_guide/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Azure Linux VM Timezone Configuration Guide
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -520,6 +549,165 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-standard-timezone-modification-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Standard Timezone Modification Steps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Standard Timezone Modification Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-list-available-timezones-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: List Available Timezones (Optional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-check-current-timezone-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Check Current Timezone Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-set-the-new-timezone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Set the New Timezone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-verify-the-clock-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Verify the Clock Update
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-critical-bug-lagging-system-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Critical Bug: Lagging System Services
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Critical Bug: Lagging System Services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-diagnostic-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example Diagnostic Log:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-mitigation-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Mitigation Options
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Mitigation Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-a-restart-the-server-recommended-safest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option A: Restart the Server (Recommended &amp; Safest)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-b-restart-services-zero-downtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option B: Restart Services (Zero Downtime)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-final-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Final Verification
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -586,7 +774,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../MYSQL/MySQL_Migration_Runbook/" class="md-nav__link">
+      <a href="../../MYSQL/MySQL_Migration_Runbook/" class="md-nav__link">
         
   
   
@@ -618,20 +806,18 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
@@ -652,7 +838,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -717,7 +903,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../DBA%20QUERIES%20GUIDE/ORACLE%20QUERIES/" class="md-nav__link">
+      <a href="../../ORACLE/DBA%20QUERIES%20GUIDE/ORACLE%20QUERIES/" class="md-nav__link">
         
   
   
@@ -750,20 +936,18 @@
                 
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
         
           
           <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
@@ -784,7 +968,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -802,7 +986,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Cleaning%20ORACLE%20SYSAUX%20tablespace%20usage/" class="md-nav__link">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Cleaning%20ORACLE%20SYSAUX%20tablespace%20usage/" class="md-nav__link">
         
   
   
@@ -830,7 +1014,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Oracle%20Database%20Incarnation%20%28ORA-19909%29/" class="md-nav__link">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Incarnation%20%28ORA-19909%29/" class="md-nav__link">
         
   
   
@@ -858,7 +1042,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Oracle%20Database%20Lost%20Write%20Recovery%20%28ORA-00742%2CORA-00312%29/" class="md-nav__link">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Lost%20Write%20Recovery%20%28ORA-00742%2CORA-00312%29/" class="md-nav__link">
         
   
   
@@ -883,37 +1067,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Oracle Database Open Issue (ORA-10873)
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Database%20Open%20Issue%28Ora-10873%29/" class="md-nav__link">
         
   
   
@@ -929,87 +1086,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#scenario" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Scenario
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#solution" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Solution
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Solution">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#step-1-check-backup-status" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 1: Check Backup Status
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#step-2-end-backup-mode" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 2: End Backup Mode
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#step-3-open-the-database" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 3: Open the Database
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1022,7 +1098,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Oracle%20Datafile%20Corruption%20Issue%20%28ORA-00600%29/" class="md-nav__link">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Datafile%20Corruption%20Issue%20%28ORA-00600%29/" class="md-nav__link">
         
   
   
@@ -1050,7 +1126,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Oracle%20Datapump%20Slowness%28Scenario%201%29/" class="md-nav__link">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Datapump%20Slowness%28Scenario%201%29/" class="md-nav__link">
         
   
   
@@ -1078,7 +1154,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Oracle%20Datapump%20Slowness%28Scenario%202%29/" class="md-nav__link">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Datapump%20Slowness%28Scenario%202%29/" class="md-nav__link">
         
   
   
@@ -1106,7 +1182,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Oracle%20Moving%20Datafiles%20To%20Another%20Location/" class="md-nav__link">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Moving%20Datafiles%20To%20Another%20Location/" class="md-nav__link">
         
   
   
@@ -1134,7 +1210,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Oracle%20Ora-01012%20Not%20Logged%20On%20Error/" class="md-nav__link">
+      <a href="../../ORACLE/KNOWN%20ISSUES/Oracle%20Ora-01012%20Not%20Logged%20On%20Error/" class="md-nav__link">
         
   
   
@@ -1217,7 +1293,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ORACLE%20CLOUD/Cloud%20Database%20Management%20Tasks/" class="md-nav__link">
+      <a href="../../ORACLE/ORACLE%20CLOUD/Cloud%20Database%20Management%20Tasks/" class="md-nav__link">
         
   
   
@@ -1354,7 +1430,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../POSTGRESQL/DBA%20GUIDEBOOK/PERFORMACE%20TUNING%20GUIDE/" class="md-nav__link">
+      <a href="../../POSTGRESQL/DBA%20GUIDEBOOK/PERFORMACE%20TUNING%20GUIDE/" class="md-nav__link">
         
   
   
@@ -1382,7 +1458,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../POSTGRESQL/DBA%20GUIDEBOOK/POSTGRESQL%2014%20DBA%20GUIDEBOOK/" class="md-nav__link">
+      <a href="../../POSTGRESQL/DBA%20GUIDEBOOK/POSTGRESQL%2014%20DBA%20GUIDEBOOK/" class="md-nav__link">
         
   
   
@@ -1465,7 +1541,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../POSTGRESQL/PG%20AUTOTUNE/PostgreSQL_AutoTune_Azure_VM_Scale_Implementation/" class="md-nav__link">
+      <a href="../../POSTGRESQL/PG%20AUTOTUNE/PostgreSQL_AutoTune_Azure_VM_Scale_Implementation/" class="md-nav__link">
         
   
   
@@ -1548,7 +1624,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../POSTGRESQL/PG%20LOAD%20ANALYSIS%20SETUP/PG%20LOAD%20ANALYSIS%20SETUP%20%5BPaaS%5D/" class="md-nav__link">
+      <a href="../../POSTGRESQL/PG%20LOAD%20ANALYSIS%20SETUP/PG%20LOAD%20ANALYSIS%20SETUP%20%5BPaaS%5D/" class="md-nav__link">
         
   
   
@@ -1576,7 +1652,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../POSTGRESQL/PG%20LOAD%20ANALYSIS%20SETUP/PG%20LOAD%20ANALYSIS%20SETUP%20%5BSH%5D/" class="md-nav__link">
+      <a href="../../POSTGRESQL/PG%20LOAD%20ANALYSIS%20SETUP/PG%20LOAD%20ANALYSIS%20SETUP%20%5BSH%5D/" class="md-nav__link">
         
   
   
@@ -1659,7 +1735,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Management%20Runbook/" class="md-nav__link">
+      <a href="../../POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Management%20Runbook/" class="md-nav__link">
         
   
   
@@ -1687,7 +1763,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Technical%20Deployment%20Runbook/" class="md-nav__link">
+      <a href="../../POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Technical%20Deployment%20Runbook/" class="md-nav__link">
         
   
   
@@ -1770,7 +1846,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../POSTGRESQL/PGGDBA/PGGDBA%20MONTHLY%20QUERIES/" class="md-nav__link">
+      <a href="../../POSTGRESQL/PGGDBA/PGGDBA%20MONTHLY%20QUERIES/" class="md-nav__link">
         
   
   
@@ -1798,7 +1874,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../POSTGRESQL/PGGDBA/POSTGRESQL%20QUERIES/" class="md-nav__link">
+      <a href="../../POSTGRESQL/PGGDBA/POSTGRESQL%20QUERIES/" class="md-nav__link">
         
   
   
@@ -1861,33 +1937,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#scenario" class="md-nav__link">
+  <a href="#1-standard-timezone-modification-steps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Scenario
+        1. Standard Timezone Modification Steps
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#solution" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Solution
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Solution">
+    <nav class="md-nav" aria-label="1. Standard Timezone Modification Steps">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#step-1-check-backup-status" class="md-nav__link">
+  <a href="#step-1-list-available-timezones-optional" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 1: Check Backup Status
+        Step 1: List Available Timezones (Optional)
       
     </span>
   </a>
@@ -1895,10 +1960,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#step-2-end-backup-mode" class="md-nav__link">
+  <a href="#step-2-check-current-timezone-settings" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 2: End Backup Mode
+        Step 2: Check Current Timezone Settings
       
     </span>
   </a>
@@ -1906,10 +1971,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#step-3-open-the-database" class="md-nav__link">
+  <a href="#step-3-set-the-new-timezone" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 3: Open the Database
+        Step 3: Set the New Timezone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-verify-the-clock-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Verify the Clock Update
       
     </span>
   </a>
@@ -1918,6 +1994,84 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-critical-bug-lagging-system-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Critical Bug: Lagging System Services
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Critical Bug: Lagging System Services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-diagnostic-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example Diagnostic Log:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-mitigation-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Mitigation Options
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Mitigation Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-a-restart-the-server-recommended-safest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option A: Restart the Server (Recommended &amp; Safest)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-b-restart-services-zero-downtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option B: Restart Services (Zero Downtime)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-final-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Final Verification
+      
+    </span>
+  </a>
   
 </li>
       
@@ -1938,36 +2092,74 @@
 
 
 
-<h1 id="oracle-database-open-issue-ora-10873">Oracle Database Open Issue (ORA-10873)<a class="headerlink" href="#oracle-database-open-issue-ora-10873" title="Permanent link">&para;</a></h1>
-<h2 id="scenario">Scenario<a class="headerlink" href="#scenario" title="Permanent link">&para;</a></h2>
-<p>Error encountered when attempting to open the database after a service interruption.</p>
-<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">open</span><span class="p">;</span>
-
-<span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">open</span>
-<span class="o">*</span>
-<span class="n">ERROR</span><span class="w"> </span><span class="k">at</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span>
-<span class="n">ORA</span><span class="o">-</span><span class="mi">10873</span><span class="p">:</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">needs</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">either</span><span class="w"> </span><span class="n">taken</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">backup</span><span class="w"> </span><span class="k">mode</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">media</span><span class="w"> </span><span class="n">recovered</span>
-<span class="n">ORA</span><span class="o">-</span><span class="mi">01110</span><span class="p">:</span><span class="w"> </span><span class="k">data</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;D:\ORACLE\DATABASE\ORADATA\GINESYS\SYSTEM01.DBF&#39;</span>
+<h1 id="azure-linux-vm-timezone-configuration-guide">Azure Linux VM Timezone Configuration Guide<a class="headerlink" href="#azure-linux-vm-timezone-configuration-guide" title="Permanent link">&para;</a></h1>
+<p>This document outlines the procedure for changing the timezone of Azure Linux VMs from the default UTC to Indian Standard Time (IST - <code>Asia/Kolkata</code>) and mitigating a common bug where system schedulers and logging services lag behind the change.</p>
+<hr />
+<h2 id="1-standard-timezone-modification-steps">1. Standard Timezone Modification Steps<a class="headerlink" href="#1-standard-timezone-modification-steps" title="Permanent link">&para;</a></h2>
+<p>By default, newly provisioned Azure VMs are set to the <strong>UTC</strong> timezone. Follow these steps to change it without requiring a server reboot:</p>
+<h3 id="step-1-list-available-timezones-optional">Step 1: List Available Timezones (Optional)<a class="headerlink" href="#step-1-list-available-timezones-optional" title="Permanent link">&para;</a></h3>
+<p>To verify the exact identifier for your target timezone, you can list the system's available timezones:
+<div class="highlight"><pre><span></span><code>timedatectl<span class="w"> </span>list-timezones<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>Kolkata
+</code></pre></div></p>
+<h3 id="step-2-check-current-timezone-settings">Step 2: Check Current Timezone Settings<a class="headerlink" href="#step-2-check-current-timezone-settings" title="Permanent link">&para;</a></h3>
+<p>View the current active timezone and system clock parameters:
+<div class="highlight"><pre><span></span><code>timedatectl
+</code></pre></div></p>
+<h3 id="step-3-set-the-new-timezone">Step 3: Set the New Timezone<a class="headerlink" href="#step-3-set-the-new-timezone" title="Permanent link">&para;</a></h3>
+<p>Change the system timezone to <code>Asia/Kolkata</code> (IST):
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>timedatectl<span class="w"> </span>set-timezone<span class="w"> </span>Asia/Kolkata
+</code></pre></div></p>
+<h3 id="step-4-verify-the-clock-update">Step 4: Verify the Clock Update<a class="headerlink" href="#step-4-verify-the-clock-update" title="Permanent link">&para;</a></h3>
+<p>Verify the change immediately using the <code>timedatectl</code> or <code>date</code> commands:
+<div class="highlight"><pre><span></span><code>date
 </code></pre></div>
-<h2 id="solution">Solution<a class="headerlink" href="#solution" title="Permanent link">&para;</a></h2>
-<p>This error occurs because the database shut down abnormally while an online backup operation was still in progress, leaving datafiles in backup mode.</p>
-<h3 id="step-1-check-backup-status">Step 1: Check Backup Status<a class="headerlink" href="#step-1-check-backup-status" title="Permanent link">&para;</a></h3>
-<p>Bring the database to the <code>MOUNT</code> stage and check the backup status by querying the <code>V$BACKUP</code> view:</p>
-<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">v$backup</span><span class="p">;</span>
-</code></pre></div>
+<em>Expected Output:</em>
+<code>Fri Aug 14 00:58:30 IST 2026</code> [u will see current timestamp as per your execution time]</p>
+<hr />
+<h2 id="2-critical-bug-lagging-system-services">2. Critical Bug: Lagging System Services<a class="headerlink" href="#2-critical-bug-lagging-system-services" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>[!NOTE]
-An <code>ACTIVE</code> status indicates that a backup is still in progress for the listed datafiles (e.g., datafiles 1, 3, 5, 6), meaning these files are currently locked in backup mode.</p>
+<p>[!WARNING]
+<strong>Issue</strong>: Even though the <code>date</code> command and <code>timedatectl</code> report the correct timezone (IST) immediately, some active background system services (specifically <code>crond</code> and <code>rsyslog</code>) will <strong>not</strong> pick up the change immediately. They will continue executing and logging in the old <strong>UTC</strong> timezone.</p>
+<p><strong>Impact</strong>: This timezone mismatch will break your cron job execution schedules (executing tasks at incorrect times) and desynchronize server audit logs.</p>
 </blockquote>
-<h3 id="step-2-end-backup-mode">Step 2: End Backup Mode<a class="headerlink" href="#step-2-end-backup-mode" title="Permanent link">&para;</a></h3>
-<p>To resolve this problem, take the database out of backup mode by executing the following command:</p>
-<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">END</span><span class="w"> </span><span class="n">BACKUP</span><span class="p">;</span>
+<h3 id="example-diagnostic-log">Example Diagnostic Log:<a class="headerlink" href="#example-diagnostic-log" title="Permanent link">&para;</a></h3>
+<p>Here is an example showing the discrepancy:
+<div class="highlight"><pre><span></span><code><span class="c1"># Check current system date (updated to IST):</span>
+<span class="o">[</span>root@vm-psql-erp-prod-01<span class="w"> </span>~<span class="o">]</span><span class="c1"># date</span>
+Fri<span class="w"> </span>Aug<span class="w"> </span><span class="m">14</span><span class="w"> </span><span class="m">00</span>:58:30<span class="w"> </span>IST<span class="w"> </span><span class="m">2026</span>
+
+<span class="c1"># Check recent cron execution logs (still logging in UTC):</span>
+<span class="o">[</span>root@vm-psql-erp-prod-01<span class="w"> </span>~<span class="o">]</span><span class="c1"># tail -10 /var/log/cron</span>
+Aug<span class="w"> </span><span class="m">13</span><span class="w"> </span><span class="m">19</span>:28:06<span class="w"> </span>vm-psql-erp-prod-01<span class="w"> </span>CROND<span class="o">[</span><span class="m">3499137</span><span class="o">]</span>:<span class="w"> </span><span class="o">(</span>postgres<span class="o">)</span><span class="w"> </span>CMDOUT<span class="w"> </span><span class="o">(</span>Total<span class="w"> </span>Number<span class="w"> </span>of<span class="w"> </span>Transfers:<span class="w"> </span><span class="m">1</span><span class="o">)</span>
+Aug<span class="w"> </span><span class="m">13</span><span class="w"> </span><span class="m">19</span>:28:06<span class="w"> </span>vm-psql-erp-prod-01<span class="w"> </span>CROND<span class="o">[</span><span class="m">3499137</span><span class="o">]</span>:<span class="w"> </span><span class="o">(</span>postgres<span class="o">)</span><span class="w"> </span>CMDOUT<span class="w"> </span><span class="o">(</span>Number<span class="w"> </span>of<span class="w"> </span>File<span class="w"> </span>Transfers<span class="w"> </span>Completed:<span class="w"> </span><span class="m">1</span><span class="o">)</span>
+Aug<span class="w"> </span><span class="m">13</span><span class="w"> </span><span class="m">19</span>:28:06<span class="w"> </span>vm-psql-erp-prod-01<span class="w"> </span>CROND<span class="o">[</span><span class="m">3499137</span><span class="o">]</span>:<span class="w"> </span><span class="o">(</span>postgres<span class="o">)</span><span class="w"> </span>CMDOUT<span class="w"> </span><span class="o">(</span>Number<span class="w"> </span>of<span class="w"> </span>Folder<span class="w"> </span>Transfers<span class="w"> </span>Completed:<span class="w"> </span><span class="m">0</span><span class="o">)</span>
+Aug<span class="w"> </span><span class="m">13</span><span class="w"> </span><span class="m">19</span>:28:06<span class="w"> </span>vm-psql-erp-prod-01<span class="w"> </span>CROND<span class="o">[</span><span class="m">3499137</span><span class="o">]</span>:<span class="w"> </span><span class="o">(</span>postgres<span class="o">)</span><span class="w"> </span>CMDOUT<span class="w"> </span><span class="o">(</span>Number<span class="w"> </span>of<span class="w"> </span>File<span class="w"> </span>Transfers<span class="w"> </span>Failed:<span class="w"> </span><span class="m">0</span><span class="o">)</span>
+Aug<span class="w"> </span><span class="m">13</span><span class="w"> </span><span class="m">19</span>:28:06<span class="w"> </span>vm-psql-erp-prod-01<span class="w"> </span>CROND<span class="o">[</span><span class="m">3499137</span><span class="o">]</span>:<span class="w"> </span><span class="o">(</span>postgres<span class="o">)</span><span class="w"> </span>CMDOUT<span class="w"> </span><span class="o">(</span>Number<span class="w"> </span>of<span class="w"> </span>Folder<span class="w"> </span>Transfers<span class="w"> </span>Failed:<span class="w"> </span><span class="m">0</span><span class="o">)</span>
+Aug<span class="w"> </span><span class="m">13</span><span class="w"> </span><span class="m">19</span>:28:06<span class="w"> </span>vm-psql-erp-prod-01<span class="w"> </span>CROND<span class="o">[</span><span class="m">3499137</span><span class="o">]</span>:<span class="w"> </span><span class="o">(</span>postgres<span class="o">)</span><span class="w"> </span>CMDOUT<span class="w"> </span><span class="o">(</span>Number<span class="w"> </span>of<span class="w"> </span>File<span class="w"> </span>Transfers<span class="w"> </span>Skipped:<span class="w"> </span><span class="m">0</span><span class="o">)</span>
+Aug<span class="w"> </span><span class="m">13</span><span class="w"> </span><span class="m">19</span>:28:06<span class="w"> </span>vm-psql-erp-prod-01<span class="w"> </span>CROND<span class="o">[</span><span class="m">3499137</span><span class="o">]</span>:<span class="w"> </span><span class="o">(</span>postgres<span class="o">)</span><span class="w"> </span>CMDOUT<span class="w"> </span><span class="o">(</span>Number<span class="w"> </span>of<span class="w"> </span>Folder<span class="w"> </span>Transfers<span class="w"> </span>Skipped:<span class="w"> </span><span class="m">0</span><span class="o">)</span>
+Aug<span class="w"> </span><span class="m">13</span><span class="w"> </span><span class="m">19</span>:28:06<span class="w"> </span>vm-psql-erp-prod-01<span class="w"> </span>CROND<span class="o">[</span><span class="m">3499137</span><span class="o">]</span>:<span class="w"> </span><span class="o">(</span>postgres<span class="o">)</span><span class="w"> </span>CMDOUT<span class="w"> </span><span class="o">(</span>Total<span class="w"> </span>Number<span class="w"> </span>of<span class="w"> </span>Bytes<span class="w"> </span>Transferred:<span class="w"> </span><span class="m">159853</span><span class="o">)</span>
+Aug<span class="w"> </span><span class="m">13</span><span class="w"> </span><span class="m">19</span>:28:06<span class="w"> </span>vm-psql-erp-prod-01<span class="w"> </span>CROND<span class="o">[</span><span class="m">3499137</span><span class="o">]</span>:<span class="w"> </span><span class="o">(</span>postgres<span class="o">)</span><span class="w"> </span>CMDOUT<span class="w"> </span><span class="o">(</span>Final<span class="w"> </span>Job<span class="w"> </span>Status:<span class="w"> </span>Completed<span class="o">)</span>
+Aug<span class="w"> </span><span class="m">13</span><span class="w"> </span><span class="m">19</span>:28:06<span class="w"> </span>vm-psql-erp-prod-01<span class="w"> </span>CROND<span class="o">[</span><span class="m">3499137</span><span class="o">]</span>:<span class="w"> </span><span class="o">(</span>postgres<span class="o">)</span><span class="w"> </span>CMDOUT<span class="w"> </span><span class="o">()</span>
 </code></pre></div>
-<p><img alt="Check backup status and end backup" src="../images/oracle-database-open-issue-ora-10873/image-20230907-131027.png" /></p>
-<h3 id="step-3-open-the-database">Step 3: Open the Database<a class="headerlink" href="#step-3-open-the-database" title="Permanent link">&para;</a></h3>
-<p>Once backup mode is disabled, open the database:</p>
-<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">OPEN</span><span class="p">;</span>
+<em>Note that the <code>date</code> command shows August 14th, while the cron log entries are still generated with August 13th timestamps.</em></p>
+<hr />
+<h2 id="3-mitigation-options">3. Mitigation Options<a class="headerlink" href="#3-mitigation-options" title="Permanent link">&para;</a></h2>
+<p>To ensure all background schedulers and logging systems sync with the new timezone, you must apply one of the following two mitigation options:</p>
+<h3 id="option-a-restart-the-server-recommended-safest">Option A: Restart the Server (Recommended &amp; Safest)<a class="headerlink" href="#option-a-restart-the-server-recommended-safest" title="Permanent link">&para;</a></h3>
+<p>If a maintenance window allows, rebooting the VM will guarantee that all system and application services reload and register the new timezone settings:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>reboot
+</code></pre></div></p>
+<h3 id="option-b-restart-services-zero-downtime">Option B: Restart Services (Zero Downtime)<a class="headerlink" href="#option-b-restart-services-zero-downtime" title="Permanent link">&para;</a></h3>
+<p>If you cannot afford a server reboot or database downtime at the moment, execute the following commands as the <code>root</code> user (or with <code>sudo</code>) to restart the cron daemon and logging systems manually:</p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>crond
+sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>rsyslog
 </code></pre></div>
+<hr />
+<h2 id="4-final-verification">4. Final Verification<a class="headerlink" href="#4-final-verification" title="Permanent link">&para;</a></h2>
+<p>Once the services are restarted, verify that the logs are matching the new timezone:
+<div class="highlight"><pre><span></span><code>tail<span class="w"> </span>-10<span class="w"> </span>/var/log/cron
+</code></pre></div>
+All new cron task entries should now print timestamps corresponding with the active <strong>IST</strong> timezone.</p>
 
 
 
@@ -2023,10 +2215,10 @@ An <code>ACTIVE</code> status indicates that a backup is still in progress for t
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
