@@ -390,29 +390,30 @@ Last_IO_Error / Last_SQL_Error blank
 ```
 
 ## Step 12: Prove It End-to-End
--- on source
-INSERT INTO some_db.some_table (...) VALUES (...);
- 
--- on Flexible Server target
-SELECT ... FROM some_db.some_table WHERE ...;
+-- on source insert some data 
+-- on Flexible Server target check the inserted data
 The row should appear on the target, confirming the restored snapshot plus everything replicated since Step 4 correctly stitched into one consistent dataset.
 
 ## Step 13: Cutover
 Platform limitation:
 SET GLOBAL read_only = ON will not be applicable on Azure Flexible Server due to missing superuser privileges. Application downtime must be ensured manually for this step.
 -- on source
+```sql
 SET GLOBAL read_only = ON;
+```
  
 -- confirm zero lag on target, then:
+```sql
 CALL mysql.az_replication_stop;
+```
 
-#### Migrating Users and Grants (Post-Replication Stop)
+## Step 14: Migrating Users and Grants (Post-Replication Stop)
 > [!IMPORTANT]
 > **Why this step is required**: During initial data migration (via MyDumper/MyLoader), the internal `mysql` system schema was skipped because it is already pre-created when the target Azure Database for MySQL Flexible Server is provisioned. However, the `mysql.user` and `mysql.db` tables inside this schema contain all custom database users, passwords, and access grants. 
 >
 > To ensure applications and databases can connect properly, we must manually extract, create, and grant permissions to these users on the target server.
 
-##### 1. Create Baseline Dependency Users
+### 1. Create Baseline Dependency Users
 Some database users are dependent on the `data_manipulator` and `data_reader` baseline roles/users. Therefore, you must create these two baseline users on the target destination server first:
 ```sql
 -- Execute on destination target
@@ -420,7 +421,7 @@ CREATE USER `data_manipulator`@`%` IDENTIFIED WITH 'mysql_native_password' REQUI
 CREATE USER `data_reader`@`%` IDENTIFIED WITH 'mysql_native_password' REQUIRE NONE PASSWORD EXPIRE ACCOUNT LOCK PASSWORD HISTORY DEFAULT PASSWORD REUSE INTERVAL DEFAULT PASSWORD REQUIRE CURRENT DEFAULT;
 ```
 
-##### 2. Generate and Execute User Creation Script
+### 2. Generate and Execute User Creation Script
 Extract the remaining user definitions from the source server (excluding default administrative and system users, as well as the manually created baseline users), then apply them to the target server:
 
 * **On the Source Server (run on the jumpbox to generate `create_users_output1.sql`)**:
@@ -448,7 +449,7 @@ Extract the remaining user definitions from the source server (excluding default
     < /u01/backup/create_users_output1.sql
   ```
 
-##### 3. Generate and Execute User Grants Script
+### 3. Generate and Execute User Grants Script
 Extract the privilege grants for the migrated users from the source server, and execute them on the target server:
 
 * **On the Source Server (run on the jumpbox to generate `show_grants_output1.sql`)**:
@@ -477,7 +478,7 @@ Extract the privilege grants for the migrated users from the source server, and 
     < /u01/backup/show_grants_output1.sql
   ```
 
-##### 4. Verify User Counts on Source and Destination
+### 4. Verify User Counts on Source and Destination
 Run the query below on both the source and target databases to verify that the user migration is complete and counts are equal:
 ```sql
 SELECT count(1) FROM mysql.user WHERE User NOT IN 
@@ -487,11 +488,10 @@ ORDER BY User;
 
 ---
 
-You can opt for data comparison at this time before removing the replication from destination system
-Refer to the below shell script to perform data comparison between source and destination systems.
-CALL mysql.az_replication_remove_master;
-Repoint the application to the Flexible Server target. az_replication_stop and az_replication_remove_master are fully self-service Data-in Replication stored procedures — no backend/support team dependency.
-Cluster Final Comparison Script
+## Step 15: Run Final Cluster Validation
+Before completing the cutover, run the comparison script below to validate data and schema parity between the source and target databases.
+
+### Cluster Final Comparison Script
 ```bash
 #!/bin/bash
 # =============================================================
@@ -1422,6 +1422,15 @@ Consistency point is captured automatically by mydumper in the metadata file —
 Trade-off: the dump itself adds read load to the source for its full duration, since it is not offloaded to a separate replica. Size this against actual data volume and production traffic pattern before using this approach for a real cutover.
 Reconnection uses binlog file + position (not GTID) — requires the Log_File/Pos values to be exact; a mismatch causes duplicate-key errors or data loss.
 ```
+
+## Step 16: Complete Cutover (Remove Replication Master)
+Once the validation script reports `SUCCESS` and you are ready to repoint applications, remove the master replication definition on the destination server and direct application traffic to the new Azure Flexible Server target:
+
+```sql
+CALL mysql.az_replication_remove_master;
+```
+
+Repoint the application to the Flexible Server target. `az_replication_stop` and `az_replication_remove_master` are fully self-service Data-in Replication stored procedures — no backend/support team dependency.
 
 ## Appendix: Additional Reference Queries
 
