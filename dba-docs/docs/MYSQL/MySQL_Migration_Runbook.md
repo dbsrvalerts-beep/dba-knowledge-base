@@ -405,6 +405,88 @@ SET GLOBAL read_only = ON;
  
 -- confirm zero lag on target, then:
 CALL mysql.az_replication_stop;
+
+#### Migrating Users and Grants (Post-Replication Stop)
+> [!IMPORTANT]
+> **Why this step is required**: During initial data migration (via MyDumper/MyLoader), the internal `mysql` system schema was skipped because it is already pre-created when the target Azure Database for MySQL Flexible Server is provisioned. However, the `mysql.user` and `mysql.db` tables inside this schema contain all custom database users, passwords, and access grants. 
+>
+> To ensure applications and databases can connect properly, we must manually extract, create, and grant permissions to these users on the target server.
+
+##### 1. Create Baseline Dependency Users
+Some database users are dependent on the `data_manipulator` and `data_reader` baseline roles/users. Therefore, you must create these two baseline users on the target destination server first:
+```sql
+-- Execute on destination target
+CREATE USER `data_manipulator`@`%` IDENTIFIED WITH 'mysql_native_password' REQUIRE NONE PASSWORD EXPIRE ACCOUNT LOCK PASSWORD HISTORY DEFAULT PASSWORD REUSE INTERVAL DEFAULT PASSWORD REQUIRE CURRENT DEFAULT;
+CREATE USER `data_reader`@`%` IDENTIFIED WITH 'mysql_native_password' REQUIRE NONE PASSWORD EXPIRE ACCOUNT LOCK PASSWORD HISTORY DEFAULT PASSWORD REUSE INTERVAL DEFAULT PASSWORD REQUIRE CURRENT DEFAULT;
+```
+
+##### 2. Generate and Execute User Creation Script
+Extract the remaining user definitions from the source server (excluding default administrative and system users, as well as the manually created baseline users), then apply them to the target server:
+
+* **On the Source Server (run on the jumpbox to generate `create_users_output1.sql`)**:
+  ```bash
+  mysql -h "bt-26-jul-2026.mysql.database.azure.com" \
+    -u "btadmin" \
+    -p'qs$3?j@*CA6!#Dy' \
+    -N -e "SELECT CONCAT('SHOW CREATE USER \`', User, '\`@\`', Host, '\`;') FROM mysql.user WHERE User NOT IN ('btadmin','maxwell','azure_superuser','mysql.infoschema','mysql.session','mysql.sys','data_manipulator','data_reader');" \
+    | mysql -h "bt-26-jul-2026.mysql.database.azure.com" \
+    -u "btadmin" \
+    -p'qs$3?j@*CA6!#Dy' \
+    -N -B \
+    | cut -f2- \
+    | sed 's/$/;/' \
+    > /u01/backup/create_users_output1.sql
+  ```
+
+* **On the Destination Server (run on the jumpbox to import `create_users_output1.sql`)**:
+  ```bash
+  mysql \
+    -h "browntape-03feb2025-staging-mig.mysql.database.azure.com" \
+    -u "btadmin" \
+    -p'qs$3?j@*CA6!#Dy' \
+    -P 3306 \
+    < /u01/backup/create_users_output1.sql
+  ```
+
+##### 3. Generate and Execute User Grants Script
+Extract the privilege grants for the migrated users from the source server, and execute them on the target server:
+
+* **On the Source Server (run on the jumpbox to generate `show_grants_output1.sql`)**:
+  ```bash
+  mysql \
+    -h "bt-26-jul-2026.mysql.database.azure.com" \
+    -u "btadmin" \
+    -p'qs$3?j@*CA6!#Dy' \
+    -N -e "SELECT CONCAT('SHOW GRANTS FOR \`', User, '\`@\`', Host, '\`;') FROM mysql.user WHERE User NOT IN ('btadmin','maxwell','azure_superuser','mysql.infoschema','mysql.session','mysql.sys','data_manipulator','data_reader');" \
+    | mysql \
+    -h "bt-26-jul-2026.mysql.database.azure.com" \
+    -u "btadmin" \
+    -p'qs$3?j@*CA6!#Dy' \
+    -N -B \
+    | sed 's/$/;/' \
+    > /u01/backup/show_grants_output1.sql
+  ```
+
+* **On the Destination Server (run on the jumpbox to import `show_grants_output1.sql`)**:
+  ```bash
+  mysql \
+    -h "browntape-03feb2025-staging-mig.mysql.database.azure.com" \
+    -u "btadmin" \
+    -p'qs$3?j@*CA6!#Dy' \
+    -P 3306 \
+    < /u01/backup/show_grants_output1.sql
+  ```
+
+##### 4. Verify User Counts on Source and Destination
+Run the query below on both the source and target databases to verify that the user migration is complete and counts are equal:
+```sql
+SELECT count(1) FROM mysql.user WHERE User NOT IN 
+('btadmin','maxwell','azure_superuser','mysql.infoschema','mysql.session','mysql.sys')
+ORDER BY User;
+```
+
+---
+
 You can opt for data comparison at this time before removing the replication from destination system
 Refer to the below shell script to perform data comparison between source and destination systems.
 CALL mysql.az_replication_remove_master;
