@@ -2807,8 +2807,86 @@ SET GLOBAL read_only = ON will not be applicable on Azure Flexible Server due to
 -- on source
 SET GLOBAL read_only = ON;</p>
 <p>-- confirm zero lag on target, then:
-CALL mysql.az_replication_stop;
-You can opt for data comparison at this time before removing the replication from destination system
+CALL mysql.az_replication_stop;</p>
+<h4 id="migrating-users-and-grants-post-replication-stop">Migrating Users and Grants (Post-Replication Stop)<a class="headerlink" href="#migrating-users-and-grants-post-replication-stop" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>[!IMPORTANT]
+<strong>Why this step is required</strong>: During initial data migration (via MyDumper/MyLoader), the internal <code>mysql</code> system schema was skipped because it is already pre-created when the target Azure Database for MySQL Flexible Server is provisioned. However, the <code>mysql.user</code> and <code>mysql.db</code> tables inside this schema contain all custom database users, passwords, and access grants. </p>
+<p>To ensure applications and databases can connect properly, we must manually extract, create, and grant permissions to these users on the target server.</p>
+</blockquote>
+<h5 id="1-create-baseline-dependency-users">1. Create Baseline Dependency Users<a class="headerlink" href="#1-create-baseline-dependency-users" title="Permanent link">&para;</a></h5>
+<p>Some database users are dependent on the <code>data_manipulator</code> and <code>data_reader</code> baseline roles/users. Therefore, you must create these two baseline users on the target destination server first:
+<div class="highlight"><pre><span></span><code><span class="c1">-- Execute on destination target</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="o">`</span><span class="n">data_manipulator</span><span class="o">`@`%`</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="s1">&#39;mysql_native_password&#39;</span><span class="w"> </span><span class="n">REQUIRE</span><span class="w"> </span><span class="k">NONE</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="n">EXPIRE</span><span class="w"> </span><span class="n">ACCOUNT</span><span class="w"> </span><span class="k">LOCK</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="n">HISTORY</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="n">REUSE</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="n">REQUIRE</span><span class="w"> </span><span class="k">CURRENT</span><span class="w"> </span><span class="k">DEFAULT</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="o">`</span><span class="n">data_reader</span><span class="o">`@`%`</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="s1">&#39;mysql_native_password&#39;</span><span class="w"> </span><span class="n">REQUIRE</span><span class="w"> </span><span class="k">NONE</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="n">EXPIRE</span><span class="w"> </span><span class="n">ACCOUNT</span><span class="w"> </span><span class="k">LOCK</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="n">HISTORY</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="n">REUSE</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="n">REQUIRE</span><span class="w"> </span><span class="k">CURRENT</span><span class="w"> </span><span class="k">DEFAULT</span><span class="p">;</span>
+</code></pre></div></p>
+<h5 id="2-generate-and-execute-user-creation-script">2. Generate and Execute User Creation Script<a class="headerlink" href="#2-generate-and-execute-user-creation-script" title="Permanent link">&para;</a></h5>
+<p>Extract the remaining user definitions from the source server (excluding default administrative and system users, as well as the manually created baseline users), then apply them to the target server:</p>
+<ul>
+<li>
+<p><strong>On the Source Server (run on the jumpbox to generate <code>create_users_output1.sql</code>)</strong>:
+  <div class="highlight"><pre><span></span><code>mysql<span class="w"> </span>-h<span class="w"> </span><span class="s2">&quot;bt-26-jul-2026.mysql.database.azure.com&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-u<span class="w"> </span><span class="s2">&quot;btadmin&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-p<span class="s1">&#39;qs$3?j@*CA6!#Dy&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-N<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;SELECT CONCAT(&#39;SHOW CREATE USER \`&#39;, User, &#39;\`@\`&#39;, Host, &#39;\`;&#39;) FROM mysql.user WHERE User NOT IN (&#39;btadmin&#39;,&#39;maxwell&#39;,&#39;azure_superuser&#39;,&#39;mysql.infoschema&#39;,&#39;mysql.session&#39;,&#39;mysql.sys&#39;,&#39;data_manipulator&#39;,&#39;data_reader&#39;);&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>mysql<span class="w"> </span>-h<span class="w"> </span><span class="s2">&quot;bt-26-jul-2026.mysql.database.azure.com&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-u<span class="w"> </span><span class="s2">&quot;btadmin&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-p<span class="s1">&#39;qs$3?j@*CA6!#Dy&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-N<span class="w"> </span>-B<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-f2-<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s/$/;/&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>&gt;<span class="w"> </span>/u01/backup/create_users_output1.sql
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>On the Destination Server (run on the jumpbox to import <code>create_users_output1.sql</code>)</strong>:
+  <div class="highlight"><pre><span></span><code>mysql<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-h<span class="w"> </span><span class="s2">&quot;browntape-03feb2025-staging-mig.mysql.database.azure.com&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-u<span class="w"> </span><span class="s2">&quot;btadmin&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-p<span class="s1">&#39;qs$3?j@*CA6!#Dy&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-P<span class="w"> </span><span class="m">3306</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>&lt;<span class="w"> </span>/u01/backup/create_users_output1.sql
+</code></pre></div></p>
+</li>
+</ul>
+<h5 id="3-generate-and-execute-user-grants-script">3. Generate and Execute User Grants Script<a class="headerlink" href="#3-generate-and-execute-user-grants-script" title="Permanent link">&para;</a></h5>
+<p>Extract the privilege grants for the migrated users from the source server, and execute them on the target server:</p>
+<ul>
+<li>
+<p><strong>On the Source Server (run on the jumpbox to generate <code>show_grants_output1.sql</code>)</strong>:
+  <div class="highlight"><pre><span></span><code>mysql<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-h<span class="w"> </span><span class="s2">&quot;bt-26-jul-2026.mysql.database.azure.com&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-u<span class="w"> </span><span class="s2">&quot;btadmin&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-p<span class="s1">&#39;qs$3?j@*CA6!#Dy&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-N<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;SELECT CONCAT(&#39;SHOW GRANTS FOR \`&#39;, User, &#39;\`@\`&#39;, Host, &#39;\`;&#39;) FROM mysql.user WHERE User NOT IN (&#39;btadmin&#39;,&#39;maxwell&#39;,&#39;azure_superuser&#39;,&#39;mysql.infoschema&#39;,&#39;mysql.session&#39;,&#39;mysql.sys&#39;,&#39;data_manipulator&#39;,&#39;data_reader&#39;);&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>mysql<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-h<span class="w"> </span><span class="s2">&quot;bt-26-jul-2026.mysql.database.azure.com&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-u<span class="w"> </span><span class="s2">&quot;btadmin&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-p<span class="s1">&#39;qs$3?j@*CA6!#Dy&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-N<span class="w"> </span>-B<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s/$/;/&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>&gt;<span class="w"> </span>/u01/backup/show_grants_output1.sql
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>On the Destination Server (run on the jumpbox to import <code>show_grants_output1.sql</code>)</strong>:
+  <div class="highlight"><pre><span></span><code>mysql<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-h<span class="w"> </span><span class="s2">&quot;browntape-03feb2025-staging-mig.mysql.database.azure.com&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-u<span class="w"> </span><span class="s2">&quot;btadmin&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-p<span class="s1">&#39;qs$3?j@*CA6!#Dy&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-P<span class="w"> </span><span class="m">3306</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>&lt;<span class="w"> </span>/u01/backup/show_grants_output1.sql
+</code></pre></div></p>
+</li>
+</ul>
+<h5 id="4-verify-user-counts-on-source-and-destination">4. Verify User Counts on Source and Destination<a class="headerlink" href="#4-verify-user-counts-on-source-and-destination" title="Permanent link">&para;</a></h5>
+<p>Run the query below on both the source and target databases to verify that the user migration is complete and counts are equal:
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">mysql</span><span class="p">.</span><span class="k">user</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">User</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span>
+<span class="p">(</span><span class="s1">&#39;btadmin&#39;</span><span class="p">,</span><span class="s1">&#39;maxwell&#39;</span><span class="p">,</span><span class="s1">&#39;azure_superuser&#39;</span><span class="p">,</span><span class="s1">&#39;mysql.infoschema&#39;</span><span class="p">,</span><span class="s1">&#39;mysql.session&#39;</span><span class="p">,</span><span class="s1">&#39;mysql.sys&#39;</span><span class="p">)</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">User</span><span class="p">;</span>
+</code></pre></div></p>
+<hr />
+<p>You can opt for data comparison at this time before removing the replication from destination system
 Refer to the below shell script to perform data comparison between source and destination systems.
 CALL mysql.az_replication_remove_master;
 Repoint the application to the Flexible Server target. az_replication_stop and az_replication_remove_master are fully self-service Data-in Replication stored procedures — no backend/support team dependency.
