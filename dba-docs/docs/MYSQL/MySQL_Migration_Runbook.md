@@ -409,76 +409,199 @@ CALL mysql.az_replication_stop;
 
 ## Step 14: Migrating Users and Grants (Post-Replication Stop)
 > [!IMPORTANT]
-> **Why this step is required**: During initial data migration (via MyDumper/MyLoader), the internal `mysql` system schema was skipped because it is already pre-created when the target Azure Database for MySQL Flexible Server is provisioned. However, the `mysql.user` and `mysql.db` tables inside this schema contain all custom database users, passwords, and access grants. 
+> **Why this step is required**: During initial data migration (via MyDumper/MyLoader), the internal `mysql` system schema was skipped because it is already pre-created when the target Azure Database for MySQL Flexible Server is provisioned. However, the `mysql.user`, `mysql.db`, and `mysql.role_edges` tables inside this schema contain all custom database users, roles, passwords, and access grants. 
 >
-> To ensure applications and databases can connect properly, we must manually extract, create, and grant permissions to these users on the target server.
+> To ensure applications and databases can connect properly, we must manually extract, create, and grant permissions to these users and roles on the target server.
 
-### 1. Create Baseline Dependency Users
-Some database users are dependent on the `data_manipulator` and `data_reader` baseline roles/users. Therefore, you must create these two baseline users on the target destination server first:
-```sql
--- Execute on destination target
-CREATE USER `data_manipulator`@`%` IDENTIFIED WITH 'mysql_native_password' REQUIRE NONE PASSWORD EXPIRE ACCOUNT LOCK PASSWORD HISTORY DEFAULT PASSWORD REUSE INTERVAL DEFAULT PASSWORD REQUIRE CURRENT DEFAULT;
-CREATE USER `data_reader`@`%` IDENTIFIED WITH 'mysql_native_password' REQUIRE NONE PASSWORD EXPIRE ACCOUNT LOCK PASSWORD HISTORY DEFAULT PASSWORD REUSE INTERVAL DEFAULT PASSWORD REQUIRE CURRENT DEFAULT;
-```
+### 1. Extract and Create Roles on Destination
+Extract role definitions from the source server and apply them to the target server:
 
-### 2. Generate and Execute User Creation Script
-Extract the remaining user definitions from the source server (excluding default administrative and system users, as well as the manually created baseline users), then apply them to the target server:
-
-* **On the Source Server (run on the jumpbox to generate `create_users_output1.sql`)**:
+* **Generate Roles Creation Script on Source**:
   ```bash
-  mysql -h "bt-26-jul-2026.mysql.database.azure.com" \
+  mysql \
+    -h "bt-26-jul-2026.mysql.database.azure.com" \
     -u "btadmin" \
     -p'qs$3?j@*CA6!#Dy' \
-    -N -e "SELECT CONCAT('SHOW CREATE USER \`', User, '\`@\`', Host, '\`;') FROM mysql.user WHERE User NOT IN ('btadmin','maxwell','azure_superuser','mysql.infoschema','mysql.session','mysql.sys','data_manipulator','data_reader');" \
-    | mysql -h "bt-26-jul-2026.mysql.database.azure.com" \
-    -u "btadmin" \
-    -p'qs$3?j@*CA6!#Dy' \
-    -N -B \
-    | cut -f2- \
-    | sed 's/$/;/' \
-    > /u01/backup/create_users_output1.sql
+    -P 3306 \
+    -N -B -e "
+  SELECT DISTINCT CONCAT(
+    'CREATE ROLE IF NOT EXISTS \`',
+    FROM_USER,
+    '\`@\`',
+    FROM_HOST,
+    '\`;'
+  )
+  FROM mysql.role_edges
+  WHERE FROM_USER NOT IN (
+    'btadmin',
+    'maxwell',
+    'azure_superuser',
+    'mysql.infoschema',
+    'mysql.session',
+    'mysql.sys'
+  );
+  " > /u01/backup/01_create_roles.sql
   ```
 
-* **On the Destination Server (run on the jumpbox to import `create_users_output1.sql`)**:
+* **Execute Roles Creation on Destination**:
   ```bash
   mysql \
     -h "browntape-03feb2025-staging-mig.mysql.database.azure.com" \
     -u "btadmin" \
     -p'qs$3?j@*CA6!#Dy' \
     -P 3306 \
-    < /u01/backup/create_users_output1.sql
+    < /u01/backup/01_create_roles.sql
   ```
 
-### 3. Generate and Execute User Grants Script
-Extract the privilege grants for the migrated users from the source server, and execute them on the target server:
+### 2. Extract and Grant Role Privileges on Destination
+Extract privilege grants for these roles from the source server and execute them on the target server:
 
-* **On the Source Server (run on the jumpbox to generate `show_grants_output1.sql`)**:
+* **Generate Role Privileges Script on Source**:
   ```bash
   mysql \
     -h "bt-26-jul-2026.mysql.database.azure.com" \
     -u "btadmin" \
     -p'qs$3?j@*CA6!#Dy' \
-    -N -e "SELECT CONCAT('SHOW GRANTS FOR \`', User, '\`@\`', Host, '\`;') FROM mysql.user WHERE User NOT IN ('btadmin','maxwell','azure_superuser','mysql.infoschema','mysql.session','mysql.sys','data_manipulator','data_reader');" \
-    | mysql \
+    -P 3306 \
+    -N -B -e "
+  SELECT DISTINCT CONCAT(
+    'SHOW GRANTS FOR \`',
+    FROM_USER,
+    '\`@\`',
+    FROM_HOST,
+    '\`;'
+  )
+  FROM mysql.role_edges
+  WHERE FROM_USER NOT IN (
+    'btadmin',
+    'maxwell',
+    'azure_superuser',
+    'mysql.infoschema',
+    'mysql.session',
+    'mysql.sys'
+  );
+  " | \
+  mysql \
     -h "bt-26-jul-2026.mysql.database.azure.com" \
     -u "btadmin" \
     -p'qs$3?j@*CA6!#Dy' \
-    -N -B \
-    | sed 's/$/;/' \
-    > /u01/backup/show_grants_output1.sql
+    -P 3306 \
+    -N -B | \
+  sed 's/$/;/' \
+  > /u01/backup/02_role_privileges.sql
   ```
 
-* **On the Destination Server (run on the jumpbox to import `show_grants_output1.sql`)**:
+* **Execute Role Privileges on Destination**:
   ```bash
   mysql \
     -h "browntape-03feb2025-staging-mig.mysql.database.azure.com" \
     -u "btadmin" \
     -p'qs$3?j@*CA6!#Dy' \
     -P 3306 \
-    < /u01/backup/show_grants_output1.sql
+    < /u01/backup/02_role_privileges.sql
   ```
 
-### 4. Verify User Counts on Source and Destination
+### 3. Extract and Create Users on Destination
+Extract user accounts from the source server (excluding default administrative and system users, as well as the manually created baseline users) and apply them to the target server:
+
+* **Generate User Creation Script on Source**:
+  ```bash
+  mysql \
+    -h "bt-26-jul-2026.mysql.database.azure.com" \
+    -u "btadmin" \
+    -p'qs$3?j@*CA6!#Dy' \
+    -P 3306 \
+    -N -B -e "
+  SELECT CONCAT(
+    'SHOW CREATE USER \`',
+    User,
+    '\`@\`',
+    Host,
+    '\`;'
+  )
+  FROM mysql.user
+  WHERE User NOT IN (
+    'btadmin',
+    'maxwell',
+    'azure_superuser',
+    'mysql.infoschema',
+    'mysql.session',
+    'mysql.sys',
+    'data_manipulator',
+    'data_reader'
+  );
+  " | \
+  mysql \
+    -h "bt-26-jul-2026.mysql.database.azure.com" \
+    -u "btadmin" \
+    -p'qs$3?j@*CA6!#Dy' \
+    -P 3306 \
+    -N -B | \
+  cut -f2- | \
+  sed 's/$/;/' \
+  > /u01/backup/03_create_users.sql
+  ```
+
+* **Execute User Creation on Destination**:
+  ```bash
+  mysql \
+    -h "browntape-03feb2025-staging-mig.mysql.database.azure.com" \
+    -u "btadmin" \
+    -p'qs$3?j@*CA6!#Dy' \
+    -P 3306 \
+    < /u01/backup/03_create_users.sql
+  ```
+
+### 4. Extract and Grant User Privileges on Destination
+Extract user privilege grants from the source server and execute them on the target server:
+
+* **Generate User Grants Script on Source**:
+  ```bash
+  mysql \
+    -h "bt-26-jul-2026.mysql.database.azure.com" \
+    -u "btadmin" \
+    -p'qs$3?j@*CA6!#Dy' \
+    -P 3306 \
+    -N -B -e "
+  SELECT CONCAT(
+    'SHOW GRANTS FOR \`',
+    User,
+    '\`@\`',
+    Host,
+    '\`;'
+  )
+  FROM mysql.user
+  WHERE User NOT IN (
+    'btadmin',
+    'maxwell',
+    'azure_superuser',
+    'mysql.infoschema',
+    'mysql.session',
+    'mysql.sys',
+    'data_manipulator',
+    'data_reader'
+  );
+  " | \
+  mysql \
+    -h "bt-26-jul-2026.mysql.database.azure.com" \
+    -u "btadmin" \
+    -p'qs$3?j@*CA6!#Dy' \
+    -P 3306 \
+    -N -B \
+  > /u01/backup/04_user_grants.sql
+  ```
+
+* **Execute User Grants on Destination**:
+  ```bash
+  mysql \
+    -h "browntape-03feb2025-staging-mig.mysql.database.azure.com" \
+    -u "btadmin" \
+    -p'qs$3?j@*CA6!#Dy' \
+    -P 3306 \
+    < /u01/backup/04_user_grants.sql
+  ```
+
+### 5. Verify User Counts on Source and Destination
 Run the query below on both the source and target databases to verify that the user migration is complete and counts are equal:
 ```sql
 SELECT count(1) FROM mysql.user WHERE User NOT IN 
