@@ -28,7 +28,7 @@
 
 > [!NOTE]
 > **Example Extension Only:**
-> The step-by-step commands below use the `pg_proctab` extension as a reference example. If you are building a different extension, you must substitute the download URLs, directory names, makefile patches (if any), and SQL/extension names with your own extension's source code and requirements.
+> The step-by-step commands below use the `pg_proctab` extension as a reference example. If you are building a different extension, you must substitute the download URLs, directory names, makefile patches (if any), SQL/extension names, and **any extension-specific prerequisite packages/libraries** with your own extension's source code and requirements.
 
 ---
 
