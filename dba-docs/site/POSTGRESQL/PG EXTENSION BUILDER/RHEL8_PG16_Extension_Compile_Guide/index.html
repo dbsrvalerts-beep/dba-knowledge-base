@@ -1556,10 +1556,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#step-3-install-compiler-pg-16-development-packages" class="md-nav__link">
+  <a href="#1-do-i-need-to-install-it-in-every-single-database" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 3: Install Compiler &amp; PG 16 Development Packages
+        1. Do I need to install it in every single database?
       
     </span>
   </a>
@@ -1590,10 +1590,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#step-1-download-extract-source-code" class="md-nav__link">
+  <a href="#step-1-install-development-tools-only-on-compilationbuild-host" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 1: Download &amp; Extract Source Code
+        Step 1: Install Development Tools (Only on Compilation/Build Host)
       
     </span>
   </a>
@@ -1601,10 +1601,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#step-2-fix-makefile-wildcard-duplication-if-applicable" class="md-nav__link">
+  <a href="#step-2-download-extract-source-code" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 2: Fix Makefile Wildcard Duplication (If applicable)
+        Step 2: Download &amp; Extract Source Code
       
     </span>
   </a>
@@ -1612,10 +1612,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#step-3-build-the-extension" class="md-nav__link">
+  <a href="#step-3-fix-makefile-wildcard-duplication-if-applicable" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 3: Build the Extension
+        Step 3: Fix Makefile Wildcard Duplication (If applicable)
       
     </span>
   </a>
@@ -1623,10 +1623,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#step-4-install-the-compiled-extension" class="md-nav__link">
+  <a href="#step-4-build-the-extension" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 4: Install the Compiled Extension
+        Step 4: Build the Extension
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-install-the-compiled-extension" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Install the Compiled Extension
       
     </span>
   </a>
@@ -2083,10 +2094,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#step-3-install-compiler-pg-16-development-packages" class="md-nav__link">
+  <a href="#1-do-i-need-to-install-it-in-every-single-database" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 3: Install Compiler &amp; PG 16 Development Packages
+        1. Do I need to install it in every single database?
       
     </span>
   </a>
@@ -2117,10 +2128,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#step-1-download-extract-source-code" class="md-nav__link">
+  <a href="#step-1-install-development-tools-only-on-compilationbuild-host" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 1: Download &amp; Extract Source Code
+        Step 1: Install Development Tools (Only on Compilation/Build Host)
       
     </span>
   </a>
@@ -2128,10 +2139,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#step-2-fix-makefile-wildcard-duplication-if-applicable" class="md-nav__link">
+  <a href="#step-2-download-extract-source-code" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 2: Fix Makefile Wildcard Duplication (If applicable)
+        Step 2: Download &amp; Extract Source Code
       
     </span>
   </a>
@@ -2139,10 +2150,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#step-3-build-the-extension" class="md-nav__link">
+  <a href="#step-3-fix-makefile-wildcard-duplication-if-applicable" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 3: Build the Extension
+        Step 3: Fix Makefile Wildcard Duplication (If applicable)
       
     </span>
   </a>
@@ -2150,10 +2161,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#step-4-install-the-compiled-extension" class="md-nav__link">
+  <a href="#step-4-build-the-extension" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 4: Install the Compiled Extension
+        Step 4: Build the Extension
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-install-the-compiled-extension" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Install the Compiled Extension
       
     </span>
   </a>
@@ -2247,11 +2269,12 @@
 <p><strong>Target OS:</strong> Red Hat Enterprise Linux 8 / AlmaLinux 8 / Rocky Linux 8<br />
 <strong>PostgreSQL Version:</strong> 16<br />
 <strong>Extension:</strong> <code>pg_proctab</code> (or similar PGXS-based extensions built from source)</p>
-<h6 id="not-required">#NOT REQUIRED<a class="headerlink" href="#not-required" title="Permanent link">&para;</a></h6>
-<h3 id="step-3-install-compiler-pg-16-development-packages">Step 3: Install Compiler &amp; PG 16 Development Packages<a class="headerlink" href="#step-3-install-compiler-pg-16-development-packages" title="Permanent link">&para;</a></h3>
-<p>Install development tools (<code>gcc</code>, <code>make</code>, <code>redhat-rpm-config</code>) and the PostgreSQL 16 headers:
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>gcc<span class="w"> </span>make<span class="w"> </span>postgresql16-devel<span class="w"> </span>redhat-rpm-config<span class="w"> </span>wget<span class="w"> </span>unzip
-</code></pre></div></p>
+<hr />
+<h2 id="1-do-i-need-to-install-it-in-every-single-database">1. Do I need to install it in every single database?<a class="headerlink" href="#1-do-i-need-to-install-it-in-every-single-database" title="Permanent link">&para;</a></h2>
+<p><strong>Yes.</strong> In PostgreSQL, extensions are installed on a strictly <strong>per-database</strong> basis. The extension's functions will only be queryable inside the specific databases where you have executed <code>CREATE EXTENSION;</code>.</p>
+<blockquote>
+<p><strong>Pro-Tip for Future Databases:</strong> If you want the extension to be automatically available in every brand new database you create in the future, you should install it into the <code>template1</code> database. PostgreSQL uses <code>template1</code> as the default blueprint for all new databases.</p>
+</blockquote>
 <hr />
 <h2 id="2-portability-compilation-environment-notes">2. Portability &amp; Compilation Environment Notes<a class="headerlink" href="#2-portability-compilation-environment-notes" title="Permanent link">&para;</a></h2>
 <blockquote>
@@ -2267,18 +2290,22 @@ If you are compiling the extension on a Development/Build server to avoid instal
    - <strong>Control (<code>.control</code>) and SQL (<code>.sql</code>) files</strong>: to <code>/usr/pgsql-16/share/extension/</code></p>
 <p>[!NOTE]
 <strong>Example Extension Only:</strong>
-The step-by-step commands below use the <code>pg_proctab</code> extension as a reference example. If you are building a different extension, you must substitute the download URLs, directory names, makefile patches (if any), and SQL/extension names with your own extension's source code and requirements.</p>
+The step-by-step commands below use the <code>pg_proctab</code> extension as a reference example. If you are building a different extension, you must substitute the download URLs, directory names, makefile patches (if any), SQL/extension names, and <strong>any extension-specific prerequisite packages/libraries</strong> with your own extension's source code and requirements.</p>
 </blockquote>
 <hr />
 <h2 id="3-end-to-end-compile-and-install-steps">3. End-to-End Compile and Install Steps<a class="headerlink" href="#3-end-to-end-compile-and-install-steps" title="Permanent link">&para;</a></h2>
 <p>We use the example of <code>pg_proctab</code> below, but this workflow applies to any PGXS-supported extension.</p>
-<h3 id="step-1-download-extract-source-code">Step 1: Download &amp; Extract Source Code<a class="headerlink" href="#step-1-download-extract-source-code" title="Permanent link">&para;</a></h3>
+<h3 id="step-1-install-development-tools-only-on-compilationbuild-host">Step 1: Install Development Tools (Only on Compilation/Build Host)<a class="headerlink" href="#step-1-install-development-tools-only-on-compilationbuild-host" title="Permanent link">&para;</a></h3>
+<p>Install compiler tools and the specific PostgreSQL 16 development headers needed to build the extension. <em>(If you are using a development/build server, run this step on that server only.)</em>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>gcc<span class="w"> </span>make<span class="w"> </span>postgresql16-devel<span class="w"> </span>redhat-rpm-config<span class="w"> </span>wget<span class="w"> </span>unzip
+</code></pre></div></p>
+<h3 id="step-2-download-extract-source-code">Step 2: Download &amp; Extract Source Code<a class="headerlink" href="#step-2-download-extract-source-code" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>/tmp
 wget<span class="w"> </span>https://github.com/markwkm/pg_proctab/archive/refs/heads/master.zip<span class="w"> </span>-O<span class="w"> </span>pg_proctab-main.zip
 unzip<span class="w"> </span>pg_proctab-main.zip
 <span class="nb">cd</span><span class="w"> </span>pg_proctab-master
 </code></pre></div>
-<h3 id="step-2-fix-makefile-wildcard-duplication-if-applicable">Step 2: Fix Makefile Wildcard Duplication (If applicable)<a class="headerlink" href="#step-2-fix-makefile-wildcard-duplication-if-applicable" title="Permanent link">&para;</a></h3>
+<h3 id="step-3-fix-makefile-wildcard-duplication-if-applicable">Step 3: Fix Makefile Wildcard Duplication (If applicable)<a class="headerlink" href="#step-3-fix-makefile-wildcard-duplication-if-applicable" title="Permanent link">&para;</a></h3>
 <p>For <code>pg_proctab</code> specifically, apply a patch to prevent file duplication errors in the Makefile target:</p>
 <blockquote>
 <p>[!NOTE]
@@ -2286,11 +2313,11 @@ This patch is specific to <code>pg_proctab</code> to resolve a bug where the Mak
 </blockquote>
 <div class="highlight"><pre><span></span><code>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s|DATA = \$(wildcard sql/\*--\*.sql) sql/\$(EXTENSION)--\$(EXTVERSION).sql|DATA = \$(sort \$(wildcard sql/\*--\*.sql) sql/\$(EXTENSION)--\$(EXTVERSION).sql)|&#39;</span><span class="w"> </span>Makefile
 </code></pre></div>
-<h3 id="step-3-build-the-extension">Step 3: Build the Extension<a class="headerlink" href="#step-3-build-the-extension" title="Permanent link">&para;</a></h3>
+<h3 id="step-4-build-the-extension">Step 4: Build the Extension<a class="headerlink" href="#step-4-build-the-extension" title="Permanent link">&para;</a></h3>
 <p>Compile the extension by pointing <code>PG_CONFIG</code> explicitly to the PostgreSQL 16 executable:
 <div class="highlight"><pre><span></span><code>make<span class="w"> </span><span class="nv">USE_PGXS</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">PG_CONFIG</span><span class="o">=</span>/usr/pgsql-16/bin/pg_config
 </code></pre></div></p>
-<h3 id="step-4-install-the-compiled-extension">Step 4: Install the Compiled Extension<a class="headerlink" href="#step-4-install-the-compiled-extension" title="Permanent link">&para;</a></h3>
+<h3 id="step-5-install-the-compiled-extension">Step 5: Install the Compiled Extension<a class="headerlink" href="#step-5-install-the-compiled-extension" title="Permanent link">&para;</a></h3>
 <p>Install the resulting <code>.so</code> file, <code>.control</code> file, and <code>.sql</code> script files into the PostgreSQL 16 directories:
 <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>make<span class="w"> </span>install<span class="w"> </span><span class="nv">USE_PGXS</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">PG_CONFIG</span><span class="o">=</span>/usr/pgsql-16/bin/pg_config
 </code></pre></div></p>

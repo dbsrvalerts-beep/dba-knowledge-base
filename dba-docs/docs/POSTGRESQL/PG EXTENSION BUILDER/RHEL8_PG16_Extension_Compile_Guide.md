@@ -75,9 +75,13 @@ sudo make install USE_PGXS=1 PG_CONFIG=/usr/pgsql-16/bin/pg_config
 
 ###output files will be:###
 /usr/pgsql-16/lib/pg_proctab.so
+
 /usr/pgsql-16/share/extension/pg_proctab.control
+
 /usr/pgsql-16/share/extension/pg_proctab--0.0.13.sql
+
 /usr/pgsql-16/share/extension/pg_proctab--0.0.9--0.0.10.sql
+
 /usr/pgsql-16/share/extension/pg_proctab--0.0.5--0.0.6.sql
 
 

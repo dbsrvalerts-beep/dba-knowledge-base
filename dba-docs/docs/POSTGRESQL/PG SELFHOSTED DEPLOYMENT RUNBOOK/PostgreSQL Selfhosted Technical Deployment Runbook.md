@@ -35,11 +35,43 @@ Before starting the deployment, verify the following prerequisites are met:
 
 ### 3.1 Cron Job Suspend (Pre-configuration Safety)
 To prevent legacy background scripts from executing during VM setup:
-1. Log in as the `root` and `postgres` user.
-2. Comment/Disable existing cron jobs by commenting them out:
+1. Log in to the server.
+2. Open the `postgres` user's crontab editor:
    ```bash
-   crontab -e
-   # Prepend a '#' character to all active cron entries
+   sudo -u postgres crontab -e
+   ```
+3. Update and comment out/disable the `postgres` user's cron entries as follows:
+   - **Update the verification script entry**:
+     Change from: `*/1 * * * * sh /u01/Gsl/ARCNAME.sh`
+     To: `# */1 * * * * sh /u01/Gsl/ARCNAME.sh >/dev/null 2>&1`
+   - **Update the times of these 3 backup/housekeeping cron entries**:
+     ```cron
+     # 05 00 * * * sh /u01/Gsl/BASEBKP.sh
+     # 01 00 * * * sh /u01/Gsl/DELBASEBKP.sh
+     # 00 23 * * * sh /u01/Gsl/DEL_AZCOPY_LOG.sh
+     ```
+   - **Append and comment out these new load analysis monitoring setup cron entries**:
+     ```cron
+     # */1 * * * * /u01/Gsl/collect_stmts.sh >> /u01/backup/logs/pgmon/stmts.log 2>&1
+     # * * * * * /u01/Gsl/collect_sessions.sh >> /u01/backup/logs/pgmon/sessions.log 2>&1
+     # * * * * * sleep 30; /u01/Gsl/collect_sessions.sh >> /u01/backup/logs/pgmon/sessions.log 2>&1
+     # * * * * * /u01/Gsl/collect_db.sh >> /u01/backup/logs/pgmon/db.log 2>&1
+     # 33 18 * * * /u01/Gsl/purge_monitoring.sh >> /u01/backup/logs/pgmon/purge.log 2>&1
+     ```
+4. **Final Suspended Crontab Look**:
+   Verify that the `postgres` user's crontab matches this state:
+   ```cron
+   # */1 * * * * sh /u01/Gsl/ARCNAME.sh >/dev/null 2>&1
+   # 05 00 * * * sh /u01/Gsl/BASEBKP.sh
+   # 01 00 * * * sh /u01/Gsl/DELBASEBKP.sh
+   # 00 23 * * * sh /u01/Gsl/DEL_AZCOPY_LOG.sh
+   # */30 * * * * sh /u01/Gsl/Disk_usage.sh
+   # */30 * * * * sh /u01/Gsl/LONG_QUERY.sh
+   # */1 * * * * /u01/Gsl/collect_stmts.sh >> /u01/backup/logs/pgmon/stmts.log 2>&1
+   # * * * * * /u01/Gsl/collect_sessions.sh >> /u01/backup/logs/pgmon/sessions.log 2>&1
+   # * * * * * sleep 30; /u01/Gsl/collect_sessions.sh >> /u01/backup/logs/pgmon/sessions.log 2>&1
+   # * * * * * /u01/Gsl/collect_db.sh >> /u01/backup/logs/pgmon/db.log 2>&1
+   # 33 18 * * * /u01/Gsl/purge_monitoring.sh >> /u01/backup/logs/pgmon/purge.log 2>&1
    ```
 
 ### 3.2 LVM Partition Extension (PGDATA Disk Expansion)
@@ -76,7 +108,29 @@ To extend the volume hosting `/u01/pgsql/<version>/data` to use newly allocated 
    hostnamectl set-hostname vm-erpdb-psql-prod-09 [set hostname without system reboot]
    ```
 
-### 3.4 Cleanup of Legacy PostgreSQL Directories
+### 3.4 System Timezone Configuration
+Configure the system timezone to Asia/Kolkata (IST):
+
+1. Check Current Timezone Settings:
+   View the current active timezone and system clock parameters:
+   ```bash
+   timedatectl
+   ```
+
+2. Set the New Timezone:
+   Change the system timezone to Asia/Kolkata (IST):
+   ```bash
+   sudo timedatectl set-timezone Asia/Kolkata
+   ```
+
+3. Verify the Clock Update:
+   Verify the change immediately using the `timedatectl` or `date` commands:
+   ```bash
+   date
+   ```
+   *Expected Output: Thu Aug 20 13:06:02 IST 2026 (You will see the current timestamp as per your execution time)*
+
+### 3.5 Cleanup of Legacy PostgreSQL Directories
 If the VM template was provisioned with an older PostgreSQL version (e.g., version 16), remove its leftover data directory to avoid conflicts:
 ```bash
 # Navigate to the postgres home directory
@@ -346,7 +400,41 @@ sudo chown -R postgres:postgres /u01
 
 ## 5. Phase 3: Database Engine Parameter Tuning
 
-### 5.1 Theory: Key Parameter Tuning in PostgreSQL
+### 5.1 Downloading & Installing Extension Packages (YUM/RPM)
+> [!IMPORTANT]
+> PostgreSQL configuration parameters like `shared_preload_libraries` require the corresponding extension library files to exist on the disk *before* changing the parameters. Changing these parameters without pre-installing the extensions will cause the PostgreSQL database engine to fail to start. Therefore, we download and install the required extensions first.
+
+Run the following commands as the `root` user to fetch matching versions of extensions from the PGDG Yum repository:
+
+```bash
+# 1. Download extension packages (Ensure version matches PostgreSQL main engine)
+wget https://ftp.postgresql.org/pub/repos/yum/<version>/redhat/rhel-8-x86_64/pgaudit_<version>-17.1-1PGDG.rhel8.x86_64.rpm
+wget https://ftp.postgresql.org/pub/repos/yum/<version>/redhat/rhel-8-x86_64/pg_cron_<version>-1.6.7-1PGDG.rhel8.x86_64.rpm
+wget https://download.postgresql.org/pub/repos/yum/<version>/redhat/rhel-8-x86_64/pg_stat_kcache_<version>-2.3.1-1PGDG.rhel8.x86_64.rpm
+
+# 2. Local RPM package installation
+sudo rpm -ivh pgaudit_<version>-17.1-1PGDG.rhel8.x86_64.rpm
+sudo rpm -ivh pg_cron_<version>-1.6.7-1PGDG.rhel8.x86_64.rpm
+sudo rpm -ivh pg_stat_kcache_<version>-2.3.1-1PGDG.rhel8.x86_64.rpm
+```
+
+#### Non-Standard Extension Setup (`pg_proctab`)
+For the `pg_proctab` extension, there is no standard RPM package download. Instead, it must be compiled from source on a compatible build environment.
+1. Refer to the [RHEL8_PG17_Extension_Compile_Guide.md](file:///d:/Github%20Development/dba-knowledge-base/dba-docs/docs/POSTGRESQL/PG%20EXTENSION%20BUILDER/RHEL8_PG17_Extension_Compile_Guide.md) runbook for instructions on compiling the extension.
+2. Once compiled, copy the resulting files to the destination server and place them in the following paths (replace `<version>` with the actual PostgreSQL version e.g., `16` or `17`):
+   - `/usr/pgsql-<version>/lib/pg_proctab.so`
+   - `/usr/pgsql-<version>/share/extension/pg_proctab.control`
+   - `/usr/pgsql-<version>/share/extension/pg_proctab--0.0.13.sql`
+   - `/usr/pgsql-<version>/share/extension/pg_proctab--0.0.9--0.0.10.sql`
+   - `/usr/pgsql-<version>/share/extension/pg_proctab--0.0.5--0.0.6.sql`
+3. Grant `755` permissions to the copied `.so` library file:
+   ```bash
+   sudo chmod 755 /usr/pgsql-<version>/lib/pg_proctab.so
+   ```
+> [!NOTE]
+> Alternatively, you can copy these pre-compiled extension files from an existing PostgreSQL 17 production server and place them in the exact same path locations in your newly deployed server. Make sure to apply the same `chmod 755` permission to the `.so` file.
+
+### 5.2 Theory: Key Parameter Tuning in PostgreSQL
 By default, PostgreSQL installation configurations are very conservative (designed for low-resource environments). For large, high-capacity databases, adjusting parameters optimizes CPU cycle distribution, memory usage, write traffic, and vacuum behavior:
 
 - **Memory Settings (`work_mem`, `shared_buffers`):** Determines the maximum RAM allocated for internal sort operations, hash tables, and database caching.
@@ -366,35 +454,41 @@ The following table outlines the total parameters modified in this deployment an
 | `max_worker_processes`                  | `pgautotune.sh`      | Upper limit on concurrent background workers.              |
 | `max_parallel_workers`                  | `pgautotune.sh`      | Limit on active parallel query workers.                    |
 | `max_parallel_workers_per_gather`       | `pgautotune.sh`      | Parallel workers allowed per execution query.              |
-| `track_io_timing`                       | Manual (Section 5.2) | Collect stats on read/write latency.                       |
-| `track_activity_query_size`             | Manual (Section 5.2) | Allocate larger buffer for SQL query logging.              |
-| `temp_buffers`                          | Manual (Section 5.2) | Cache size allocated for temporary tables.                 |
-| `effective_io_concurrency`              | Manual (Section 5.2) | Number of concurrent disk operations (for SSDs).           |
-| `random_page_cost`                      | Manual (Section 5.2) | Relative index disk read cost estimate.                    |
-| `seq_page_cost`                         | Manual (Section 5.2) | Relative sequential page access cost.                      |
-| `autovacuum_max_workers`                | Manual (Section 5.2) | Max concurrent autovacuum processes.                       |
-| `autovacuum_vacuum_scale_factor`        | Manual (Section 5.2) | Clean dead tuples after % rows change limit.               |
-| `autovacuum_vacuum_insert_scale_factor` | Manual (Section 5.2) | Clean tables after % inserts limit.                        |
-| `autovacuum_vacuum_cost_delay`          | Manual (Section 5.2) | Sleep time limit when vacuum reaches limit.                |
-| `log_autovacuum_min_duration`           | Manual (Section 5.2) | Log autovacuum runs taking longer than limit.              |
-| `max_prepared_transactions`             | Manual (Section 5.2) | Support for concurrent prepared/2PC transactions.          |
-| `max_connections`                       | Manual (Section 5.2) | Concurrent connection capacity limit.                      |
-| `shared_preload_libraries`              | Manual (Section 5.2) | Preload extension libraries.                               |
-| `cron.database_name`                    | Manual (Section 5.2) | Target database for pg_cron extension.                     |
-| `cron.timezone`                         | Manual (Section 5.2) | Timezone configured for pg_cron jobs.                      |
-| `cron.max_running_jobs`                 | Manual (Section 5.2) | Maximum concurrent pg_cron jobs allowed.                   |
-| `wal_level`                             | Manual (Section 5.2) | Enable CDC logical replication streams.                    |
-| `max_replication_slots`                 | Manual (Section 5.2) | Concurrent replication stream connections limit.           |
-| `max_wal_senders`                       | Manual (Section 5.2) | Senders running parallel logical transactions.             |
-| `sync_replication_slots`                | Manual (Section 5.2) | Sync replication slot details across restarts.             |
-| `min_wal_size` / `max_wal_size`         | Manual (Section 5.2) | Sizing limits for WAL segments.                            |
+| `track_io_timing`                       | Manual (Section 5.3) | Collect stats on read/write latency.                       |
+| `compute_query_id`                     | Manual (Section 5.3) | Calculate query identifiers (required for pg_stat_statements).|
+| `track_activity_query_size`             | Manual (Section 5.3) | Allocate larger buffer for SQL query logging.              |
+| `temp_buffers`                          | Manual (Section 5.3) | Cache size allocated for temporary tables.                 |
+| `effective_io_concurrency`              | Manual (Section 5.3) | Number of concurrent disk operations (for SSDs).           |
+| `random_page_cost`                      | Manual (Section 5.3) | Relative index disk read cost estimate.                    |
+| `seq_page_cost`                         | Manual (Section 5.3) | Relative sequential page access cost.                      |
+| `autovacuum_max_workers`                | Manual (Section 5.3) | Max concurrent autovacuum processes.                       |
+| `autovacuum_vacuum_scale_factor`        | Manual (Section 5.3) | Clean dead tuples after % rows change limit.               |
+| `autovacuum_vacuum_insert_scale_factor` | Manual (Section 5.3) | Clean tables after % inserts limit.                        |
+| `autovacuum_vacuum_cost_delay`          | Manual (Section 5.3) | Sleep time limit when vacuum reaches limit.                |
+| `log_autovacuum_min_duration`           | Manual (Section 5.3) | Log autovacuum runs taking longer than limit.              |
+| `max_prepared_transactions`             | Manual (Section 5.3) | Support for concurrent prepared/2PC transactions.          |
+| `max_connections`                       | Manual (Section 5.3) | Concurrent connection capacity limit.                      |
+| `shared_preload_libraries`              | Manual (Section 5.3) | Preload extension libraries.                               |
+| `cron.database_name`                    | Manual (Section 5.3) | Target database for pg_cron extension.                     |
+| `cron.timezone`                         | Manual (Section 5.3) | Timezone configured for pg_cron jobs.                      |
+| `cron.max_running_jobs`                 | Manual (Section 5.3) | Maximum concurrent pg_cron jobs allowed.                   |
+| `wal_level`                             | Manual (Section 5.3) | Enable CDC logical replication streams.                    |
+| `max_replication_slots`                 | Manual (Section 5.3) | Concurrent replication stream connections limit.           |
+| `max_wal_senders`                       | Manual (Section 5.3) | Senders running parallel logical transactions.             |
+| `sync_replication_slots`                | Manual (Section 5.3) | Sync replication slot details across restarts.             |
+| `min_wal_size` / `max_wal_size`         | Manual (Section 5.3) | Sizing limits for WAL segments.                            |
 | `archive_mode`                          | Post-Migration       | Enable continuous WAL archiving for PITR.                  |
 | `archive_command`                       | Post-Migration       | Shell command (`BLOB.sh`) to transfer WAL segments.        |
 | `archive_timeout`                       | Post-Migration       | Force WAL rotation after timeout (120s).                   |
+| `pg_stat_statements.track`             | Manual (Section 5.3 - Bottom of postgresql.conf) | Control which statements are tracked (top/all/none).       |
+| `pg_stat_statements.track_planning`    | Manual (Section 5.3 - Bottom of postgresql.conf) | Enable tracking of query planning duration.                |
+| `pg_stat_statements.max`               | Manual (Section 5.3 - Bottom of postgresql.conf) | Maximum number of statements tracked.                      |
+| `pg_stat_statements.save`              | Manual (Section 5.3 - Bottom of postgresql.conf) | Save statement statistics across server restarts.          |
+| `pg_stat_statements.track_utility`     | Manual (Section 5.3 - Bottom of postgresql.conf) | Track utility commands (like DDL) in statistics.           |
 
 > **Note:** Point-in-Time Recovery (PITR) parameters (`archive_mode`, `archive_command`, and `archive_timeout`) are documented here for completeness, but they must be **manually enabled post-migration** to avoid heavy archiving operations during the initial bulk data migration.
 
-### 5.2 Modifying parameters in `postgresql.conf`
+### 5.3 Modifying parameters in `postgresql.conf`
 Open the PostgreSQL configuration file:
 ```bash
 sudo vi $PGDATA/postgresql.conf
@@ -404,6 +498,7 @@ Update or append the following values:
 ```ini
 # --- Performance & Resource Configurations ---
 track_io_timing = on                    # Collect stats on read/write latency
+compute_query_id = on                   # Calculate query identifiers (required for pg_stat_statements)
 track_activity_query_size = 102400       # Allocate larger buffer for SQL query logging
 temp_buffers = '1GB'                    # Cache size allocated for temporary tables
 effective_io_concurrency = 100          # Number of concurrent disk operations (for SSDs)
@@ -422,7 +517,7 @@ max_prepared_transactions = 1750        # Support up to 1750 concurrent prepared
 max_connections = 5000                   # Concurrent connection capacity limit
 
 # --- Extensions preloading ---
-shared_preload_libraries = 'pg_cron,pgaudit,pg_stat_statements'
+shared_preload_libraries = 'pg_cron,pgaudit,pg_stat_statements,pg_proctab,pg_stat_kcache'
 
 # --- pg_cron Extension Settings ---
 cron.database_name = 'postgres'
@@ -443,7 +538,17 @@ max_wal_size = '10GB'
  archive_mode = on
  archive_command = '/u01/Gsl/BLOB.sh %p %f'
  archive_timeout = 120
+
+# --- pg_stat_statements Configurations ---
+pg_stat_statements.track = top
+pg_stat_statements.track_planning = on
+pg_stat_statements.max = 5000
+pg_stat_statements.save = on
+pg_stat_statements.track_utility = on
 ```
+
+> [!NOTE]
+> Add the `pg_stat_statements` configurations block shown above to the very bottom of your `postgresql.conf` configuration file.
 
 Restart the PostgreSQL service to apply the values:
 ```bash
@@ -452,27 +557,15 @@ sudo systemctl restart postgresql-<version>
 
 ---
 
-## 6. Phase 4: PostgreSQL Extensions Installation
+## 6. Phase 4: PostgreSQL Extensions Setup
 
 ### 6.1 Theoretical Overview of Selected Extensions
 - **pg_cron:** A cron job scheduler that runs directly inside the database, enabling `VACUUM` scheduling or operational SQL tasks.
 - **pg_stat_statements:** Tracks runtime statistics of all queries run on the database (essential for database performance diagnostics).
 - **pgaudit:** Provides structured logging of select operations (DML/DDL) for security auditing.
+- **pg_stat_kcache:** Gathers statistics about physical I/O and CPU usage of queries.
 
-### 6.2 Step 1: Downloading & Installing packages (YUM/RPM) [it will be available with template]
-Run the following commands as the `root` user to fetch matching versions of extensions from the PGDG Yum repository:
-
-```bash
-# 1. Download extension packages (Ensure version matches PostgreSQL main engine)
-wget https://ftp.postgresql.org/pub/repos/yum/<version>/redhat/rhel-8-x86_64/pgaudit_<version>-17.1-1PGDG.rhel8.x86_64.rpm
-wget https://ftp.postgresql.org/pub/repos/yum/<version>/redhat/rhel-8-x86_64/pg_cron_<version>-1.6.7-1PGDG.rhel8.x86_64.rpm
-
-# 2. Local RPM package installation
-sudo rpm -ivh pgaudit_<version>-17.1-1PGDG.rhel8.x86_64.rpm
-sudo rpm -ivh pg_cron_<version>-1.6.7-1PGDG.rhel8.x86_64.rpm
-```
-
-### 6.3 Step 2: Creating Extensions inside Database
+### 6.2 Creating Extensions inside Database
 Log in to PostgreSQL using the `psql` console as a superuser:
 ```bash
 psql -U postgres -d postgres
@@ -490,6 +583,8 @@ CREATE EXTENSION PGAUDIT;
 CREATE EXTENSION PGCRYPTO;
 CREATE EXTENSION PGSTATTUPLE;        
 CREATE EXTENSION POSTGRES_FDW;
+CREATE EXTENSION PG_STAT_KCACHE;
+CREATE EXTENSION PG_PROCTAB;
 
 alter role postgres with password 'postgres';
 ```
@@ -513,6 +608,7 @@ mkdir -p /u01/backup/logs/list_delete_selfhosted
 mkdir -p /u01/backup/logs/long_query
 mkdir -p /u01/backup/logs/AZCOPY_DEL
 mkdir -p /u01/backup/logs/MONITOR_AGENT
+mkdir -p /u01/backup/logs/pgmon
 mkdir -p /u01/backup/arc_list
 mkdir -p /u01/backup/PG
 ```
@@ -603,7 +699,7 @@ start_time_human=$(date '+%Y-%m-%d %H:%M:%S')
 echo "Starting Pg_basebackup at $start_time_human" >> "$PG_BASEBACKUP_LOG/pg_basebackup_${MYDATE}_${MYTIME}.log"
 echo "Running pg_basebackup command..." >> "$PG_BASEBACKUP_LOG/pg_basebackup_${MYDATE}_${MYTIME}.log"
 
-$POSTGRESQL_BIN/pg_basebackup -D "/u01/backup/PG/$MYDATE" -Ft -z -P -Xs >> "$PG_BASEBACKUP_LOG/pg_basebackup_${MYDATE}_${MYTIME}.log" 2>&1
+$POSTGRESQL_BIN/pg_basebackup -D "/u01/backup/PG/$MYDATE" -Ft -Z server-zstd:9 -P -Xs >> "$PG_BASEBACKUP_LOG/pg_basebackup_${MYDATE}_${MYTIME}.log" 2>&1
 
 end_time=$(date +%s)
 end_time_human=$(date '+%Y-%m-%d %H:%M:%S')
@@ -711,8 +807,8 @@ while IFS= read -r file; do
     pg_command="select pg_split_walfile_name('$file');"
     output=$(psql -U postgres -d postgres -t -c "$pg_command")
 
-    file_creation_time_utc=$(date -u '+%Y-%m-%d %H:%M:%S')
-    file_creation_time_ist=$(date -d "$file_creation_time_utc UTC +5 hours 30 minutes" '+%Y-%m-%d %H:%M:%S')
+    file_creation_time_utc=$(TZ='UTC' date '+%Y-%m-%d %H:%M:%S')
+    file_creation_time_ist=$(TZ='Asia/Kolkata' date '+%Y-%m-%d %H:%M:%S')
 
     echo "[$file_creation_time_utc UTC | $file_creation_time_ist IST] $file || $output" >> "$log_file"
 done <<< "$files"
@@ -842,6 +938,317 @@ echo "===================================================="
 sudo chmod +x /u01/Gsl/DEL_MONITOR_AGENT.sh
 ```
 
+#### Script 8: Statements Monitoring Collection (`/u01/Gsl/collect_stmts.sh`)
+**Purpose:** Collect statement snapshot metrics using `pg_stat_statements` and `pg_stat_kcache` and load them into database.
+```bash
+vi /u01/Gsl/collect_stmts.sh
+```
+```bash
+#!/bin/bash
+
+PSQL="psql -h localhost -U postgres -v ON_ERROR_STOP=1"
+
+$PSQL <<'SQL'
+INSERT INTO monitoring.stmt_snapshots (
+    dbname, query_id, query_text, calls, total_exec_time, mean_exec_time,
+    rows, shared_blks_hit, shared_blks_read, temp_blks_written, wal_bytes,
+    blk_read_time, blk_write_time, cpu_ms_est,
+    cpu_user_ms, cpu_sys_ms, cpu_total_ms,
+    phys_read_bytes, phys_write_bytes, exec_minflts, exec_majflts
+)
+SELECT
+    d.datname,
+    s.queryid,
+    s.query,
+    s.calls,
+    s.total_exec_time,
+    s.mean_exec_time,
+    s.rows,
+    s.shared_blks_hit,
+    s.shared_blks_read,
+    s.temp_blks_written,
+    s.wal_bytes,
+    s.blk_read_time,
+    s.blk_write_time,
+    s.total_exec_time - s.blk_read_time - s.blk_write_time,
+    k.exec_user_time*1000,
+    k.exec_system_time*1000,
+    (k.exec_user_time+k.exec_system_time)*1000,
+    k.exec_reads,
+    k.exec_writes,
+    k.exec_minflts,
+    k.exec_majflts
+FROM pg_stat_statements s
+JOIN pg_database d
+ON d.oid=s.dbid
+LEFT JOIN pg_stat_kcache() k
+ON k.queryid=s.queryid
+AND k.dbid=s.dbid
+AND k.userid=s.userid
+AND k.top IS TRUE
+WHERE s.calls>0;
+SQL
+```
+```bash
+chmod 777 /u01/Gsl/collect_stmts.sh
+```
+
+#### Script 9: Session & Process Monitoring Collection (`/u01/Gsl/collect_sessions.sh`)
+**Purpose:** Collect active sessions, process resource details, and lock statuses.
+```bash
+vi /u01/Gsl/collect_sessions.sh
+```
+```bash
+#!/bin/bash
+
+PSQL="psql -h localhost -U postgres -v ON_ERROR_STOP=1"
+
+$PSQL <<'SQL'
+
+INSERT INTO monitoring.session_snapshots
+(pid,dbname,application_name,state,wait_event_type,wait_event,
+query_start,duration_secs,query_id)
+SELECT
+pid,
+datname,
+application_name,
+state,
+wait_event_type,
+wait_event,
+query_start,
+EXTRACT(EPOCH FROM (NOW()-query_start)),
+query_id
+FROM pg_stat_activity
+WHERE state='active'
+AND pid<>pg_backend_pid();
+
+INSERT INTO monitoring.process_snapshots
+(application_name,dbname,pid,comm,fullcomm,state,ppid,pgrp,
+session,tty_nr,tpgid,flags,minflt,cminflt,majflt,cmajflt,
+utime,stime,cutime,cstime,priority,nice,num_threads,
+itrealvalue,starttime,vsize,rss,exit_signal,processor,
+rt_priority,policy,delayacct_blkio_ticks,uid,username,
+rchar,wchar,syscr,syscw,reads,writes,cwrites)
+SELECT
+COALESCE(NULLIF(sa.application_name,''),
+CASE WHEN sa.pid IS NULL THEN pt.fullcomm ELSE 'unknown' END),
+sa.datname,
+pt.*
+FROM pg_proctab() pt
+LEFT JOIN pg_stat_activity sa
+ON sa.pid=pt.pid
+WHERE pt.username='postgres';
+
+INSERT INTO monitoring.lock_snapshots
+(waiting_pid,waiting_app,blocking_pid,blocking_app,
+lock_type,relation,wait_secs)
+SELECT
+w.pid,
+w.application_name,
+b.pid,
+b.application_name,
+lw.locktype,
+c.relname,
+EXTRACT(EPOCH FROM (NOW()-w.query_start))
+FROM pg_stat_activity w
+JOIN pg_locks lw
+ON lw.pid=w.pid
+AND NOT lw.granted
+JOIN pg_locks lb
+ON lb.locktype=lw.locktype
+AND lb.granted
+AND lb.relation IS NOT DISTINCT FROM lw.relation
+JOIN pg_stat_activity b
+ON b.pid=lb.pid
+LEFT JOIN pg_class c
+ON c.oid=lw.relation
+WHERE w.wait_event_type='Lock';
+
+SQL
+```
+```bash
+chmod 777 /u01/Gsl/collect_sessions.sh
+```
+
+#### Script 10: Database-Level Stats Collection (`/u01/Gsl/collect_db.sh`)
+**Purpose:** Collect database transaction commits, rollbacks, and block hits/reads metrics.
+```bash
+vi /u01/Gsl/collect_db.sh
+```
+```bash
+#!/bin/bash
+
+PSQL="psql -h localhost -U postgres -v ON_ERROR_STOP=1"
+
+$PSQL <<'SQL'
+INSERT INTO monitoring.db_snapshots
+(dbname,numbackends,xact_commit,xact_rollback,
+blks_hit,blks_read,tup_returned,tup_fetched)
+
+SELECT
+datname,
+numbackends,
+xact_commit,
+xact_rollback,
+blks_hit,
+blks_read,
+tup_returned,
+tup_fetched
+FROM pg_stat_database
+WHERE datname NOT IN ('template0','template1');
+SQL
+```
+```bash
+chmod 777 /u01/Gsl/collect_db.sh
+```
+
+#### Script 11: Monitoring Logs Purge (`/u01/Gsl/purge_monitoring.sh`)
+**Purpose:** Purge snapshots data older than 2 days and clean tables to reclaim space.
+```bash
+vi /u01/Gsl/purge_monitoring.sh
+```
+```bash
+#!/bin/bash
+
+PSQL="psql -h localhost -U postgres -v ON_ERROR_STOP=1"
+
+$PSQL <<'SQL'
+
+DELETE FROM monitoring.stmt_snapshots
+WHERE captured_at < NOW() - INTERVAL '2 days';
+
+DELETE FROM monitoring.session_snapshots
+WHERE captured_at < NOW() - INTERVAL '2 days';
+
+DELETE FROM monitoring.process_snapshots
+WHERE captured_at < NOW() - INTERVAL '2 days';
+
+DELETE FROM monitoring.lock_snapshots
+WHERE captured_at < NOW() - INTERVAL '2 days';
+
+DELETE FROM monitoring.db_snapshots
+WHERE captured_at < NOW() - INTERVAL '2 days';
+
+VACUUM FULL monitoring.stmt_snapshots;
+VACUUM FULL monitoring.session_snapshots;
+VACUUM FULL monitoring.process_snapshots;
+VACUUM FULL monitoring.lock_snapshots;
+VACUUM FULL monitoring.db_snapshots;
+
+SQL
+```
+```bash
+chmod 777 /u01/Gsl/purge_monitoring.sh
+```
+
+### 7.4 Database Load Monitoring Tables Setup
+To store metrics gathered by the load monitoring scripts, set up the monitoring schema and tracking tables in the destination database.
+1. Log in with the `postgres` user to the `postgres` database:
+   ```bash
+   psql -U postgres -d postgres
+   ```
+2. Execute the following SQL DDL statements:
+   ```sql
+   CREATE SCHEMA IF NOT EXISTS monitoring;
+
+   CREATE TABLE IF NOT EXISTS monitoring.stmt_snapshots (
+       id BIGSERIAL PRIMARY KEY,
+       captured_at TIMESTAMPTZ DEFAULT NOW(),
+       dbname TEXT,
+       query_id BIGINT,
+       query_text TEXT,
+       calls BIGINT,
+       total_exec_time DOUBLE PRECISION, -- wall-clock ms
+       mean_exec_time DOUBLE PRECISION,
+       rows BIGINT,
+       shared_blks_hit BIGINT,
+       shared_blks_read BIGINT,
+       temp_blks_written BIGINT,
+       wal_bytes BIGINT,
+       -- DB Head columns (pg_stat_statements + track_io_timing)
+       blk_read_time DOUBLE PRECISION, -- ms waiting on block reads
+       blk_write_time DOUBLE PRECISION, -- ms waiting on block writes
+       cpu_ms_est DOUBLE PRECISION, -- total_exec_time - blk_read - blk_write (ESTIMATE)
+       -- pg_stat_kcache columns (REAL CPU + physical disk)
+       cpu_user_ms DOUBLE PRECISION, -- real user CPU (ms)
+       cpu_sys_ms DOUBLE PRECISION, -- real kernel CPU (ms)
+       cpu_total_ms DOUBLE PRECISION, -- real total CPU (ms)
+       phys_read_bytes BIGINT, -- actual disk bytes read
+       phys_write_bytes BIGINT, -- actual disk bytes written
+       exec_minflts BIGINT, -- minor page faults
+       exec_majflts BIGINT -- major page faults (memory pressure)
+   );
+
+   CREATE INDEX IF NOT EXISTS idx_stmt_snap_captured_at ON monitoring.stmt_snapshots (captured_at);
+   CREATE INDEX IF NOT EXISTS idx_stmt_snap_query_id ON monitoring.stmt_snapshots (query_id);
+
+   CREATE TABLE IF NOT EXISTS monitoring.session_snapshots (
+       id BIGSERIAL PRIMARY KEY,
+       captured_at TIMESTAMPTZ DEFAULT NOW(),
+       pid INT,
+       dbname TEXT,
+       application_name TEXT,
+       state TEXT,
+       wait_event_type TEXT,
+       wait_event TEXT,
+       query_start TIMESTAMPTZ,
+       duration_secs DOUBLE PRECISION,
+       query_id BIGINT -- NEW (DB Head request)
+   );
+
+   CREATE INDEX IF NOT EXISTS idx_session_snap_captured_at ON monitoring.session_snapshots (captured_at);
+   CREATE INDEX IF NOT EXISTS idx_session_snap_query_id ON monitoring.session_snapshots (query_id);
+
+   CREATE TABLE IF NOT EXISTS monitoring.process_snapshots (
+       id BIGSERIAL PRIMARY KEY,
+       captured_at TIMESTAMPTZ DEFAULT NOW(),
+       application_name TEXT,
+       dbname TEXT,
+       pid INT, comm TEXT, fullcomm TEXT, state TEXT, ppid INT, pgrp INT,
+       session INT, tty_nr INT, tpgid INT, flags BIGINT,
+       minflt BIGINT, cminflt BIGINT, majflt BIGINT, cmajflt BIGINT,
+       utime BIGINT, stime BIGINT, cutime BIGINT, cstime BIGINT,
+       priority BIGINT, nice BIGINT, num_threads BIGINT, itrealvalue BIGINT,
+       starttime BIGINT, vsize BIGINT, rss BIGINT,
+       exit_signal INT, processor INT, rt_priority INT, policy INT,
+       delayacct_blkio_ticks BIGINT, uid BIGINT, username TEXT,
+       rchar BIGINT, wchar BIGINT, syscr BIGINT, syscw BIGINT,
+       reads BIGINT, writes BIGINT, cwrites BIGINT
+   );
+
+   CREATE INDEX IF NOT EXISTS idx_process_snap_captured_app ON monitoring.process_snapshots (captured_at, application_name);
+   CREATE INDEX IF NOT EXISTS idx_process_snap_pid ON monitoring.process_snapshots (pid);
+
+   CREATE TABLE IF NOT EXISTS monitoring.lock_snapshots (
+       id BIGSERIAL PRIMARY KEY,
+       captured_at TIMESTAMPTZ DEFAULT NOW(),
+       waiting_pid INT,
+       waiting_app TEXT,
+       blocking_pid INT,
+       blocking_app TEXT,
+       lock_type TEXT,
+       relation TEXT,
+       wait_secs DOUBLE PRECISION
+   );
+
+   CREATE INDEX IF NOT EXISTS idx_lock_snap_captured_at ON monitoring.lock_snapshots (captured_at);
+
+   CREATE TABLE IF NOT EXISTS monitoring.db_snapshots (
+       id BIGSERIAL PRIMARY KEY,
+       captured_at TIMESTAMPTZ DEFAULT NOW(),
+       dbname TEXT,
+       numbackends INT,
+       xact_commit BIGINT,
+       xact_rollback BIGINT,
+       blks_hit BIGINT,
+       blks_read BIGINT,
+       tup_returned BIGINT,
+       tup_fetched BIGINT
+   );
+
+   CREATE INDEX IF NOT EXISTS idx_db_snap_captured_dbname ON monitoring.db_snapshots (captured_at, dbname);
+   ```
+
 ---
 
 ## 8. Phase 6: Automated Operations Setup (Cron Jobs)
@@ -855,23 +1262,37 @@ sudo -u postgres crontab -e
 ```
 Insert the following schedule entries (uncomment when deployment goes active):
 ```cron
-# Trigger database backup every evening at 18:35 (6:35 PM)
-35 18 * * * sh /u01/Gsl/BASEBKP.sh
+# Trigger database backup every day at 00:05 (12:05 AM)
+05 00 * * * sh /u01/Gsl/BASEBKP.sh
 
-# Run local backup housekeeping cleanups at 18:31 (6:31 PM)
-31 18 * * * sh /u01/Gsl/DELBASEBKP.sh
+# Run local backup housekeeping cleanups at 00:01 (12:01 AM)
+01 00 * * * sh /u01/Gsl/DELBASEBKP.sh
 
 # Run active long query diagnostics execution every 30 minutes
 */30 * * * * sh /u01/Gsl/LONG_QUERY.sh
 
 # Run verification of remote archived files against postgres database state every minute
-*/1 * * * * sh /u01/Gsl/ARCNAME.sh
+*/1 * * * * sh /u01/Gsl/ARCNAME.sh >/dev/null 2>&1
 
-# Purge old AzCopy logs every night at 20:00 (8:00 PM)
-00 20 * * * sh /u01/Gsl/DEL_AZCOPY_LOG.sh
+# Purge old AzCopy logs every night at 23:00 (11:00 PM)
+00 23 * * * sh /u01/Gsl/DEL_AZCOPY_LOG.sh
 
 # Track storage and disk spaces every 30 minutes
 */30 * * * * sh /u01/Gsl/Disk_usage.sh
+
+# --- Load Analysis Monitoring Setup ---
+# Collect statements statistics every minute
+*/1 * * * * /u01/Gsl/collect_stmts.sh >> /u01/backup/logs/pgmon/stmts.log 2>&1
+
+# Collect session details every minute (run at 0s and 30s offsets)
+* * * * * /u01/Gsl/collect_sessions.sh >> /u01/backup/logs/pgmon/sessions.log 2>&1
+* * * * * sleep 30; /u01/Gsl/collect_sessions.sh >> /u01/backup/logs/pgmon/sessions.log 2>&1
+
+# Collect database-level stats every minute
+* * * * * /u01/Gsl/collect_db.sh >> /u01/backup/logs/pgmon/db.log 2>&1
+
+# Purge old monitoring log files daily at 18:33 (6:33 PM)
+33 18 * * * /u01/Gsl/purge_monitoring.sh >> /u01/backup/logs/pgmon/purge.log 2>&1
 ```
 
 ### 8.2 Root User Crontab Setup
@@ -899,11 +1320,27 @@ sudo systemctl status node_exporter
 ```
 
 ### 9.2 Verify PostgreSQL Exporter
-Ensure the PostgreSQL Exporter service (for database-level metrics) is active:
-```bash
-sudo systemctl status postgres_exporter
-# Output should show "active (running)"
-```
+1. Ensure the PostgreSQL Exporter service (for database-level metrics) is active:
+   ```bash
+   sudo systemctl status postgres_exporter
+   # Output should show "active (running)"
+   ```
+
+2. Check if the `postgres_exporter` database user exists in the database.
+   Log in to the `postgres` database using the `postgres` user:
+   ```bash
+   psql -U postgres -d postgres
+   ```
+   Check for the user:
+   ```sql
+   SELECT usename FROM pg_catalog.pg_user WHERE usename = 'postgres_exporter';
+   ```
+
+3. If the user does not exist, create the `postgres_exporter` user and grant execution privileges on `pg_ls_waldir()`:
+   ```sql
+   CREATE USER postgres_exporter WITH PASSWORD 'Ginesys@01';
+   GRANT EXECUTE ON FUNCTION pg_ls_waldir() TO postgres_exporter;
+   ```
 
 ### 9.3 Verify Prometheus Service
 Ensure the Prometheus time-series database is active:
