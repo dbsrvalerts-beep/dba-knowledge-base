@@ -1718,6 +1718,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../PostgreSQL%20New%20Selfhosted%20Checklist%20Tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    New Self-Hosted PostgreSQL Instance — Onboarding Checklist
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../PostgreSQL%20Selfhosted%20Management%20Runbook/" class="md-nav__link">
         
   
@@ -3747,6 +3775,9 @@ mkdir<span class="w"> </span>-p<span class="w"> </span>/u01/backup/logs/long_que
 mkdir<span class="w"> </span>-p<span class="w"> </span>/u01/backup/logs/AZCOPY_DEL
 mkdir<span class="w"> </span>-p<span class="w"> </span>/u01/backup/logs/MONITOR_AGENT
 mkdir<span class="w"> </span>-p<span class="w"> </span>/u01/backup/logs/pgmon
+mkdir<span class="w"> </span>-p<span class="w"> </span>/u01/backup/logs/Disk_Usage
+mkdir<span class="w"> </span>-p<span class="w"> </span>/u01/backup/logs/autotune
+mkdir<span class="w"> </span>-p<span class="w"> </span>/u01/backup/logs/autotune/config_bakup
 mkdir<span class="w"> </span>-p<span class="w"> </span>/u01/backup/arc_list
 mkdir<span class="w"> </span>-p<span class="w"> </span>/u01/backup/PG
 </code></pre></div></p>
@@ -4230,6 +4261,127 @@ du<span class="w"> </span>-sh<span class="w"> </span><span class="s2">&quot;</sp
 <span class="s">SQL</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>chmod<span class="w"> </span><span class="m">777</span><span class="w"> </span>/u01/Gsl/purge_monitoring.sh
+</code></pre></div></p>
+<h4 id="script-12-disk-system-resource-usage-monitor-u01gsldisk_usagesh">Script 12: Disk &amp; System Resource Usage Monitor (<code>/u01/Gsl/Disk_usage.sh</code>)<a class="headerlink" href="#script-12-disk-system-resource-usage-monitor-u01gsldisk_usagesh" title="Permanent link">&para;</a></h4>
+<p><strong>Purpose:</strong> Collect OS filesystem usage details, PostgreSQL directory sizes, and top system processes, and email details to the admin team.
+<div class="highlight"><pre><span></span><code>vi<span class="w"> </span>/u01/Gsl/Disk_usage.sh
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+
+<span class="c1"># === User Configuration Variables ===</span>
+<span class="nv">VM_HOSTNAME</span><span class="o">=</span><span class="s2">&quot;&lt;vm_hostname&gt;&quot;</span>
+<span class="nv">PG_VERSION</span><span class="o">=</span><span class="s2">&quot;16&quot;</span>
+
+<span class="c1"># === Date and Time Setup ===</span>
+<span class="nv">yy</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span>+%Y<span class="k">)</span>
+<span class="nv">mm</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span>+%m<span class="k">)</span>
+<span class="nv">dd</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span>+%d<span class="k">)</span>
+<span class="nv">MYDATE</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">yy</span><span class="si">}</span><span class="s2">_</span><span class="si">${</span><span class="nv">mm</span><span class="si">}</span><span class="s2">_</span><span class="si">${</span><span class="nv">dd</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="nv">CUR_HH</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span>+%H<span class="k">)</span>
+<span class="nv">CUR_NN</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span>+%M<span class="k">)</span>
+<span class="nv">CUR_SS</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span>+%S<span class="k">)</span>
+<span class="nv">MYTIME</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">CUR_HH</span><span class="si">}${</span><span class="nv">CUR_NN</span><span class="si">}${</span><span class="nv">CUR_SS</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="c1"># === Log File Path ===</span>
+<span class="nv">LOGDIR</span><span class="o">=</span><span class="s2">&quot;/u01/backup/logs/Disk_Usage&quot;</span>
+mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$LOGDIR</span><span class="s2">&quot;</span>
+<span class="nv">LOGFILE</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">LOGDIR</span><span class="si">}</span><span class="s2">/Disk_Usage_</span><span class="si">${</span><span class="nv">MYDATE</span><span class="si">}</span><span class="s2">_</span><span class="si">${</span><span class="nv">MYTIME</span><span class="si">}</span><span class="s2">.log&quot;</span>
+
+<span class="c1"># === Mail Configuration ===</span>
+<span class="nv">TO</span><span class="o">=</span><span class="s2">&quot;dbsrvalerts@gsl.in&quot;</span>
+<span class="nv">FROM</span><span class="o">=</span><span class="s2">&quot;dbsrvalerts@gsl.in&quot;</span>
+<span class="nv">SMTP</span><span class="o">=</span><span class="s2">&quot;smtp.gmail.com:587&quot;</span>
+<span class="nv">SUBJECT</span><span class="o">=</span><span class="s2">&quot;Disk Usage Report - </span><span class="si">${</span><span class="nv">MYDATE</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">MYTIME</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="nv">CMD_M</span><span class="o">=</span>mailx
+<span class="nv">DD</span><span class="o">=</span><span class="sb">`</span>date<span class="w"> </span>+%d%m%y<span class="sb">`</span>
+
+<span class="c1"># === Directory Paths ===</span>
+<span class="nv">PGDATA</span><span class="o">=</span><span class="s2">&quot;/u01/pgsql/</span><span class="si">${</span><span class="nv">PG_VERSION</span><span class="si">}</span><span class="s2">/data&quot;</span>
+<span class="nv">PGWAL</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">PGDATA</span><span class="si">}</span><span class="s2">/pg_wal&quot;</span>
+<span class="nv">PGTMP</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">PGDATA</span><span class="si">}</span><span class="s2">/base/pgsql_tmp&quot;</span>
+<span class="nv">PGBACKUP</span><span class="o">=</span><span class="s2">&quot;/u01/backup/PG&quot;</span>
+
+<span class="c1"># === Start Logging ===</span>
+<span class="o">{</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;====================================&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Disk Usage Report - </span><span class="k">$(</span>date<span class="k">)</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;====================================&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&gt;&gt;&gt; Filesystem Usage for /u01 and /var:&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">    </span>df<span class="w"> </span>-h<span class="w"> </span><span class="p">|</span><span class="w"> </span>egrep<span class="w"> </span><span class="s2">&quot;Mounted|/u01|/var&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;====================================&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&gt;&gt;&gt; PostgreSQL Data Directory Sizes:&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+
+<span class="w">    </span><span class="c1"># --- PostgreSQL Data Directory ---</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PGDATA</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;--- PostgreSQL Data Directory Size ---&quot;</span>
+<span class="w">        </span>du<span class="w"> </span>-sh<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PGDATA</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;❌ Directory not found: </span><span class="nv">$PGDATA</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="k">fi</span>
+
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+
+<span class="w">    </span><span class="c1"># --- PostgreSQL pg_wal Directory ---</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PGWAL</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;--- PostgreSQL pg_wal Size ---&quot;</span>
+<span class="w">        </span>du<span class="w"> </span>-sh<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PGWAL</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;❌ Directory not found: </span><span class="nv">$PGWAL</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="k">fi</span>
+
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+
+<span class="w">    </span><span class="c1"># --- PostgreSQL Temporary Files ---</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PGTMP</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;--- PostgreSQL Temp Size ---&quot;</span>
+<span class="w">        </span>du<span class="w"> </span>-sh<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PGTMP</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;❌ Directory not found: </span><span class="nv">$PGTMP</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="k">fi</span>
+
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;====================================&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&gt;&gt;&gt; PostgreSQL Backup Directory Sizes:&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PGBACKUP</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span>du<span class="w"> </span>-sh<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PGBACKUP</span><span class="s2">&quot;</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Detailed backup folders:&quot;</span>
+<span class="w">        </span>du<span class="w"> </span>-sh<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PGBACKUP</span><span class="s2">&quot;</span>/*<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-hr
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;❌ Directory not found: </span><span class="nv">$PGBACKUP</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="k">fi</span>
+
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;====================================&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&gt;&gt;&gt; Top Process Snapshot:&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+
+<span class="w">    </span>top<span class="w"> </span>-b<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="w"> </span>-c
+
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;====================================&quot;</span>
+
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;====================================&quot;</span>
+<span class="o">}</span><span class="w"> </span>&gt;<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$LOGFILE</span><span class="s2">&quot;</span>
+
+<span class="c1"># === Completion Message ===</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;✅ Disk usage report generated at: </span><span class="nv">$LOGFILE</span><span class="s2">&quot;</span>
+
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">VM_HOSTNAME</span><span class="si">}</span><span class="s2"> STANDALONE: PG Disk Usage INFO&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nv">$CMD_M</span><span class="w"> </span>-a<span class="w"> </span><span class="nv">$LOGFILE</span><span class="w"> </span>-v<span class="w"> </span>-r<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$FROM</span><span class="s2">&quot;</span><span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">VM_HOSTNAME</span><span class="si">}</span><span class="s2"> STANDALONE: PG Disk Usage INFORMATION </span><span class="si">${</span><span class="nv">DD</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>-S<span class="w"> </span><span class="nv">smtp</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$SMTP</span><span class="s2">&quot;</span><span class="w"> </span>-S<span class="w"> </span>smtp-use-starttls<span class="w"> </span>-S<span class="w"> </span>smtp-auth<span class="o">=</span>login<span class="w"> </span>-S<span class="w"> </span>smtp-auth-user<span class="o">=</span><span class="s2">&quot;dbsrvalerts@gsl.in&quot;</span><span class="w"> </span>-S<span class="w"> </span>smtp-auth-password<span class="o">=</span><span class="s2">&quot;oegmwnlfdtdpmvix&quot;</span><span class="w"> </span>-S<span class="w"> </span>nss-config-dir<span class="o">=</span><span class="s2">&quot;/etc/pki/nssdb/&quot;</span><span class="w"> </span>-S<span class="w"> </span>ssl-verify<span class="o">=</span>ignore<span class="w"> </span><span class="nv">$TO</span>
+
+<span class="c1"># Exit the script</span>
+<span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>chmod<span class="w"> </span><span class="m">777</span><span class="w"> </span>/u01/Gsl/Disk_usage.sh
 </code></pre></div></p>
 <h3 id="74-database-load-monitoring-tables-setup">7.4 Database Load Monitoring Tables Setup<a class="headerlink" href="#74-database-load-monitoring-tables-setup" title="Permanent link">&para;</a></h3>
 <p>To store metrics gathered by the load monitoring scripts, set up the monitoring schema and tracking tables in the destination database.
