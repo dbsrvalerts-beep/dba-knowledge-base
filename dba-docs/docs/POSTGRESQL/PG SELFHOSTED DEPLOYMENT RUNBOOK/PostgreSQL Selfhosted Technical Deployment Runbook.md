@@ -609,6 +609,9 @@ mkdir -p /u01/backup/logs/long_query
 mkdir -p /u01/backup/logs/AZCOPY_DEL
 mkdir -p /u01/backup/logs/MONITOR_AGENT
 mkdir -p /u01/backup/logs/pgmon
+mkdir -p /u01/backup/logs/Disk_Usage
+mkdir -p /u01/backup/logs/autotune
+mkdir -p /u01/backup/logs/autotune/config_bakup
 mkdir -p /u01/backup/arc_list
 mkdir -p /u01/backup/PG
 ```
@@ -1140,6 +1143,132 @@ SQL
 ```bash
 chmod 777 /u01/Gsl/purge_monitoring.sh
 ```
+
+#### Script 12: Disk & System Resource Usage Monitor (`/u01/Gsl/Disk_usage.sh`)
+**Purpose:** Collect OS filesystem usage details, PostgreSQL directory sizes, and top system processes, and email details to the admin team.
+```bash
+vi /u01/Gsl/Disk_usage.sh
+```
+```bash
+#!/bin/bash
+
+# === User Configuration Variables ===
+VM_HOSTNAME="<vm_hostname>"
+PG_VERSION="16"
+
+# === Date and Time Setup ===
+yy=$(date +%Y)
+mm=$(date +%m)
+dd=$(date +%d)
+MYDATE="${yy}_${mm}_${dd}"
+
+CUR_HH=$(date +%H)
+CUR_NN=$(date +%M)
+CUR_SS=$(date +%S)
+MYTIME="${CUR_HH}${CUR_NN}${CUR_SS}"
+
+# === Log File Path ===
+LOGDIR="/u01/backup/logs/Disk_Usage"
+mkdir -p "$LOGDIR"
+LOGFILE="${LOGDIR}/Disk_Usage_${MYDATE}_${MYTIME}.log"
+
+# === Mail Configuration ===
+TO="dbsrvalerts@gsl.in"
+FROM="dbsrvalerts@gsl.in"
+SMTP="smtp.gmail.com:587"
+SUBJECT="Disk Usage Report - ${MYDATE} ${MYTIME}"
+CMD_M=mailx
+DD=`date +%d%m%y`
+
+# === Directory Paths ===
+PGDATA="/u01/pgsql/${PG_VERSION}/data"
+PGWAL="${PGDATA}/pg_wal"
+PGTMP="${PGDATA}/base/pgsql_tmp"
+PGBACKUP="/u01/backup/PG"
+
+# === Start Logging ===
+{
+    echo "===================================="
+    echo "Disk Usage Report - $(date)"
+    echo "===================================="
+    echo ""
+
+    echo ">>> Filesystem Usage for /u01 and /var:"
+    echo ""
+    df -h | egrep "Mounted|/u01|/var"
+    echo ""
+    echo "===================================="
+    echo ">>> PostgreSQL Data Directory Sizes:"
+    echo ""
+
+    # --- PostgreSQL Data Directory ---
+    if [ -d "$PGDATA" ]; then
+        echo "--- PostgreSQL Data Directory Size ---"
+        du -sh "$PGDATA"
+    else
+        echo "❌ Directory not found: $PGDATA"
+    fi
+
+    echo ""
+
+    # --- PostgreSQL pg_wal Directory ---
+    if [ -d "$PGWAL" ]; then
+        echo "--- PostgreSQL pg_wal Size ---"
+        du -sh "$PGWAL"
+    else
+        echo "❌ Directory not found: $PGWAL"
+    fi
+
+    echo ""
+
+    # --- PostgreSQL Temporary Files ---
+    if [ -d "$PGTMP" ]; then
+        echo "--- PostgreSQL Temp Size ---"
+        du -sh "$PGTMP"
+    else
+        echo "❌ Directory not found: $PGTMP"
+    fi
+
+    echo ""
+    echo "===================================="
+    echo ">>> PostgreSQL Backup Directory Sizes:"
+    echo ""
+
+    if [ -d "$PGBACKUP" ]; then
+        du -sh "$PGBACKUP"
+        echo ""
+        echo "Detailed backup folders:"
+        du -sh "$PGBACKUP"/* 2>/dev/null | sort -hr
+    else
+        echo "❌ Directory not found: $PGBACKUP"
+    fi
+
+    echo ""
+    echo "===================================="
+    echo ">>> Top Process Snapshot:"
+    echo ""
+
+    top -b -n 1 -c
+
+    echo ""
+    echo "===================================="
+
+    echo ""
+    echo "===================================="
+} > "$LOGFILE"
+
+# === Completion Message ===
+echo "✅ Disk usage report generated at: $LOGFILE"
+
+echo "${VM_HOSTNAME} STANDALONE: PG Disk Usage INFO" | $CMD_M -a $LOGFILE -v -r "$FROM" -s "${VM_HOSTNAME} STANDALONE: PG Disk Usage INFORMATION ${DD}" -S smtp="$SMTP" -S smtp-use-starttls -S smtp-auth=login -S smtp-auth-user="dbsrvalerts@gsl.in" -S smtp-auth-password="oegmwnlfdtdpmvix" -S nss-config-dir="/etc/pki/nssdb/" -S ssl-verify=ignore $TO
+
+# Exit the script
+exit 0
+```
+```bash
+chmod 777 /u01/Gsl/Disk_usage.sh
+```
+
 
 ### 7.4 Database Load Monitoring Tables Setup
 To store metrics gathered by the load monitoring scripts, set up the monitoring schema and tracking tables in the destination database.
