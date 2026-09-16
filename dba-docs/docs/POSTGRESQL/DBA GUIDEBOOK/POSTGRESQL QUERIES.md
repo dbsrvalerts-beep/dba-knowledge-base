@@ -1892,3 +1892,32 @@ HAVING SUM(t.newsize - t.oldsize) <> 0
 ORDER BY diff DESC;
 ```
 
+### Temp Spilling on Disk [total spill by database]
+```sql
+SELECT
+          COALESCE(a.datname, 'unattributed') AS database_name,
+          sum(t.size)::BIGINT AS temp_bytes,
+          count(*) AS temp_file_count
+      FROM pg_ls_tmpdir() t
+      LEFT JOIN pg_stat_activity a
+          ON a.pid = substring(t.name FROM 'pgsql_tmp(\d+)')::int
+      GROUP BY a.datname
+      ORDER BY temp_bytes DESC;
+```
+
+### Temp Spilling on Disk [query spilling temp on disk]
+```sql
+SELECT
+    a.datname AS database_name,
+    a.pid,
+    a.usename,
+    a.query,
+    a.state,
+    round(sum(t.size) / (1024.0 * 1024 * 1024), 2) AS temp_size_gb,
+    count(*) AS temp_file_count
+FROM pg_ls_tmpdir() t
+LEFT JOIN pg_stat_activity a
+    ON a.pid = substring(t.name FROM 'pgsql_tmp(\d+)')::int
+GROUP BY a.datname, a.pid, a.usename, a.query, a.state
+ORDER BY temp_size_gb DESC;
+```
