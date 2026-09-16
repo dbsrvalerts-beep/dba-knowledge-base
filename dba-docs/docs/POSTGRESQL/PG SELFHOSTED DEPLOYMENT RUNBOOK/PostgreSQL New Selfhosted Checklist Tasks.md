@@ -16,13 +16,13 @@ Use this checklist every time a new self-hosted PostgreSQL instance is deployed.
 
 ## 2. Grafana Dashboards
 
-- [ ] Add instance to **DBA-PG SELFHOSTED DASHBOARD-1/2/3/...n**
-- [ ] Add to **SelfHosted Streaming Replication** dashboard *(if replication is applicable)*
-- [ ] Add to **INSTANCES INFO {ORA-PG}** dashboard panels:
+## Add instance to **DBA-PG SELFHOSTED DASHBOARD-1/2/3/...n**
+## Add to **SelfHosted Streaming Replication** dashboard *(if replication is applicable)*
+## Add to **INSTANCES INFO {ORA-PG}** dashboard panels:
   - [ ] Total Live PostgreSQL Databases
   - [ ] Live PostgreSQL Databases
   - [ ] Live PostgreSQL Databases Names
-- [ ] Add to **GINESYS PostgreSQL Dashboard → PGGDBA DAILY DATA RECORD**:
+## Add to **GINESYS PostgreSQL Dashboard → PGGDBA DAILY DATA RECORD**:
   - [ ] Add data source to PG Logical Slot panel
   - [ ] Create new dashboard panel for hourly WAL generation map
   - [ ] Add data source to ZZZ and PRODX Databases panel
