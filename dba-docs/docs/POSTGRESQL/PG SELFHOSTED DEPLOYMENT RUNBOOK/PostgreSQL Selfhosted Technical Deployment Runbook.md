@@ -612,7 +612,7 @@ mkdir -p /u01/backup/logs/pgmon
 mkdir -p /u01/backup/logs/Disk_Usage
 mkdir -p /u01/backup/logs/autotune
 mkdir -p /u01/backup/logs/autotune/config_bakup
-mkdir -p /u01/backup/arc_list
+mkdir -p /u01/backup/logs/arc_list
 mkdir -p /u01/backup/PG
 ```
 
@@ -793,7 +793,7 @@ SAS_TOKEN="<SAS_TOKEN>"
 # ------------------------------------
 
 date_dir=$(date +%Y_%m_%d)
-log_file="/u01/backup/arc_list/arcname_${date_dir}.log"
+log_file="/u01/backup/logs/arc_list/arcname_${date_dir}.log"
 AZ_LIST_URL="${BASE_URL}/self-hosted/${VM_HOSTNAME}/archive/${date_dir}?${SAS_TOKEN}"
 
 files=$(/usr/bin/azcopy list "$AZ_LIST_URL" | cut -d';' -f1)
