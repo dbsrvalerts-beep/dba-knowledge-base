@@ -1,4 +1,4 @@
-# GoldenGate EXT1 → REP1: Monitoring and Performance Enhancements
+# GoldenGate -> HEARTBEAT Monitoring
 
 Sep 30, 2026 · @mighty master of 7 galaxies
 

@@ -1237,59 +1237,50 @@ LIMIT 10;
 ### Object Sizes with TOAST Info
 
 ```sql
-WITH toast_map AS (
-
-SELECT r.oid AS parent_oid, r.relname AS parent_table, r.relnamespace AS parent_schema_oid,
-
-t.oid AS toast_oid, t.relname AS toast_table, i.relname AS toast_index
-
-FROM pg_class r
-
-JOIN pg_class t ON t.oid = r.reltoastrelid
-
-JOIN pg_index d ON d.indrelid = t.oid
-
-JOIN pg_class i ON i.oid = d.indexrelid
-
+WITH idx AS (
+    SELECT i.indrelid                                   AS table_oid,
+           COUNT(*)                                     AS index_count,
+           SUM(pg_relation_size(i.indexrelid))          AS index_bytes,
+           STRING_AGG(ic.relname || ' (' || pg_size_pretty(pg_relation_size(i.indexrelid)) || ')',
+                      ', ' ORDER BY pg_relation_size(i.indexrelid) DESC) AS index_list
+    FROM   pg_index i
+    JOIN   pg_class ic ON ic.oid = i.indexrelid
+    GROUP  BY i.indrelid
+),
+toast AS (
+    SELECT t.oid                       AS toast_oid,
+           'pg_toast.' || t.relname    AS toast_table,
+           'pg_toast.' || ti.relname   AS toast_index
+    FROM   pg_class t
+    LEFT JOIN pg_index d   ON d.indrelid = t.oid
+    LEFT JOIN pg_class ti  ON ti.oid = d.indexrelid
+    WHERE  t.relkind = 't'
 )
-
-SELECT
-
-current_timestamp AS logdate,
-
-current_database() AS "Database",
-
-n.nspname AS "Schema",
-
-c.relname AS "Object Name",
-
-CASE c.relkind
-
-WHEN 'r' THEN 'table' WHEN 'i' THEN 'index' WHEN 'S' THEN 'sequence'
-
-WHEN 'v' THEN 'view' WHEN 'm' THEN 'materialized view' WHEN 'c' THEN 'composite type'
-
-WHEN 't' THEN 'TOAST table' WHEN 'f' THEN 'foreign table' ELSE 'other'
-
-END AS "Object Type",
-
-tm.parent_table AS "Parent Table",
-
-pg_size_pretty(pg_total_relation_size(c.oid)) AS "Total Size",
-
-ROUND(pg_total_relation_size(c.oid) / (1024.0 * 1024), 2) AS "Total Size (MB)",
-
-tm.toast_table AS "TOAST Table",
-
-tm.toast_index AS "TOAST Index"
-
-FROM pg_class c
-
-JOIN pg_namespace n ON c.relnamespace = n.oid
-
-LEFT JOIN toast_map tm ON tm.toast_oid = c.oid
-
-ORDER BY pg_total_relation_size(c.oid) DESC;
+SELECT current_timestamp                                                  AS logdate,
+       current_database()                                                 AS "Database",
+       n.nspname                                                          AS "Schema",
+       c.relname                                                          AS "Object Name",
+       CASE c.relkind WHEN 'r' THEN 'table'
+                      WHEN 'p' THEN 'partitioned table'
+                      WHEN 'm' THEN 'materialized view' END               AS "Object Type",
+       ROUND(pg_relation_size(c.oid) / 1048576.0, 2)                      AS "Table Size (MB)",
+       tt.toast_table                                                     AS "TOAST Table",
+       tt.toast_index                                                     AS "TOAST Index",
+       ROUND(COALESCE(pg_total_relation_size(NULLIF(c.reltoastrelid, 0)), 0) / 1048576.0, 2)
+                                                                          AS "TOAST Size (MB)",
+       ROUND(COALESCE(x.index_bytes, 0) / 1048576.0, 2)                   AS "Index Size (MB)",
+       ROUND(pg_total_relation_size(c.oid) / 1048576.0, 2)                AS "Total Size (MB)",
+       pg_size_pretty(pg_total_relation_size(c.oid))                      AS "Total Size",
+       COALESCE(x.index_count, 0)                                         AS "Index Count",
+       x.index_list                                                       AS "Indexes (largest first)"
+FROM   pg_class c
+JOIN   pg_namespace n ON n.oid = c.relnamespace
+LEFT JOIN idx x    ON x.table_oid = c.oid
+LEFT JOIN toast tt ON tt.toast_oid = c.reltoastrelid
+WHERE  c.relkind IN ('r', 'p', 'm')
+AND    n.nspname NOT IN ('pg_catalog', 'information_schema')
+AND    n.nspname NOT LIKE 'pg_toast%'
+ORDER  BY pg_total_relation_size(c.oid) DESC;
 ```
 
 ### Object Size - All Objects, Simplified
