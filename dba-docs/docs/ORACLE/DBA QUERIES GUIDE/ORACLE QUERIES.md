@@ -862,6 +862,85 @@ ORDER BY 4 DESC
 
 );
 ```
+### Monthly Growth trend for object size
+```sql
+WITH lobs AS (
+    SELECT /*+ MATERIALIZE */ owner, table_name, column_name, segment_name AS seg_name
+    FROM   dba_lobs
+    UNION ALL
+    SELECT owner, table_name, column_name, index_name
+    FROM   dba_lobs
+),
+q AS (
+SELECT OWNER,
+       TABLESPACE_NAME,
+       SEGMENT_NAME,
+       SEGMENT_TYPE,
+       SUM(apr) apr_01_mb,
+       SUM(may) may_01_mb,
+       SUM(jun) jun_01_mb,
+       SUM(jul) jul_01_mb,
+       SUM(aug) aug_01_mb,
+       SUM(sep) sep_01_mb,
+       SUM(oct) oct_01_mb
+FROM (
+select a.OWNER, a.TABLESPACE_NAME, a.SEGMENT_NAME, a.SEGMENT_TYPE, NVL(a.SCHEMA_SIZE_MB,0) apr, 0 may, 0 jun, 0 jul, 0 aug, 0 sep, 0 oct
+from verma.object_segment a
+where TRUNC(logdate) = DATE '2026-04-01'
+UNION ALL
+select a.OWNER, a.TABLESPACE_NAME, a.SEGMENT_NAME, a.SEGMENT_TYPE, 0, NVL(a.SCHEMA_SIZE_MB,0), 0, 0, 0, 0, 0
+from verma.object_segment a
+where TRUNC(logdate) = DATE '2026-05-01'
+UNION ALL
+select a.OWNER, a.TABLESPACE_NAME, a.SEGMENT_NAME, a.SEGMENT_TYPE, 0, 0, NVL(a.SCHEMA_SIZE_MB,0), 0, 0, 0, 0
+from verma.object_segment a
+where TRUNC(logdate) = DATE '2026-06-01'
+UNION ALL
+select a.OWNER, a.TABLESPACE_NAME, a.SEGMENT_NAME, a.SEGMENT_TYPE, 0, 0, 0, NVL(a.SCHEMA_SIZE_MB,0), 0, 0, 0
+from verma.object_segment a
+where TRUNC(logdate) = DATE '2026-07-01'
+UNION ALL
+select a.OWNER, a.TABLESPACE_NAME, a.SEGMENT_NAME, a.SEGMENT_TYPE, 0, 0, 0, 0, NVL(a.SCHEMA_SIZE_MB,0), 0, 0
+from verma.object_segment a
+where TRUNC(logdate) = DATE '2026-08-01'
+UNION ALL
+select a.OWNER, a.TABLESPACE_NAME, a.SEGMENT_NAME, a.SEGMENT_TYPE, 0, 0, 0, 0, 0, NVL(a.SCHEMA_SIZE_MB,0), 0
+from verma.object_segment a
+where TRUNC(logdate) = DATE '2026-09-01'
+UNION ALL
+select a.OWNER, a.TABLESPACE_NAME, a.SEGMENT_NAME, a.SEGMENT_TYPE, 0, 0, 0, 0, 0, 0, NVL(a.SCHEMA_SIZE_MB,0)
+from verma.object_segment a
+where TRUNC(logdate) = DATE '2026-10-01'
+)
+GROUP BY OWNER, TABLESPACE_NAME, SEGMENT_NAME, SEGMENT_TYPE
+)
+SELECT q.OWNER                       AS schema_name,
+       q.TABLESPACE_NAME,
+       q.SEGMENT_NAME,
+       q.SEGMENT_TYPE,
+       l.table_name                  AS lob_table_name,
+       l.column_name                 AS lob_column_name,
+       q.apr_01_mb,
+       q.may_01_mb,
+       q.may_01_mb - q.apr_01_mb     AS may_growth_mb,
+       q.jun_01_mb,
+       q.jun_01_mb - q.may_01_mb     AS jun_growth_mb,
+       q.jul_01_mb,
+       q.jul_01_mb - q.jun_01_mb     AS jul_growth_mb,
+       q.aug_01_mb,
+       q.aug_01_mb - q.jul_01_mb     AS aug_growth_mb,
+       q.sep_01_mb,
+       q.sep_01_mb - q.aug_01_mb     AS sep_growth_mb,
+       q.oct_01_mb,
+       q.oct_01_mb - q.sep_01_mb     AS oct_growth_mb,
+       q.oct_01_mb - q.apr_01_mb     AS total_growth_mb
+FROM   q
+LEFT JOIN lobs l
+       ON  l.seg_name = q.SEGMENT_NAME
+       AND l.owner    = q.OWNER
+       AND q.SEGMENT_NAME LIKE 'SYS_%'
+ORDER BY total_growth_mb DESC;
+```
 
 ## 9. Materialized Views
 
