@@ -1,0 +1,2678 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Central repository for Oracle/PostgreSQL DBA documentation">
+      
+      
+      
+      
+        <link rel="prev" href="../../KNOWN%20ISSUES/Oracle%20Ora-01012%20Not%20Logged%20On%20Error/">
+      
+      
+        <link rel="next" href="../../ORACLE%20CLOUD/Cloud%20Database%20Management%20Tasks/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Oracle LogMiner – 12c - DBA Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#oracle-logminer-12c" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="DBA Knowledge Base" class="md-header__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DBA Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Oracle LogMiner – 12c
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="DBA Knowledge Base" class="md-nav__button md-logo" aria-label="DBA Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    DBA Knowledge Base
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DBA Knowledge Base
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEPARTMENT
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    DEPARTMENT
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../DEPARTMENT/Cloud%20Database%20Objective/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Database Objective
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../DEPARTMENT/Oracle%20Database%20Solutions%20and%20Service%28Standard%20Version%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Solutions and Service(Standard Version)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LINUX
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LINUX/LINUX%20BASICS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX BASICS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LINUX/LINUX%20FIREWALL%20PERMISSIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Firewall Permissions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LINUX/LINUX%20PERMISSIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINUX PERMISSIONS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LINUX/LVM%20PARTITION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVM Partition Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LINUX/timezone_change_guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Azure Linux VM Timezone Configuration Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MYSQL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    MYSQL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../MYSQL/MySQL_Migration_Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MySQL Migration Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORACLE
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ORACLE
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DBA QUERIES GUIDE
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    DBA QUERIES GUIDE
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../DBA%20QUERIES%20GUIDE/ORACLE%20QUERIES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle DBA Query Reference Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GOLDENGATE
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    GOLDENGATE
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../GOLDENGATE/GoldenGate%E2%86%92HEARTBEAT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GoldenGate -&gt; HEARTBEAT Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KNOWN ISSUES
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    KNOWN ISSUES
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../KNOWN%20ISSUES/Cleaning%20ORACLE%20SYSAUX%20tablespace%20usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cleaning ORACLE SYSAUX Tablespace Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../KNOWN%20ISSUES/Oracle%20Database%20Incarnation%20%28ORA-19909%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Incarnation (ORA-19909)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../KNOWN%20ISSUES/Oracle%20Database%20Lost%20Write%20Recovery%20%28ORA-00742%2CORA-00312%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Lost Write Recovery (ORA-00742,ORA-00312)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../KNOWN%20ISSUES/Oracle%20Database%20Open%20Issue%28Ora-10873%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Database Open Issue (ORA-10873)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../KNOWN%20ISSUES/Oracle%20Datafile%20Corruption%20Issue%20%28ORA-00600%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Datafile Corruption Issue (ORA-00600)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../KNOWN%20ISSUES/Oracle%20Datapump%20Slowness%28Scenario%201%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Datapump Slowness(Scenario 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../KNOWN%20ISSUES/Oracle%20Datapump%20Slowness%28Scenario%202%29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Datapump Slowness (Scenario 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../KNOWN%20ISSUES/Oracle%20Moving%20Datafiles%20To%20Another%20Location/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Moving Datafiles To Another Location
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../KNOWN%20ISSUES/Oracle%20Ora-01012%20Not%20Logged%20On%20Error/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle Ora-01012: Not Logged On Error
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LOG MINER
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LOG MINER
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle LogMiner – 12c
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Oracle LogMiner – 12c
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-process-1-mine-by-time-window" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Process 1 – Mine by time window
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-process-2-mine-by-sequence-range" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Process 2 – Mine by sequence range
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-process-3-manual-one-archive-at-a-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Process 3 – Manual, one archive at a time
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-verify-save-output-end-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Verify, save output, end session
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-query-catalogue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Query catalogue
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-gotchas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Gotchas
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORACLE CLOUD
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ORACLE CLOUD
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ORACLE%20CLOUD/Cloud%20Database%20Management%20Tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Cloud Database Management Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    POSTGRESQL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    POSTGRESQL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DBA GUIDEBOOK
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    DBA GUIDEBOOK
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../POSTGRESQL/DBA%20GUIDEBOOK/PERFORMACE%20TUNING%20GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance Tuning Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../POSTGRESQL/DBA%20GUIDEBOOK/POSTGRESQL%2014%20DBA%20GUIDEBOOK/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL 14 DBA Guidebook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../POSTGRESQL/DBA%20GUIDEBOOK/POSTGRESQL%20QUERIES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    POSTGRESQL DBA QUERY GUIDE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../POSTGRESQL/DBA%20GUIDEBOOK/PostgreSQL_WAL_Full_Emergency_Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL Emergency Runbook: Resolving pg_wal Disk Space Exhaustion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG AUTOTUNE
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PG AUTOTUNE
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../POSTGRESQL/PG%20AUTOTUNE/PostgreSQL_AutoTune_Azure_VM_Scale_Implementation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL AutoTune: Azure VM Scale Implementation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG EXTENSION BUILDER
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PG EXTENSION BUILDER
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../POSTGRESQL/PG%20EXTENSION%20BUILDER/RHEL8_PG16_Extension_Compile_Guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL 16 Extension Compile Guide for RHEL 8
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../POSTGRESQL/PG%20EXTENSION%20BUILDER/RHEL8_PG17_Extension_Compile_Guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL 17 Extension Compile Guide for RHEL 8
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG LOAD ANALYSIS SETUP
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PG LOAD ANALYSIS SETUP
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../POSTGRESQL/PG%20LOAD%20ANALYSIS%20SETUP/PG%20LOAD%20ANALYSIS%20SETUP%20%5BPaaS%5D/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG LOAD ANALYSIS SETUP [PaaS]
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../POSTGRESQL/PG%20LOAD%20ANALYSIS%20SETUP/PG%20LOAD%20ANALYSIS%20SETUP%20%5BSH%5D/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG LOAD ANALYSIS SETUP [SH]
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_5" id="__nav_6_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PG SELFHOSTED DEPLOYMENT RUNBOOK
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PG SELFHOSTED DEPLOYMENT RUNBOOK
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20New%20Selfhosted%20Checklist%20Tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    New Self-Hosted PostgreSQL Instance — Onboarding Checklist
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Management%20Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL Selfhosted Deployment Management Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../POSTGRESQL/PG%20SELFHOSTED%20DEPLOYMENT%20RUNBOOK/PostgreSQL%20Selfhosted%20Technical%20Deployment%20Runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL Selfhosted Technical Deployment Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_6" id="__nav_6_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PGGDBA
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PGGDBA
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../POSTGRESQL/PGGDBA/PGGDBA%20MONTHLY%20QUERIES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PGGDBA MONTHLY QUERIES
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-process-1-mine-by-time-window" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Process 1 – Mine by time window
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-process-2-mine-by-sequence-range" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Process 2 – Mine by sequence range
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-process-3-manual-one-archive-at-a-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Process 3 – Manual, one archive at a time
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-verify-save-output-end-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Verify, save output, end session
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-query-catalogue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Query catalogue
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-gotchas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Gotchas
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="oracle-logminer-12c">Oracle LogMiner – 12c<a class="headerlink" href="#oracle-logminer-12c" title="Permanent link">&para;</a></h1>
+<p>Oct 14, 2026 · @mighty master of 7 galaxies</p>
+<p>LogMiner reads archived redo and returns the SQL that changed the data (<code>SQL_REDO</code>) and the SQL that reverses it (<code>SQL_UNDO</code>). Three ways to load archives are covered: by time, by sequence range, and manually file by file. Tested pattern for Oracle 12c SE.</p>
+<h2 id="1-prerequisites">1. Prerequisites<a class="headerlink" href="#1-prerequisites" title="Permanent link">&para;</a></h2>
+<p>Minimal supplemental logging must be on, otherwise UPDATE/DELETE redo is missing column values. It only applies to redo generated after it is enabled.</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">supplemental_log_data_min</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">v$database</span><span class="p">;</span><span class="w">   </span><span class="c1">-- want YES or IMPLICIT</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="n">SUPPLEMENTAL</span><span class="w"> </span><span class="n">LOG</span><span class="w"> </span><span class="k">DATA</span><span class="p">;</span>
+</code></pre></div>
+<p>Privileges if not running as SYS:</p>
+<div class="highlight"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="n">LOGMINING</span><span class="p">,</span><span class="w"> </span><span class="n">EXECUTE_CATALOG_ROLE</span><span class="p">,</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ANY</span><span class="w"> </span><span class="k">TRANSACTION</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="o">&lt;</span><span class="k">user</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div>
+<p>Session settings for readable output:</p>
+<div class="highlight"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">SESSION</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">NLS_DATE_FORMAT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;DD-MON-YYYY HH24:MI:SS&#39;</span><span class="p">;</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">LINES</span><span class="w"> </span><span class="mi">300</span><span class="w"> </span><span class="n">PAGES</span><span class="w"> </span><span class="mi">200</span><span class="w"> </span><span class="n">LONG</span><span class="w"> </span><span class="mi">20000</span>
+<span class="n">COL</span><span class="w"> </span><span class="n">sql_redo</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="n">A120</span>
+<span class="n">COL</span><span class="w"> </span><span class="n">sql_undo</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="n">A120</span>
+</code></pre></div>
+<p>Key <code>START_LOGMNR</code> options used below:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DICT_FROM_ONLINE_CATALOG</code></td>
+<td>Uses the live data dictionary to turn object IDs into table/column names</td>
+</tr>
+<tr>
+<td><code>COMMITTED_DATA_ONLY</code></td>
+<td>Returns only committed transactions, grouped by transaction</td>
+</tr>
+<tr>
+<td><code>CONTINUOUS_MINE</code></td>
+<td>Oracle picks the archives itself from the control file (12c only; desupported in 19c)</td>
+</tr>
+<tr>
+<td><code>PRINT_PRETTY_SQL</code></td>
+<td>Formats <code>SQL_REDO</code>/<code>SQL_UNDO</code> over multiple lines (optional)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-process-1-mine-by-time-window">2. Process 1 – Mine by time window<a class="headerlink" href="#2-process-1-mine-by-time-window" title="Permanent link">&para;</a></h2>
+<p>Use when you know when the change happened but not which archives hold it. Run <code>ALTER SYSTEM ARCHIVE LOG CURRENT;</code> first if the window reaches into the last few minutes.</p>
+<p><strong>Option A: CONTINUOUS_MINE (12c only).</strong> Oracle looks up the archives in <code>V$ARCHIVED_LOG</code> and loads them; files must still be registered and present at the recorded path.</p>
+<div class="highlight"><pre><span></span><code><span class="k">BEGIN</span>
+<span class="w">  </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">START_LOGMNR</span><span class="p">(</span>
+<span class="w">    </span><span class="n">STARTTIME</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">TO_DATE</span><span class="p">(</span><span class="s1">&#39;14-OCT-2026 10:00:00&#39;</span><span class="p">,</span><span class="s1">&#39;DD-MON-YYYY HH24:MI:SS&#39;</span><span class="p">),</span>
+<span class="w">    </span><span class="n">ENDTIME</span><span class="w">   </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">TO_DATE</span><span class="p">(</span><span class="s1">&#39;14-OCT-2026 11:00:00&#39;</span><span class="p">,</span><span class="s1">&#39;DD-MON-YYYY HH24:MI:SS&#39;</span><span class="p">),</span>
+<span class="w">    </span><span class="k">OPTIONS</span><span class="w">   </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">DICT_FROM_ONLINE_CATALOG</span>
+<span class="w">               </span><span class="o">+</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">CONTINUOUS_MINE</span>
+<span class="w">               </span><span class="o">+</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">COMMITTED_DATA_ONLY</span><span class="p">);</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="o">/</span>
+</code></pre></div>
+<p><strong>Option B: auto-add from V$ARCHIVED_LOG (any version, incl. 19c).</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">DECLARE</span>
+<span class="w">  </span><span class="n">v_start</span><span class="w"> </span><span class="nb">DATE</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="n">TO_DATE</span><span class="p">(</span><span class="s1">&#39;14-OCT-2026 10:00:00&#39;</span><span class="p">,</span><span class="s1">&#39;DD-MON-YYYY HH24:MI:SS&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">v_end</span><span class="w">   </span><span class="nb">DATE</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="n">TO_DATE</span><span class="p">(</span><span class="s1">&#39;14-OCT-2026 11:00:00&#39;</span><span class="p">,</span><span class="s1">&#39;DD-MON-YYYY HH24:MI:SS&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">v_first</span><span class="w"> </span><span class="nb">BOOLEAN</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="k">TRUE</span><span class="p">;</span>
+<span class="k">BEGIN</span>
+<span class="w">  </span><span class="k">FOR</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">v$archived_log</span>
+<span class="w">            </span><span class="k">WHERE</span><span class="w"> </span><span class="n">dest_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
+<span class="w">              </span><span class="k">AND</span><span class="w"> </span><span class="n">deleted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;NO&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;A&#39;</span>
+<span class="w">              </span><span class="k">AND</span><span class="w"> </span><span class="n">next_time</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">v_start</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">first_time</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">v_end</span>
+<span class="w">            </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">thread</span><span class="o">#</span><span class="p">,</span><span class="w"> </span><span class="n">sequence</span><span class="o">#</span><span class="p">)</span><span class="w"> </span><span class="n">LOOP</span>
+<span class="w">    </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">ADD_LOGFILE</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">name</span><span class="p">,</span>
+<span class="w">      </span><span class="k">CASE</span><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="n">v_first</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="k">NEW</span><span class="w"> </span><span class="k">ELSE</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">ADDFILE</span><span class="w"> </span><span class="k">END</span><span class="p">);</span>
+<span class="w">    </span><span class="n">v_first</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="k">FALSE</span><span class="p">;</span>
+<span class="w">  </span><span class="k">END</span><span class="w"> </span><span class="n">LOOP</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">START_LOGMNR</span><span class="p">(</span>
+<span class="w">    </span><span class="n">STARTTIME</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">v_start</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ENDTIME</span><span class="w">   </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">v_end</span><span class="p">,</span>
+<span class="w">    </span><span class="k">OPTIONS</span><span class="w">   </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">DICT_FROM_ONLINE_CATALOG</span>
+<span class="w">               </span><span class="o">+</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">COMMITTED_DATA_ONLY</span><span class="p">);</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="o">/</span>
+</code></pre></div>
+<p><code>dest_id = 1</code> stops the same sequence being added twice when there are multiple archive destinations.</p>
+<h2 id="3-process-2-mine-by-sequence-range">3. Process 2 – Mine by sequence range<a class="headerlink" href="#3-process-2-mine-by-sequence-range" title="Permanent link">&para;</a></h2>
+<p>Use when you know the archive sequence numbers (from the alert log, RMAN, or a backup report). No STARTTIME/ENDTIME, so every change in the loaded files is returned.</p>
+<div class="highlight"><pre><span></span><code><span class="k">DECLARE</span>
+<span class="w">  </span><span class="n">v_thread</span><span class="w"> </span><span class="nb">NUMBER</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">        </span><span class="c1">-- RAC: run per thread</span>
+<span class="w">  </span><span class="n">v_from</span><span class="w">   </span><span class="nb">NUMBER</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="mi">45210</span><span class="p">;</span>
+<span class="w">  </span><span class="n">v_to</span><span class="w">     </span><span class="nb">NUMBER</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="mi">45230</span><span class="p">;</span>
+<span class="w">  </span><span class="n">v_first</span><span class="w">  </span><span class="nb">BOOLEAN</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="k">TRUE</span><span class="p">;</span>
+<span class="k">BEGIN</span>
+<span class="w">  </span><span class="k">FOR</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">v$archived_log</span>
+<span class="w">            </span><span class="k">WHERE</span><span class="w"> </span><span class="n">dest_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">thread</span><span class="o">#</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v_thread</span>
+<span class="w">              </span><span class="k">AND</span><span class="w"> </span><span class="n">sequence</span><span class="o">#</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="n">v_from</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">v_to</span>
+<span class="w">              </span><span class="k">AND</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">deleted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;NO&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;A&#39;</span>
+<span class="w">            </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">sequence</span><span class="o">#</span><span class="p">)</span><span class="w"> </span><span class="n">LOOP</span>
+<span class="w">    </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">ADD_LOGFILE</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">name</span><span class="p">,</span>
+<span class="w">      </span><span class="k">CASE</span><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="n">v_first</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="k">NEW</span><span class="w"> </span><span class="k">ELSE</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">ADDFILE</span><span class="w"> </span><span class="k">END</span><span class="p">);</span>
+<span class="w">    </span><span class="n">v_first</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="k">FALSE</span><span class="p">;</span>
+<span class="w">  </span><span class="k">END</span><span class="w"> </span><span class="n">LOOP</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">START_LOGMNR</span><span class="p">(</span>
+<span class="w">    </span><span class="k">OPTIONS</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">DICT_FROM_ONLINE_CATALOG</span>
+<span class="w">             </span><span class="o">+</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">COMMITTED_DATA_ONLY</span><span class="p">);</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="o">/</span>
+</code></pre></div>
+<p><strong>Archives not in the control file</strong> (restored to another directory or copied from another server): build the paths from <code>log_archive_format</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="k">PARAMETER</span><span class="w"> </span><span class="n">log_archive_format</span><span class="w">   </span><span class="c1">-- e.g. %t_%s_%r.dbf</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">resetlogs_id</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">v$database_incarnation</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;CURRENT&#39;</span><span class="p">;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">DECLARE</span>
+<span class="w">  </span><span class="n">v_dir</span><span class="w">  </span><span class="n">VARCHAR2</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;/u01/restore/arch/&#39;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">v_rlid</span><span class="w"> </span><span class="nb">NUMBER</span><span class="w">        </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="mi">1023456789</span><span class="p">;</span><span class="w">   </span><span class="c1">-- resetlogs_id</span>
+<span class="k">BEGIN</span>
+<span class="w">  </span><span class="k">FOR</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="mi">45210</span><span class="w"> </span><span class="p">..</span><span class="w"> </span><span class="mi">45230</span><span class="w"> </span><span class="n">LOOP</span>
+<span class="w">    </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">ADD_LOGFILE</span><span class="p">(</span>
+<span class="w">      </span><span class="n">v_dir</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;1_&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;_&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">v_rlid</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;.dbf&#39;</span><span class="p">,</span>
+<span class="w">      </span><span class="k">CASE</span><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">45210</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="k">NEW</span><span class="w"> </span><span class="k">ELSE</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">ADDFILE</span><span class="w"> </span><span class="k">END</span><span class="p">);</span>
+<span class="w">  </span><span class="k">END</span><span class="w"> </span><span class="n">LOOP</span><span class="p">;</span>
+<span class="w">  </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">START_LOGMNR</span><span class="p">(</span><span class="k">OPTIONS</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">DICT_FROM_ONLINE_CATALOG</span>
+<span class="w">                                    </span><span class="o">+</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">COMMITTED_DATA_ONLY</span><span class="p">);</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="o">/</span>
+</code></pre></div>
+<p>A missing file raises ORA-01284 and stops the loop; check with <code>ls</code> first. Alternative: register them with RMAN <code>CATALOG START WITH '/u01/restore/arch/';</code> and use the first block.</p>
+<h2 id="4-process-3-manual-one-archive-at-a-time">4. Process 3 – Manual, one archive at a time<a class="headerlink" href="#4-process-3-manual-one-archive-at-a-time" title="Permanent link">&para;</a></h2>
+<p>Use for a handful of files or when you want full control over exactly what is loaded. <code>NEW</code> starts a fresh list (clears earlier files); <code>ADDFILE</code> appends.</p>
+<p>Find the file names:</p>
+<div class="highlight"><pre><span></span><code><span class="n">COL</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="n">A90</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">sequence</span><span class="o">#</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">first_time</span><span class="p">,</span><span class="w"> </span><span class="n">next_time</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">v$archived_log</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="n">dest_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">thread</span><span class="o">#</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="k">AND</span><span class="w">    </span><span class="n">sequence</span><span class="o">#</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="mi">45210</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="mi">45215</span>
+<span class="k">ORDER</span><span class="w">  </span><span class="k">BY</span><span class="w"> </span><span class="n">sequence</span><span class="o">#</span><span class="p">;</span>
+</code></pre></div>
+<p>Add them one by one:</p>
+<div class="highlight"><pre><span></span><code><span class="k">EXEC</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">ADD_LOGFILE</span><span class="p">(</span><span class="n">LOGFILENAME</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s1">&#39;/u01/arch/1_45210_1023456789.dbf&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">OPTIONS</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="k">NEW</span><span class="p">);</span>
+<span class="k">EXEC</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">ADD_LOGFILE</span><span class="p">(</span><span class="n">LOGFILENAME</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s1">&#39;/u01/arch/1_45211_1023456789.dbf&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">OPTIONS</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">ADDFILE</span><span class="p">);</span>
+<span class="k">EXEC</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">ADD_LOGFILE</span><span class="p">(</span><span class="n">LOGFILENAME</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s1">&#39;/u01/arch/1_45212_1023456789.dbf&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">OPTIONS</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">ADDFILE</span><span class="p">);</span>
+
+<span class="c1">-- remove a wrong file</span>
+<span class="k">EXEC</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">REMOVE_LOGFILE</span><span class="p">(</span><span class="n">LOGFILENAME</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s1">&#39;/u01/arch/1_45212_1023456789.dbf&#39;</span><span class="p">);</span>
+
+<span class="k">EXEC</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">START_LOGMNR</span><span class="p">(</span><span class="k">OPTIONS</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">DICT_FROM_ONLINE_CATALOG</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">COMMITTED_DATA_ONLY</span><span class="p">);</span>
+</code></pre></div>
+<p>Generate the EXEC lines instead of typing them; spool, review, run:</p>
+<div class="highlight"><pre><span></span><code><span class="k">SET</span><span class="w"> </span><span class="n">HEAD</span><span class="w"> </span><span class="k">OFF</span><span class="w"> </span><span class="n">FEED</span><span class="w"> </span><span class="k">OFF</span><span class="w"> </span><span class="n">LINES</span><span class="w"> </span><span class="mi">300</span><span class="w"> </span><span class="n">PAGES</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">SPOOL</span><span class="w"> </span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">lm_add</span><span class="p">.</span><span class="k">sql</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;EXEC DBMS_LOGMNR.ADD_LOGFILE(LOGFILENAME =&gt; &#39;&#39;&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;&#39;&#39;, OPTIONS =&gt; DBMS_LOGMNR.&#39;</span>
+<span class="w">       </span><span class="o">||</span><span class="w"> </span><span class="k">CASE</span><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="n">ROWNUM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;NEW&#39;</span><span class="w"> </span><span class="k">ELSE</span><span class="w"> </span><span class="s1">&#39;ADDFILE&#39;</span><span class="w"> </span><span class="k">END</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;);&#39;</span>
+<span class="k">FROM</span><span class="w">  </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">v$archived_log</span>
+<span class="w">       </span><span class="k">WHERE</span><span class="w"> </span><span class="n">dest_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">thread</span><span class="o">#</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">sequence</span><span class="o">#</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="mi">45210</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="mi">45230</span>
+<span class="w">       </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">sequence</span><span class="o">#</span><span class="p">);</span>
+<span class="n">SPOOL</span><span class="w"> </span><span class="k">OFF</span>
+<span class="o">@/</span><span class="n">tmp</span><span class="o">/</span><span class="n">lm_add</span><span class="p">.</span><span class="k">sql</span>
+</code></pre></div>
+<h2 id="5-verify-save-output-end-session">5. Verify, save output, end session<a class="headerlink" href="#5-verify-save-output-end-session" title="Permanent link">&para;</a></h2>
+<p>Check what is loaded before querying. <code>LOG_ID</code> is the sequence number, so a jump means a gap and silently missing changes.</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">log_id</span><span class="p">,</span><span class="w"> </span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="n">low_scn</span><span class="p">,</span><span class="w"> </span><span class="n">high_scn</span><span class="p">,</span><span class="w"> </span><span class="n">low_time</span><span class="p">,</span><span class="w"> </span><span class="n">high_time</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">v$logmnr_logs</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">log_id</span><span class="p">;</span>
+</code></pre></div>
+<p><code>V$LOGMNR_CONTENTS</code> is private to the session and re-reads every archive on each query. Copy it to a table once, then run all checks against that table:</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">lm_out</span><span class="w"> </span><span class="k">AS</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">scn</span><span class="p">,</span><span class="w"> </span><span class="k">timestamp</span><span class="p">,</span><span class="w"> </span><span class="n">commit_timestamp</span><span class="p">,</span><span class="w"> </span><span class="n">xid</span><span class="p">,</span><span class="w"> </span><span class="n">username</span><span class="p">,</span><span class="w"> </span><span class="n">os_username</span><span class="p">,</span>
+<span class="w">       </span><span class="n">machine_name</span><span class="p">,</span><span class="w"> </span><span class="n">session_info</span><span class="p">,</span><span class="w"> </span><span class="k">operation</span><span class="p">,</span><span class="w"> </span><span class="n">seg_owner</span><span class="p">,</span><span class="w"> </span><span class="n">seg_name</span><span class="p">,</span>
+<span class="w">       </span><span class="k">table_name</span><span class="p">,</span><span class="w"> </span><span class="n">row_id</span><span class="p">,</span><span class="w"> </span><span class="k">rollback</span><span class="p">,</span><span class="w"> </span><span class="n">sql_redo</span><span class="p">,</span><span class="w"> </span><span class="n">sql_undo</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">v$logmnr_contents</span><span class="p">;</span>
+
+<span class="k">EXEC</span><span class="w"> </span><span class="n">DBMS_LOGMNR</span><span class="p">.</span><span class="n">END_LOGMNR</span><span class="p">;</span>
+</code></pre></div>
+<p>Always call <code>END_LOGMNR</code> when done; it frees the session's PGA and the file handles. Drop <code>lm_out</code> after the investigation.</p>
+<h2 id="6-query-catalogue">6. Query catalogue<a class="headerlink" href="#6-query-catalogue" title="Permanent link">&para;</a></h2>
+<p>All queries run against <code>lm_out</code>. Swap in <code>v$logmnr_contents</code> if you skipped the copy (slower, session must still be open).</p>
+<p><strong>Overview: what kind of activity is in the window</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">operation</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">cnt</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">lm_out</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">operation</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Busiest tables</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">seg_owner</span><span class="p">,</span><span class="w"> </span><span class="k">table_name</span><span class="p">,</span><span class="w"> </span><span class="k">operation</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">cnt</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">lm_out</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="k">operation</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;INSERT&#39;</span><span class="p">,</span><span class="s1">&#39;UPDATE&#39;</span><span class="p">,</span><span class="s1">&#39;DELETE&#39;</span><span class="p">)</span>
+<span class="k">AND</span><span class="w">    </span><span class="n">seg_owner</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;SYS&#39;</span><span class="p">,</span><span class="s1">&#39;SYSTEM&#39;</span><span class="p">)</span>
+<span class="k">GROUP</span><span class="w">  </span><span class="k">BY</span><span class="w"> </span><span class="n">seg_owner</span><span class="p">,</span><span class="w"> </span><span class="k">table_name</span><span class="p">,</span><span class="w"> </span><span class="k">operation</span>
+<span class="k">ORDER</span><span class="w">  </span><span class="k">BY</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">FETCH</span><span class="w"> </span><span class="k">FIRST</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="k">ROWS</span><span class="w"> </span><span class="k">ONLY</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>All DML on one table, with redo and undo</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">scn</span><span class="p">,</span><span class="w"> </span><span class="k">timestamp</span><span class="p">,</span><span class="w"> </span><span class="n">username</span><span class="p">,</span><span class="w"> </span><span class="k">operation</span><span class="p">,</span><span class="w"> </span><span class="n">sql_redo</span><span class="p">,</span><span class="w"> </span><span class="n">sql_undo</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">lm_out</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="n">seg_owner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;SCOTT&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;EMP&#39;</span>
+<span class="k">AND</span><span class="w">    </span><span class="k">operation</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;INSERT&#39;</span><span class="p">,</span><span class="s1">&#39;UPDATE&#39;</span><span class="p">,</span><span class="s1">&#39;DELETE&#39;</span><span class="p">)</span>
+<span class="k">ORDER</span><span class="w">  </span><span class="k">BY</span><span class="w"> </span><span class="n">scn</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>DDL (create, alter, drop, truncate, grants)</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">timestamp</span><span class="p">,</span><span class="w"> </span><span class="n">username</span><span class="p">,</span><span class="w"> </span><span class="n">os_username</span><span class="p">,</span><span class="w"> </span><span class="n">machine_name</span><span class="p">,</span><span class="w"> </span><span class="n">seg_owner</span><span class="p">,</span><span class="w"> </span><span class="n">sql_redo</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">lm_out</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="k">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;DDL&#39;</span>
+<span class="k">ORDER</span><span class="w">  </span><span class="k">BY</span><span class="w"> </span><span class="n">scn</span><span class="p">;</span>
+
+<span class="c1">-- truncates only</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">timestamp</span><span class="p">,</span><span class="w"> </span><span class="n">username</span><span class="p">,</span><span class="w"> </span><span class="n">sql_redo</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">lm_out</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="k">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;DDL&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="k">UPPER</span><span class="p">(</span><span class="n">sql_redo</span><span class="p">)</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;TRUNCATE%&#39;</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Who did it: activity by user, OS user, machine</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">username</span><span class="p">,</span><span class="w"> </span><span class="n">os_username</span><span class="p">,</span><span class="w"> </span><span class="n">machine_name</span><span class="p">,</span><span class="w"> </span><span class="k">operation</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">cnt</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">lm_out</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="k">operation</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;INSERT&#39;</span><span class="p">,</span><span class="s1">&#39;UPDATE&#39;</span><span class="p">,</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span><span class="s1">&#39;DDL&#39;</span><span class="p">)</span>
+<span class="k">GROUP</span><span class="w">  </span><span class="k">BY</span><span class="w"> </span><span class="n">username</span><span class="p">,</span><span class="w"> </span><span class="n">os_username</span><span class="p">,</span><span class="w"> </span><span class="n">machine_name</span><span class="p">,</span><span class="w"> </span><span class="k">operation</span>
+<span class="k">ORDER</span><span class="w">  </span><span class="k">BY</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
+<p><code>USERNAME</code>, <code>OS_USERNAME</code> and <code>MACHINE_NAME</code> are only populated when supplemental logging was on at the time.</p>
+<p><strong>Recover deleted rows: generate the undo script</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">sql_undo</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;;&#39;</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">lm_out</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="n">seg_owner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;SCOTT&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;EMP&#39;</span>
+<span class="k">AND</span><span class="w">    </span><span class="k">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;DELETE&#39;</span>
+<span class="k">ORDER</span><span class="w">  </span><span class="k">BY</span><span class="w"> </span><span class="n">scn</span><span class="p">;</span>
+</code></pre></div>
+<p>Run the undo in reverse SCN order (<code>ORDER BY scn DESC</code>) when reversing a mix of operations.</p>
+<p><strong>Find a specific value in the changes</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">scn</span><span class="p">,</span><span class="w"> </span><span class="k">timestamp</span><span class="p">,</span><span class="w"> </span><span class="n">username</span><span class="p">,</span><span class="w"> </span><span class="k">operation</span><span class="p">,</span><span class="w"> </span><span class="n">sql_redo</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">lm_out</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="k">table_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;EMP&#39;</span>
+<span class="k">AND</span><span class="w">    </span><span class="n">sql_redo</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%&quot;EMPNO&quot; = &#39;&#39;7369&#39;&#39;%&#39;</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>One transaction end to end (by XID)</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">xid</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">ops</span><span class="p">,</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="k">timestamp</span><span class="p">)</span><span class="w"> </span><span class="n">started</span><span class="p">,</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">commit_timestamp</span><span class="p">)</span><span class="w"> </span><span class="k">committed</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">lm_out</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="k">operation</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;INSERT&#39;</span><span class="p">,</span><span class="s1">&#39;UPDATE&#39;</span><span class="p">,</span><span class="s1">&#39;DELETE&#39;</span><span class="p">)</span>
+<span class="k">GROUP</span><span class="w">  </span><span class="k">BY</span><span class="w"> </span><span class="n">xid</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">ops</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">scn</span><span class="p">,</span><span class="w"> </span><span class="k">operation</span><span class="p">,</span><span class="w"> </span><span class="k">table_name</span><span class="p">,</span><span class="w"> </span><span class="n">sql_redo</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">lm_out</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">xid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HEXTORAW</span><span class="p">(</span><span class="s1">&#39;0A001B00E4120000&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">scn</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Rolled-back changes</strong> (needs a session started without <code>COMMITTED_DATA_ONLY</code>)</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">timestamp</span><span class="p">,</span><span class="w"> </span><span class="n">username</span><span class="p">,</span><span class="w"> </span><span class="k">table_name</span><span class="p">,</span><span class="w"> </span><span class="k">operation</span><span class="p">,</span><span class="w"> </span><span class="n">sql_redo</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">lm_out</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">rollback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="k">operation</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">lm_out</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">operation</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;START&#39;</span><span class="p">,</span><span class="s1">&#39;COMMIT&#39;</span><span class="p">,</span><span class="s1">&#39;ROLLBACK&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">operation</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Activity per minute (spot the spike)</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">TRUNC</span><span class="p">(</span><span class="k">timestamp</span><span class="p">,</span><span class="s1">&#39;MI&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">minute</span><span class="p">,</span><span class="w"> </span><span class="k">operation</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">cnt</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">lm_out</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="k">operation</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;INSERT&#39;</span><span class="p">,</span><span class="s1">&#39;UPDATE&#39;</span><span class="p">,</span><span class="s1">&#39;DELETE&#39;</span><span class="p">)</span>
+<span class="k">GROUP</span><span class="w">  </span><span class="k">BY</span><span class="w"> </span><span class="n">TRUNC</span><span class="p">(</span><span class="k">timestamp</span><span class="p">,</span><span class="s1">&#39;MI&#39;</span><span class="p">),</span><span class="w"> </span><span class="k">operation</span>
+<span class="k">ORDER</span><span class="w">  </span><span class="k">BY</span><span class="w"> </span><span class="k">minute</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Things LogMiner could not decode</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">operation</span><span class="p">,</span><span class="w"> </span><span class="n">seg_owner</span><span class="p">,</span><span class="w"> </span><span class="n">seg_name</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">cnt</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">lm_out</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="k">operation</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;UNSUPPORTED&#39;</span><span class="p">,</span><span class="s1">&#39;INTERNAL&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="n">seg_name</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;OBJ#%&#39;</span>
+<span class="k">GROUP</span><span class="w">  </span><span class="k">BY</span><span class="w"> </span><span class="k">operation</span><span class="p">,</span><span class="w"> </span><span class="n">seg_owner</span><span class="p">,</span><span class="w"> </span><span class="n">seg_name</span><span class="p">;</span>
+</code></pre></div>
+<h2 id="7-gotchas">7. Gotchas<a class="headerlink" href="#7-gotchas" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>OBJ# 12345</code> or <code>HEXTORAW(...)</code> instead of names</td>
+<td>Table dropped/altered since the redo; online catalog no longer matches</td>
+<td>Use a dictionary in redo: <code>DBMS_LOGMNR_D.BUILD(OPTIONS =&gt; DBMS_LOGMNR_D.STORE_IN_REDO_LOGS)</code> built before the change, then start with <code>DICT_FROM_REDO_LOGS</code></td>
+</tr>
+<tr>
+<td>UPDATE shows only ROWID, no column values</td>
+<td>Supplemental logging was off when redo was generated</td>
+<td>Enable it; old redo cannot be fixed</td>
+</tr>
+<tr>
+<td>ORA-01291 missing logfile</td>
+<td>Gap in the sequence range or file not at the registered path</td>
+<td>Check <code>v$logmnr_logs</code>, restore the missing archive</td>
+</tr>
+<tr>
+<td>ORA-01284 file cannot be opened</td>
+<td>Wrong path or permissions on a manually added file</td>
+<td><code>ls -l</code> the path; file must be readable by the oracle user</td>
+</tr>
+<tr>
+<td>Last few minutes missing</td>
+<td>Changes still in online redo</td>
+<td><code>ALTER SYSTEM ARCHIVE LOG CURRENT;</code> before starting</td>
+</tr>
+<tr>
+<td>Transaction partly missing</td>
+<td>Started before <code>STARTTIME</code> with <code>COMMITTED_DATA_ONLY</code></td>
+<td>Widen the start time</td>
+</tr>
+<tr>
+<td>Duplicate rows in output</td>
+<td>Same sequence added from two destinations</td>
+<td>Filter <code>dest_id = 1</code></td>
+</tr>
+<tr>
+<td>ORA-01323 / CONTINUOUS_MINE errors on 19c</td>
+<td>Option desupported</td>
+<td>Use Process 1 Option B or Process 2</td>
+</tr>
+<tr>
+<td>Queries very slow</td>
+<td>Every query on <code>v$logmnr_contents</code> re-reads all archives</td>
+<td>Copy to <code>lm_out</code> once (section 5)</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

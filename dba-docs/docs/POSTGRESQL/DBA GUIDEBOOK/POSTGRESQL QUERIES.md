@@ -204,6 +204,99 @@ WHERE now() - query_start > '9 seconds'::interval
 
 ORDER BY runtime DESC;
 ```
+### Long Running Queries [os-stats/extensions]
+```sql
+WITH srv AS (
+    SELECT
+        (SELECT count(*) FROM regexp_matches(pg_read_file('/proc/cpuinfo',0,4194304,true),'^processor','gn'))::numeric AS vcpus,
+        (regexp_match(pg_read_file('/proc/meminfo',0,65536,true),'MemTotal:\s+(\d+)'))[1]::numeric / 1024           AS ram_mb,
+        -- CLK_TCK detected from my own backend: start time in ticks (stat field 22) / start time in seconds since boot
+        (SELECT round( (string_to_array(regexp_replace(pg_read_file('/proc/'||pg_backend_pid()||'/stat',0,4096,true), '^.*\) ', ''), ' '))[20]::numeric
+                     / ( EXTRACT(EPOCH FROM a.backend_start)
+                       - (EXTRACT(EPOCH FROM clock_timestamp()) - split_part(pg_read_file('/proc/uptime',0,256,true),' ',1)::numeric) )
+                     / 10 ) * 10
+         FROM pg_stat_activity a WHERE a.pid = pg_backend_pid())                                                   AS clk_tck
+),
+tmp AS (                     -- temp files in use right now
+    SELECT (regexp_match(name, '^pgsql_tmp(\d+)\.'))[1]::int AS pid, count(*) AS temp_files, sum(size) AS temp_bytes
+    FROM pg_ls_tmpdir() GROUP BY 1
+),
+lk AS (                      -- locks held / waiting
+    SELECT pid, count(*) FILTER (WHERE granted) AS locks_held, count(*) FILTER (WHERE NOT granted) AS locks_waiting
+    FROM pg_locks GROUP BY pid
+),
+blk AS (                     -- how many sessions each pid is blocking
+    SELECT b.pid, count(*) AS blocks_count
+    FROM pg_stat_activity x CROSS JOIN LATERAL unnest(pg_blocking_pids(x.pid)) AS b(pid)
+    GROUP BY b.pid
+),
+raw AS (                     -- read /proc for each session; a vanished process just gives NULLs
+    SELECT a.*,
+           pg_read_file('/proc/'||a.pid||'/stat',   0, 4096,  true) AS stat_txt,
+           pg_read_file('/proc/'||a.pid||'/status', 0, 65536, true) AS status_txt,
+           pg_read_file('/proc/'||a.pid||'/io',     0, 4096,  true) AS io_txt
+    FROM pg_stat_activity a
+    WHERE a.state <> 'idle' AND a.pid <> pg_backend_pid()
+),
+s AS (
+    SELECT r.*,
+           f[1]                                                          AS os_state,     -- R running, S sleeping, D disk wait
+           (f[12]::numeric + f[13]::numeric) / srv.clk_tck               AS cpu_sec,      -- utime + stime (stat fields 14, 15)
+           f[37]                                                         AS processor,    -- last core (stat field 39)
+           COALESCE((regexp_match(r.status_txt,'RssAnon:\s+(\d+)'))[1]::numeric, 0)  / 1024 AS private_mb,
+           COALESCE((regexp_match(r.status_txt,'RssShmem:\s+(\d+)'))[1]::numeric, 0) / 1024 AS shared_mb,
+           COALESCE((regexp_match(r.io_txt,'read_bytes:\s+(\d+)'))[1]::numeric, 0)          AS read_bytes,
+           COALESCE((regexp_match(r.io_txt,'write_bytes:\s+(\d+)'))[1]::numeric, 0)         AS write_bytes,
+           COALESCE(t.temp_files,0)    AS temp_files,  COALESCE(t.temp_bytes,0)    AS temp_bytes,
+           COALESCE(l.locks_held,0)    AS locks_held,  COALESCE(l.locks_waiting,0) AS locks_waiting,
+           COALESCE(bk.blocks_count,0) AS blocks_count
+    FROM raw r
+    CROSS JOIN srv
+    CROSS JOIN LATERAL (SELECT string_to_array(regexp_replace(r.stat_txt, '^.*\) ', ''), ' ') AS f) st
+    LEFT JOIN tmp t  ON t.pid  = r.pid
+    LEFT JOIN lk  l  ON l.pid  = r.pid
+    LEFT JOIN blk bk ON bk.pid = r.pid
+    WHERE r.stat_txt IS NOT NULL                    -- process ended while we were reading: skip it
+)
+SELECT
+    COALESCE(s.leader_pid, s.pid)                                                        AS session_pid,
+    count(*)                                                                             AS processes,
+    max(s.usename)                                                                       AS usename,
+    max(s.application_name)                                                              AS app,
+    max(host(s.client_addr))                                                             AS client,
+    max(s.state)  FILTER (WHERE s.leader_pid IS NULL)                                    AS state,
+    max(COALESCE(s.wait_event_type||':'||s.wait_event,'on CPU')) FILTER (WHERE s.leader_pid IS NULL) AS wait_event,
+    string_agg(DISTINCT s.os_state, ',')                                                 AS os_state,
+    date_trunc('second', max(clock_timestamp() - s.query_start))                         AS running_for,
+    date_trunc('second', max(clock_timestamp() - s.xact_start))                          AS txn_age,
+    -- CPU
+    max(srv.vcpus)                                                                       AS server_vcpus,
+    round(sum(s.cpu_sec)/GREATEST(EXTRACT(EPOCH FROM clock_timestamp()-min(s.backend_start)),1),2)                 AS cores_used,
+    round(sum(s.cpu_sec)/GREATEST(EXTRACT(EPOCH FROM clock_timestamp()-min(s.backend_start)),1)/max(srv.vcpus)*100,1) AS cpu_pct_of_server,
+    string_agg(s.processor, ',')                                                         AS cores_now,
+    -- MEMORY
+    round(sum(s.private_mb))                                                             AS private_mem_mb,
+    round(sum(s.private_mb)/max(srv.ram_mb)*100,2)                                       AS mem_pct_of_server,
+    round(max(s.shared_mb))                                                              AS shared_buffers_touched_mb,
+    -- TEMP (spilled sorts/hashes in use now)
+    sum(s.temp_files)                                                                    AS temp_files_now,
+    pg_size_pretty(sum(s.temp_bytes)::bigint)                                            AS temp_used_now,
+    -- DISK I/O (since connection start)
+    pg_size_pretty(sum(s.read_bytes)::bigint)                                            AS disk_read,
+    pg_size_pretty(sum(s.write_bytes)::bigint)                                           AS disk_written,
+    -- LOCKS / BLOCKING
+    sum(s.locks_held)                                                                    AS locks_held,
+    sum(s.locks_waiting)                                                                 AS locks_waiting,
+    max(array_to_string(pg_blocking_pids(s.pid), ',')) FILTER (WHERE s.leader_pid IS NULL) AS blocked_by,
+    sum(s.blocks_count)                                                                  AS sessions_it_blocks,
+    -- VACUUM impact
+    max(age(s.backend_xmin))                                                             AS xmin_age_txns,
+    -- QUERY
+    left(max(s.query) FILTER (WHERE s.leader_pid IS NULL), 150)                          AS query
+FROM s CROSS JOIN srv
+GROUP BY COALESCE(s.leader_pid, s.pid)
+ORDER BY cpu_pct_of_server DESC, sum(s.temp_bytes) DESC;
+```
 
 ### Active Connections Excluding Current Query
 
