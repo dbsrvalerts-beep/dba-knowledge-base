@@ -2222,6 +2222,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#45-zstd-backup-process-preparation-packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Zstd backup process preparation packages
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2882,6 +2893,17 @@
     <span class="md-ellipsis">
       
         4.4 Hooking Script into PostgreSQL Systemd Unit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-zstd-backup-process-preparation-packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Zstd backup process preparation packages
       
     </span>
   </a>
@@ -3638,6 +3660,39 @@ sudo<span class="w"> </span>chown<span class="w"> </span>-R<span class="w"> </sp
 </code></pre></div></li>
 </ol>
 <hr />
+<h3 id="45-zstd-backup-process-preparation-packages">4.5 Zstd backup process preparation packages<a class="headerlink" href="#45-zstd-backup-process-preparation-packages" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Install gcc and make libraries via root user
+<div class="highlight"><pre><span></span><code>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>gcc<span class="w"> </span>make
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>gcc<span class="w"> </span>make<span class="w"> </span>--disablerepo<span class="o">=</span>pgdg12<span class="w"> </span>--disablerepo<span class="o">=</span>pgdg13
+</code></pre></div></p>
+</li>
+<li>
+<p>Move to /u01 directory and download zstd tar file
+cd /u01</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-LO<span class="w"> </span>https://github.com/facebook/zstd/releases/download/v1.5.6/zstd-1.5.6.tar.gz
+curl<span class="w"> </span>-LO<span class="w"> </span>https://github.com/facebook/zstd/releases/download/v1.5.6/zstd-1.5.6.tar.gz.sha256
+sha256sum<span class="w"> </span>-c<span class="w"> </span>zstd-1.5.6.tar.gz.sha256<span class="w">          </span><span class="c1"># must print: OK</span>
+</code></pre></div>
+<ol>
+<li>
+<p>Extract compile and install the new zstd library
+<div class="highlight"><pre><span></span><code>tar<span class="w"> </span>xzf<span class="w"> </span>zstd-1.5.6.tar.gz<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>zstd-1.5.6
+make<span class="w"> </span>-C<span class="w"> </span>lib<span class="w"> </span>-j4<span class="w"> </span>lib-mt<span class="w">                         </span><span class="c1"># multithreaded shared library</span>
+make<span class="w"> </span>-C<span class="w"> </span>lib<span class="w"> </span><span class="nv">PREFIX</span><span class="o">=</span>/opt/zstd<span class="w"> </span>install
+</code></pre></div></p>
+</li>
+<li>
+<p>verify the packages
+<div class="highlight"><pre><span></span><code>ls<span class="w"> </span>-l<span class="w"> </span>/opt/zstd/lib/
+ldd<span class="w"> </span>/opt/zstd/lib/libzstd.so.1<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>pthread<span class="w">  </span><span class="c1"># must show libpthread = MT build</span>
+</code></pre></div></p>
+</li>
+</ol>
 <h2 id="5-phase-3-database-engine-parameter-tuning">5. Phase 3: Database Engine Parameter Tuning<a class="headerlink" href="#5-phase-3-database-engine-parameter-tuning" title="Permanent link">&para;</a></h2>
 <h3 id="51-downloading-installing-extension-packages-yumrpm">5.1 Downloading &amp; Installing Extension Packages (YUM/RPM)<a class="headerlink" href="#51-downloading-installing-extension-packages-yumrpm" title="Permanent link">&para;</a></h3>
 <blockquote>
@@ -4066,7 +4121,7 @@ mkdir<span class="w"> </span>-p<span class="w"> </span>/u01/backup/PG
 <span class="nv">PGUSER</span><span class="o">=</span><span class="s2">&quot;postgres&quot;</span>
 <span class="nb">export</span><span class="w"> </span>PGPASSWORD
 <span class="nb">export</span><span class="w"> </span>PGUSER
-
+<span class="nb">export</span><span class="w"> </span><span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span>/opt/zstd/lib
 <span class="nv">CMD_M</span><span class="o">=</span>mailx
 <span class="nv">PG_BASEBACKUP_LOG</span><span class="o">=</span><span class="s2">&quot;/u01/backup/logs&quot;</span>
 <span class="nv">Azure_Log</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PG_BASEBACKUP_LOG</span><span class="s2">/GINESYS_backuplog.log&quot;</span>
@@ -4080,7 +4135,8 @@ mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</
 <span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Starting Pg_basebackup at </span><span class="nv">$start_time_human</span><span class="s2">&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PG_BASEBACKUP_LOG</span><span class="s2">/pg_basebackup_</span><span class="si">${</span><span class="nv">MYDATE</span><span class="si">}</span><span class="s2">_</span><span class="si">${</span><span class="nv">MYTIME</span><span class="si">}</span><span class="s2">.log&quot;</span>
 <span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Running pg_basebackup command...&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PG_BASEBACKUP_LOG</span><span class="s2">/pg_basebackup_</span><span class="si">${</span><span class="nv">MYDATE</span><span class="si">}</span><span class="s2">_</span><span class="si">${</span><span class="nv">MYTIME</span><span class="si">}</span><span class="s2">.log&quot;</span>
 
-<span class="nv">$POSTGRESQL_BIN</span>/pg_basebackup<span class="w"> </span>-D<span class="w"> </span><span class="s2">&quot;/u01/backup/PG/</span><span class="nv">$MYDATE</span><span class="s2">&quot;</span><span class="w"> </span>-Ft<span class="w"> </span>-Z<span class="w"> </span>server-zstd:9<span class="w"> </span>-P<span class="w"> </span>-Xs<span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PG_BASEBACKUP_LOG</span><span class="s2">/pg_basebackup_</span><span class="si">${</span><span class="nv">MYDATE</span><span class="si">}</span><span class="s2">_</span><span class="si">${</span><span class="nv">MYTIME</span><span class="si">}</span><span class="s2">.log&quot;</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="c1">#$POSTGRESQL_BIN/pg_basebackup -D &quot;/u01/backup/PG/$MYDATE&quot; -Ft -Z server-zstd:9 -P -Xs &gt;&gt; &quot;$PG_BASEBACKUP_LOG/pg_basebackup_${MYDATE}_${MYTIME}.log&quot; 2&gt;&amp;1 --old process</span>
+<span class="nv">$POSTGRESQL_BIN</span>/pg_basebackup<span class="w"> </span>-D<span class="w"> </span><span class="s2">&quot;/u01/backup/PG/</span><span class="nv">$MYDATE</span><span class="s2">&quot;</span><span class="w"> </span>-Ft<span class="w"> </span>-Z<span class="w"> </span>client-zstd:level<span class="o">=</span><span class="m">3</span>,workers<span class="o">=</span><span class="m">4</span><span class="w"> </span>-c<span class="w"> </span>fast<span class="w"> </span>-P<span class="w"> </span>-Xs<span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PG_BASEBACKUP_LOG</span><span class="s2">/pg_basebackup_</span><span class="si">${</span><span class="nv">MYDATE</span><span class="si">}</span><span class="s2">_</span><span class="si">${</span><span class="nv">MYTIME</span><span class="si">}</span><span class="s2">.log&quot;</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
 
 <span class="nv">end_time</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span>+%s<span class="k">)</span>
 <span class="nv">end_time_human</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span><span class="s1">&#39;+%Y-%m-%d %H:%M:%S&#39;</span><span class="k">)</span>
