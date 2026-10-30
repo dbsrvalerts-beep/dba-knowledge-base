@@ -398,6 +398,39 @@ sudo chown -R postgres:postgres /u01
 
 ---
 
+### 4.5 Zstd backup process preparation packages
+1. Install gcc and make libraries via root user
+```bash
+dnf install -y gcc make
+```
+```bash
+dnf install -y gcc make --disablerepo=pgdg12 --disablerepo=pgdg13
+```
+
+2. Move to /u01 directory and download zstd tar file
+cd /u01
+
+```bash
+curl -LO https://github.com/facebook/zstd/releases/download/v1.5.6/zstd-1.5.6.tar.gz
+curl -LO https://github.com/facebook/zstd/releases/download/v1.5.6/zstd-1.5.6.tar.gz.sha256
+sha256sum -c zstd-1.5.6.tar.gz.sha256          # must print: OK
+```
+
+3. Extract compile and install the new zstd library
+```bash
+tar xzf zstd-1.5.6.tar.gz && cd zstd-1.5.6
+make -C lib -j4 lib-mt                         # multithreaded shared library
+make -C lib PREFIX=/opt/zstd install
+```
+
+4. verify the packages
+```bash
+ls -l /opt/zstd/lib/
+ldd /opt/zstd/lib/libzstd.so.1 | grep pthread  # must show libpthread = MT build
+```
+
+
+
 ## 5. Phase 3: Database Engine Parameter Tuning
 
 ### 5.1 Downloading & Installing Extension Packages (YUM/RPM)
@@ -688,7 +721,7 @@ DD=$(date +%d%m%y)
 PGUSER="postgres"
 export PGPASSWORD
 export PGUSER
-
+export LD_LIBRARY_PATH=/opt/zstd/lib
 CMD_M=mailx
 PG_BASEBACKUP_LOG="/u01/backup/logs"
 Azure_Log="$PG_BASEBACKUP_LOG/GINESYS_backuplog.log"
@@ -702,7 +735,8 @@ start_time_human=$(date '+%Y-%m-%d %H:%M:%S')
 echo "Starting Pg_basebackup at $start_time_human" >> "$PG_BASEBACKUP_LOG/pg_basebackup_${MYDATE}_${MYTIME}.log"
 echo "Running pg_basebackup command..." >> "$PG_BASEBACKUP_LOG/pg_basebackup_${MYDATE}_${MYTIME}.log"
 
-$POSTGRESQL_BIN/pg_basebackup -D "/u01/backup/PG/$MYDATE" -Ft -Z server-zstd:9 -P -Xs >> "$PG_BASEBACKUP_LOG/pg_basebackup_${MYDATE}_${MYTIME}.log" 2>&1
+#$POSTGRESQL_BIN/pg_basebackup -D "/u01/backup/PG/$MYDATE" -Ft -Z server-zstd:9 -P -Xs >> "$PG_BASEBACKUP_LOG/pg_basebackup_${MYDATE}_${MYTIME}.log" 2>&1 --old process
+$POSTGRESQL_BIN/pg_basebackup -D "/u01/backup/PG/$MYDATE" -Ft -Z client-zstd:level=3,workers=4 -c fast -P -Xs >> "$PG_BASEBACKUP_LOG/pg_basebackup_${MYDATE}_${MYTIME}.log" 2>&1
 
 end_time=$(date +%s)
 end_time_human=$(date '+%Y-%m-%d %H:%M:%S')
