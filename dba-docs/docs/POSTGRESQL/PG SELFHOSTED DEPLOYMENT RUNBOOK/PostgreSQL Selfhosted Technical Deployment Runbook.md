@@ -173,10 +173,40 @@ Insert the following script content (`pg_autotune_systemd.sh` v4):
 
 ```bash
 #!/bin/bash
-# pg_autotune_systemd.sh — Version 4
-# Detects hardware changes, modifies postgresql.conf.
-# Designed exclusively to be run via Systemd ExecStartPre hook.
+# pg_autotune_systemd.sh — Version 7
+# Detects hardware changes, modifies postgresql.conf, and prepares the OS so the
+# Linux OOM killer does not take PostgreSQL down.
+# Designed to be run via Systemd ExecStartPre hook:
+#     ExecStartPre=+/u01/Gsl/pg_autotune_systemd.sh
+# Manual health check at any time (as root):
+#     /u01/Gsl/pg_autotune_systemd.sh --verify
 #
+# V7 Changes:
+#   - max_parallel_workers_per_gather is fixed in USER CONFIGURATION
+#     (no longer taken from the pgconfig.org API or the min(4, CPU/2) fallback formula)
+# V6 Changes:
+#   - Kernel memory reserve managed here (check, add if missing, apply, verify):
+#       vm.min_free_kbytes        = 0.4% of RAM, kept between 256 MB and 2 GB
+#       vm.watermark_scale_factor = 200
+#     Written to /etc/sysctl.d/90-postgres-memory.conf and applied live.
+#   - Transparent Huge Pages managed here (check, fix, persist, verify):
+#     runtime enabled/defrag = madvise, kernel cmdline transparent_hugepage=madvise.
+#   - huge_pages = on set in postgresql.conf if missing (check + verify).
+#   - Warns when postgresql.auto.conf overrides a parameter autotune manages.
+#   - Checks (does not change) the service OOM settings: -1000 / backends 0.
+#   - PASS / WARN / FAIL line for every step + a PRE-START SUMMARY.
+#   - After every start, a background check waits for PostgreSQL and verifies
+#     everything on the running server (VERIFY SUMMARY in the same log,
+#     also sent to syslog/journal with tag pg_autotune).
+#   - New --verify mode for a manual health check; changes nothing.
+#   - Steps 1-10 run on every start; only the parameter retune (step 4-7)
+#     depends on a hardware change.
+# V5 Changes:
+#   - Huge pages sizing on EVERY start: reads shared_memory_size_in_huge_pages
+#     from the stopped server, adds 2%, reserves vm.nr_hugepages live.
+#     Not kept in sysctl files (safe on scale-down). Falls back to
+#     huge_pages = try if pages are short; restores 'on' automatically.
+#   - PostgreSQL version read from PGDATA/PG_VERSION. TEST_SLEEP_SECONDS = 0.
 # V4 Changes:
 #   - max_parallel_workers_per_gather fallback formula updated to: min(4, CPU/2)
 #   - Email functionality removed entirely
@@ -187,22 +217,61 @@ Insert the following script content (`pg_autotune_systemd.sh` v4):
 
 # --- USER CONFIGURATION ---
 MAX_CONNECTIONS=5000
-WORK_MEM_MB=1024
+WORK_MEM_MB=500
 WAL_BUFFERS_MB=32
-TEST_SLEEP_SECONDS=30
+MAX_PARALLEL_WORKERS_PER_GATHER=4      # fixed value (not from pgconfig.org, not calculated); keep <= max_parallel_workers
+TEST_SLEEP_SECONDS=0
 # --------------------------
+
+# --- OOM HARDENING CONFIGURATION (V6) ---
+HUGEPAGES_ENABLE=1                 # 1 = set huge_pages = on and size vm.nr_hugepages
+HUGEPAGES_MARGIN_PCT=2             # pages = PostgreSQL's need + 2%
+HUGEPAGES_MAX_PCT=70               # never reserve more than this % of RAM
+KERNEL_RESERVE_ENABLE=1            # 1 = manage vm.min_free_kbytes / vm.watermark_scale_factor
+MIN_FREE_PER_MILLE=4               # min_free_kbytes = 0.4% of RAM ...
+MIN_FREE_MIN_KB=262144             # ... but at least 256 MB
+MIN_FREE_MAX_KB=2097152            # ... and at most 2 GB
+WATERMARK_SCALE_FACTOR=200
+THP_ENABLE=1                       # 1 = keep Transparent Huge Pages at madvise
+VERIFY_AFTER_START=1               # 1 = check the running server after every start
+VERIFY_TIMEOUT_SECONDS=900         # how long the post-start check waits for PostgreSQL
+SYSCTL_FILE="/etc/sysctl.d/90-postgres-memory.conf"
+THP_DIR="/sys/kernel/mm/transparent_hugepage"
+# -----------------------------------------
+
+# --- MODE ---
+MODE="start"                       # start = ExecStartPre (default)
+case "${1:-}" in
+    --verify)             MODE="verify" ;;
+    --verify-after-start) MODE="verify-after-start" ;;
+esac
 
 # --- LOGGING CONFIGURATION ---
 LOG_DIR="/u01/backup/logs/autotune"
-LOG_FILE="${LOG_DIR}/pg_autotune_$(date +'%Y%m%d_%H%M%S').log"
+if [ "$MODE" = "verify-after-start" ] && [ -n "${2:-}" ]; then
+    LOG_FILE="$2"                                      # append to the start's own log
+elif [ "$MODE" = "verify" ]; then
+    LOG_FILE="${LOG_DIR}/pg_autotune_verify_$(date +'%Y%m%d_%H%M%S').log"
+else
+    LOG_FILE="${LOG_DIR}/pg_autotune_$(date +'%Y%m%d_%H%M%S').log"
+fi
 
 # Auto-create log directory if it does not exist
 if [ ! -d "$LOG_DIR" ]; then
     mkdir -p "$LOG_DIR" 2>/dev/null
 fi
+mkdir -p "${LOG_DIR}/config_backup" 2>/dev/null
 
-# Redirect all output to the log file
-exec >> "$LOG_FILE" 2>&1
+# Create the log file first: with --verify, tee creates it in the background,
+# so the existence check below could run before the file exists.
+touch "$LOG_FILE" 2>/dev/null
+
+# Redirect all output to the log file (manual --verify also prints to the screen)
+if [ "$MODE" = "verify" ] && [ -t 1 ]; then
+    exec > >(tee -a "$LOG_FILE") 2>&1
+else
+    exec >> "$LOG_FILE" 2>&1
+fi
 
 # Verify the log file was actually created (exec fails silently if dir is unwritable)
 if [ ! -f "$LOG_FILE" ]; then
@@ -217,107 +286,33 @@ log() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"
 }
 
-log "================================================================="
-log "Executing PostgreSQL Auto-Tune Hook  (v4)"
-# -----------------------------
-
-# --- INTERNAL STATE (Do not modify manually) ---
-LAST_KNOWN_STATE="First Run"
-# -----------------------------------------------
-
-# 1. Dynamically Locate postgresql.conf
-log "Locating postgresql.conf dynamically using PGDATA..."
-
-# Check if PGDATA is available in the current environment
-if [ -n "$PGDATA" ] && [ -f "$PGDATA/postgresql.conf" ]; then
-    PG_CONF="$PGDATA/postgresql.conf"
-    PGDATA_DIR="$PGDATA"
-else
-    # Attempt to load the postgres user's environment variables (useful if running from root crontab)
-    PGDATA_ENV=$(su - postgres -c 'echo $PGDATA' 2>/dev/null | grep -v '^\s*$' | tail -n 1)
-    if [ -n "$PGDATA_ENV" ] && [ -f "$PGDATA_ENV/postgresql.conf" ]; then
-        PG_CONF="$PGDATA_ENV/postgresql.conf"
-        PGDATA_DIR="$PGDATA_ENV"
+# --- CHECK RESULT HELPERS ----------------------------------------------------
+N_PASS=0; N_WARN=0; N_FAIL=0; FAIL_LIST=""
+pass() { N_PASS=$((N_PASS + 1)); log "  [PASS] $*"; }
+warn() { N_WARN=$((N_WARN + 1)); log "  [WARN] $*"; }
+fail() { N_FAIL=$((N_FAIL + 1)); FAIL_LIST="${FAIL_LIST}; $*"; log "  [FAIL] $*"; }
+summary() {   # $1 = title
+    local result="PASS"
+    [ "$N_WARN" -gt 0 ] && result="PASS WITH WARNINGS"
+    [ "$N_FAIL" -gt 0 ] && result="FAIL"
+    log "-----------------------------------------------------------------"
+    log "$1: ${result}   (pass=${N_PASS} warn=${N_WARN} fail=${N_FAIL})"
+    [ "$N_FAIL" -gt 0 ] && log "Failed checks:${FAIL_LIST#;}"
+    log "-----------------------------------------------------------------"
+    if [ "$N_FAIL" -gt 0 ]; then
+        logger -t pg_autotune -p daemon.err "$1: FAIL (${N_FAIL} failed) on $(hostname) - see $LOG_FILE" 2>/dev/null
     else
-        log "CRITICAL: \$PGDATA environment variable is not set or postgresql.conf not found inside it."
-        log "Please ensure \$PGDATA is exported, or set PG_CONF manually."
-        exit 1
+        logger -t pg_autotune -p daemon.notice "$1: ${result} on $(hostname) - see $LOG_FILE" 2>/dev/null
     fi
-fi
-log "Found PostgreSQL Configuration: $PG_CONF"
+}
+reset_counts() { N_PASS=0; N_WARN=0; N_FAIL=0; FAIL_LIST=""; }
 
-# Dynamically Detect PostgreSQL Version
-# Note: postgres -V reads the installed binary — does NOT require the service to be running.
-PG_VERSION=$(postgres -V 2>/dev/null | awk '{print $NF}' | cut -d. -f1)
-if [ -z "$PG_VERSION" ]; then
-    PG_VERSION=$(psql -V 2>/dev/null | awk '{print $3}' | cut -d. -f1)
-fi
-if [ -z "$PG_VERSION" ]; then
-    PG_VERSION="17" # Fallback
-fi
-log "Detected PostgreSQL Version: $PG_VERSION"
+meminfo_kb() { awk -v k="$1:" '$1==k{print $2}' /proc/meminfo; }
+thp_mode()   { sed -n 's/.*\[\(.*\)\].*/\1/p' "${THP_DIR}/$1" 2>/dev/null; }
 
-# 2. Detect Hardware
-TOTAL_RAM_KB=$(grep MemTotal /proc/meminfo | awk '{print $2}')
-TOTAL_RAM_MB=$((TOTAL_RAM_KB / 1024))
-TOTAL_RAM_GB=$((TOTAL_RAM_MB / 1024))
-CPU_CORES=$(nproc)
+# --- FUNCTIONS -----------------------------------------------------------------
 
-log "Detected Hardware: ${TOTAL_RAM_MB}MB RAM  |  ${CPU_CORES} CPU Cores"
-
-CURRENT_STATE="${TOTAL_RAM_MB}MB_RAM-${CPU_CORES}_CPUS"
-
-# 3. Hardware Change Validation (Self-contained)
-if [ "$CURRENT_STATE" == "$LAST_KNOWN_STATE" ]; then
-    log "Hardware unchanged ($CURRENT_STATE). Skipping auto-tune process."
-    exit 0
-fi
-
-log "================================================================="
-log "HARDWARE CHANGE DETECTED!"
-log "Previous Hardware: $LAST_KNOWN_STATE"
-log "New Hardware:      $CURRENT_STATE"
-log "================================================================="
-
-# 4. Memory Parameters (Local Math)
-# shared_buffers      = 26% of OS-visible physical RAM (MemTotal)
-# effective_cache_size= 76% of OS-visible physical RAM (MemTotal)  [planner hint only]
-# maintenance_work_mem= 5% of RAM (RAM_GB / 20), minimum 1 GB
-SHARED_BUFFERS_MB=$(( (TOTAL_RAM_MB * 26) / 100 ))
-EFFECTIVE_CACHE_MB=$(( (TOTAL_RAM_MB * 76) / 100 ))
-
-MAINT_WORK_MEM_GB=$((TOTAL_RAM_GB / 20))
-if [ "$MAINT_WORK_MEM_GB" -lt 1 ]; then MAINT_WORK_MEM_GB=1; fi
-MAINT_WORK_MEM_MB=$((MAINT_WORK_MEM_GB * 1024))
-
-# work_mem and wal_buffers are static — set via USER CONFIGURATION block above
-
-# 5. CPU/Parallel Parameters (API with Local Fallback)
-API_URL="https://api.pgconfig.org/v1/tuning/get-config?format=conf&max_connections=${MAX_CONNECTIONS}&pg_version=${PG_VERSION}&environment_name=OLTP&total_ram=${TOTAL_RAM_GB}&cpus=${CPU_CORES}&drive_type=SSD&arch=x86-64&os_type=linux"
-log "Calling pgconfig.org API for CPU/parallel parameters..."
-API_CONF=$(curl -s --max-time 5 "$API_URL" 2>/dev/null)
-
-if [ -n "$API_CONF" ] && echo "$API_CONF" | grep -q "max_parallel_workers"; then
-    log "API call succeeded. Parsing CPU parameters from response."
-    MAX_WORKER_PROCESSES=$(echo "$API_CONF" | grep "^max_worker_processes" | awk '{print $3}')
-    MAX_PARALLEL_WORKERS=$(echo "$API_CONF" | grep "^max_parallel_workers " | awk '{print $3}')
-    MAX_PARALLEL_WORKERS_PER_GATHER=$(echo "$API_CONF" | grep "^max_parallel_workers_per_gather" | awk '{print $3}')
-else
-    log "API call failed or timed out. Using local fallback math for CPU parameters."
-    MAX_WORKER_PROCESSES=$CPU_CORES
-    MAX_PARALLEL_WORKERS=$CPU_CORES
-    # Formula: min(4, Total CPU Cores / 2)
-    MAX_PARALLEL_WORKERS_PER_GATHER=$(( (CPU_CORES / 2) < 4 ? (CPU_CORES / 2) : 4 ))
-    if [ "$MAX_PARALLEL_WORKERS_PER_GATHER" -eq 0 ]; then MAX_PARALLEL_WORKERS_PER_GATHER=1; fi
-fi
-
-# 6. Backup the Configuration
-TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-BACKUP_PATH="/u01/backup/logs/autotune/config_backup/postgresql.conf.backup.${TIMESTAMP}"
-cp "$PG_CONF" "$BACKUP_PATH"
-log "Backed up $PG_CONF to $BACKUP_PATH"
-
-# 7. Direct File Modification Function
+# Direct File Modification Function
 # Logs a before-and-after trace for every parameter change.
 set_pg_param() {
     local key=$1
@@ -333,25 +328,543 @@ set_pg_param() {
     fi
 }
 
-# Apply parameters
-log "Applying optimized configurations to postgresql.conf..."
-set_pg_param "shared_buffers"               "'${SHARED_BUFFERS_MB}MB'"
-set_pg_param "effective_cache_size"         "'${EFFECTIVE_CACHE_MB}MB'"
-set_pg_param "maintenance_work_mem"         "'${MAINT_WORK_MEM_MB}MB'"
-set_pg_param "work_mem"                     "'${WORK_MEM_MB}MB'"
-set_pg_param "wal_buffers"                  "'${WAL_BUFFERS_MB}MB'"
-set_pg_param "max_worker_processes"         "$MAX_WORKER_PROCESSES"
-set_pg_param "max_parallel_workers"         "$MAX_PARALLEL_WORKERS"
-set_pg_param "max_parallel_workers_per_gather" "$MAX_PARALLEL_WORKERS_PER_GATHER"
+# Effective value of a parameter (postgresql.conf + postgresql.auto.conf), server stopped
+pg_effective() {
+    runuser -u postgres -- "/usr/pgsql-${PG_VERSION}/bin/postgres" -D "$PGDATA_DIR" -C "$1" 2>/dev/null
+}
 
-# 8. (Restart logic removed - handled natively by systemd)
+# Locate PGDATA / postgresql.conf and the PostgreSQL major version
+discover() {
+    log "Locating postgresql.conf dynamically using PGDATA..."
+    if [ -n "$PGDATA" ] && [ -f "$PGDATA/postgresql.conf" ]; then
+        PG_CONF="$PGDATA/postgresql.conf"
+        PGDATA_DIR="$PGDATA"
+    else
+        # Attempt to load the postgres user's environment variables (useful if running from root crontab)
+        PGDATA_ENV=$(su - postgres -c 'echo $PGDATA' 2>/dev/null | grep -v '^\s*$' | tail -n 1)
+        if [ -n "$PGDATA_ENV" ] && [ -f "$PGDATA_ENV/postgresql.conf" ]; then
+            PG_CONF="$PGDATA_ENV/postgresql.conf"
+            PGDATA_DIR="$PGDATA_ENV"
+        else
+            log "CRITICAL: \$PGDATA environment variable is not set or postgresql.conf not found inside it."
+            log "Please ensure \$PGDATA is exported, or set PG_CONF manually."
+            exit 1
+        fi
+    fi
+    PGDATA_DIR="${PGDATA_DIR%/}"
+    PG_AUTO_CONF="${PGDATA_DIR}/postgresql.auto.conf"
+    log "Found PostgreSQL Configuration: $PG_CONF"
+
+    # systemd PATH does not include /usr/pgsql-NN/bin, so `postgres -V` can fail there.
+    # The data directory's own PG_VERSION file is authoritative for the major version.
+    PG_VERSION=""
+    if [ -f "${PGDATA_DIR}/PG_VERSION" ]; then
+        PG_VERSION=$(cut -d. -f1 "${PGDATA_DIR}/PG_VERSION")
+    fi
+    if [ -z "$PG_VERSION" ]; then
+        PG_VERSION=$(postgres -V 2>/dev/null | awk '{print $NF}' | cut -d. -f1)
+    fi
+    if [ -z "$PG_VERSION" ]; then
+        PG_VERSION=$(psql -V 2>/dev/null | awk '{print $3}' | cut -d. -f1)
+    fi
+    if [ -z "$PG_VERSION" ]; then
+        PG_VERSION="17" # Fallback
+    fi
+    PG_BIN="/usr/pgsql-${PG_VERSION}/bin"
+    log "Detected PostgreSQL Version: $PG_VERSION"
+}
+
+min_free_target_kb() {
+    local mem_kb t
+    mem_kb=$(meminfo_kb MemTotal)
+    t=$(( mem_kb * MIN_FREE_PER_MILLE / 1000 ))
+    [ "$t" -lt "$MIN_FREE_MIN_KB" ] && t=$MIN_FREE_MIN_KB
+    [ "$t" -gt "$MIN_FREE_MAX_KB" ] && t=$MIN_FREE_MAX_KB
+    echo "$t"
+}
+
+# STEP A: kernel free-memory reserve (check, add if missing, apply live, verify)
+ensure_kernel_reserve() {
+    log "STEP A: Kernel memory reserve"
+    [ "$KERNEL_RESERVE_ENABLE" -eq 1 ] || { warn "Kernel reserve management disabled in script configuration"; return 0; }
+
+    local mf wsf want cur_mf cur_wsf f
+    mf=$(min_free_target_kb)
+    wsf=$WATERMARK_SCALE_FACTOR
+    want=$(printf '# Managed by pg_autotune_systemd.sh - do not edit by hand\n# vm.nr_hugepages is set by pg_autotune_systemd.sh at every PostgreSQL start\nvm.min_free_kbytes = %s\nvm.watermark_scale_factor = %s\n' "$mf" "$wsf")
+
+    # 1. persistent file
+    if [ -f "$SYSCTL_FILE" ] && [ "$(cat "$SYSCTL_FILE")" = "$want" ]; then
+        log "  $SYSCTL_FILE already correct."
+    else
+        [ -f "$SYSCTL_FILE" ] && cp -p "$SYSCTL_FILE" "${LOG_DIR}/config_backup/$(basename "$SYSCTL_FILE").backup.$(date +%Y%m%d_%H%M%S)"
+        printf '%s\n' "$want" > "$SYSCTL_FILE"
+        log "  Wrote $SYSCTL_FILE (min_free_kbytes=${mf}, watermark_scale_factor=${wsf})."
+    fi
+
+    # 2. live values
+    cur_mf=$(cat /proc/sys/vm/min_free_kbytes)
+    cur_wsf=$(cat /proc/sys/vm/watermark_scale_factor)
+    if [ "$cur_mf" != "$mf" ];   then sysctl -q -w vm.min_free_kbytes="$mf";          log "  vm.min_free_kbytes ${cur_mf} -> ${mf}"; fi
+    if [ "$cur_wsf" != "$wsf" ]; then sysctl -q -w vm.watermark_scale_factor="$wsf";  log "  vm.watermark_scale_factor ${cur_wsf} -> ${wsf}"; fi
+
+    # 3. verify
+    [ "$(cat /proc/sys/vm/min_free_kbytes)" = "$mf" ] \
+        && pass "vm.min_free_kbytes = ${mf} ($((mf / 1024)) MB)" \
+        || fail "vm.min_free_kbytes is $(cat /proc/sys/vm/min_free_kbytes), expected ${mf}"
+    [ "$(cat /proc/sys/vm/watermark_scale_factor)" = "$wsf" ] \
+        && pass "vm.watermark_scale_factor = ${wsf}" \
+        || fail "vm.watermark_scale_factor is $(cat /proc/sys/vm/watermark_scale_factor), expected ${wsf}"
+    grep -q "^vm.min_free_kbytes = ${mf}$" "$SYSCTL_FILE" 2>/dev/null \
+        && pass "Persisted in $SYSCTL_FILE" || fail "Not persisted in $SYSCTL_FILE"
+
+    # 4. other files that also set these keys
+    for f in /etc/sysctl.conf /etc/sysctl.d/*.conf /run/sysctl.d/*.conf /usr/lib/sysctl.d/*.conf; do
+        [ -f "$f" ] && [ "$f" != "$SYSCTL_FILE" ] || continue
+        if grep -qE '^\s*vm\.(min_free_kbytes|watermark_scale_factor)\s*=' "$f"; then
+            warn "$f also sets min_free_kbytes/watermark_scale_factor (this script re-applies its values at every start)"
+        fi
+    done
+    return 0
+}
+
+# STEP B: Transparent Huge Pages = madvise (runtime now + kernel cmdline for boot)
+ensure_thp() {
+    log "STEP B: Transparent Huge Pages"
+    [ "$THP_ENABLE" -eq 1 ] || { warn "THP management disabled in script configuration"; return 0; }
+    if [ ! -f "${THP_DIR}/enabled" ]; then
+        warn "${THP_DIR} not found - THP not available on this kernel, nothing to do"
+        return 0
+    fi
+
+    local k m args
+    for k in enabled defrag; do
+        m=$(thp_mode "$k")
+        if [ "$m" = "always" ]; then
+            echo madvise > "${THP_DIR}/$k" 2>/dev/null
+            log "  THP $k: always -> madvise"
+        fi
+        m=$(thp_mode "$k")
+        case "$m" in
+            madvise|never) pass "THP $k = $m" ;;
+            *)             fail "THP $k = $m (expected madvise)" ;;
+        esac
+    done
+
+    # persist for next boot
+    if command -v grubby >/dev/null 2>&1; then
+        args=$(grubby --info=DEFAULT 2>/dev/null | sed -n 's/^args=//p')
+        if echo "$args" | grep -qE 'transparent_hugepage=(madvise|never)'; then
+            pass "Kernel cmdline persisted ($(echo "$args" | grep -oE 'transparent_hugepage=[a-z]+'))"
+        else
+            grubby --update-kernel=ALL --remove-args="transparent_hugepage" >/dev/null 2>&1
+            grubby --update-kernel=ALL --args="transparent_hugepage=madvise" >/dev/null 2>&1
+            args=$(grubby --info=DEFAULT 2>/dev/null | sed -n 's/^args=//p')
+            echo "$args" | grep -q 'transparent_hugepage=madvise' \
+                && pass "Kernel cmdline updated: transparent_hugepage=madvise (from next boot)" \
+                || fail "Could not add transparent_hugepage=madvise with grubby"
+        fi
+    else
+        warn "grubby not found - THP is fixed at every start by this script, but not on the kernel cmdline"
+    fi
+    return 0
+}
+
+# STEP C: huge_pages = on in postgresql.conf (check, set if missing, verify effective value)
+ensure_huge_pages_on() {
+    log "STEP C: huge_pages parameter"
+    [ "$HUGEPAGES_ENABLE" -eq 1 ] || { warn "Huge pages management disabled in script configuration"; return 0; }
+
+    local line eff
+    line=$(grep -E '^\s*huge_pages\s*=' "$PG_CONF" | tail -n 1)
+    if echo "$line" | grep -q 'autotune-fallback'; then
+        log "  postgresql.conf has the autotune fallback (try); STEP D restores 'on' when pages are available."
+    elif ! echo "$line" | grep -qE "^\s*huge_pages\s*=\s*'?on'?\s*(#.*)?$"; then
+        set_pg_param "huge_pages" "on"
+    else
+        log "  huge_pages = on already in postgresql.conf."
+    fi
+
+    eff=$(pg_effective huge_pages)
+    case "$eff" in
+        on)  pass "huge_pages effective value = on" ;;
+        try) if grep -qE '^\s*huge_pages\s*=.*autotune-fallback' "$PG_CONF"; then
+                 warn "huge_pages effective value = try (autotune fallback active)"
+             else
+                 fail "huge_pages effective value = try - postgresql.auto.conf overrides it (run: ALTER SYSTEM RESET huge_pages)"
+             fi ;;
+        *)   fail "huge_pages effective value = '${eff}' - check postgresql.auto.conf (ALTER SYSTEM RESET huge_pages)" ;;
+    esac
+    return 0
+}
+
+# Parameters autotune manages that postgresql.auto.conf (ALTER SYSTEM) would override
+check_overrides() {
+    log "STEP E: Overrides in postgresql.auto.conf"
+    local p found=0
+    [ -f "$PG_AUTO_CONF" ] || { pass "No postgresql.auto.conf"; return 0; }
+    for p in shared_buffers effective_cache_size maintenance_work_mem work_mem wal_buffers \
+             max_worker_processes max_parallel_workers max_parallel_workers_per_gather huge_pages; do
+        if grep -qE "^\s*${p}\s*=" "$PG_AUTO_CONF"; then
+            warn "${p} is set in postgresql.auto.conf and overrides autotune (run: ALTER SYSTEM RESET ${p})"
+            found=1
+        fi
+    done
+    [ "$found" -eq 0 ] && pass "No autotune parameter is overridden by postgresql.auto.conf"
+    return 0
+}
+
+# Service OOM settings: CHECK ONLY. OOMScoreAdjust applies to ExecStartPre too,
+# so this script's own value shows what the postmaster will get.
+check_oom_service() {
+    log "STEP F: OOM protection in the service (check only, not changed)"
+    local self_adj
+    self_adj=$(cat /proc/self/oom_score_adj 2>/dev/null)
+    [ "$self_adj" = "-1000" ] \
+        && pass "Service OOMScoreAdjust = -1000 (postmaster will be protected)" \
+        || warn "Service OOMScoreAdjust is ${self_adj}, expected -1000 (check postgresql-${PG_VERSION}.service)"
+    if [ -n "$PG_OOM_ADJUST_FILE" ] && [ "${PG_OOM_ADJUST_VALUE:-0}" = "0" ]; then
+        pass "PG_OOM_ADJUST_FILE set, PG_OOM_ADJUST_VALUE = ${PG_OOM_ADJUST_VALUE:-0} (backends killable)"
+    else
+        warn "PG_OOM_ADJUST_FILE='${PG_OOM_ADJUST_FILE}' PG_OOM_ADJUST_VALUE='${PG_OOM_ADJUST_VALUE}' - expected file set and value 0"
+    fi
+    return 0
+}
+
+# STEP D: Huge pages sizing. Runs while PostgreSQL is stopped.
+# Never blocks the start: every failure path logs and returns 0.
+tune_hugepages() {
+    log "STEP D: Huge pages sizing"
+    [ "$HUGEPAGES_ENABLE" -eq 1 ] || { warn "Huge pages management disabled in script configuration"; return 0; }
+
+    local hp_mode need margin target have mem_kb hp_kb max_pages f active=0
+    if [ ! -x "${PG_BIN}/postgres" ]; then
+        fail "${PG_BIN}/postgres not found - huge pages not sized"
+        return 0
+    fi
+
+    hp_mode=$(pg_effective huge_pages)
+    if [ "$hp_mode" = "off" ]; then
+        warn "huge_pages = off - huge pages not sized"
+        return 0
+    fi
+
+    need=$(pg_effective shared_memory_size_in_huge_pages)
+    case "$need" in
+        ''|*[!0-9]*) fail "Could not read shared_memory_size_in_huge_pages (got '${need}')"; return 0 ;;
+    esac
+    if [ "$need" -le 0 ]; then
+        warn "PostgreSQL reports 0 huge pages needed"
+        return 0
+    fi
+
+    margin=$(( (need * HUGEPAGES_MARGIN_PCT + 99) / 100 ))
+    target=$(( need + margin ))
+    have=$(meminfo_kb HugePages_Total)
+    log "  huge_pages=${hp_mode}  needed=${need}  target=${target} (+${HUGEPAGES_MARGIN_PCT}%)  reserved_now=${have}"
+
+    # Safety: never reserve more than HUGEPAGES_MAX_PCT of RAM
+    mem_kb=$(meminfo_kb MemTotal)
+    hp_kb=$(meminfo_kb Hugepagesize)
+    max_pages=$(( mem_kb * HUGEPAGES_MAX_PCT / 100 / hp_kb ))
+    if [ "$target" -gt "$max_pages" ]; then
+        fail "Target ${target} pages is more than ${HUGEPAGES_MAX_PCT}% of RAM (max ${max_pages}) - not reserving, check shared_buffers"
+        target=0
+    fi
+
+    # vm.nr_hugepages must not live in sysctl files (an old value could over-reserve after a scale-down)
+    for f in /etc/sysctl.conf /etc/sysctl.d/*.conf; do
+        [ -f "$f" ] || continue
+        if grep -qE '^\s*vm\.nr_hugepages\s*=' "$f"; then
+            sed -i -E 's/^(\s*vm\.nr_hugepages\s*=.*)/# \1   # disabled: managed by pg_autotune_systemd.sh/' "$f"
+            log "  Commented out vm.nr_hugepages in $f (this script manages it)."
+        fi
+    done
+    for f in /etc/sysctl.conf /etc/sysctl.d/*.conf; do
+        [ -f "$f" ] && grep -qE '^\s*vm\.nr_hugepages\s*=' "$f" && active=1
+    done
+    [ "$active" -eq 0 ] && pass "No active vm.nr_hugepages line in sysctl files" \
+                        || fail "An active vm.nr_hugepages line is still in a sysctl file"
+
+    if [ "$have" -ne "$target" ]; then
+        # Growing on a running system needs contiguous 2 MB blocks: compact first
+        if [ "$target" -gt "$have" ]; then
+            echo 1 > /proc/sys/vm/compact_memory 2>/dev/null
+        fi
+        sysctl -q -w vm.nr_hugepages="$target"
+        have=$(meminfo_kb HugePages_Total)
+        log "  vm.nr_hugepages set to ${target}, kernel reserved ${have}."
+    else
+        log "  Already reserved, no change."
+    fi
+
+    if [ "$have" -ge "$need" ]; then
+        pass "Huge pages reserved: ${have} (needed ${need}, $(( have * hp_kb / 1024 )) MB)"
+        if grep -qE '^\s*huge_pages\s*=.*autotune-fallback' "$PG_CONF"; then
+            # An earlier start fell back to 'try'; pages are available again -> restore 'on'
+            set_pg_param "huge_pages" "on"
+            pass "huge_pages restored to 'on' after an earlier fallback"
+        fi
+    else
+        warn "Only ${have} of ${need} huge pages could be reserved"
+        if [ "$hp_mode" = "on" ]; then
+            set_pg_param "huge_pages" "try   # autotune-fallback"
+            warn "huge_pages set to 'try' so PostgreSQL starts WITHOUT huge pages. ACTION: reboot the VM in a window; 'on' is restored automatically."
+        fi
+    fi
+    return 0
+}
+
+# Checks on the RUNNING server. Used by --verify and by the post-start check.
+verify_running() {
+    reset_counts
+    log "================================================================="
+    log "VERIFY: checking the running PostgreSQL ${PG_VERSION} server"
+    local pidfile pm port sock exe cg adj total bad c tot fre rsv used k m args f active=0 mf
+
+    pidfile="${PGDATA_DIR}/postmaster.pid"
+    pm=$(head -n 1 "$pidfile" 2>/dev/null)
+    exe=$(readlink "/proc/${pm}/exe" 2>/dev/null); exe=${exe% (deleted)}
+    if [ -z "$pm" ] || [ "$exe" != "${PG_BIN}/postgres" ]; then
+        fail "PostgreSQL is not running (no live postmaster in ${pidfile})"
+        summary "VERIFY SUMMARY"
+        return 0
+    fi
+    port=$(sed -n 4p "$pidfile"); sock=$(sed -n 5p "$pidfile")
+
+    # 1. accepting connections
+    if "${PG_BIN}/pg_isready" -q -h "${sock:-/tmp}" -p "${port:-5432}" -t 10; then
+        pass "PostgreSQL accepting connections (port ${port})"
+    else
+        fail "PostgreSQL not accepting connections (port ${port})"
+    fi
+
+    # 2. running under the service
+    cg=$(grep -E ':memory:|^0::' "/proc/${pm}/cgroup" | head -n 1)
+    echo "$cg" | grep -q "postgresql-${PG_VERSION}.service" \
+        && pass "Postmaster ${pm} runs under postgresql-${PG_VERSION}.service" \
+        || fail "Postmaster ${pm} is NOT under postgresql-${PG_VERSION}.service (${cg}) - started by hand?"
+
+    # 3. OOM protection
+    adj=$(cat "/proc/${pm}/oom_score_adj")
+    [ "$adj" = "-1000" ] && pass "Postmaster oom_score_adj = -1000" \
+                         || fail "Postmaster oom_score_adj = ${adj} (expected -1000)"
+    total=0; bad=0
+    for c in $(pgrep -P "$pm"); do
+        total=$((total + 1))
+        [ "$(cat "/proc/${c}/oom_score_adj" 2>/dev/null)" = "0" ] || bad=$((bad + 1))
+    done
+    [ "$bad" -eq 0 ] && pass "All ${total} child processes oom_score_adj = 0" \
+                     || fail "${bad} of ${total} child processes not at oom_score_adj 0"
+
+    # 4. huge pages in use
+    tot=$(meminfo_kb HugePages_Total); fre=$(meminfo_kb HugePages_Free); rsv=$(meminfo_kb HugePages_Rsvd)
+    used=$(( tot - fre + rsv ))
+    if [ "$tot" -gt 0 ] && [ "$used" -gt 0 ]; then
+        pass "PostgreSQL is using huge pages (${used} of ${tot} reserved)"
+    elif [ "$tot" -gt 0 ]; then
+        fail "${tot} huge pages reserved but PostgreSQL is not using them"
+    else
+        fail "No huge pages reserved"
+    fi
+    if grep -qE '^\s*huge_pages\s*=.*autotune-fallback' "$PG_CONF"; then
+        warn "huge_pages fallback (try) is active - reboot the VM in a window"
+    fi
+    log "  PageTables = $(( $(meminfo_kb PageTables) / 1024 )) MB"
+
+    # 5. kernel reserve
+    if [ "$KERNEL_RESERVE_ENABLE" -eq 1 ]; then
+        mf=$(min_free_target_kb)
+        [ "$(cat /proc/sys/vm/min_free_kbytes)" = "$mf" ] && pass "vm.min_free_kbytes = ${mf}" \
+            || fail "vm.min_free_kbytes = $(cat /proc/sys/vm/min_free_kbytes) (expected ${mf})"
+        [ "$(cat /proc/sys/vm/watermark_scale_factor)" = "$WATERMARK_SCALE_FACTOR" ] && pass "vm.watermark_scale_factor = ${WATERMARK_SCALE_FACTOR}" \
+            || fail "vm.watermark_scale_factor = $(cat /proc/sys/vm/watermark_scale_factor) (expected ${WATERMARK_SCALE_FACTOR})"
+    fi
+
+    # 6. THP
+    if [ "$THP_ENABLE" -eq 1 ] && [ -f "${THP_DIR}/enabled" ]; then
+        for k in enabled defrag; do
+            m=$(thp_mode "$k")
+            case "$m" in madvise|never) pass "THP ${k} = ${m}" ;; *) fail "THP ${k} = ${m} (expected madvise)" ;; esac
+        done
+        if command -v grubby >/dev/null 2>&1; then
+            args=$(grubby --info=DEFAULT 2>/dev/null | sed -n 's/^args=//p')
+            echo "$args" | grep -qE 'transparent_hugepage=(madvise|never)' \
+                && pass "THP persisted on kernel cmdline" || warn "THP not on kernel cmdline"
+        fi
+    fi
+
+    # 7. no nr_hugepages in sysctl files
+    for f in /etc/sysctl.conf /etc/sysctl.d/*.conf; do
+        [ -f "$f" ] && grep -qE '^\s*vm\.nr_hugepages\s*=' "$f" && active=1
+    done
+    [ "$active" -eq 0 ] && pass "No active vm.nr_hugepages line in sysctl files" \
+                        || fail "Active vm.nr_hugepages line found in a sysctl file"
+
+    # 8. autostart
+    [ "$(systemctl is-enabled "postgresql-${PG_VERSION}" 2>/dev/null)" = "enabled" ] \
+        && pass "postgresql-${PG_VERSION} enabled at boot" \
+        || warn "postgresql-${PG_VERSION} is not enabled at boot (systemctl enable postgresql-${PG_VERSION})"
+
+    summary "VERIFY SUMMARY"
+    return 0
+}
+
+# Wait for the server started by systemd, then verify (runs in the background)
+verify_after_start() {
+    echo 0 > /proc/self/oom_score_adj 2>/dev/null      # this checker must stay killable
+    local waited=0 pm exe port sock
+    log "================================================================="
+    log "POST-START CHECK: waiting up to ${VERIFY_TIMEOUT_SECONDS}s for PostgreSQL to accept connections..."
+    sleep 10
+    while [ "$waited" -lt "$VERIFY_TIMEOUT_SECONDS" ]; do
+        pm=$(head -n 1 "${PGDATA_DIR}/postmaster.pid" 2>/dev/null)
+        exe=$(readlink "/proc/${pm}/exe" 2>/dev/null); exe=${exe% (deleted)}
+        if [ -n "$pm" ] && [ "$exe" = "${PG_BIN}/postgres" ]; then
+            port=$(sed -n 4p "${PGDATA_DIR}/postmaster.pid"); sock=$(sed -n 5p "${PGDATA_DIR}/postmaster.pid")
+            "${PG_BIN}/pg_isready" -q -h "${sock:-/tmp}" -p "${port:-5432}" -t 5 && break
+        fi
+        sleep 10; waited=$((waited + 10))
+    done
+    sleep 5   # let autovacuum launcher / background workers come up
+    verify_running
+}
+
+start_background_verify() {
+    [ "$VERIFY_AFTER_START" -eq 1 ] || return 0
+    local self
+    self=$(readlink -f "$0")
+    setsid nohup "$self" --verify-after-start "$LOG_FILE" >/dev/null 2>&1 < /dev/null &
+    log "Post-start check scheduled in the background (results will be appended to this log)."
+}
+# -------------------------------------------------------------------------------
+
+# --- INTERNAL STATE (Do not modify manually) ---
+LAST_KNOWN_STATE="63883MB_RAM-8_CPUS"
+# -----------------------------------------------
+
+# ===============================================================================
+# VERIFY MODES (change nothing)
+# ===============================================================================
+if [ "$MODE" = "verify" ] || [ "$MODE" = "verify-after-start" ]; then
+    if [ "$(id -u)" -ne 0 ]; then
+        log "NOTE: not running as root - run 'sudo $0 --verify' for complete results (grubby needs root)."
+    fi
+    discover
+    if [ "$MODE" = "verify-after-start" ]; then verify_after_start; else verify_running; fi
+    exit 0
+fi
+
+# ===============================================================================
+# START MODE (ExecStartPre, PostgreSQL is stopped)
+# ===============================================================================
+log "================================================================="
+log "Executing PostgreSQL Auto-Tune Hook  (v7)"
+
+# 1. Dynamically Locate postgresql.conf + version
+discover
+
+# 2. Detect Hardware
+# Note: MemTotal includes reserved huge pages, so reserving them does NOT look like a hardware change.
+TOTAL_RAM_KB=$(grep MemTotal /proc/meminfo | awk '{print $2}')
+TOTAL_RAM_MB=$((TOTAL_RAM_KB / 1024))
+TOTAL_RAM_GB=$((TOTAL_RAM_MB / 1024))
+CPU_CORES=$(nproc)
+
+log "Detected Hardware: ${TOTAL_RAM_MB}MB RAM  |  ${CPU_CORES} CPU Cores"
+
+CURRENT_STATE="${TOTAL_RAM_MB}MB_RAM-${CPU_CORES}_CPUS"
+
+# 3. Hardware Change Validation (Self-contained)
+HW_CHANGED=1
+if [ "$CURRENT_STATE" == "$LAST_KNOWN_STATE" ]; then
+    log "Hardware unchanged ($CURRENT_STATE). Skipping parameter retune."
+    HW_CHANGED=0
+fi
+
+if [ "$HW_CHANGED" -eq 1 ]; then
+    log "================================================================="
+    log "HARDWARE CHANGE DETECTED!"
+    log "Previous Hardware: $LAST_KNOWN_STATE"
+    log "New Hardware:      $CURRENT_STATE"
+    log "================================================================="
+
+    # 4. Memory Parameters (Local Math)
+    # shared_buffers      = 26% of OS-visible physical RAM (MemTotal)
+    # effective_cache_size= 76% of OS-visible physical RAM (MemTotal)  [planner hint only]
+    # maintenance_work_mem= 5% of RAM (RAM_GB / 20), minimum 1 GB
+    SHARED_BUFFERS_MB=$(( (TOTAL_RAM_MB * 26) / 100 ))
+    EFFECTIVE_CACHE_MB=$(( (TOTAL_RAM_MB * 76) / 100 ))
+
+    MAINT_WORK_MEM_GB=$((TOTAL_RAM_GB / 20))
+    if [ "$MAINT_WORK_MEM_GB" -lt 1 ]; then MAINT_WORK_MEM_GB=1; fi
+    MAINT_WORK_MEM_MB=$((MAINT_WORK_MEM_GB * 1024))
+
+    # work_mem, wal_buffers and max_parallel_workers_per_gather are static —
+    # set via the USER CONFIGURATION block above
+
+    # 5. CPU/Parallel Parameters (API with Local Fallback)
+    #    max_worker_processes and max_parallel_workers only;
+    #    max_parallel_workers_per_gather is fixed in USER CONFIGURATION.
+    API_URL="https://api.pgconfig.org/v1/tuning/get-config?format=conf&max_connections=${MAX_CONNECTIONS}&pg_version=${PG_VERSION}&environment_name=OLTP&total_ram=${TOTAL_RAM_GB}&cpus=${CPU_CORES}&drive_type=SSD&arch=x86-64&os_type=linux"
+    log "Calling pgconfig.org API for CPU/parallel parameters..."
+    API_CONF=$(curl -s --max-time 5 "$API_URL" 2>/dev/null)
+
+    if [ -n "$API_CONF" ] && echo "$API_CONF" | grep -q "max_parallel_workers"; then
+        log "API call succeeded. Parsing CPU parameters from response."
+        MAX_WORKER_PROCESSES=$(echo "$API_CONF" | grep "^max_worker_processes" | awk '{print $3}')
+        MAX_PARALLEL_WORKERS=$(echo "$API_CONF" | grep "^max_parallel_workers " | awk '{print $3}')
+    else
+        log "API call failed or timed out. Using local fallback math for CPU parameters."
+        MAX_WORKER_PROCESSES=$CPU_CORES
+        MAX_PARALLEL_WORKERS=$CPU_CORES
+    fi
+    log "max_parallel_workers_per_gather fixed at ${MAX_PARALLEL_WORKERS_PER_GATHER} (USER CONFIGURATION)."
+
+    # 6. Backup the Configuration
+    TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+    BACKUP_PATH="/u01/backup/logs/autotune/config_backup/postgresql.conf.backup.${TIMESTAMP}"
+    cp "$PG_CONF" "$BACKUP_PATH"
+    log "Backed up $PG_CONF to $BACKUP_PATH"
+
+    # 7. Apply parameters
+    log "Applying optimized configurations to postgresql.conf..."
+    set_pg_param "shared_buffers"               "'${SHARED_BUFFERS_MB}MB'"
+    set_pg_param "effective_cache_size"         "'${EFFECTIVE_CACHE_MB}MB'"
+    set_pg_param "maintenance_work_mem"         "'${MAINT_WORK_MEM_MB}MB'"
+    set_pg_param "work_mem"                     "'${WORK_MEM_MB}MB'"
+    set_pg_param "wal_buffers"                  "'${WAL_BUFFERS_MB}MB'"
+    set_pg_param "max_worker_processes"         "$MAX_WORKER_PROCESSES"
+    set_pg_param "max_parallel_workers"         "$MAX_PARALLEL_WORKERS"
+    set_pg_param "max_parallel_workers_per_gather" "$MAX_PARALLEL_WORKERS_PER_GATHER"
+fi
+
+# 8. OOM hardening + checks (EVERY start)
+log "================================================================="
+log "OOM HARDENING (every start)"
+# Backup once per start before huge_pages may be changed
+if [ "$HW_CHANGED" -eq 0 ]; then
+    cp "$PG_CONF" "/u01/backup/logs/autotune/config_backup/postgresql.conf.backup.$(date +%Y%m%d_%H%M%S)" 2>/dev/null
+fi
+ensure_kernel_reserve
+ensure_thp
+ensure_huge_pages_on
+check_overrides
+tune_hugepages
+check_oom_service
+summary "PRE-START SUMMARY"
 
 # 9. Update Self-Contained State
-SCRIPT_PATH=$(readlink -f "$0")
-sed -i -E "s/^LAST_KNOWN_STATE=.*/LAST_KNOWN_STATE=\"$CURRENT_STATE\"/" "$SCRIPT_PATH"
-log "Process complete. State saved inside script."
+if [ "$HW_CHANGED" -eq 1 ]; then
+    SCRIPT_PATH=$(readlink -f "$0")
+    sed -i -E "s/^LAST_KNOWN_STATE=.*/LAST_KNOWN_STATE=\"$CURRENT_STATE\"/" "$SCRIPT_PATH"
+    log "Process complete. State saved inside script."
+fi
 
-# 10. Testing Gap (set TEST_SLEEP_SECONDS=0 in production)
+# 10. Post-start verification in the background (results appended to this log)
+start_background_verify
+
+# 11. Testing Gap (set TEST_SLEEP_SECONDS=0 in production)
 if [ "$TEST_SLEEP_SECONDS" -gt 0 ]; then
     log "TESTING MODE: Sleeping for ${TEST_SLEEP_SECONDS} seconds to demonstrate ExecStartPre gap."
     log "You can check 'systemctl status postgresql-${PG_VERSION}' in another terminal now."
@@ -359,6 +872,9 @@ if [ "$TEST_SLEEP_SECONDS" -gt 0 ]; then
     sleep "$TEST_SLEEP_SECONDS"
     log "Sleep finished. Handing control back to systemd native auto-startup..."
 fi
+
+log "Handing control back to systemd."
+exit 0
 ```
 
 ### 4.3 Script Permissions & SELinux Configuration
@@ -405,6 +921,9 @@ dnf install -y gcc make
 ```
 ```bash
 dnf install -y gcc make --disablerepo=pgdg12 --disablerepo=pgdg13
+```
+```bash
+dnf install -y zstd
 ```
 
 2. Move to /u01 directory and download zstd tar file
@@ -578,6 +1097,19 @@ pg_stat_statements.track_planning = on
 pg_stat_statements.max = 5000
 pg_stat_statements.save = on
 pg_stat_statements.track_utility = on
+
+# --- Disabling postgresql log activity during migration ---
+#--- before migration ---
+ALTER SYSTEM SET log_min_messages = 'fatal';
+ALTER SYSTEM SET log_min_error_statement = 'panic';
+SELECT pg_reload_conf();
+
+
+# --- After migration ---
+ALTER SYSTEM RESET log_min_messages;
+ALTER SYSTEM RESET log_min_error_statement;
+SELECT pg_reload_conf();
+
 ```
 
 > [!NOTE]
@@ -647,6 +1179,7 @@ mkdir -p /u01/backup/logs/autotune
 mkdir -p /u01/backup/logs/autotune/config_bakup
 mkdir -p /u01/backup/logs/arc_list
 mkdir -p /u01/backup/PG
+mkdir -p /u01/backup/arc_tmp
 ```
 
 ---
@@ -655,6 +1188,51 @@ mkdir -p /u01/backup/PG
 
 Create all scripts under the `/u01/Gsl/` directory.
 
+#### Script 0: Centealized Environment shell (`/u01/Gsl/gsl_env.sh`)
+**Purpose:** Central inventory for managing all environment variables/paths from single place rather than seperately in every single shell.
+```bash
+vi /u01/Gsl/gsl_env.sh
+```
+```bash
+# --- Azure Blob Storage ---
+BASE_URL="https://storageerpdbbkpprodjiw.blob.core.windows.net/pgdbbackup"
+VM_HOSTNAME="vm_hostname"
+SAS_TOKEN="sp=racwdli&st=2026-08-21T08:24:52Z&se=2027-06-29T16:39:52Z&sv=2026-02-06&sr=c&sig=NtkshBDN8AFqAZCGz9pJs7hH7y%2FefDeB7cojgTSaBzg%3D"
+
+# --- PostgreSQL ---
+PG_VERSION="17"
+PGUSER="postgres"
+PGPASSWORD="postgres"
+export PGUSER PGPASSWORD
+
+# --- Alerting / SMTP ---
+ALERT_TO="dbsrvalerts@gsl.in"
+ALERT_FROM="dbsrvalerts@gsl.in"
+SMTP_SERVER="smtp.gmail.com:587"
+SMTP_APP_PASSWORD="oegmwnlfdtdpmvix"
+
+# --- Shared paths ---
+PG_BACKUP_DIR="/u01/backup/PG"
+PG_LOG_BASE="/u01/backup/logs"
+PGDATA_BASE="/u01/pgsql"
+AZCOPY_BIN="/usr/bin/azcopy"
+CMD_M=mailx
+
+# --- WAL compression (used by BLOB.sh) ---
+ZSTD_BIN="/usr/bin/zstd"
+ARC_TMP_DIR="/u01/backup/arc_tmp"
+export LD_LIBRARY_PATH="/opt/zstd/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+
+# --- Backup housekeeping (used by DELBASEBKP.sh) ---
+PG_BACKUP_DIRS="/u01/backup/PG /backup/PG"   # all locations; ones that don't exist on a VM are skipped
+BKP_RETENTION_MIN=1440                        # delete backups older than 1 day
+BKP_KEEP_MIN=1                                # always keep the newest real backup per location
+```
+
+```bash
+chmod 777 /u01/Gsl/gsl_env.sh
+```
+
 #### Script 1: WAL Archiving (`/u01/Gsl/BLOB.sh`)
 **Purpose:** Copy transaction log files (WAL) to Azure Blob Storage as they are filled or timeout.
 ```bash
@@ -662,27 +1240,49 @@ vi /u01/Gsl/BLOB.sh
 ```
 ```bash
 #!/bin/bash
-# BLOB.sh - Archive single WAL file to Azure Storage
-
-# --- User Configuration Variables ---
-BASE_URL="https://storageerpbackupprodjiw.blob.core.windows.net/pgdbbackup"
-VM_HOSTNAME="<vm_hostname>"
-SAS_TOKEN="<SAS_TOKEN>"
-# ------------------------------------
+# BLOB.sh - compress one WAL file with zstd and archive it to Azure Blob
+# Called from archive_command:  /u01/Gsl/BLOB.sh "%p" "%f"
+# All settings come from gsl_env.sh (same folder as this script):
+#   BASE_URL, VM_HOSTNAME, SAS_TOKEN, AZCOPY_BIN, PG_LOG_BASE, ZSTD_BIN, ARC_TMP_DIR
+source "$(dirname "$(readlink -f "$0")")/gsl_env.sh"
 
 date_dir=$(date +%Y_%m_%d)
-WAL_FILE_PATH=$1   
-WAL_FILE_NAME=$2   
-logfile="/u01/backup/logs/arc_sync"
+WAL_FILE_PATH=$1          # %p
+WAL_FILE_NAME=$2          # %f
+logdir="${PG_LOG_BASE}/arc_sync"
+mkdir -p "$logdir"
 
-BLOB_STORAGE_URL="${BASE_URL}/self-hosted/${VM_HOSTNAME}/archive/${date_dir}/${WAL_FILE_NAME}?${SAS_TOKEN}"
+log() { echo "$(date '+%F %T') $*" >> "${logdir}/blob_archive.log"; }
 
-/usr/bin/azcopy copy "$WAL_FILE_PATH" "$BLOB_STORAGE_URL" --log-level "ERROR" --overwrite=true >> $logfile/blob_archive.log
-
-if [ $? -ne 0 ]; then
-    echo "Failed to archive WAL file to Blob Storage: $WAL_FILE_NAME" >&2 >> $logfile/blob_archive.log
-    exit 1
+# Every required setting must be present in gsl_env.sh
+for v in BASE_URL VM_HOSTNAME SAS_TOKEN AZCOPY_BIN PG_LOG_BASE ZSTD_BIN ARC_TMP_DIR; do
+    if [ -z "${!v}" ]; then log "ERROR $v is not set in gsl_env.sh"; exit 1; fi
+done
+if [ -z "$WAL_FILE_PATH" ] || [ -z "$WAL_FILE_NAME" ]; then
+    log "ERROR missing arguments (expected %p %f)"; exit 1
 fi
+
+tmpfile="${ARC_TMP_DIR}/${WAL_FILE_NAME}.zst"
+mkdir -p "$ARC_TMP_DIR"
+
+# 1. Compress (level 3, single thread; -f replaces a leftover from a failed attempt)
+if ! "$ZSTD_BIN" -q -3 -f "$WAL_FILE_PATH" -o "$tmpfile"; then
+    log "ERROR zstd failed: $WAL_FILE_NAME"; rm -f "$tmpfile"; exit 1
+fi
+
+# 2. Verify the compressed file before upload
+if ! "$ZSTD_BIN" -q -t "$tmpfile"; then
+    log "ERROR zstd test failed: $WAL_FILE_NAME"; rm -f "$tmpfile"; exit 1
+fi
+
+# 3. Upload with .zst extension
+BLOB_STORAGE_URL="${BASE_URL}/self-hosted/${VM_HOSTNAME}/archive/${date_dir}/${WAL_FILE_NAME}.zst?${SAS_TOKEN}"
+if ! "$AZCOPY_BIN" copy "$tmpfile" "$BLOB_STORAGE_URL" --log-level ERROR --overwrite=true \
+        >> "${logdir}/blob_archive.log" 2>&1; then
+    log "ERROR upload failed: $WAL_FILE_NAME"; rm -f "$tmpfile"; exit 1
+fi
+
+rm -f "$tmpfile"
 exit 0
 ```
 ```bash
@@ -697,19 +1297,8 @@ vi /u01/Gsl/BASEBKP.sh
 ```bash
 #!/bin/bash
 # BASEBKP.sh - Database physical base backup
-
-# --- User Configuration Variables ---
-BASE_URL="https://storageerpbackupprodjiw.blob.core.windows.net/pgdbbackup"
-VM_HOSTNAME="<vm_hostname>"
-SAS_TOKEN="<SAS_TOKEN>"
-PG_VERSION="16"
-
-PGPASSWORD="postgres"
-SMTP_APP_PASSWORD="oegmwnlfdtdpmvix"
-ALERT_TO="dbsrvalerts@gsl.in"
-ALERT_FROM="dbsrvalerts@gsl.in"
-SMTP_SERVER="smtp.gmail.com:587"
-# ------------------------------------
+source /u01/Gsl/gsl_env.sh
+export LD_LIBRARY_PATH=/opt/zstd/lib
 
 yy=$(date +%Y)
 mm=$(date +%m)
@@ -718,12 +1307,7 @@ MYDATE="${yy}_${mm}_${dd}"
 MYTIME="$(date +%H%M%S)"
 DD=$(date +%d%m%y)
 
-PGUSER="postgres"
-export PGPASSWORD
-export PGUSER
-export LD_LIBRARY_PATH=/opt/zstd/lib
-CMD_M=mailx
-PG_BASEBACKUP_LOG="/u01/backup/logs"
+PG_BASEBACKUP_LOG="$PG_LOG_BASE"
 Azure_Log="$PG_BASEBACKUP_LOG/GINESYS_backuplog.log"
 POSTGRESQL_BIN="/usr/pgsql-${PG_VERSION}/bin"
 
@@ -735,8 +1319,7 @@ start_time_human=$(date '+%Y-%m-%d %H:%M:%S')
 echo "Starting Pg_basebackup at $start_time_human" >> "$PG_BASEBACKUP_LOG/pg_basebackup_${MYDATE}_${MYTIME}.log"
 echo "Running pg_basebackup command..." >> "$PG_BASEBACKUP_LOG/pg_basebackup_${MYDATE}_${MYTIME}.log"
 
-#$POSTGRESQL_BIN/pg_basebackup -D "/u01/backup/PG/$MYDATE" -Ft -Z server-zstd:9 -P -Xs >> "$PG_BASEBACKUP_LOG/pg_basebackup_${MYDATE}_${MYTIME}.log" 2>&1 --old process
-$POSTGRESQL_BIN/pg_basebackup -D "/u01/backup/PG/$MYDATE" -Ft -Z client-zstd:level=3,workers=4 -c fast -P -Xs >> "$PG_BASEBACKUP_LOG/pg_basebackup_${MYDATE}_${MYTIME}.log" 2>&1
+$POSTGRESQL_BIN/pg_basebackup -D "${PG_BACKUP_DIR}/$MYDATE" -Ft -Z server-zstd:9 -P -Xs >> "$PG_BASEBACKUP_LOG/pg_basebackup_${MYDATE}_${MYTIME}.log" 2>&1
 
 end_time=$(date +%s)
 end_time_human=$(date '+%Y-%m-%d %H:%M:%S')
@@ -750,10 +1333,10 @@ echo "---------------------------------" >> "$Azure_Log"
 echo "Syncing files to Azure storage" >> "$Azure_Log"
 echo "---------------------------------" >> "$Azure_Log"
 
-sourcePath="/u01/backup/PG"
+sourcePath="$PG_BACKUP_DIR"
 destinationUrl="${BASE_URL}/self-hosted/${VM_HOSTNAME}/fullbackup/?${SAS_TOKEN}"
 
-/usr/bin/azcopy sync "$sourcePath" "$destinationUrl" --put-md5 --delete-destination=false >> "$Azure_Log" 2>&1
+$AZCOPY_BIN sync "$sourcePath" "$destinationUrl" --put-md5 --delete-destination=false >> "$Azure_Log" 2>&1
 
 echo "${VM_HOSTNAME} STANDALONE: PG BASE BACKUP" | $CMD_M -a $PG_BASEBACKUP_LOG/pg_basebackup_${MYDATE}_${MYTIME}.log -v -r "$ALERT_FROM" -s "${VM_HOSTNAME} STANDALONE: PG BASEBACKUP INFORMATION ${DD}" -S smtp="$SMTP_SERVER" -S smtp-use-starttls -S smtp-auth=login -S smtp-auth-user="$ALERT_FROM" -S smtp-auth-password="$SMTP_APP_PASSWORD" -S ssl-verify=ignore $ALERT_TO
 ```
@@ -768,44 +1351,114 @@ vi /u01/Gsl/DELBASEBKP.sh
 ```
 ```bash
 #!/bin/bash
-# DELBASEBKP.sh - Housekeeping backup deletion script
+# DELBASEBKP.sh - Housekeeping: delete old pg_basebackup folders
+#
+# Settings from gsl_env.sh:
+#   PG_BACKUP_DIRS   space-separated backup locations, e.g. "/u01/backup/PG /backup/PG"
+#                    (falls back to PG_BACKUP_DIR if PG_BACKUP_DIRS is not set)
+#   BKP_RETENTION_MIN  delete backups older than this many minutes (default 1440 = 1 day)
+#   BKP_KEEP_MIN       always keep at least this many newest backups per location (default 1)
+#   PG_LOG_BASE, VM_HOSTNAME, ALERT_*, SMTP_*, CMD_M
+source "$(dirname "$(readlink -f "$0")")/gsl_env.sh"
 
-# --- User Configuration Variables ---
-VM_HOSTNAME="<vm_hostname>"
-SMTP_APP_PASSWORD="oegmwnlfdtdpmvix"
-ALERT_TO="dbsrvalerts@gsl.in"
-ALERT_FROM="dbsrvalerts@gsl.in"
-SMTP_SERVER="smtp.gmail.com:587"
-# ------------------------------------
+BKP_DIRS="${PG_BACKUP_DIRS:-$PG_BACKUP_DIR}"
+RETENTION_MIN="${BKP_RETENTION_MIN:-1440}"
+KEEP_MIN="${BKP_KEEP_MIN:-1}"
 
-CMD_M=mailx
 DD=$(date +%d%m%y)
-export LOG_DIR=/u01/backup/logs/list_delete_selfhosted
-export LOG_FILE=$LOG_DIR/list_delete_selfhosted_$(date +%Y-%m-%d_%H_%M).log
+LOG_DIR="${PG_LOG_BASE}/list_delete_selfhosted"
+LOG_FILE="${LOG_DIR}/list_delete_selfhosted_$(date +%Y-%m-%d_%H_%M).log"
+mkdir -p "$LOG_DIR" || { echo "Error: cannot create $LOG_DIR"; exit 1; }
 
-cd /u01/backup/PG
+STATUS="SUCCESS"
+DELETED=0
 
-echo "/backup mountpoint size before deletion" > ${LOG_FILE}
-df -h /u01 >> ${LOG_FILE}
-echo "" >> ${LOG_FILE}
+{
+echo "Host            : ${VM_HOSTNAME}"
+echo "Run time        : $(date '+%Y-%m-%d %H:%M:%S')"
+echo "Backup locations: ${BKP_DIRS:-<none>}"
+echo "Retention       : older than ${RETENTION_MIN} min, keep at least ${KEEP_MIN} newest per location"
+echo ""
+} > "$LOG_FILE"
 
-echo "THE LIST OF THE BACKUP FILES THAT ARE DELETED" >> ${LOG_FILE}
-echo "*********************************************" >> ${LOG_FILE}
-find /u01/backup/PG/* -type d -empty -delete
-find /u01/backup/PG/* -mmin +1440 >> ${LOG_FILE}
-find /u01/backup/PG/* -mmin +1440 -exec rm -rf {} \;
-
-echo "" >> ${LOG_FILE}
-echo "/backup mountpoint size after deletion" >> ${LOG_FILE}
-df -h /u01 >> ${LOG_FILE}
-
-if [ $? -ne 0 ]; then
-  echo "Error: file delete did not complete."
-  exit 1
-else
-  echo "Success."
-  echo "${VM_HOSTNAME} STANDALONE: OLD PG BASE BACKUP DELETION" | $CMD_M -a $LOG_FILE -v -r "$ALERT_FROM" -s "${VM_HOSTNAME} STANDALONE: OLD PG BASEBACKUP DELETION INFORMATION ${DD}" -S smtp="$SMTP_SERVER" -S smtp-use-starttls -S smtp-auth=login -S smtp-auth-user="$ALERT_FROM" -S smtp-auth-password="$SMTP_APP_PASSWORD" -S ssl-verify=ignore $ALERT_TO
+if [ -z "$BKP_DIRS" ]; then
+    echo "ERROR: PG_BACKUP_DIRS / PG_BACKUP_DIR not set in gsl_env.sh - nothing done." >> "$LOG_FILE"
+    STATUS="FAILED"
 fi
+
+for dir in $BKP_DIRS; do
+    dir="${dir%/}"
+    echo "=================================================================" >> "$LOG_FILE"
+    echo "LOCATION: $dir" >> "$LOG_FILE"
+
+    # Safety: never run on an empty, root or non-absolute path
+    case "$dir" in
+        ""|"/"|[!/]*) echo "SKIPPED: unsafe path '$dir'" >> "$LOG_FILE"; STATUS="FAILED"; continue ;;
+    esac
+    if [ ! -d "$dir" ]; then
+        echo "SKIPPED: directory does not exist on this VM" >> "$LOG_FILE"
+        continue
+    fi
+
+    echo "" >> "$LOG_FILE"
+    echo "Size before deletion:" >> "$LOG_FILE"
+    df -h "$dir" >> "$LOG_FILE"
+    echo "" >> "$LOG_FILE"
+
+    # Top-level entries only (each backup = one dated folder), newest first
+    mapfile -t entries < <(find "$dir" -mindepth 1 -maxdepth 1 -printf '%T@ %p\n' | sort -rn | cut -d' ' -f2-)
+    total=${#entries[@]}
+    echo "Backups found: $total" >> "$LOG_FILE"
+
+    echo "THE LIST OF THE BACKUP FILES THAT ARE DELETED" >> "$LOG_FILE"
+    echo "*********************************************" >> "$LOG_FILE"
+    n=0; here=0
+    for path in "${entries[@]}"; do
+        # Only non-empty backups count as "kept" (an empty folder = failed backup, not a safe copy)
+        if [ -d "$path" ] && [ -z "$(find "$path" -type f -size +0 -print -quit)" ]; then
+            nonempty=0
+        elif [ -f "$path" ] && [ ! -s "$path" ]; then
+            nonempty=0
+        else
+            nonempty=1
+        fi
+        if [ "$nonempty" -eq 1 ]; then
+            n=$((n + 1))
+            [ "$n" -le "$KEEP_MIN" ] && continue                   # always keep the newest real backups
+        fi
+        # older than retention?
+        if [ -n "$(find "$path" -maxdepth 0 -mmin +"$RETENTION_MIN")" ]; then
+            size=$(du -sh "$path" 2>/dev/null | cut -f1)
+            if rm -rf -- "$path"; then
+                echo "DELETED  $path  ($size)" >> "$LOG_FILE"
+                here=$((here + 1))
+            else
+                echo "FAILED   $path" >> "$LOG_FILE"
+                STATUS="FAILED"
+            fi
+        fi
+    done
+    [ "$here" -eq 0 ] && echo "(nothing older than retention)" >> "$LOG_FILE"
+    DELETED=$((DELETED + here))
+
+    echo "" >> "$LOG_FILE"
+    echo "Size after deletion:" >> "$LOG_FILE"
+    df -h "$dir" >> "$LOG_FILE"
+    echo "" >> "$LOG_FILE"
+done
+
+echo "=================================================================" >> "$LOG_FILE"
+echo "RESULT: ${STATUS}, ${DELETED} backup(s) deleted" >> "$LOG_FILE"
+
+SUBJECT="${VM_HOSTNAME} STANDALONE: OLD PG BASEBACKUP DELETION ${STATUS} ${DD}"
+echo "${VM_HOSTNAME} STANDALONE: OLD PG BASE BACKUP DELETION - ${STATUS}, ${DELETED} deleted" | \
+    $CMD_M -a "$LOG_FILE" -v -r "$ALERT_FROM" -s "$SUBJECT" \
+        -S smtp="$SMTP_SERVER" -S smtp-use-starttls -S smtp-auth=login \
+        -S smtp-auth-user="$ALERT_FROM" -S smtp-auth-password="$SMTP_APP_PASSWORD" \
+        -S ssl-verify=ignore "$ALERT_TO" > /dev/null 2>&1
+
+echo "${STATUS}: ${DELETED} backup(s) deleted. Log: $LOG_FILE"
+[ "$STATUS" = "SUCCESS" ] && exit 0 || exit 1
 ```
 ```bash
 chmod 777 /u01/Gsl/DELBASEBKP.sh
@@ -819,39 +1472,42 @@ vi /u01/Gsl/ARCNAME.sh
 ```bash
 #!/bin/bash
 # ARCNAME.sh - Compare remote storage logs with database segment logs
-
-# --- User Configuration Variables ---
-BASE_URL="https://storageerpbackupprodjiw.blob.core.windows.net/pgdbbackup"
-VM_HOSTNAME="<vm_hostname>"
-SAS_TOKEN="<SAS_TOKEN>"
-# ------------------------------------
+# Lists today's archived WAL files in Azure Blob, records each new one with its
+# pg_split_walfile_name() output, then uploads the log next to the WAL files.
+source "$(dirname "$(readlink -f "$0")")/gsl_env.sh"
 
 date_dir=$(date +%Y_%m_%d)
-log_file="/u01/backup/logs/arc_list/arcname_${date_dir}.log"
-AZ_LIST_URL="${BASE_URL}/self-hosted/${VM_HOSTNAME}/archive/${date_dir}?${SAS_TOKEN}"
+log_dir="${PG_LOG_BASE}/arc_list"
+log_file="${log_dir}/arcname_${date_dir}.log"
+mkdir -p "$log_dir"
+touch "$log_file"                     # first run of the day: grep needs the file to exist
 
-files=$(/usr/bin/azcopy list "$AZ_LIST_URL" | cut -d';' -f1)
+AZ_LIST_URL="${BASE_URL}/self-hosted/${VM_HOSTNAME}/archive/${date_dir}/?${SAS_TOKEN}"
+
+# Names only; works with and without the "INFO: " prefix of older AzCopy versions
+files=$("$AZCOPY_BIN" list "$AZ_LIST_URL" 2>/dev/null | sed 's/^INFO: //' | cut -d';' -f1 | sed 's/[[:space:]]*$//')
 
 while IFS= read -r file; do
-    if [[ -z "$file" ]]; then
-        continue
-    fi
+    [[ -z "$file" ]] && continue
 
-    if grep -q "$file" "$log_file"; then
-        continue
-    fi
+    # Only WAL segments: 24 hex chars, optionally .zst (skips arcname_*.log, .history, .backup, .partial)
+    [[ "$file" =~ ^[0-9A-F]{24}(\.zst)?$ ]] || continue
 
-    pg_command="select pg_split_walfile_name('$file');"
-    output=$(psql -U postgres -d postgres -t -c "$pg_command")
+    # Already recorded? (exact name match, not a substring)
+    grep -qF -- "] ${file} ||" "$log_file" && continue
+
+    wal_name="${file%.zst}"          # pg_split_walfile_name() needs the bare WAL name
+    output=$(psql -X -A -t -U "${PGUSER:-postgres}" -d postgres \
+                  -c "SELECT pg_split_walfile_name('${wal_name}');" 2>&1)
 
     file_creation_time_utc=$(TZ='UTC' date '+%Y-%m-%d %H:%M:%S')
     file_creation_time_ist=$(TZ='Asia/Kolkata' date '+%Y-%m-%d %H:%M:%S')
 
-    echo "[$file_creation_time_utc UTC | $file_creation_time_ist IST] $file || $output" >> "$log_file"
+    echo "[$file_creation_time_utc UTC | $file_creation_time_ist IST] ${file} || ${output}" >> "$log_file"
 done <<< "$files"
 
 AZ_COPY_URL="${BASE_URL}/self-hosted/${VM_HOSTNAME}/archive/${date_dir}/?${SAS_TOKEN}"
-/usr/bin/azcopy copy "$log_file" "$AZ_COPY_URL"
+"$AZCOPY_BIN" copy "$log_file" "$AZ_COPY_URL" --overwrite=true --log-level=ERROR --output-level=essential
 ```
 ```bash
 chmod 777 /u01/Gsl/ARCNAME.sh
@@ -865,27 +1521,15 @@ vi /u01/Gsl/LONG_QUERY.sh
 ```bash
 #!/bin/bash
 # LONG_QUERY.sh - System diagnostics and active SQL monitor
-
-# --- User Configuration Variables ---
-VM_HOSTNAME="<vm_hostname>"
-PGPASSWORD="<postgres_user_password>"
-
-SMTP_APP_PASSWORD="dbsrvalerts@gsl.in"
-ALERT_TO="dbsrvalerts@gsl.in"
-ALERT_FROM="dbsrvalerts@gsl.in"
-SMTP_SERVER="smtp.gmail.com:587"
-# ------------------------------------
-
-export PGPASSWORD
+source /u01/Gsl/gsl_env.sh
 
 yy=$(date +%Y)
 mm=$(date +%m)
 dd=$(date +%d)
 MYDATE="${yy}_${mm}_${dd}"
 MYTIME="$(date +%H%M%S)"
-LOGFILE="/u01/backup/logs/long_query/Long_Query_${MYDATE}_${MYTIME}.log"
+LOGFILE="${PG_LOG_BASE}/long_query/Long_Query_${MYDATE}_${MYTIME}.log"
 DD=$(date +%d%m%y)
-CMD_M=mailx
 
 echo "PRODUCTION SERVER DISK SPACE START
 ***********************************************************************************************************************" >> ${LOGFILE}
@@ -1185,12 +1829,9 @@ vi /u01/Gsl/Disk_usage.sh
 ```
 ```bash
 #!/bin/bash
+# Disk_usage.sh - Disk and PostgreSQL directory usage report
+source /u01/Gsl/gsl_env.sh
 
-# === User Configuration Variables ===
-VM_HOSTNAME="<vm_hostname>"
-PG_VERSION="16"
-
-# === Date and Time Setup ===
 yy=$(date +%Y)
 mm=$(date +%m)
 dd=$(date +%d)
@@ -1201,26 +1842,18 @@ CUR_NN=$(date +%M)
 CUR_SS=$(date +%S)
 MYTIME="${CUR_HH}${CUR_NN}${CUR_SS}"
 
-# === Log File Path ===
-LOGDIR="/u01/backup/logs/Disk_Usage"
+LOGDIR="${PG_LOG_BASE}/Disk_Usage"
 mkdir -p "$LOGDIR"
 LOGFILE="${LOGDIR}/Disk_Usage_${MYDATE}_${MYTIME}.log"
 
-# === Mail Configuration ===
-TO="dbsrvalerts@gsl.in"
-FROM="dbsrvalerts@gsl.in"
-SMTP="smtp.gmail.com:587"
 SUBJECT="Disk Usage Report - ${MYDATE} ${MYTIME}"
-CMD_M=mailx
-DD=`date +%d%m%y`
+DD=$(date +%d%m%y)
 
-# === Directory Paths ===
-PGDATA="/u01/pgsql/${PG_VERSION}/data"
+PGDATA="${PGDATA_BASE}/${PG_VERSION}/data"
 PGWAL="${PGDATA}/pg_wal"
 PGTMP="${PGDATA}/base/pgsql_tmp"
-PGBACKUP="/u01/backup/PG"
+PGBACKUP="$PG_BACKUP_DIR"
 
-# === Start Logging ===
 {
     echo "===================================="
     echo "Disk Usage Report - $(date)"
@@ -1235,7 +1868,6 @@ PGBACKUP="/u01/backup/PG"
     echo ">>> PostgreSQL Data Directory Sizes:"
     echo ""
 
-    # --- PostgreSQL Data Directory ---
     if [ -d "$PGDATA" ]; then
         echo "--- PostgreSQL Data Directory Size ---"
         du -sh "$PGDATA"
@@ -1245,7 +1877,6 @@ PGBACKUP="/u01/backup/PG"
 
     echo ""
 
-    # --- PostgreSQL pg_wal Directory ---
     if [ -d "$PGWAL" ]; then
         echo "--- PostgreSQL pg_wal Size ---"
         du -sh "$PGWAL"
@@ -1255,7 +1886,6 @@ PGBACKUP="/u01/backup/PG"
 
     echo ""
 
-    # --- PostgreSQL Temporary Files ---
     if [ -d "$PGTMP" ]; then
         echo "--- PostgreSQL Temp Size ---"
         du -sh "$PGTMP"
@@ -1286,17 +1916,14 @@ PGBACKUP="/u01/backup/PG"
 
     echo ""
     echo "===================================="
-
     echo ""
     echo "===================================="
 } > "$LOGFILE"
 
-# === Completion Message ===
 echo "✅ Disk usage report generated at: $LOGFILE"
 
-echo "${VM_HOSTNAME} STANDALONE: PG Disk Usage INFO" | $CMD_M -a $LOGFILE -v -r "$FROM" -s "${VM_HOSTNAME} STANDALONE: PG Disk Usage INFORMATION ${DD}" -S smtp="$SMTP" -S smtp-use-starttls -S smtp-auth=login -S smtp-auth-user="dbsrvalerts@gsl.in" -S smtp-auth-password="oegmwnlfdtdpmvix" -S nss-config-dir="/etc/pki/nssdb/" -S ssl-verify=ignore $TO
+echo "${VM_HOSTNAME} STANDALONE: PG Disk Usage INFO" | $CMD_M -a $LOGFILE -v -r "$ALERT_FROM" -s "${VM_HOSTNAME} STANDALONE: PG Disk Usage INFORMATION ${DD}" -S smtp="$SMTP_SERVER" -S smtp-use-starttls -S smtp-auth=login -S smtp-auth-user="$ALERT_FROM" -S smtp-auth-password="$SMTP_APP_PASSWORD" -S ssl-verify=ignore $ALERT_TO
 
-# Exit the script
 exit 0
 ```
 ```bash
